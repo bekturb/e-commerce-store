@@ -6,7 +6,6 @@ import {otpReducer} from "../features/otpSlice";
 import {authReducer} from "../features/authSlice";
 import {authMeReducer} from "../features/authMeSlice";
 import {categoriesReducer} from "../features/categoriesSlice";
-import {categoryProductsReducer} from "../features/productsByMainSlice";
 import {pagesReducer} from "../features/pageSlice";
 import {resendOtpReducer} from "../features/resendOtpSlice";
 import {brandsReducer} from "../features/brandSlice";
@@ -31,7 +30,6 @@ const store = configureStore({
         products: productReducer,
         accounts: accountReducer,
         category: categoryReducer,
-        categoryProducts: categoryProductsReducer,
     }
 })
 

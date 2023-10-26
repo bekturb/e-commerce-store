@@ -11,23 +11,27 @@ import {Link, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategory} from "../../features/singleCategorySlice";
 import "./single-category.scss";
-import {fetchProductsByCategory} from "../../features/productsByMainSlice";
 
 const SingleCategory = () => {
     const showRef = useRef(null);
     const [showId, setShowId] = useState("");
     const [uniqueColors, setUniqueColors] = useState([]);
+    const [foundBrands, setFoundBrands] = useState([]);
+
+    console.log(foundBrands, "a")
 
     const {categorySlug} = useParams();
     const dispatch = useDispatch();
 
     const {data: category, loading: catLoading, error: catErr} = useSelector(state => state.category);
     const {data: categories, loading: catsLoading, error: catsErr} = useSelector(state => state.categories);
-    const {data: products, loading: productsLoading, error: productsErr} = useSelector(state => state.categoryProducts);
+    const {data: products, loading: productsLoad, error:productsErr} = useSelector(state => state.products);
+    const {data: brands, loading, error} = useSelector(state => state.brands);
 
-    console.log(products, "pro")
+    console.log(brands, "b")
 
     const filteredCategories = categories ? categories.filter(categoryItem => categoryItem.slug === categorySlug) : [];
+    const filteredProducts = products ? products.filter(product => product.tags.includes(categorySlug)) : [];
 
     useEffect(() => {
         document.addEventListener("click", (e) => {
@@ -45,19 +49,26 @@ const SingleCategory = () => {
 
     useEffect(() => {
         dispatch(fetchCategory(categorySlug));
-        dispatch(fetchProductsByCategory(categorySlug))
     }, [categorySlug]);
 
-    // useEffect(() => {
-    //     const colors = new Set();
-    //     products?.forEach((product) => {
-    //         product.variants.forEach((variant) => {
-    //             colors.add(variant.color);
-    //         });
-    //     });
-    //
-    //     setUniqueColors([...colors]);
-    // }, [products]);
+    useEffect(() => {
+        const colors = new Set();
+        filteredProducts?.forEach((product) => {
+            product.variants.forEach((variant) => {
+                colors.add(variant.color);
+            });
+        });
+
+        setUniqueColors([...colors]);
+    }, [products]);
+
+    useEffect(() => {
+        const productBrandIds = new Set(filteredProducts?.map(product => product.brand));
+        console.log(productBrandIds)
+        const foundBrands = brands?.filter(brand => productBrandIds.has(brand._id));
+
+        setFoundBrands(foundBrands);
+    }, [products, brands]);
 
     const showMenu = () => {
         setTimeout(() => {
