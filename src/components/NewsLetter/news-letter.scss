@@ -1,0 +1,36 @@
+.newsletter {
+  padding: 2.5em 0;
+  background-color: var(--dark-color);
+  color: var(--white-color);
+
+  &__title {
+    font-size: 1.5em;
+  }
+
+  &__subtitle {
+    font-weight: var(--fw3);
+    color: var(--border-color);
+    margin: 0.5em 0 1.5em;
+  }
+
+  &__strong {
+    color: var(--primary-color);
+  }
+
+  &__search {
+    max-width: 500px;
+    width: var(--percent100);
+  }
+}
+
+
+@media screen and (min-width: 993px) {
+  .newsletter {
+
+    &__box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}

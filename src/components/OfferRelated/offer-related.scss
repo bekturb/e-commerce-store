@@ -1,0 +1,29 @@
+.related-products {
+
+  & .content {
+    height: var(--percent100);
+  }
+
+  & .offer {
+    display: flex;
+    margin: 0;
+  }
+
+  & .offer__end {
+    width: 28px;
+    margin: 0 1em 0 0;
+    text-transform: none;
+    line-height: 1;
+  }
+
+  & .offer__time {
+    width: 28px;
+    height: 28px;
+    font-size: var(--font-small);
+    padding: 0.5em 0.25em;
+  }
+
+  & .offer__timeList {
+    width: 100%;
+  }
+}

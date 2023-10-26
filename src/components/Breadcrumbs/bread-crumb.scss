@@ -1,0 +1,20 @@
+.breadcrumb {
+  font-size: var(--font-small);
+  margin-bottom: 2em;
+
+  &__item{
+
+    &:not(:last-child)::after{
+      content: "/";
+      padding: 0 0.35em;
+    }
+
+    &:last-child {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--light-text-color);
+    }
+  }
+}

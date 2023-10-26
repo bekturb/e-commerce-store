@@ -1,0 +1,33 @@
+.not-found {
+  text-align: center;
+
+  &__button {
+    font-weight: 300;
+    color: var(--dark-color);
+    font-size: .5em;
+    text-decoration: none;
+    border: 1px solid var(--dark-color);
+    padding: .5em;
+    border-radius: 3px;
+    bottom: 20px;
+    transition: all .3s linear;
+
+    &:hover {
+      background-color: #007aff;
+      color: #fff;
+    }
+  }
+
+  &__subtitle {
+    margin: 20px 0;
+    font-size: 1em;
+    text-align: center;
+    font-weight: 100;
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 5em;
+    font-weight: 100;
+  }
+}

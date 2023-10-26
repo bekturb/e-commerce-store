@@ -1,0 +1,17 @@
+.overlay {
+  position: fixed;
+  width: var(--percent100);
+  height: var(--percent100);
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.4);
+  visibility: hidden;
+  opacity: 0;
+  will-change: visibility, opacity;
+
+  &.show {
+    visibility: inherit;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,54 @@
+.canvas-nav {
+
+  &.navigations {
+    display: block;
+  }
+
+  & .expand {
+    & > :where(.mega){
+      max-height: 2000px !important;
+    }
+  }
+
+  & .navigations__links {
+    display: block;
+    line-height: 40px;
+    gap: 0;
+  }
+
+  & .navigations__item {
+    position: relative;
+  }
+
+  & .navigations__link {
+    display: flex;
+  }
+
+  & .navigations__fly-item {
+    bottom: 100px;
+    right: 200px;
+  }
+
+  &__mega {
+    padding: 0;
+  }
+
+  & .products {
+    display: none;
+  }
+
+  & .child {
+
+    & > :where(.mega){
+      font-size: var(--font-small);
+      font-weight: var(--fw3);
+      line-height: 28px;
+      padding-left: 2em;
+
+      height: auto;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s cubic-bezier(0.215, 0.610, 0.355, 1);
+    }
+  }
+}

@@ -1,0 +1,20 @@
+.brands {
+
+  &__wrapper {
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 2em 0;
+  }
+
+  &__image {
+    opacity: .25;
+    transition: opacity .3s;
+  }
+
+  &__link {
+
+    &:hover .brands__image {
+      opacity: 1;
+    }
+  }
+}

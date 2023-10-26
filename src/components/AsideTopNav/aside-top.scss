@@ -1,0 +1,51 @@
+.nav-top {
+  display: block;
+
+  & .top__wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .top__links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: var(--font-small);
+    line-height: 36px;
+    padding-top: 1.25em;
+    margin: 1.25em 0;
+    border-top: 1px solid var(--border-color);
+    gap: 0;
+  }
+
+  & .top__link {
+
+    &--display {
+      display: none;
+    }
+  }
+
+  & .currency {
+
+    &:hover .currency__list{
+      display: flex;
+    }
+
+    &__list {
+      position: initial;
+      padding: 20px 0;
+      margin: 1.25em 0;
+      display: flex;
+      line-height: 2em;
+      border: none;
+      border-top: 1px solid var(--border-color);
+    }
+
+    &__link {
+      padding: 0.5em;
+      border: 1px solid var(--border-color);
+      line-height: 16px;
+      margin: 0 0.5em 0.5em 0;
+    }
+  }
+}

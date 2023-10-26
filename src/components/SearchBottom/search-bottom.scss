@@ -1,0 +1,26 @@
+.search-bottom {
+  position: fixed;
+  bottom: 60px;
+  width: var(--percent100);
+  padding: 2.5em 0;
+  background-color: var(--secondary-dark-color);
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  will-change: visibility, opacity;
+
+  &.visible {
+    visibility: inherit;
+    opacity: 1;
+  }
+
+  &__search-close {
+    position: absolute;
+    top: -54px;
+    right: 0;
+
+    &:hover {
+      background-color: var(--primary-color);
+    }
+  }
+}
