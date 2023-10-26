@@ -134,6 +134,7 @@
   &__variant {
     position: relative;
     margin: 0 0.5em 0.5em;
+    flex-wrap: wrap;
   }
 
   &__circle {
@@ -144,28 +145,9 @@
     cursor: pointer !important;
     z-index: 1 !important;
 
-    &:before {
+    &::before {
+      background-color: var(--color)!important;
       opacity: 1 !important;
-    }
-
-    &[for="cogrey"]::before {
-      background-color: #536574;
-    }
-
-    &[for="coblue"]::before {
-      background-color: #45a0ff;
-    }
-
-    &[for="cogreen"]::before {
-      background-color: #1dd1a1;
-    }
-
-    &[for="cored"]::before {
-      background-color: var(--primary-color);
-    }
-
-    &[for="colight"]::before {
-      background-color: var(--border-color);
     }
   }
 

@@ -11,24 +11,23 @@ import {Link, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategory} from "../../features/singleCategorySlice";
 import "./single-category.scss";
+import {fetchBrands} from "../../features/brandSlice";
 
 const SingleCategory = () => {
     const showRef = useRef(null);
     const [showId, setShowId] = useState("");
     const [uniqueColors, setUniqueColors] = useState([]);
-    const [foundBrands, setFoundBrands] = useState([]);
+    const [brandCounts, setBrandCounts] = useState({});
 
-    console.log(foundBrands, "a")
+    console.log(uniqueColors)
 
     const {categorySlug} = useParams();
     const dispatch = useDispatch();
 
     const {data: category, loading: catLoading, error: catErr} = useSelector(state => state.category);
     const {data: categories, loading: catsLoading, error: catsErr} = useSelector(state => state.categories);
-    const {data: products, loading: productsLoad, error:productsErr} = useSelector(state => state.products);
+    const {data: products, loading: productsLoad, error: productsErr} = useSelector(state => state.products);
     const {data: brands, loading, error} = useSelector(state => state.brands);
-
-    console.log(brands, "b")
 
     const filteredCategories = categories ? categories.filter(categoryItem => categoryItem.slug === categorySlug) : [];
     const filteredProducts = products ? products.filter(product => product.tags.includes(categorySlug)) : [];
@@ -49,6 +48,7 @@ const SingleCategory = () => {
 
     useEffect(() => {
         dispatch(fetchCategory(categorySlug));
+        dispatch(fetchBrands());
     }, [categorySlug]);
 
     useEffect(() => {
@@ -63,12 +63,20 @@ const SingleCategory = () => {
     }, [products]);
 
     useEffect(() => {
-        const productBrandIds = new Set(filteredProducts?.map(product => product.brand));
-        console.log(productBrandIds)
-        const foundBrands = brands?.filter(brand => productBrandIds.has(brand._id));
+        const counts = {};
 
-        setFoundBrands(foundBrands);
+        filteredProducts?.forEach(product => {
+            const brand = brands?.find(brand => brand._id === product.brand);
+            if (brand) {
+                const brandName = brand.name;
+                counts[brandName] = (counts[brandName] || 0) + 1;
+            }
+        });
+
+        setBrandCounts(counts);
     }, [products, brands]);
+
+
 
     const showMenu = () => {
         setTimeout(() => {
@@ -77,13 +85,12 @@ const SingleCategory = () => {
     }
 
     const handleToggle = (id) => {
-        if(id === showId) {
+        if (id === showId) {
             setShowId("")
-        }else {
+        } else {
             setShowId(id)
         }
     };
-
 
     return (
         <div className="single-category">
@@ -97,58 +104,64 @@ const SingleCategory = () => {
                                         <h4 className="filter__title">Category</h4>
                                         <ul className="filter__list">
                                             {
-                                                filteredCategories.map(category => (
+                                                filteredCategories?.map(category => (
                                                     category.children.length > 0 && (
                                                         category.children.map(subCategory => (
-                                                                subCategory.children.length > 0 ? (
-                                                                    <li key={subCategory._id} className="filter__item" onClick={() => handleToggle(subCategory._id)}>
-                                                                        <div className="filter__box">
-                                                                            <div className="filter__label">
+                                                            subCategory.children.length > 0 ? (
+                                                                <li key={subCategory._id} className="filter__item"
+                                                                    onClick={() => handleToggle(subCategory._id)}>
+                                                                    <div className="filter__box">
+                                                                        <div className="filter__label">
                                                                         <span
                                                                             className="filter__category">{subCategory.name}</span>
-                                                                            </div>
-                                                                            <span className="filter__count icon-sm">
+                                                                        </div>
+                                                                        <span className="filter__count icon-sm">
                                                                                 {
-                                                                                    subCategory._id === showId ? <i className="ri-arrow-down-s-line"></i>
-                                                                                        : <i className="ri-arrow-right-s-line"></i>
+                                                                                    subCategory._id === showId ?
+                                                                                        <i className="ri-arrow-down-s-line"></i>
+                                                                                        :
+                                                                                        <i className="ri-arrow-right-s-line"></i>
                                                                                 }
                                                                     </span>
-                                                                        </div>
-                                                                        {
-                                                                            subCategory.children.length > 0 && (
-                                                                                <div className={subCategory._id === showId ? "filter__drop children show-drop" : "filter__drop children"}>
-                                                                                    <ul className="children__list">
-                                                                                        {
-                                                                                            subCategory.children.map(subSubCategory => (
-                                                                                                <li key={subSubCategory._id}
-                                                                                                    className="children__item">
-                                                                                                    <Link to="/"
-                                                                                                          className="children__link">
-                                                                                                        <p className="children__title">{subSubCategory.name}</p>
-                                                                                                        <span
-                                                                                                            className="children__count">
+                                                                    </div>
+                                                                    {
+                                                                        subCategory.children.length > 0 && (
+                                                                            <div
+                                                                                className={subCategory._id === showId ? "filter__drop children show-drop" : "filter__drop children"}>
+                                                                                <ul className="children__list">
+                                                                                    {
+                                                                                        subCategory.children.map(subSubCategory => (
+                                                                                            <li key={subSubCategory._id}
+                                                                                                className="children__item">
+                                                                                                <Link to="/"
+                                                                                                      className="children__link">
+                                                                                                    <p className="children__title">{subSubCategory.name}</p>
+                                                                                                    <span
+                                                                                                        className="children__count">
                                                                                                         15
                                                                                                     </span>
-                                                                                                    </Link>
-                                                                                                </li>
-                                                                                            ))
-                                                                                        }
-                                                                                    </ul>
-                                                                                </div>
-                                                                            )
-                                                                        }
-                                                                    </li>
-                                                                ) : (
-                                                                    <li key={subCategory._id} className="filter__item">
-                                                                        <Link to={`/category/${category.name}/${subCategory._id}`}>
-                                                                            <div className="filter__box">
-                                                                                <div className="filter__label">
-                                                                                    <span className="filter__category">{subCategory.name}</span>
-                                                                                </div>
+                                                                                                </Link>
+                                                                                            </li>
+                                                                                        ))
+                                                                                    }
+                                                                                </ul>
                                                                             </div>
-                                                                        </Link>
-                                                                    </li>
-                                                                )
+                                                                        )
+                                                                    }
+                                                                </li>
+                                                            ) : (
+                                                                <li key={subCategory._id} className="filter__item">
+                                                                    <Link
+                                                                        to={`/category/${category.name}/${subCategory._id}`}>
+                                                                        <div className="filter__box">
+                                                                            <div className="filter__label">
+                                                                                <span
+                                                                                    className="filter__category">{subCategory.name}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </Link>
+                                                                </li>
+                                                            )
                                                         ))
                                                     )
                                                 ))
@@ -158,86 +171,37 @@ const SingleCategory = () => {
                                     <div className="filter__block">
                                         <h4 className="filter__title">Brands</h4>
                                         <ul className="filter__list">
-                                            <li className="filter__item">
-                                                <input className="filter__input" type="checkbox" id="nike"/>
-                                                <label className="filter__label" htmlFor="nike">
-                                                    <span className="filter__checked"></span>
-                                                    <span className="filter__category">Nike</span>
-                                                </label>
-                                                <span className="filter__count">
-                                                    9
-                                                </span>
-                                            </li>
-                                            <li className="filter__item">
-                                                <input className="filter__input" type="checkbox" id="louisVuitton"/>
-                                                <label className="filter__label" htmlFor="louisVuitton">
-                                                    <span className="filter__checked"></span>
-                                                    <span className="filter__category">Louis Vuitton</span>
-                                                </label>
-                                                <span className="filter__count">
-                                                    13
-                                                </span>
-                                            </li>
-                                            <li className="filter__item">
-                                                <input className="filter__input" type="checkbox" id="hermes"/>
-                                                <label className="filter__label" htmlFor="hermes">
-                                                    <span className="filter__checked"></span>
-                                                    <span className="filter__category">Hermes</span>
-                                                </label>
-                                                <span className="filter__count">
-                                                    2
-                                                </span>
-                                            </li>
-                                            <li className="filter__item">
-                                                <input className="filter__input" type="checkbox" id="gucci"/>
-                                                <label className="filter__label" htmlFor="gucci">
-                                                    <span className="filter__checked"></span>
-                                                    <span className="filter__category">Gucci</span>
-                                                </label>
-                                                <span className="filter__count">
-                                                    6
-                                                </span>
-                                            </li>
-                                            <li className="filter__item">
-                                                <input className="filter__input" type="checkbox" id="zara"/>
-                                                <label className="filter__label" htmlFor="zara">
-                                                    <span className="filter__checked"></span>
-                                                    <span className="filter__category">Zara</span>
-                                                </label>
-                                                <span className="filter__count">
-                                                    5
-                                                </span>
-                                            </li>
+                                            {Object.keys(brandCounts)?.map(brandName => (
+                                                <li key={brandName} className="filter__item">
+                                                    <div className="filter__box">
+                                                        <input className="filter__input" type="checkbox"
+                                                               id={brandName}/>
+                                                        <label className="filter__label" htmlFor={brandName}>
+                                                            <span className="filter__checked"></span>
+                                                            <span className="filter__category">{brandName}</span>
+                                                        </label>
+                                                        <span className="filter__count">
+                                                            {brandCounts[brandName]}
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            ))}
                                         </ul>
                                     </div>
                                     <div className="filter__block colors">
                                         <h4 className="filter__title">Color</h4>
                                         <ul className="filter__list colors__variant flexitem">
-                                            <li className="filter__item">
-                                                <input className="filter__input colors__input" type="radio" name="color"
-                                                       id="cogrey"/>
-                                                <label className="colors__circle circle" htmlFor="cogrey"></label>
-                                            </li>
-                                            <li className="filter__item">
-                                                <input className="filter__input colors__input" type="radio" name="color"
-                                                       id="coblue"/>
-                                                <label className="colors__circle circle" htmlFor="coblue"></label>
-                                            </li>
-                                            <li className="filter__item">
-                                                <input className="filter__input colors__input" type="radio" name="color"
-                                                       id="cogreen"/>
-                                                <label className="colors__circle circle" htmlFor="cogreen"></label>
-                                            </li>
-                                            <li className="filter__item">
-                                                <input className="filter__input colors__input" type="radio" name="color"
-                                                       id="cored"/>
-                                                <label className="colors__circle circle" htmlFor="cored"></label>
-                                            </li>
-                                            <li className="filter__item">
-                                                <input className="filter__input colors__input" type="radio" name="color"
-                                                       id="colight"/>
-                                                <label className="colors__circle circle" htmlFor="colight"></label>
-                                            </li>
+                                            {
+                                                uniqueColors?.map((color, idx) => (
+                                                    <li key={idx} className="filter__item">
+                                                        <input className="filter__input colors__input" type="radio"
+                                                               name="color"
+                                                               id={color}/>
+                                                        <label className="colors__circle circle" style={{ '--color':`${color}`}} htmlFor={color}>
+                                                        </label>
+                                                    </li>
+                                                ))
+                                            }
                                         </ul>
                                     </div>
                                     <div className="filter__block">
