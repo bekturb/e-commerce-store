@@ -18,8 +18,7 @@ const SingleCategory = () => {
     const [showId, setShowId] = useState("");
     const [uniqueColors, setUniqueColors] = useState([]);
     const [brandCounts, setBrandCounts] = useState({});
-
-    console.log(uniqueColors)
+    const [price, setPrice] = useState(null);
 
     const {categorySlug} = useParams();
     const dispatch = useDispatch();
@@ -208,7 +207,13 @@ const SingleCategory = () => {
                                         <h4 className="filter__title">Price</h4>
                                         <div className="filter__byprice byprice">
                                             <div className="byprice__range-track">
-                                                <input type="range" min="0" max="100000" className="byprice__input"/>
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100000"
+                                                    className="byprice__input"
+                                                    onChange={e => setPrice(e.target.value)}
+                                                />
                                             </div>
                                             <div className="byprice__price-range">
                                                 <span className="byprice__form">$50</span>
@@ -292,425 +297,68 @@ const SingleCategory = () => {
                                     </div>
                                 </div>
                                 <div className="products pro flexwrap">
-                                    <div className="products__item item">
-                                        <div className="products__media media">
-                                            <div className="products__thumbnail thumbnail">
-                                                <a className="products__link" href="">
-                                                    <img className="products__image" src={Trending4} alt=""/>
-                                                </a>
-                                            </div>
-                                            <div className="products__hover-able">
-                                                <ul className="products__hover-list">
-                                                    <li className="products__hover-item active">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-heart-line"></i>
+                                    {
+                                        filteredProducts.map(product => (
+                                            <div key={product._id} className="products__item item">
+                                                <div className="products__media media">
+                                                    <div className="products__thumbnail thumbnail">
+                                                        <a className="products__link" href="">
+                                                            <img className="products__image" src={product.variants[0].images[0].url} alt=""/>
                                                         </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-eye-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-shuffle-line"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="products__discount circle">
+                                                    </div>
+                                                    <div className="products__hover-able">
+                                                        <ul className="products__hover-list">
+                                                            <li className="products__hover-item active">
+                                                                <a className="products__hover-link" href=""><i
+                                                                    className="ri-heart-line"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li className="products__hover-item">
+                                                                <a className="products__hover-link" href=""><i
+                                                                    className="ri-eye-line"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li className="products__hover-item">
+                                                                <a className="products__hover-link" href=""><i
+                                                                    className="ri-shuffle-line"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div className="products__discount circle">
                                             <span className="products__percentage">
-                                                25%
+                                                {product.salePercentage}
                                             </span>
-                                            </div>
-                                        </div>
-                                        <div className="products__content content">
-                                            <div className="content__rating">
-                                                <div className="content__stars"></div>
-                                                <span className="content__text mini-text">
-                                                (2,548)
+                                                    </div>
+                                                </div>
+                                                <div className="products__content content">
+                                                    <div className="content__rating">
+                                                        <div className="content__stars"></div>
+                                                        <span className="content__text mini-text">
+                                                {product?.reviews.length}
                                             </span>
-                                            </div>
-                                            <h3 className="content__main-links">
-                                                <a className="content__link" href="">Under Armour Men's Tech</a>
-                                            </h3>
-                                            <div className="content__price price">
-                                            <span className="price__current">
-                                                $129.99
+                                                    </div>
+                                                    <h3 className="content__main-links">
+                                                        <a className="content__link" href="">Under Armour Men's Tech</a>
+                                                    </h3>
+                                                    <div className="content__price price">
+                                                        {
+                                                            product.variants[0].discountPrice ?
+                                                                <span className="price__current">
+                                                ${product.variants[0].discountPrice}
+                                            </span> : <span className="price__current">
+                                                ${product.variants[0].originalPrice}
                                             </span>
-                                                <span className="price__old mini-text">
-                                                $189.98
-                                            </span>
+                                                        }
+                                                        {product.variants[0].discountPrice &&
+                                                            <span className="price__old mini-text">
+                                                ${product.variants[0].originalPrice}
+                                            </span>}
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div className="products__item item">
-                                        <div className="products__media media">
-                                            <div className="products__thumbnail thumbnail">
-                                                <a className="products__link" href="">
-                                                    <img className="products__image" src={Shoe1} alt=""/>
-                                                </a>
-                                            </div>
-                                            <div className="products__hover-able">
-                                                <ul className="products__hover-list">
-                                                    <li className="products__hover-item active">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-heart-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-eye-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-shuffle-line"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="products__discount circle">
-                                            <span className="products__percentage">
-                                                25%
-                                            </span>
-                                            </div>
-                                        </div>
-                                        <div className="products__content content">
-                                            <div className="content__rating">
-                                                <div className="content__stars"></div>
-                                                <span className="content__text mini-text">
-                                                (2,548)
-                                            </span>
-                                            </div>
-                                            <h3 className="content__main-links">
-                                                <a className="content__link" href="">Men Slip On Shoes Casual with Arch
-                                                    Support Insoles</a>
-                                            </h3>
-                                            <div className="content__price price">
-                                            <span className="price__current">
-                                                $129.99
-                                            </span>
-                                                <span className="price__old mini-text">
-                                                $189.98
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="products__item item">
-                                        <div className="products__media media">
-                                            <div className="products__thumbnail thumbnail">
-                                                <a className="products__link" href="">
-                                                    <img className="products__image" src={Trending2} alt=""/>
-                                                </a>
-                                            </div>
-                                            <div className="products__hover-able">
-                                                <ul className="products__hover-list">
-                                                    <li className="products__hover-item active">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-heart-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-eye-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-shuffle-line"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="products__discount circle">
-                                            <span className="products__percentage">
-                                                25%
-                                            </span>
-                                            </div>
-                                        </div>
-                                        <div className="products__content content">
-                                            <div className="content__rating">
-                                                <div className="content__stars"></div>
-                                                <span className="content__text mini-text">
-                                                (2,548)
-                                            </span>
-                                            </div>
-                                            <h3 className="content__main-links">
-                                                <a className="content__link" href="">Black Women's Coat Dress</a>
-                                            </h3>
-                                            <div className="content__price price">
-                                            <span className="price__current">
-                                               $129.99
-                                            </span>
-                                                <span className="price__old mini-text">
-                                                $189.98
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="products__item item">
-                                        <div className="products__media media">
-                                            <div className="products__thumbnail thumbnail">
-                                                <a className="products__link" href="">
-                                                    <img className="products__image" src={Trending3} alt=""/>
-                                                </a>
-                                            </div>
-                                            <div className="products__hover-able">
-                                                <ul className="products__hover-list">
-                                                    <li className="products__hover-item active">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-heart-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-eye-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-shuffle-line"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="products__discount circle">
-                                            <span className="products__percentage">
-                                                 32%
-                                            </span>
-                                            </div>
-                                        </div>
-                                        <div className="products__content content">
-                                            <div className="content__rating">
-                                                <div className="content__stars"></div>
-                                                <span className="content__text mini-text">
-                                                 (994)
-                                            </span>
-                                            </div>
-                                            <h3 className="content__main-links">
-                                                <a className="content__link" href="">Women's Lightweight Knitting</a>
-                                            </h3>
-                                            <div className="content__price price">
-                                            <span className="price__current">
-                                                $37.50
-                                            </span>
-                                                <span className="price__old mini-text">
-                                               $645.50
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="products__item item">
-                                        <div className="products__media media">
-                                            <div className="products__thumbnail thumbnail">
-                                                <a className="products__link" href="">
-                                                    <img className="products__image" src={Trending1} alt=""/>
-                                                </a>
-                                            </div>
-                                            <div className="products__hover-able">
-                                                <ul className="products__hover-list">
-                                                    <li className="products__hover-item active">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-heart-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-eye-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-shuffle-line"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="products__discount circle">
-                                            <span className="products__percentage">
-                                                31%
-                                            </span>
-                                            </div>
-                                        </div>
-                                        <div className="products__content content">
-                                            <div className="content__rating">
-                                                <div className="content__stars"></div>
-                                                <span className="content__text mini-text">
-                                               (2,548)
-                                            </span>
-                                            </div>
-                                            <h3 className="content__main-links">
-                                                <a className="content__link" href="">Happy Sailed Women's Summer Boho
-                                                    Floral</a>
-                                            </h3>
-                                            <div className="content__price price">
-                                            <span className="price__current">
-                                                $129.99
-                                            </span>
-                                                <span className="price__old mini-text">
-                                              $189.98
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="products__item item">
-                                        <div className="products__media media">
-                                            <div className="products__thumbnail thumbnail">
-                                                <a className="products__link" href="">
-                                                    <img className="products__image" src={Trending5} alt=""/>
-                                                </a>
-                                            </div>
-                                            <div className="products__hover-able">
-                                                <ul className="products__hover-list">
-                                                    <li className="products__hover-item active">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-heart-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-eye-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-shuffle-line"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="products__discount circle">
-                                            <span className="products__percentage">
-                                                25%
-                                            </span>
-                                            </div>
-                                        </div>
-                                        <div className="products__content content">
-                                            <div className="content__rating">
-                                                <div className="content__stars"></div>
-                                                <span className="content__text mini-text">
-                                                (1,237)
-                                            </span>
-                                            </div>
-                                            <h3 className="content__main-links">
-                                                <a className="content__link" href="">Skechers Women's Go Joy Walking
-                                                    Shoe Sneaker</a>
-                                            </h3>
-                                            <div className="content__price price">
-                                            <span className="price__current">
-                                                $45.95
-                                            </span>
-                                                <span className="price__old mini-text">
-                                                $64.95
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="products__item item">
-                                        <div className="products__media media">
-                                            <div className="products__thumbnail thumbnail">
-                                                <a className="products__link" href="">
-                                                    <img className="products__image" src={Trending6} alt=""/>
-                                                </a>
-                                            </div>
-                                            <div className="products__hover-able">
-                                                <ul className="products__hover-list">
-                                                    <li className="products__hover-item active">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-heart-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-eye-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-shuffle-line"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="products__discount circle">
-                                            <span className="products__percentage">
-                                                25%
-                                            </span>
-                                            </div>
-                                        </div>
-                                        <div className="products__content content">
-                                            <div className="content__rating">
-                                                <div className="content__stars"></div>
-                                                <span className="content__text mini-text">
-                                                (106)
-                                            </span>
-                                            </div>
-                                            <h3 className="content__main-links">
-                                                <a className="content__link" href="">Walking Shoe Sneaker Womens</a>
-                                            </h3>
-                                            <div className="content__price price">
-                                            <span className="price__current">
-                                                $139.99
-                                            </span>
-                                                <span className="price__old mini-text">
-                                                $189.98
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="products__item item">
-                                        <div className="products__media media">
-                                            <div className="products__thumbnail thumbnail">
-                                                <a className="products__link" href="">
-                                                    <img className="products__image" src={Trending7} alt=""/>
-                                                </a>
-                                            </div>
-                                            <div className="products__hover-able">
-                                                <ul className="products__hover-list">
-                                                    <li className="products__hover-item active">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-heart-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-eye-line"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li className="products__hover-item">
-                                                        <a className="products__hover-link" href=""><i
-                                                            className="ri-shuffle-line"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className="products__discount circle">
-                                            <span className="products__percentage">
-                                                25%
-                                            </span>
-                                            </div>
-                                        </div>
-                                        <div className="products__content content">
-                                            <div className="content__rating">
-                                                <div className="content__stars"></div>
-                                                <span className="content__text mini-text">
-                                                (25)
-                                            </span>
-                                            </div>
-                                            <h3 className="content__main-links">
-                                                <a className="content__link" href="">Womens Summer Tosca Shoe</a>
-                                            </h3>
-                                            <div className="content__price price">
-                                            <span className="price__current">
-                                                $104.90
-                                            </span>
-                                                <span className="price__old mini-text">
-                                                $189.90
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        ))
+                                    }
                                 </div>
                                 <div className="load-more flexcenter">
                                     <a href="" className="secondary-button">Load more</a>
