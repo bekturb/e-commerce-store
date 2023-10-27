@@ -11,12 +11,11 @@ const SingleCategory = () => {
     const [uniqueColors, setUniqueColors] = useState([]);
     const [brandCounts, setBrandCounts] = useState([]);
     const [categoryProducts , setCategoryProducts] = useState([]);
+    const [sortedItem, setSortedItem] = useState("");
 
     const [productBrand, setProductBrand] = useState([]);
     const [productColor, setProductColor] = useState("");
     const [productPrice, setProductPrice] = useState(0);
-
-    console.log(productBrand, productColor, productPrice)
 
     const {categorySlug} = useParams();
     const dispatch = useDispatch();
@@ -92,9 +91,21 @@ const SingleCategory = () => {
                 return false;
             });
 
-            setCategoryProducts(updatedFilteredProducts);
+            const sortedProducts = sortProducts(updatedFilteredProducts, sortedItem);
+            setCategoryProducts(sortedProducts);
         }
-    }, [filteredProducts, categorySlug, productBrand, productColor, productPrice]);
+    }, [products, categorySlug, productBrand, productColor, productPrice, sortedItem]);
+
+    function sortProducts(products, sortedItem) {
+        return [...products].sort((a, b) => {
+                if (sortedItem === 'Product Name') {
+                    return a.name.localeCompare(b.name);
+                } else if (sortedItem === 'Price') {
+                    return Math.floor(b.variants[0].originalPrice) - Math.floor(a.variants[0].originalPrice);
+                }
+            return 0;
+        });
+    }
 
     useEffect(() => {
         document.addEventListener("click", (e) => {
@@ -119,6 +130,10 @@ const SingleCategory = () => {
             setProductBrand(productBrand.filter((item) => item !== value));
         }
     };
+
+    const handleSort = (value) => {
+        setSortedItem(value)
+    }
 
     const showMenu = () => {
         setTimeout(() => {
@@ -304,15 +319,16 @@ const SingleCategory = () => {
                                             </div>
                                             <div className="cat-navigation__sort">
                                                 <div className="cat-navigation__label label">
-                                                    <span className="mobile-hide">Sort by default</span>
-                                                    <div className="desktop-hide">Default</div>
+                                                    <span className="mobile-hide">
+                                                        {sortedItem ? sortedItem : "Sort by default"}
+                                                    </span>
+                                                    <div className="desktop-hide">{sortedItem}</div>
                                                     <i className="ri-arrow-down-s-line"></i>
                                                 </div>
                                                 <ul className="cat-navigation__list">
-                                                    <li className="cat-navigation__item">Default</li>
-                                                    <li className="cat-navigation__item">Product Name</li>
-                                                    <li className="cat-navigation__item">Price</li>
-                                                    <li className="cat-navigation__item">Brand</li>
+                                                    <li onClick={() => handleSort("Default")} className="cat-navigation__item">Default</li>
+                                                    <li onClick={() => handleSort("Product Name")} className="cat-navigation__item">Product Name</li>
+                                                    <li onClick={() => handleSort("Price")} className="cat-navigation__item">Price</li>
                                                 </ul>
                                             </div>
                                             <div className="cat-navigation__perpage mobile-hide">
@@ -368,7 +384,7 @@ const SingleCategory = () => {
                                                     </div>
                                                     <div className="products__discount circle">
                                             <span className="products__percentage">
-                                                {product.salePercentage}
+                                                {product.salePercentage}%
                                             </span>
                                                     </div>
                                                 </div>
@@ -380,7 +396,7 @@ const SingleCategory = () => {
                                             </span>
                                                     </div>
                                                     <h3 className="content__main-links">
-                                                        <a className="content__link" href="">Under Armour Men's Tech</a>
+                                                        <a className="content__link" href="">{product.name}</a>
                                                     </h3>
                                                     <div className="content__price price">
                                                         {
@@ -391,7 +407,8 @@ const SingleCategory = () => {
                                                 ${product.variants[0].originalPrice}
                                             </span>
                                                         }
-                                                        {product.variants[0].discountPrice &&
+                                                        {
+                                                            product.variants[0].discountPrice &&
                                                             <span className="price__old mini-text">
                                                 ${product.variants[0].originalPrice}
                                             </span>}
