@@ -8,10 +8,12 @@ import {fetchBrands} from "../../features/brandSlice";
 const SingleCategory = () => {
     const showRef = useRef(null);
     const [showId, setShowId] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
     const [uniqueColors, setUniqueColors] = useState([]);
     const [brandCounts, setBrandCounts] = useState([]);
     const [categoryProducts , setCategoryProducts] = useState([]);
     const [sortedItem, setSortedItem] = useState("");
+    const [perPage, setPerPage] = useState("10");
 
     const [productBrand, setProductBrand] = useState([]);
     const [productColor, setProductColor] = useState("");
@@ -27,11 +29,6 @@ const SingleCategory = () => {
 
     const filteredCategories = categories ? categories.filter(categoryItem => categoryItem.slug === categorySlug) : [];
     const filteredProducts = products ? products.filter(product => product.tags.includes(categorySlug)) : [];
-
-    useEffect(() => {
-        dispatch(fetchCategory(categorySlug));
-        dispatch(fetchBrands());
-    }, [categorySlug]);
 
     useEffect(() => {
         const colors = new Set();
@@ -96,17 +93,6 @@ const SingleCategory = () => {
         }
     }, [products, categorySlug, productBrand, productColor, productPrice, sortedItem]);
 
-    function sortProducts(products, sortedItem) {
-        return [...products].sort((a, b) => {
-                if (sortedItem === 'Product Name') {
-                    return a.name.localeCompare(b.name);
-                } else if (sortedItem === 'Price') {
-                    return Math.floor(b.variants[0].originalPrice) - Math.floor(a.variants[0].originalPrice);
-                }
-            return 0;
-        });
-    }
-
     useEffect(() => {
         document.addEventListener("click", (e) => {
             const isClosest = e.target.closest(".filter");
@@ -120,6 +106,43 @@ const SingleCategory = () => {
             });
         };
     }, []);
+
+    useEffect(() => {
+        dispatch(fetchCategory(categorySlug));
+        dispatch(fetchBrands());
+    }, [categorySlug]);
+
+    function sortProducts(products, sortedItem) {
+        return [...products].sort((a, b) => {
+            if (sortedItem === 'Product Name') {
+                return a.name.localeCompare(b.name);
+            } else if (sortedItem === 'Price') {
+                return Math.floor(b.variants[0].originalPrice) - Math.floor(a.variants[0].originalPrice);
+            }
+            return 0;
+        });
+    }
+
+    function paginateProducts(products, currentPage, perPage) {
+        if (perPage === 'All') {
+            return products;
+        }
+
+        const startIndex = (currentPage - 1) * +perPage;
+        const endIndex = startIndex + +perPage;
+        return products.slice(startIndex, endIndex);
+    }
+
+    function handlePerPageChange(page) {
+        setPerPage(page);
+        setCurrentPage(1);
+    }
+
+    function loadMoreProducts() {
+        setPerPage(perPage + 10);
+    }
+
+    const paginatedProducts = paginateProducts(categoryProducts, currentPage, perPage);
 
     const handleCheckboxChange = (event) => {
         const { value, checked } = event.target;
@@ -333,21 +356,21 @@ const SingleCategory = () => {
                                             </div>
                                             <div className="cat-navigation__perpage mobile-hide">
                                                 <div className="cat-navigation__label">
-                                                    Items 10 perpage
+                                                    Items {perPage} perpage
                                                 </div>
-                                                <div className="desktop-hide">10</div>
+                                                <div className="desktop-hide">{perPage}</div>
                                             </div>
                                             <div className="cat-navigation__options options">
                                                 <div className="cat-navigation__label label">
-                                                    <span className="mobile-hide">Show 10 perpage</span>
-                                                    <div className="desktop-hide">10</div>
+                                                    <span className="mobile-hide">Show {`${perPage}`} perpage</span>
+                                                    <div className="desktop-hide">{perPage}</div>
                                                     <i className="ri-arrow-down-s-line"></i>
                                                 </div>
                                                 <ul className="cat-navigation__list">
-                                                    <li className="cat-navigation__item">10</li>
-                                                    <li className="cat-navigation__item">20</li>
-                                                    <li className="cat-navigation__item">30</li>
-                                                    <li className="cat-navigation__item">All</li>
+                                                    <li onClick={() => handlePerPageChange(10)} className="cat-navigation__item">10</li>
+                                                    <li onClick={() => handlePerPageChange(20)} className="cat-navigation__item">20</li>
+                                                    <li onClick={() => handlePerPageChange(30)} className="cat-navigation__item">30</li>
+                                                    <li onClick={() => handlePerPageChange("All")} className="cat-navigation__item">All</li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -355,7 +378,7 @@ const SingleCategory = () => {
                                 </div>
                                 <div className="products pro flexwrap">
                                     {
-                                        categoryProducts?.map(product => (
+                                        paginatedProducts?.map(product => (
                                             <div key={product._id} className="products__item item">
                                                 <div className="products__media media">
                                                     <div className="products__thumbnail thumbnail">
@@ -419,7 +442,7 @@ const SingleCategory = () => {
                                     }
                                 </div>
                                 <div className="load-more flexcenter">
-                                    <a href="" className="secondary-button">Load more</a>
+                                    <button onClick={loadMoreProducts} className="secondary-button load-more__btn">Load more</button>
                                 </div>
                             </div>
                         </div>
