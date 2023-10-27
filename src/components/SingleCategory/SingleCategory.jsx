@@ -14,7 +14,9 @@ const SingleCategory = () => {
 
     const [productBrand, setProductBrand] = useState([]);
     const [productColor, setProductColor] = useState("");
-    const [productPrice, setProductPrice] = useState(null);
+    const [productPrice, setProductPrice] = useState(0);
+
+    console.log(productBrand, productColor, productPrice)
 
     const {categorySlug} = useParams();
     const dispatch = useDispatch();
@@ -28,24 +30,9 @@ const SingleCategory = () => {
     const filteredProducts = products ? products.filter(product => product.tags.includes(categorySlug)) : [];
 
     useEffect(() => {
-        dispatch(fetchBrands());
         dispatch(fetchCategory(categorySlug));
+        dispatch(fetchBrands());
     }, [categorySlug]);
-
-    useEffect(() => {
-        if (filteredProducts && categorySlug && productBrand) {
-            const updatedFilteredProducts = filteredProducts.filter(product => {
-                if (productBrand.length > 0 && productColor && productPrice) {
-                    return  productBrand.includes(product.brand) &&
-                        product.variants.some(variant => variant.color === productColor) &&
-                        product.variants.some(variant => variant.originalPrice > productPrice)
-                }
-                return filteredProducts
-            });
-
-            setCategoryProducts(updatedFilteredProducts);
-        }
-    }, [products, categorySlug, productBrand, productColor, productPrice]);
 
     useEffect(() => {
         const colors = new Set();
@@ -91,6 +78,23 @@ const SingleCategory = () => {
 
         setBrandCounts(brandCountsArray);
     }, [brands, products]);
+
+    useEffect(() => {
+        if (filteredProducts?.length > 0 && categorySlug) {
+            const updatedFilteredProducts = filteredProducts?.filter(product => {
+                if (
+                    (productBrand?.length === 0 || productBrand?.includes(product.brand)) &&
+                    (!productColor || product.variants.some(variant => variant.color === productColor)) &&
+                    (!productPrice || product.variants.some(variant => variant.originalPrice >= productPrice))
+                ) {
+                    return true;
+                }
+                return false;
+            });
+
+            setCategoryProducts(updatedFilteredProducts);
+        }
+    }, [filteredProducts, categorySlug, productBrand, productColor, productPrice]);
 
     useEffect(() => {
         document.addEventListener("click", (e) => {
