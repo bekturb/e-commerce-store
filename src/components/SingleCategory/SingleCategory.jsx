@@ -1,12 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-import Trending4 from "../../assets/products/apparel1.jpg";
-import Shoe1 from "../../assets/products/shoe1.jpg";
-import Trending2 from "../../assets/products/apparel3.jpg";
-import Trending3 from "../../assets/products/apparel2.jpg";
-import Trending1 from "../../assets/products/apparel4.jpg";
-import Trending5 from "../../assets/products/shoe2.jpg";
-import Trending6 from "../../assets/products/shoe3.jpg";
-import Trending7 from "../../assets/products/shoe4.jpg";
 import {Link, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategory} from "../../features/singleCategorySlice";
@@ -17,8 +9,12 @@ const SingleCategory = () => {
     const showRef = useRef(null);
     const [showId, setShowId] = useState("");
     const [uniqueColors, setUniqueColors] = useState([]);
-    const [brandCounts, setBrandCounts] = useState({});
-    const [price, setPrice] = useState(null);
+    const [brandCounts, setBrandCounts] = useState([]);
+    const [categoryProducts , setCategoryProducts] = useState([]);
+
+    const [productBrand, setProductBrand] = useState([]);
+    const [productColor, setProductColor] = useState("");
+    const [productPrice, setProductPrice] = useState(null);
 
     const {categorySlug} = useParams();
     const dispatch = useDispatch();
@@ -30,6 +26,71 @@ const SingleCategory = () => {
 
     const filteredCategories = categories ? categories.filter(categoryItem => categoryItem.slug === categorySlug) : [];
     const filteredProducts = products ? products.filter(product => product.tags.includes(categorySlug)) : [];
+
+    useEffect(() => {
+        dispatch(fetchBrands());
+        dispatch(fetchCategory(categorySlug));
+    }, [categorySlug]);
+
+    useEffect(() => {
+        if (filteredProducts && categorySlug && productBrand) {
+            const updatedFilteredProducts = filteredProducts.filter(product => {
+                if (productBrand.length > 0 && productColor && productPrice) {
+                    return  productBrand.includes(product.brand) &&
+                        product.variants.some(variant => variant.color === productColor) &&
+                        product.variants.some(variant => variant.originalPrice > productPrice)
+                }
+                return filteredProducts
+            });
+
+            setCategoryProducts(updatedFilteredProducts);
+        }
+    }, [products, categorySlug, productBrand, productColor, productPrice]);
+
+    useEffect(() => {
+        const colors = new Set();
+        filteredProducts?.forEach((product) => {
+            product.variants.forEach((variant) => {
+                colors.add(variant.color);
+            });
+        });
+
+        setUniqueColors([...colors]);
+    }, [products]);
+
+    useEffect(() => {
+        const brandCountsArray = [];
+
+        if (filteredProducts && brands) {
+            const brandCounts = {};
+
+            filteredProducts.forEach(product => {
+                const brand = brands.find(brand => brand._id === product.brand);
+                if (brand) {
+                    const brandName = brand.name;
+                    const brandId = brand._id;
+                    if (!brandCounts[brandName]) {
+                        brandCounts[brandName] = {
+                            id: brandId,
+                            count: 1,
+                        };
+                    } else {
+                        brandCounts[brandName].count += 1;
+                    }
+                }
+            });
+
+            for (const brandName in brandCounts) {
+                brandCountsArray.push({
+                    name: brandName,
+                    id: brandCounts[brandName].id,
+                    count: brandCounts[brandName].count,
+                });
+            }
+        }
+
+        setBrandCounts(brandCountsArray);
+    }, [brands, products]);
 
     useEffect(() => {
         document.addEventListener("click", (e) => {
@@ -45,37 +106,15 @@ const SingleCategory = () => {
         };
     }, []);
 
-    useEffect(() => {
-        dispatch(fetchCategory(categorySlug));
-        dispatch(fetchBrands());
-    }, [categorySlug]);
+    const handleCheckboxChange = (event) => {
+        const { value, checked } = event.target;
 
-    useEffect(() => {
-        const colors = new Set();
-        filteredProducts?.forEach((product) => {
-            product.variants.forEach((variant) => {
-                colors.add(variant.color);
-            });
-        });
-
-        setUniqueColors([...colors]);
-    }, [products]);
-
-    useEffect(() => {
-        const counts = {};
-
-        filteredProducts?.forEach(product => {
-            const brand = brands?.find(brand => brand._id === product.brand);
-            if (brand) {
-                const brandName = brand.name;
-                counts[brandName] = (counts[brandName] || 0) + 1;
-            }
-        });
-
-        setBrandCounts(counts);
-    }, [products, brands]);
-
-
+        if (checked) {
+            setProductBrand([...productBrand, value]);
+        } else {
+            setProductBrand(productBrand.filter((item) => item !== value));
+        }
+    };
 
     const showMenu = () => {
         setTimeout(() => {
@@ -170,17 +209,24 @@ const SingleCategory = () => {
                                     <div className="filter__block">
                                         <h4 className="filter__title">Brands</h4>
                                         <ul className="filter__list">
-                                            {Object.keys(brandCounts)?.map(brandName => (
-                                                <li key={brandName} className="filter__item">
+                                            {brandCounts?.map(brand => (
+                                                <li key={brand.id} className="filter__item">
                                                     <div className="filter__box">
-                                                        <input className="filter__input" type="checkbox"
-                                                               id={brandName}/>
-                                                        <label className="filter__label" htmlFor={brandName}>
+                                                        <input
+                                                            name={brand.name}
+                                                            checked={productBrand[brand.id]}
+                                                            onChange={handleCheckboxChange}
+                                                            className="filter__input"
+                                                            type="checkbox"
+                                                            value={brand.id}
+                                                            id={brand.id}
+                                                        />
+                                                        <label className="filter__label" htmlFor={brand.id}>
                                                             <span className="filter__checked"></span>
-                                                            <span className="filter__category">{brandName}</span>
+                                                            <span className="filter__category">{brand.name}</span>
                                                         </label>
                                                         <span className="filter__count">
-                                                            {brandCounts[brandName]}
+                                                            {brand.count}
                                                         </span>
                                                     </div>
                                                 </li>
@@ -193,9 +239,13 @@ const SingleCategory = () => {
                                             {
                                                 uniqueColors?.map((color, idx) => (
                                                     <li key={idx} className="filter__item">
-                                                        <input className="filter__input colors__input" type="radio"
+                                                        <input onChange={(e) => setProductColor(e.target.value)}
+                                                               className="filter__input colors__input"
+                                                               type="radio"
                                                                name="color"
-                                                               id={color}/>
+                                                               value={color}
+                                                               id={color}
+                                                        />
                                                         <label className="colors__circle circle" style={{ '--color':`${color}`}} htmlFor={color}>
                                                         </label>
                                                     </li>
@@ -212,11 +262,11 @@ const SingleCategory = () => {
                                                     min="0"
                                                     max="100000"
                                                     className="byprice__input"
-                                                    onChange={e => setPrice(e.target.value)}
+                                                    onChange={e => setProductPrice(e.target.value)}
                                                 />
                                             </div>
                                             <div className="byprice__price-range">
-                                                <span className="byprice__form">$50</span>
+                                                <span className="byprice__form">${productPrice}</span>
                                                 <span className="byprice__to">$500</span>
                                             </div>
                                         </div>
@@ -241,19 +291,6 @@ const SingleCategory = () => {
                                                 {category?.name}
                                             </h1>
                                         </div>
-                                        {/*<div className="cat-description">*/}
-                                        {/*    <p className="cat-description__text">*/}
-                                        {/*        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam*/}
-                                        {/*        deserunt dolorum necessitatibus quibusdam, reprehenderit sint sunt*/}
-                                        {/*        totam! Accusantium ad alias aperiam at corporis cumque doloribus dolorum*/}
-                                        {/*        earum illo ipsa iusto laboriosam porro quibusdam ratione reprehenderit*/}
-                                        {/*        sed soluta, tempore. Adipisci animi, culpa cupiditate dicta et inventore*/}
-                                        {/*        itaque laboriosam odit optio quam quia quo ullam vero! Consequuntur*/}
-                                        {/*        dicta dignissimos earum excepturi fuga inventore magni perferendis*/}
-                                        {/*        tenetur. Alias corporis ea est nemo obcaecati quos ratione! A, fugiat*/}
-                                        {/*        pariatur!*/}
-                                        {/*    </p>*/}
-                                        {/*</div>*/}
                                         <div className="cat-navigation flexitem">
                                             <div className="cat-navigation__filter desktop-hide">
                                                 <div className="cat-navigation__filter-trigger" onClick={showMenu}>
@@ -298,7 +335,7 @@ const SingleCategory = () => {
                                 </div>
                                 <div className="products pro flexwrap">
                                     {
-                                        filteredProducts.map(product => (
+                                        categoryProducts?.map(product => (
                                             <div key={product._id} className="products__item item">
                                                 <div className="products__media media">
                                                     <div className="products__thumbnail thumbnail">
