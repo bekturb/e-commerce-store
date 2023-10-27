@@ -2,12 +2,14 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Link, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategory} from "../../features/singleCategorySlice";
-import "./single-category.scss";
 import {fetchBrands} from "../../features/brandSlice";
+import "./single-category.scss";
 
 const SingleCategory = () => {
     const showRef = useRef(null);
     const [showId, setShowId] = useState("");
+    const [filteredCategories, setFilteredCategories] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [uniqueColors, setUniqueColors] = useState([]);
     const [brandCounts, setBrandCounts] = useState([]);
@@ -27,23 +29,35 @@ const SingleCategory = () => {
     const {data: products, loading: productsLoad, error: productsErr} = useSelector(state => state.products);
     const {data: brands, loading, error} = useSelector(state => state.brands);
 
-    const filteredCategories = categories ? categories.filter(categoryItem => categoryItem.slug === categorySlug) : [];
-    const filteredProducts = products ? products.filter(product => product.tags.includes(categorySlug)) : [];
+    useEffect(() => {
+        if (categorySlug && categories) {
+            const newFilteredCategories = categories.filter(categoryItem => categoryItem.slug === categorySlug);
+            setFilteredCategories(newFilteredCategories);
+        } else {
+            setFilteredCategories([]);
+        }
+
+        if (categorySlug && products) {
+            const newFilteredProducts = products.filter(product => product.tags.includes(categorySlug));
+            setFilteredProducts(newFilteredProducts);
+        } else {
+            setFilteredProducts([]);
+        }
+    }, [categorySlug, categories, products]);
 
     useEffect(() => {
-        const colors = new Set();
-        filteredProducts?.forEach((product) => {
-            product.variants.forEach((variant) => {
-                colors.add(variant.color);
+        if (filteredProducts) {
+            const colors = new Set();
+            filteredProducts.forEach(product => {
+                product.variants.forEach(variant => {
+                    colors.add(variant.color);
+                });
             });
-        });
-
-        setUniqueColors([...colors]);
-    }, [products]);
+            setUniqueColors([...colors]);
+        }
+    }, [filteredProducts]);
 
     useEffect(() => {
-        const brandCountsArray = [];
-
         if (filteredProducts && brands) {
             const brandCounts = {};
 
@@ -63,6 +77,7 @@ const SingleCategory = () => {
                 }
             });
 
+            const brandCountsArray = [];
             for (const brandName in brandCounts) {
                 brandCountsArray.push({
                     name: brandName,
@@ -70,10 +85,10 @@ const SingleCategory = () => {
                     count: brandCounts[brandName].count,
                 });
             }
-        }
 
-        setBrandCounts(brandCountsArray);
-    }, [brands, products]);
+            setBrandCounts(brandCountsArray);
+        }
+    }, [filteredProducts, brands]);
 
     useEffect(() => {
         if (filteredProducts?.length > 0 && categorySlug) {
@@ -91,19 +106,20 @@ const SingleCategory = () => {
             const sortedProducts = sortProducts(updatedFilteredProducts, sortedItem);
             setCategoryProducts(sortedProducts);
         }
-    }, [products, categorySlug, productBrand, productColor, productPrice, sortedItem]);
+    }, [filteredProducts, categorySlug, productBrand, productColor, productPrice, sortedItem]);
 
     useEffect(() => {
-        document.addEventListener("click", (e) => {
+        const handleDocumentClick = (e) => {
             const isClosest = e.target.closest(".filter");
             if (!isClosest && showRef.current && showRef.current.classList.contains("show")) {
                 showRef.current.classList.remove("show");
             }
-        });
+        };
+
+        document.addEventListener("click", handleDocumentClick);
 
         return () => {
-            document.removeEventListener("click", (e) => {
-            });
+            document.removeEventListener("click", handleDocumentClick);
         };
     }, []);
 
