@@ -9,6 +9,7 @@ import {categoriesReducer} from "../features/categoriesSlice";
 import {pagesReducer} from "../features/pageSlice";
 import {resendOtpReducer} from "../features/resendOtpSlice";
 import {brandsReducer} from "../features/brandSlice";
+import {allCategoriesReducer} from "../features/allCategories";
 import {offerReducer} from "../features/offerSlice";
 import {productReducer} from "../features/productsSlice";
 import {categoryReducer} from "../features/singleCategorySlice";
@@ -30,6 +31,7 @@ const store = configureStore({
         products: productReducer,
         accounts: accountReducer,
         category: categoryReducer,
+        allCategories: allCategoriesReducer,
     }
 })
 

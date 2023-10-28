@@ -5,35 +5,40 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchCategory} from "../../features/singleCategorySlice";
 import {fetchBrands} from "../../features/brandSlice";
 import "./single-category.scss";
+import {fetchAllCategories} from "../../features/allCategories";
+import {all} from "axios";
+import Subcategory from "../Subcategory/Subcategory";
 
 const SingleCategory = () => {
     const [filteredCategories, setFilteredCategories] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [uniqueColors, setUniqueColors] = useState([]);
     const [brandCounts, setBrandCounts] = useState([]);
-    const [hasCategory, setHasCategory] = useState(false);
+    const [hasSubCategory, setHasSubCategory] = useState(false);
 
     const {data: category} = useSelector(state => state.category);
+    const {data: allCategories} = useSelector(state => state.allCategories);
     const {data: categories} = useSelector(state => state.categories);
     const {data: products} = useSelector(state => state.products);
     const {data: brands} = useSelector(state => state.brands);
-    
+
     const dispatch = useDispatch();
     const {categorySlug} = useParams();
 
     useEffect(() => {
         dispatch(fetchCategory(categorySlug));
+        dispatch(fetchAllCategories())
         dispatch(fetchBrands());
     }, [categorySlug]);
 
     useEffect(() => {
-        if (category && categories) {
-            const categoryHasChildren = categories.some(category => category.parentId === category._id);
-            setHasCategory(categoryHasChildren)
+        if (category && allCategories) {
+            const categoryHasChildren = allCategories.some(cat => cat.parentId === category._id);
+            setHasSubCategory(categoryHasChildren)
         } else {
-            setHasCategory(false);
+            setHasSubCategory(false);
         }
-    }, [category, categories]);
+    }, [category, allCategories]);
 
     useEffect(() => {
         if (categorySlug && categories) {
@@ -100,13 +105,16 @@ const SingleCategory = () => {
 
     return (
         <>
-            <MainCategory categorySlug={categorySlug}
-                          category={category}
-                          filteredCategories={filteredCategories}
-                          filteredProducts={filteredProducts}
-                          uniqueColors={uniqueColors}
-                          brandCounts={brandCounts}
-            />
+            {
+                hasSubCategory ? <MainCategory categorySlug={categorySlug}
+                                               category={category}
+                                               filteredCategories={filteredCategories}
+                                               filteredProducts={filteredProducts}
+                                               uniqueColors={uniqueColors}
+                                               brandCounts={brandCounts}
+                /> :
+                    <Subcategory />
+            }
         </>
     );
 };
