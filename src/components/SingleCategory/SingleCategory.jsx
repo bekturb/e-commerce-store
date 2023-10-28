@@ -37,13 +37,17 @@ const SingleCategory = () => {
             setFilteredCategories([]);
         }
 
+
+    }, [categorySlug, categories, products]);
+
+    useEffect(() => {
         if (categorySlug && products) {
             const newFilteredProducts = products.filter(product => product.tags.includes(categorySlug));
             setFilteredProducts(newFilteredProducts);
         } else {
             setFilteredProducts([]);
         }
-    }, [categorySlug, categories, products]);
+    }, [categorySlug, products])
 
     useEffect(() => {
         if (filteredProducts) {
