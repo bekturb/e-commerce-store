@@ -11,7 +11,9 @@ const SingleCategory = () => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [uniqueColors, setUniqueColors] = useState([]);
     const [brandCounts, setBrandCounts] = useState([]);
+    const [hasCategory, setHasCategory] = useState(false);
 
+    const {data: category} = useSelector(state => state.category);
     const {data: categories} = useSelector(state => state.categories);
     const {data: products} = useSelector(state => state.products);
     const {data: brands} = useSelector(state => state.brands);
@@ -23,6 +25,15 @@ const SingleCategory = () => {
         dispatch(fetchCategory(categorySlug));
         dispatch(fetchBrands());
     }, [categorySlug]);
+
+    useEffect(() => {
+        if (category && categories) {
+            const categoryHasChildren = categories.some(category => category.parentId === category._id);
+            setHasCategory(categoryHasChildren)
+        } else {
+            setHasCategory(false);
+        }
+    }, [category, categories]);
 
     useEffect(() => {
         if (categorySlug && categories) {
@@ -90,6 +101,7 @@ const SingleCategory = () => {
     return (
         <>
             <MainCategory categorySlug={categorySlug}
+                          category={category}
                           filteredCategories={filteredCategories}
                           filteredProducts={filteredProducts}
                           uniqueColors={uniqueColors}

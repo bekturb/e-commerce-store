@@ -5,7 +5,7 @@ import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import "./main-category.scss"
 
-const MainCategory = ({categorySlug, filteredCategories, filteredProducts, uniqueColors, brandCounts}) => {
+const MainCategory = ({category, categorySlug, filteredCategories, filteredProducts, uniqueColors, brandCounts}) => {
     const showRef = useRef(null);
     const [showId, setShowId] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,7 +17,6 @@ const MainCategory = ({categorySlug, filteredCategories, filteredProducts, uniqu
     const [productColor, setProductColor] = useState("");
     const [productPrice, setProductPrice] = useState(0);
 
-    const {data: category} = useSelector(state => state.category);
     const {loading: catsLoading, error: catsErr} = useSelector(state => state.categories);
     const {loading: productsLoad, error: productsErr} = useSelector(state => state.products);
     const {loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
