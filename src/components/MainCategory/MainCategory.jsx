@@ -1,8 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Link, useParams} from "react-router-dom";
+import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
+import Loader from "../Loader/Loader";
+import NotFound from "../NotFound/NotFound";
 import "./main-category.scss"
 
-const MainCategory = ({categorySlug, category, filteredCategories, filteredProducts, uniqueColors, brandCounts}) => {
+const MainCategory = ({categorySlug, filteredCategories, filteredProducts, uniqueColors, brandCounts}) => {
     const showRef = useRef(null);
     const [showId, setShowId] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
@@ -13,6 +16,11 @@ const MainCategory = ({categorySlug, category, filteredCategories, filteredProdu
     const [productBrand, setProductBrand] = useState([]);
     const [productColor, setProductColor] = useState("");
     const [productPrice, setProductPrice] = useState(0);
+
+    const {data: category} = useSelector(state => state.category);
+    const {loading: catsLoading, error: catsErr} = useSelector(state => state.categories);
+    const {loading: productsLoad, error: productsErr} = useSelector(state => state.products);
+    const {loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
 
     useEffect(() => {
         if (filteredProducts?.length > 0 && categorySlug) {
@@ -82,7 +90,7 @@ const MainCategory = ({categorySlug, category, filteredCategories, filteredProdu
     const paginatedProducts = paginateProducts(categoryProducts, currentPage, perPage);
 
     const handleCheckboxChange = (event) => {
-        const { value, checked } = event.target;
+        const {value, checked} = event.target;
 
         if (checked) {
             setProductBrand([...productBrand, value]);
@@ -117,22 +125,41 @@ const MainCategory = ({categorySlug, category, filteredCategories, filteredProdu
                         <div className="single-category__holder">
                             <div className="row single-category__sidebar">
                                 <div ref={showRef} className="single-category__filter filter">
-                                    <div className="filter__block">
-                                        <h4 className="filter__title">Category</h4>
-                                        <ul className="filter__list">
+                                    {catsLoading || productsLoad || brandLoading ? (
+                                        <div className="filter__active">
+                                            <Loader/>
+                                        </div>
+                                    ) : (
+                                        <>
                                             {
-                                                filteredCategories?.map(category => (
-                                                    category.children.length > 0 && (
-                                                        category.children.map(subCategory => (
-                                                            subCategory.children.length > 0 ? (
-                                                                <li key={subCategory._id} className="filter__item"
-                                                                    onClick={() => handleToggle(subCategory._id)}>
-                                                                    <div className="filter__box">
-                                                                        <div className="filter__label">
+                                                catsErr || productsErr || brandErr ? (
+                                                    <div className="filter__active">
+                                                        <NotFound/>
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        {
+                                                            filteredCategories?.length > 0 && (
+                                                                <div className="filter__block">
+                                                                    <h4 className="filter__title">Category</h4>
+                                                                    <ul className="filter__list">
+                                                                        {
+                                                                            filteredCategories?.map(category => (
+                                                                                category.children.length > 0 && (
+                                                                                    category.children.map(subCategory => (
+                                                                                        subCategory.children.length > 0 ? (
+                                                                                            <li key={subCategory._id}
+                                                                                                className="filter__item"
+                                                                                                onClick={() => handleToggle(subCategory._id)}>
+                                                                                                <div
+                                                                                                    className="filter__box">
+                                                                                                    <div
+                                                                                                        className="filter__label">
                                                                         <span
                                                                             className="filter__category">{subCategory.name}</span>
-                                                                        </div>
-                                                                        <span className="filter__count icon-sm">
+                                                                                                    </div>
+                                                                                                    <span
+                                                                                                        className="filter__count icon-sm">
                                                                                 {
                                                                                     subCategory._id === showId ?
                                                                                         <i className="ri-arrow-down-s-line"></i>
@@ -140,116 +167,147 @@ const MainCategory = ({categorySlug, category, filteredCategories, filteredProdu
                                                                                         <i className="ri-arrow-right-s-line"></i>
                                                                                 }
                                                                     </span>
-                                                                    </div>
-                                                                    {
-                                                                        subCategory.children.length > 0 && (
-                                                                            <div
-                                                                                className={subCategory._id === showId ? "filter__drop children show-drop" : "filter__drop children"}>
-                                                                                <ul className="children__list">
-                                                                                    {
-                                                                                        subCategory.children.map(subSubCategory => (
-                                                                                            <li key={subSubCategory._id}
-                                                                                                className="children__item">
-                                                                                                <Link to="/"
-                                                                                                      className="children__link">
-                                                                                                    <p className="children__title">{subSubCategory.name}</p>
-                                                                                                    <span
-                                                                                                        className="children__count">
+                                                                                                </div>
+                                                                                                {
+                                                                                                    subCategory.children.length > 0 && (
+                                                                                                        <div
+                                                                                                            className={subCategory._id === showId ? "filter__drop children show-drop" : "filter__drop children"}>
+                                                                                                            <ul className="children__list">
+                                                                                                                {
+                                                                                                                    subCategory.children.map(subSubCategory => (
+                                                                                                                        <li key={subSubCategory._id}
+                                                                                                                            className="children__item">
+                                                                                                                            <Link
+                                                                                                                                to="/"
+                                                                                                                                className="children__link">
+                                                                                                                                <p className="children__title">{subSubCategory.name}</p>
+                                                                                                                                <span
+                                                                                                                                    className="children__count">
                                                                                                         15
                                                                                                     </span>
-                                                                                                </Link>
+                                                                                                                            </Link>
+                                                                                                                        </li>
+                                                                                                                    ))
+                                                                                                                }
+                                                                                                            </ul>
+                                                                                                        </div>
+                                                                                                    )
+                                                                                                }
                                                                                             </li>
-                                                                                        ))
-                                                                                    }
-                                                                                </ul>
-                                                                            </div>
-                                                                        )
-                                                                    }
-                                                                </li>
-                                                            ) : (
-                                                                <li key={subCategory._id} className="filter__item">
-                                                                    <Link
-                                                                        to={`/category/${category.name}/${subCategory._id}`}>
-                                                                        <div className="filter__box">
-                                                                            <div className="filter__label">
+                                                                                        ) : (
+                                                                                            <li key={subCategory._id}
+                                                                                                className="filter__item">
+                                                                                                <Link
+                                                                                                    to={`/category/${category.name}/${subCategory._id}`}>
+                                                                                                    <div
+                                                                                                        className="filter__box">
+                                                                                                        <div
+                                                                                                            className="filter__label">
                                                                                 <span
                                                                                     className="filter__category">{subCategory.name}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </Link>
-                                                                </li>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </Link>
+                                                                                            </li>
+                                                                                        )
+                                                                                    ))
+                                                                                )
+                                                                            ))
+                                                                        }
+                                                                    </ul>
+                                                                </div>
                                                             )
-                                                        ))
-                                                    )
-                                                ))
-                                            }
-                                        </ul>
-                                    </div>
-                                    <div className="filter__block">
-                                        <h4 className="filter__title">Brands</h4>
-                                        <ul className="filter__list">
-                                            {brandCounts?.map(brand => (
-                                                <li key={brand.id} className="filter__item">
-                                                    <div className="filter__box">
-                                                        <input
-                                                            name={brand.name}
-                                                            checked={productBrand[brand.id]}
-                                                            onChange={handleCheckboxChange}
-                                                            className="filter__input"
-                                                            type="checkbox"
-                                                            value={brand.id}
-                                                            id={brand.id}
-                                                        />
-                                                        <label className="filter__label" htmlFor={brand.id}>
-                                                            <span className="filter__checked"></span>
-                                                            <span className="filter__category">{brand.name}</span>
-                                                        </label>
-                                                        <span className="filter__count">
+                                                        }
+                                                        {
+                                                            brandCounts?.length > 0 && (
+                                                                <div className="filter__block">
+                                                                    <h4 className="filter__title">Brands</h4>
+                                                                    <ul className="filter__list">
+                                                                        {brandCounts?.map(brand => (
+                                                                            <li key={brand.id} className="filter__item">
+                                                                                <div className="filter__box">
+                                                                                    <input
+                                                                                        name={brand.name}
+                                                                                        checked={productBrand[brand.id]}
+                                                                                        onChange={handleCheckboxChange}
+                                                                                        className="filter__input"
+                                                                                        type="checkbox"
+                                                                                        value={brand.id}
+                                                                                        id={brand.id}
+                                                                                    />
+                                                                                    <label className="filter__label"
+                                                                                           htmlFor={brand.id}>
+                                                                                        <span
+                                                                                            className="filter__checked"></span>
+                                                                                        <span
+                                                                                            className="filter__category">{brand.name}</span>
+                                                                                    </label>
+                                                                                    <span className="filter__count">
                                                             {brand.count}
                                                         </span>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                    <div className="filter__block colors">
-                                        <h4 className="filter__title">Color</h4>
-                                        <ul className="filter__list colors__variant flexitem">
-                                            {
-                                                uniqueColors?.map((color, idx) => (
-                                                    <li key={idx} className="filter__item">
-                                                        <input onChange={(e) => setProductColor(e.target.value)}
-                                                               className="filter__input colors__input"
-                                                               type="radio"
-                                                               name="color"
-                                                               value={color}
-                                                               id={color}
-                                                        />
-                                                        <label className="colors__circle circle" style={{ '--color':`${color}`}} htmlFor={color}>
-                                                        </label>
-                                                    </li>
-                                                ))
+                                                                                </div>
+                                                                            </li>
+                                                                        ))}
+                                                                    </ul>
+                                                                </div>
+                                                            )
+                                                        }
+                                                        {
+                                                            uniqueColors?.length > 0 && (
+                                                                <div className="filter__block colors">
+                                                                    <h4 className="filter__title">Color</h4>
+                                                                    <ul className="filter__list colors__variant flexitem">
+                                                                        {
+                                                                            uniqueColors?.map((color, idx) => (
+                                                                                <li key={idx} className="filter__item">
+                                                                                    <input
+                                                                                        onChange={(e) => setProductColor(e.target.value)}
+                                                                                        className="filter__input colors__input"
+                                                                                        type="radio"
+                                                                                        name="color"
+                                                                                        value={color}
+                                                                                        id={color}
+                                                                                    />
+                                                                                    <label className="colors__circle circle"
+                                                                                           style={{'--color': `${color}`}}
+                                                                                           htmlFor={color}>
+                                                                                    </label>
+                                                                                </li>
+                                                                            ))
+                                                                        }
+                                                                    </ul>
+                                                                </div>
+                                                            )
+                                                        }
+                                                        {
+                                                            filteredProducts?.length > 0 && (
+                                                                <div className="filter__block">
+                                                                    <h4 className="filter__title">Price</h4>
+                                                                    <div className="filter__byprice byprice">
+                                                                        <div className="byprice__range-track">
+                                                                            <input
+                                                                                type="range"
+                                                                                min="0"
+                                                                                max="100000"
+                                                                                className="byprice__input"
+                                                                                onChange={e => setProductPrice(e.target.value)}
+                                                                            />
+                                                                        </div>
+                                                                        <div className="byprice__price-range">
+                                                                            <span
+                                                                                className="byprice__form">${productPrice}</span>
+                                                                            <span className="byprice__to">$500</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    </>
+                                                )
                                             }
-                                        </ul>
-                                    </div>
-                                    <div className="filter__block">
-                                        <h4 className="filter__title">Price</h4>
-                                        <div className="filter__byprice byprice">
-                                            <div className="byprice__range-track">
-                                                <input
-                                                    type="range"
-                                                    min="0"
-                                                    max="100000"
-                                                    className="byprice__input"
-                                                    onChange={e => setProductPrice(e.target.value)}
-                                                />
-                                            </div>
-                                            <div className="byprice__price-range">
-                                                <span className="byprice__form">${productPrice}</span>
-                                                <span className="byprice__to">$500</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        </>
+                                    )
+                                    }
                                 </div>
                             </div>
                             <div className="section single-category__section">
@@ -286,9 +344,15 @@ const MainCategory = ({categorySlug, category, filteredCategories, filteredProdu
                                                     <i className="ri-arrow-down-s-line"></i>
                                                 </div>
                                                 <ul className="cat-navigation__list">
-                                                    <li onClick={() => handleSort("Default")} className="cat-navigation__item">Default</li>
-                                                    <li onClick={() => handleSort("Product Name")} className="cat-navigation__item">Product Name</li>
-                                                    <li onClick={() => handleSort("Price")} className="cat-navigation__item">Price</li>
+                                                    <li onClick={() => handleSort("Default")}
+                                                        className="cat-navigation__item">Default
+                                                    </li>
+                                                    <li onClick={() => handleSort("Product Name")}
+                                                        className="cat-navigation__item">Product Name
+                                                    </li>
+                                                    <li onClick={() => handleSort("Price")}
+                                                        className="cat-navigation__item">Price
+                                                    </li>
                                                 </ul>
                                             </div>
                                             <div className="cat-navigation__perpage mobile-hide">
@@ -304,10 +368,18 @@ const MainCategory = ({categorySlug, category, filteredCategories, filteredProdu
                                                     <i className="ri-arrow-down-s-line"></i>
                                                 </div>
                                                 <ul className="cat-navigation__list">
-                                                    <li onClick={() => handlePerPageChange(10)} className="cat-navigation__item">10</li>
-                                                    <li onClick={() => handlePerPageChange(20)} className="cat-navigation__item">20</li>
-                                                    <li onClick={() => handlePerPageChange(30)} className="cat-navigation__item">30</li>
-                                                    <li onClick={() => handlePerPageChange("All")} className="cat-navigation__item">All</li>
+                                                    <li onClick={() => handlePerPageChange(10)}
+                                                        className="cat-navigation__item">10
+                                                    </li>
+                                                    <li onClick={() => handlePerPageChange(20)}
+                                                        className="cat-navigation__item">20
+                                                    </li>
+                                                    <li onClick={() => handlePerPageChange(30)}
+                                                        className="cat-navigation__item">30
+                                                    </li>
+                                                    <li onClick={() => handlePerPageChange("All")}
+                                                        className="cat-navigation__item">All
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -315,71 +387,101 @@ const MainCategory = ({categorySlug, category, filteredCategories, filteredProdu
                                 </div>
                                 <div className="products pro flexwrap">
                                     {
-                                        paginatedProducts?.map(product => (
-                                            <div key={product._id} className="products__item item">
-                                                <div className="products__media media">
-                                                    <div className="products__thumbnail thumbnail">
-                                                        <a className="products__link" href="">
-                                                            <img className="products__image" src={product.variants[0].images[0].url} alt=""/>
-                                                        </a>
-                                                    </div>
-                                                    <div className="products__hover-able">
-                                                        <ul className="products__hover-list">
-                                                            <li className="products__hover-item active">
-                                                                <a className="products__hover-link" href=""><i
-                                                                    className="ri-heart-line"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li className="products__hover-item">
-                                                                <a className="products__hover-link" href=""><i
-                                                                    className="ri-eye-line"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li className="products__hover-item">
-                                                                <a className="products__hover-link" href=""><i
-                                                                    className="ri-shuffle-line"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div className="products__discount circle">
+                                        productsLoad ? (
+                                            <div className="trending__loader">
+                                                <Loader />
+                                            </div>
+                                        ) : (
+                                            productsErr ? (
+                                                <div className="trending__loader">
+                                                    <NotFound error={productsErr} />
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    {
+                                                        paginatedProducts?.length > 0 ? (
+                                                            paginatedProducts?.map(product => (
+                                                                <div key={product._id} className="products__item item">
+                                                                    <div className="products__media media">
+                                                                        <div className="products__thumbnail thumbnail">
+                                                                            <a className="products__link" href="">
+                                                                                <img className="products__image"
+                                                                                     src={product.variants[0].images[0].url}
+                                                                                     alt=""/>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div className="products__hover-able">
+                                                                            <ul className="products__hover-list">
+                                                                                <li className="products__hover-item active">
+                                                                                    <a className="products__hover-link"
+                                                                                       href=""><i
+                                                                                        className="ri-heart-line"></i>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li className="products__hover-item">
+                                                                                    <a className="products__hover-link"
+                                                                                       href=""><i
+                                                                                        className="ri-eye-line"></i>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li className="products__hover-item">
+                                                                                    <a className="products__hover-link"
+                                                                                       href=""><i
+                                                                                        className="ri-shuffle-line"></i>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div className="products__discount circle">
                                             <span className="products__percentage">
                                                 {product.salePercentage}%
                                             </span>
-                                                    </div>
-                                                </div>
-                                                <div className="products__content content">
-                                                    <div className="content__rating">
-                                                        <div className="content__stars"></div>
-                                                        <span className="content__text mini-text">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="products__content content">
+                                                                        <div className="content__rating">
+                                                                            <div className="content__stars"></div>
+                                                                            <span className="content__text mini-text">
                                                 {product?.reviews.length}
                                             </span>
-                                                    </div>
-                                                    <h3 className="content__main-links">
-                                                        <a className="content__link" href="">{product.name}</a>
-                                                    </h3>
-                                                    <div className="content__price price">
-                                                        {
-                                                            product.variants[0].discountPrice ?
-                                                                <span className="price__current">
+                                                                        </div>
+                                                                        <h3 className="content__main-links">
+                                                                            <a className="content__link"
+                                                                               href="">{product.name}</a>
+                                                                        </h3>
+                                                                        <div className="content__price price">
+                                                                            {
+                                                                                product.variants[0].discountPrice ?
+                                                                                    <span className="price__current">
                                                 ${product.variants[0].discountPrice}
                                             </span> : <span className="price__current">
                                                 ${product.variants[0].originalPrice}
                                             </span>
-                                                        }
-                                                        {
-                                                            product.variants[0].discountPrice &&
-                                                            <span className="price__old mini-text">
+                                                                            }
+                                                                            {
+                                                                                product.variants[0].discountPrice &&
+                                                                                <span className="price__old mini-text">
                                                 ${product.variants[0].originalPrice}
                                             </span>}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            ))
+                                                        ) : (
+                                                            <div>
+                                                                Not Found
+                                                            </div>
+                                                        )
+                                                    }
+                                                </>
+                                            )
+                                        )
                                     }
                                 </div>
                                 <div className="load-more flexcenter">
-                                    <button onClick={loadMoreProducts} className="secondary-button load-more__btn">Load more</button>
+                                    <button onClick={loadMoreProducts} className="secondary-button load-more__btn">Load
+                                        more
+                                    </button>
                                 </div>
                             </div>
                         </div>

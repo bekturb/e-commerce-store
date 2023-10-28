@@ -26,6 +26,10 @@
   visibility: hidden;
   opacity: 0;
 
+  &__active {
+    min-height: 300px;
+  }
+
   &.show {
     visibility: visible;
     opacity: 1;

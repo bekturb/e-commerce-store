@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import MainCategory from "../MainCategory/MainCategory";
-import "./single-category.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategory} from "../../features/singleCategorySlice";
 import {fetchBrands} from "../../features/brandSlice";
+import "./single-category.scss";
 
 const SingleCategory = () => {
     const [filteredCategories, setFilteredCategories] = useState([]);
@@ -12,11 +12,10 @@ const SingleCategory = () => {
     const [uniqueColors, setUniqueColors] = useState([]);
     const [brandCounts, setBrandCounts] = useState([]);
 
-    const {data: category, loading: catLoading, error: catErr} = useSelector(state => state.category);
-    const {data: categories, loading: catsLoading, error: catsErr} = useSelector(state => state.categories);
-    const {data: products, loading: productsLoad, error: productsErr} = useSelector(state => state.products);
-    const {data: brands, loading, error} = useSelector(state => state.brands);
-
+    const {data: categories} = useSelector(state => state.categories);
+    const {data: products} = useSelector(state => state.products);
+    const {data: brands} = useSelector(state => state.brands);
+    
     const dispatch = useDispatch();
     const {categorySlug} = useParams();
 
@@ -91,7 +90,6 @@ const SingleCategory = () => {
     return (
         <>
             <MainCategory categorySlug={categorySlug}
-                          category={category}
                           filteredCategories={filteredCategories}
                           filteredProducts={filteredProducts}
                           uniqueColors={uniqueColors}
