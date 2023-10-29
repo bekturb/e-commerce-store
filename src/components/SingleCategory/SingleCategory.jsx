@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import MainCategory from "../MainCategory/MainCategory";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategory} from "../../features/singleCategorySlice";
 import {fetchBrands} from "../../features/brandSlice";
-import "./single-category.scss";
 import {fetchAllCategories} from "../../features/allCategories";
-import {all} from "axios";
 import Subcategory from "../Subcategory/Subcategory";
+import MainCategory from "../MainCategory/MainCategory";
+import Loader from "../Loader/Loader";
+import NotFound from "../NotFound/NotFound";
+import SubSubCategory from "../SubSubCategory/SubSubCategory";
+import "./single-category.scss";
 
 const SingleCategory = () => {
     const [filteredCategories, setFilteredCategories] = useState([]);
@@ -16,8 +18,8 @@ const SingleCategory = () => {
     const [brandCounts, setBrandCounts] = useState([]);
     const [hasSubCategory, setHasSubCategory] = useState(false);
 
-    const {data: category} = useSelector(state => state.category);
-    const {data: allCategories} = useSelector(state => state.allCategories);
+    const {data: category, loading: catLoading, error: catError} = useSelector(state => state.category);
+    const {data: allCategories, loading: allCatLoading, error: allCateErr} = useSelector(state => state.allCategories);
     const {data: categories} = useSelector(state => state.categories);
     const {data: products} = useSelector(state => state.products);
     const {data: brands} = useSelector(state => state.brands);
@@ -34,7 +36,7 @@ const SingleCategory = () => {
     useEffect(() => {
         if (category && allCategories) {
             const categoryHasChildren = allCategories.some(cat => cat.parentId === category._id);
-            setHasSubCategory(categoryHasChildren)
+            setHasSubCategory(categoryHasChildren);
         } else {
             setHasSubCategory(false);
         }
@@ -106,14 +108,30 @@ const SingleCategory = () => {
     return (
         <>
             {
-                hasSubCategory ? <MainCategory categorySlug={categorySlug}
-                                               category={category}
-                                               filteredCategories={filteredCategories}
-                                               filteredProducts={filteredProducts}
-                                               uniqueColors={uniqueColors}
-                                               brandCounts={brandCounts}
-                /> :
+                allCatLoading || catLoading ? (
+                    <div className="loader-box">
+                        <Loader />
+                    </div>
+                ) : allCateErr || catError ? (
+                    <div className="loader-box">
+                        <NotFound />
+                    </div>
+                ) : !category?.parentId && hasSubCategory ? (
+                    <MainCategory
+                        categorySlug={categorySlug}
+                        category={category}
+                        filteredCategories={filteredCategories}
+                        filteredProducts={filteredProducts}
+                        uniqueColors={uniqueColors}
+                        brandCounts={brandCounts}
+                    />
+                ) : category?.parentId && hasSubCategory ? (
                     <Subcategory />
+                ) : category?.parentId && !hasSubCategory ? (
+                    <SubSubCategory />
+                ) : !category?.parentId && !hasSubCategory ? (
+                    <SubSubCategory />
+                ) : null
             }
         </>
     );

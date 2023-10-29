@@ -129,7 +129,7 @@ const Trending = () => {
                                                         <Ratings rating={bigItem.totalRating}/>
                                                     </div>
                                                     <span className="content__text mini-text">
-                                                {bigItem.reviews.length}
+                                                        ({bigItem.reviews.length})
                                             </span>
                                                 </div>
                                                 <h3 className="content__main-links">
@@ -200,7 +200,7 @@ const Trending = () => {
                                                                 <Ratings rating={miniProduct.totalRating}/>
                                                             </div>
                                                             <span className="content__text mini-text">
-                                                {miniProduct?.reviews.length}
+                                                ({miniProduct?.reviews.length})
                                             </span>
                                                         </div>
                                                         <div className="content__price price">

@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import "./main-category.scss"
+import Ratings from "../Ratings/Ratings";
 
 const MainCategory = ({category, categorySlug, filteredCategories, filteredProducts, uniqueColors, brandCounts}) => {
     const showRef = useRef(null);
@@ -83,7 +84,8 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
     }
 
     function loadMoreProducts() {
-        setPerPage(perPage + 10);
+        const plusToPerPage = +perPage + 10
+        setPerPage(plusToPerPage);
     }
 
     const paginatedProducts = paginateProducts(categoryProducts, currentPage, perPage);
@@ -432,16 +434,18 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
                                                                             </ul>
                                                                         </div>
                                                                         <div className="products__discount circle">
-                                            <span className="products__percentage">
-                                                {product.salePercentage}%
-                                            </span>
+                                                                            <span className="products__percentage">
+                                                                                {product.salePercentage}%
+                                                                            </span>
                                                                         </div>
                                                                     </div>
                                                                     <div className="products__content content">
                                                                         <div className="content__rating">
-                                                                            <div className="content__stars"></div>
+                                                                            <div className="content__stars">
+                                                                                <Ratings rating={product?.totalRating}/>
+                                                                            </div>
                                                                             <span className="content__text mini-text">
-                                                {product?.reviews.length}
+                                                ({product?.reviews.length})
                                             </span>
                                                                         </div>
                                                                         <h3 className="content__main-links">
@@ -477,11 +481,15 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
                                         )
                                     }
                                 </div>
-                                <div className="load-more flexcenter">
-                                    <button onClick={loadMoreProducts} className="secondary-button load-more__btn">Load
-                                        more
-                                    </button>
-                                </div>
+                                {
+                                    filteredProducts?.length > 0 && (
+                                        <div className="load-more flexcenter">
+                                            <button onClick={loadMoreProducts} className="secondary-button load-more__btn">Load
+                                                more
+                                            </button>
+                                        </div>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
