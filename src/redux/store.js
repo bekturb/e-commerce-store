@@ -14,6 +14,7 @@ import {offerReducer} from "../features/offerSlice";
 import {productReducer} from "../features/productsSlice";
 import {categoryReducer} from "../features/singleCategorySlice";
 import {accountReducer} from "../features/accountSlice";
+import {wishListReducer} from "../features/wishList";
 
 const store = configureStore({
     reducer: {
@@ -32,6 +33,7 @@ const store = configureStore({
         accounts: accountReducer,
         category: categoryReducer,
         allCategories: allCategoriesReducer,
+        wishlist: wishListReducer,
     }
 })
 

@@ -3,8 +3,9 @@ import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
-import "./main-category.scss"
-import Ratings from "../Ratings/Ratings";
+import CategoryProducts from "../CategoryProducts/CategoryProducts";
+import LoadMoreButton from "../LoadMoreButton/LoadMoreButton";
+import "./main-category.scss";
 
 const MainCategory = ({category, categorySlug, filteredCategories, filteredProducts, uniqueColors, brandCounts}) => {
     const showRef = useRef(null);
@@ -386,108 +387,10 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
                                         </div>
                                     </div>
                                 </div>
-                                <div className="products pro flexwrap">
-                                    {
-                                        productsLoad ? (
-                                            <div className="trending__loader">
-                                                <Loader />
-                                            </div>
-                                        ) : (
-                                            productsErr ? (
-                                                <div className="trending__loader">
-                                                    <NotFound error={productsErr} />
-                                                </div>
-                                            ) : (
-                                                <>
-                                                    {
-                                                        paginatedProducts?.length > 0 ? (
-                                                            paginatedProducts?.map(product => (
-                                                                <div key={product._id} className="products__item item">
-                                                                    <div className="products__media media">
-                                                                        <div className="products__thumbnail thumbnail">
-                                                                            <a className="products__link" href="">
-                                                                                <img className="products__image"
-                                                                                     src={product.variants[0].images[0].url}
-                                                                                     alt=""/>
-                                                                            </a>
-                                                                        </div>
-                                                                        <div className="products__hover-able">
-                                                                            <ul className="products__hover-list">
-                                                                                <li className="products__hover-item active">
-                                                                                    <a className="products__hover-link"
-                                                                                       href=""><i
-                                                                                        className="ri-heart-line"></i>
-                                                                                    </a>
-                                                                                </li>
-                                                                                <li className="products__hover-item">
-                                                                                    <a className="products__hover-link"
-                                                                                       href=""><i
-                                                                                        className="ri-eye-line"></i>
-                                                                                    </a>
-                                                                                </li>
-                                                                                <li className="products__hover-item">
-                                                                                    <a className="products__hover-link"
-                                                                                       href=""><i
-                                                                                        className="ri-shuffle-line"></i>
-                                                                                    </a>
-                                                                                </li>
-                                                                            </ul>
-                                                                        </div>
-                                                                        <div className="products__discount circle">
-                                                                            <span className="products__percentage">
-                                                                                {product.salePercentage}%
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="products__content content">
-                                                                        <div className="content__rating">
-                                                                            <div className="content__stars">
-                                                                                <Ratings rating={product?.totalRating}/>
-                                                                            </div>
-                                                                            <span className="content__text mini-text">
-                                                ({product?.reviews.length})
-                                            </span>
-                                                                        </div>
-                                                                        <h3 className="content__main-links">
-                                                                            <a className="content__link"
-                                                                               href="">{product.name}</a>
-                                                                        </h3>
-                                                                        <div className="content__price price">
-                                                                            {
-                                                                                product.variants[0].discountPrice ?
-                                                                                    <span className="price__current">
-                                                ${product.variants[0].discountPrice}
-                                            </span> : <span className="price__current">
-                                                ${product.variants[0].originalPrice}
-                                            </span>
-                                                                            }
-                                                                            {
-                                                                                product.variants[0].discountPrice &&
-                                                                                <span className="price__old mini-text">
-                                                ${product.variants[0].originalPrice}
-                                            </span>}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            ))
-                                                        ) : (
-                                                            <div>
-                                                                Not Found
-                                                            </div>
-                                                        )
-                                                    }
-                                                </>
-                                            )
-                                        )
-                                    }
-                                </div>
+                                <CategoryProducts productsLoad={productsLoad} productsErr={productsErr} paginatedProducts={paginatedProducts}/>
                                 {
                                     filteredProducts?.length > 0 && (
-                                        <div className="load-more flexcenter">
-                                            <button onClick={loadMoreProducts} className="secondary-button load-more__btn">Load
-                                                more
-                                            </button>
-                                        </div>
+                                        <LoadMoreButton loadMoreProducts={loadMoreProducts}/>
                                     )
                                 }
                             </div>
