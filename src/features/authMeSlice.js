@@ -23,6 +23,7 @@ const initialState = {
 const authMeSlice = createSlice({
     name: "authMe",
     initialState,
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchAuthMe.pending, (state) => {

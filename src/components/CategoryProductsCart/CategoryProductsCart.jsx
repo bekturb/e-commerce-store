@@ -1,15 +1,42 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Ratings from "../Ratings/Ratings";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addToWishList} from "../../features/wishList";
+import {fetchAuthMe} from "../../features/authMeSlice";
 
 const CategoryProductsCart = ({product}) => {
+    const dispatch = useDispatch();
+    const {
+        data: userData,
+        loading: userLoading,
+        error: userError,
+        isAuthenticated
+    } = useSelector(state => state.authMe);
+    const {data: wishListData, loading: wishListLoading, error: wishListErr} = useSelector(state => state.wishlist);
+    const [oldUserData, setOldUserData] = useState(userData);
 
-    const dispatch = useDispatch()
+    const isProductInWishlist = oldUserData?.wishList.includes(product._id);
 
     const handleAddToWishlist = (productId) => {
-        dispatch(addToWishList({productId}));
+        dispatch(addToWishList({productId}))
     };
+
+    const handleDeleteToWishlist = (productId) => {
+        console.log(productId)
+        // dispatch(addToWishList({productId}));
+    };
+
+    useEffect(() => {
+        dispatch(fetchAuthMe());
+    }, [wishListData]);
+
+
+    useEffect(() => {
+        if (userData) {
+            setOldUserData(userData);
+        }
+    }, [userData]);
+
 
     return (
         <div key={product._id} className="products__item item">
@@ -24,16 +51,23 @@ const CategoryProductsCart = ({product}) => {
                 <div className="products__hover-able">
                     <ul className="products__hover-list">
                         <>
-                            <li onClick={() => handleAddToWishlist(product._id)} className="products__hover-item active">
-                                <span className="products__hover-link">
-                                    <i className="ri-heart-line"></i>
-                                </span>
-                            </li>
-                            <li onClick={() => handleAddToWishlist(product._id)} className="products__hover-item active">
+                            {
+                                isProductInWishlist ? (
+                                    <li onClick={() => handleDeleteToWishlist(product._id)}
+                                        className="products__hover-item active">
                                 <span className="products__hover-link">
                                     <i className="ri-heart-fill"></i>
                                 </span>
-                            </li>
+                                    </li>
+                                ) : (
+                                    <li onClick={() => handleAddToWishlist(product._id)}
+                                        className="products__hover-item active">
+                                <span className="products__hover-link">
+                                    <i className="ri-heart-line"></i>
+                                </span>
+                                    </li>
+                                )
+                            }
                         </>
                         <li className="products__hover-item">
                             <a className="products__hover-link"
