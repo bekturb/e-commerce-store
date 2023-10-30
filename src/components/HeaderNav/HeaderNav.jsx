@@ -81,7 +81,9 @@ const HeaderNav = () => {
                                                                             subcategory.name === "Top Brands" ?
                                                                                 <div key={subcategory._id} className="mega__col">
                                                                                     <div className="mega__row">
-                                                                                        <h4 className="mega__title">{subcategory.name}</h4>
+                                                                                        <Link to={`/category/${category?.slug}/${subcategory?.slug}`}>
+                                                                                            <h4 className="mega__title">{subcategory.name}</h4>
+                                                                                        </Link>
                                                                                         {
                                                                                             subcategory.children.length > 0 && (
                                                                                                 <ul className="mega__list mega__list-brands">
@@ -89,8 +91,9 @@ const HeaderNav = () => {
                                                                                                         subcategory.children.map(subSubcategory => (
                                                                                                             <li key={subSubcategory._id}
                                                                                                                 className="mega__item mega__item-width">
-                                                                                                                <a className="mega__link"
-                                                                                                                   href="">{subSubcategory.name}</a>
+                                                                                                                <Link to={`/category/${category?.slug}/${subcategory?.slug}/${subSubcategory?.slug}`} className="mega__link">
+                                                                                                                    {subSubcategory.name}
+                                                                                                            </Link>
                                                                                                             </li>
                                                                                                         ))
                                                                                                     }
@@ -104,8 +107,9 @@ const HeaderNav = () => {
                                                                                 </div> :
                                                                                 <div key={subcategory._id} className="mega__col">
                                                                                     <div className="mega__row">
-                                                                                        <h4 key={subcategory._id}
-                                                                                            className="mega__title">{subcategory.name}</h4>
+                                                                                        <Link to={`/category/${category?.slug}/${subcategory?.slug}`}>
+                                                                                            <h4 key={subcategory._id} className="mega__title">{subcategory.name}</h4>
+                                                                                        </Link>
                                                                                         {
                                                                                             subcategory.children.length > 0 && (
                                                                                                 <ul className="mega__list">
@@ -113,8 +117,10 @@ const HeaderNav = () => {
                                                                                                         subcategory.children.map(subSubcategory => (
                                                                                                             <li key={subSubcategory._id}
                                                                                                                 className="mega__item">
-                                                                                                                <a className="mega__link"
-                                                                                                                   href="">{subSubcategory.name}</a>
+                                                                                                                <Link to={`/category/${category?.slug}/${subcategory?.slug}/${subSubcategory?.slug}`}
+                                                                                                                      className="mega__link">
+                                                                                                                    {subSubcategory.name}
+                                                                                                                </Link>
                                                                                                             </li>
                                                                                                         ))
                                                                                                     }

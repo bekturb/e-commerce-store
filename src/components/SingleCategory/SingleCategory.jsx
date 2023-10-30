@@ -25,7 +25,7 @@ const SingleCategory = () => {
     const {data: brands} = useSelector(state => state.brands);
 
     const dispatch = useDispatch();
-    const {categorySlug} = useParams();
+    const {slug: categorySlug} = useParams();
 
     useEffect(() => {
         dispatch(fetchCategory(categorySlug));

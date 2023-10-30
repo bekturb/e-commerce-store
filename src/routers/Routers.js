@@ -22,7 +22,9 @@ const Routers = () => {
             <Route path="/:id/otp" element={<Otp/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
-            <Route path="/category/:categorySlug" element={<CategoryPage/>}/>
+            <Route path="/category/:slug" element={<CategoryPage/>}/>
+            <Route path="/category/:mainCategorySlug/:slug" element={<CategoryPage/>}/>
+            <Route path="/category/:mainCategorySlug/:subCategorySlug/:slug" element={<CategoryPage/>}/>
         </Routes>
     )
 };
