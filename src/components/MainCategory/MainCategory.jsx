@@ -6,11 +6,10 @@ import NotFound from "../NotFound/NotFound";
 import CategoryProducts from "../CategoryProducts/CategoryProducts";
 import LoadMoreButton from "../LoadMoreButton/LoadMoreButton";
 import "./main-category.scss";
-import SubSubCategoriesFilter from "../SubSubCategoriesFilter/SubSubCategoriesFilter";
+import CategoryFilterBlock from "../CategoryFilterBlock/CategoryFilterBlock";
 
 const MainCategory = ({category, categorySlug, filteredCategories, filteredProducts, uniqueColors, brandCounts}) => {
     const showRef = useRef(null);
-    const [showId, setShowId] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [sortedItem, setSortedItem] = useState("");
     const [perPage, setPerPage] = useState("10");
@@ -112,14 +111,6 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
         }, 250);
     }
 
-    const handleToggle = (id) => {
-        if (id === showId) {
-            setShowId("")
-        } else {
-            setShowId(id)
-        }
-    };
-
     return (
         <div className="single-category">
             <div className="container">
@@ -143,79 +134,7 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
                                                     <>
                                                         {
                                                             filteredCategories?.length > 0 && (
-                                                                <div className="filter__block">
-                                                                    <h4 className="filter__title">Category</h4>
-                                                                    <ul className="filter__list">
-                                                                        {
-                                                                            filteredCategories?.map(category => (
-                                                                                category.children.length > 0 && (
-                                                                                    category.children.map(subCategory => (
-                                                                                        subCategory.children.length > 0 ? (
-                                                                                            <li key={subCategory._id}
-                                                                                                className="filter__item"
-                                                                                                onClick={() => handleToggle(subCategory._id)}>
-                                                                                                <div
-                                                                                                    className="filter__box">
-                                                                                                    <div
-                                                                                                        className="filter__label">
-                                                                                                        <Link to={`/category/${category.slug}/${subCategory.slug}`}>
-                                                                                                             <span className="filter__category">
-                                                                                                                 {subCategory.name}
-                                                                                                             </span>
-                                                                                                        </Link>
-                                                                                                    </div>
-                                                                                                    <span
-                                                                                                        className="filter__count icon-sm">
-                                                                                                            {
-                                                                                                                subCategory._id === showId ?
-                                                                                                                    <i className="ri-arrow-down-s-line"></i>
-                                                                                                                    :
-                                                                                                                    <i className="ri-arrow-right-s-line"></i>
-                                                                                                            }
-                                                                                                    </span>
-                                                                                                </div>
-                                                                                                {
-                                                                                                    subCategory.children.length > 0 && (
-                                                                                                        <div
-                                                                                                            className={subCategory._id === showId ? "filter__drop children show-drop" : "filter__drop children"}>
-                                                                                                            <ul className="children__list">
-                                                                                                                {
-                                                                                                                    subCategory.children.map(subSubCategory => (
-                                                                                                                        <SubSubCategoriesFilter
-                                                                                                                            key={subSubCategory?._id}
-                                                                                                                            category={category}
-                                                                                                                            subSubCategory={subSubCategory}
-                                                                                                                            subCategory={subCategory}
-                                                                                                                        />
-                                                                                                                    ))
-                                                                                                                }
-                                                                                                            </ul>
-                                                                                                        </div>
-                                                                                                    )
-                                                                                                }
-                                                                                            </li>
-                                                                                        ) : (
-                                                                                            <li key={subCategory._id}
-                                                                                                className="filter__item">
-                                                                                                <Link
-                                                                                                    to={`/category/${category.slug}/${subCategory.slug}`}>
-                                                                                                    <div
-                                                                                                        className="filter__box">
-                                                                                                        <div
-                                                                                                            className="filter__label">
-                                                                                <span
-                                                                                    className="filter__category">{subCategory.name}</span>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </Link>
-                                                                                            </li>
-                                                                                        )
-                                                                                    ))
-                                                                                )
-                                                                            ))
-                                                                        }
-                                                                    </ul>
-                                                                </div>
+                                                                <CategoryFilterBlock filteredCategories={filteredCategories}/>
                                                             )
                                                         }
                                                         {

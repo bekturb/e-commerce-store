@@ -126,7 +126,10 @@ const SingleCategory = () => {
                         brandCounts={brandCounts}
                     />
                 ) : category?.parentId && hasSubCategory ? (
-                    <Subcategory />
+                    <Subcategory
+                        category={category}
+                        allCategories={allCategories}
+                    />
                 ) : category?.parentId && !hasSubCategory ? (
                     <SubSubCategory />
                 ) : !category?.parentId && !hasSubCategory ? (
