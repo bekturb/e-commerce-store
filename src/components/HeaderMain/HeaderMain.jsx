@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProducts} from "../../features/productsSlice";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
-import Photo from "../../assets/products/apparel2.jpg"
 import "./header-main.scss"
 
 const HeaderMain = () => {
@@ -84,7 +83,7 @@ const HeaderMain = () => {
                                     {
                                         filteredCategories?.length > 0 && filteredCategories.map(category => (
                                             <li key={category._id} className="menu__item child">
-                                                <a className="menu__link" href="">
+                                                <Link to={`/category/${category.slug}`} className="menu__link">
                                                 <span className="menu__icon  icon-lg">
                                                     <i className={category.icon}></i>
                                                 </span>
@@ -95,7 +94,7 @@ const HeaderMain = () => {
                                                     <i className="ri-arrow-right-s-line"></i>
                                                 </span>
                                                     }
-                                                </a>
+                                                </Link>
                                                 {
                                                     category.children.length > 0 && (
                                                         category.children.filter(subcategory => subcategory.children.length > 0).length > 0  ? (
@@ -108,7 +107,9 @@ const HeaderMain = () => {
                                                                                     {rowSubcategories.map(subcategory => (
                                                                                         <div  key={subcategory._id} className="kit__row">
                                                                                             <h4 className="kit__main-title">
-                                                                                                <a className="kit__main-link" href="">{subcategory.name}</a>
+                                                                                                <Link to={`/category/${category?.slug}/${subcategory?.slug}`} className="kit__main-link">
+                                                                                                    {subcategory.name}
+                                                                                                </Link>
                                                                                             </h4>
                                                                                             {
                                                                                                 subcategory.children.length > 0 && (
@@ -116,8 +117,9 @@ const HeaderMain = () => {
                                                                                                         {
                                                                                                             subcategory.children.map(subsubcategory => (
                                                                                                                 <li key={subsubcategory._id} className="kit__category">
-                                                                                                                    <a className="kit__link"
-                                                                                                                    href="#">{subsubcategory.name}</a>
+                                                                                                                    <Link to={`/category/${category?.slug}/${subcategory?.slug}/${subsubcategory?.slug}`} className="kit__link"
+                                                                                                                        href="#">{subsubcategory.name}
+                                                                                                                    </Link>
                                                                                                                 </li>
                                                                                                                 )
                                                                                                             )
@@ -139,7 +141,9 @@ const HeaderMain = () => {
                                                                         {
                                                                             category.children.map(subcategory => (
                                                                                 <li key={subcategory._id} className="child__category">
-                                                                                    <a className="child__link" href="#">{subcategory.name}</a>
+                                                                                    <Link to={`/category/${category?.slug}/${subcategory?.slug}`} className="child__link" href="#">
+                                                                                        {subcategory.name}
+                                                                                    </Link>
                                                                                 </li>
                                                                             ))
                                                                         }

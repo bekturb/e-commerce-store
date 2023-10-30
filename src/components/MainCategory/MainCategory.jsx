@@ -6,6 +6,7 @@ import NotFound from "../NotFound/NotFound";
 import CategoryProducts from "../CategoryProducts/CategoryProducts";
 import LoadMoreButton from "../LoadMoreButton/LoadMoreButton";
 import "./main-category.scss";
+import SubSubCategoriesFilter from "../SubSubCategoriesFilter/SubSubCategoriesFilter";
 
 const MainCategory = ({category, categorySlug, filteredCategories, filteredProducts, uniqueColors, brandCounts}) => {
     const showRef = useRef(null);
@@ -157,18 +158,21 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
                                                                                                     className="filter__box">
                                                                                                     <div
                                                                                                         className="filter__label">
-                                                                        <span
-                                                                            className="filter__category">{subCategory.name}</span>
+                                                                                                        <Link to={`/category/${category.slug}/${subCategory.slug}`}>
+                                                                                                             <span className="filter__category">
+                                                                                                                 {subCategory.name}
+                                                                                                             </span>
+                                                                                                        </Link>
                                                                                                     </div>
                                                                                                     <span
                                                                                                         className="filter__count icon-sm">
-                                                                                {
-                                                                                    subCategory._id === showId ?
-                                                                                        <i className="ri-arrow-down-s-line"></i>
-                                                                                        :
-                                                                                        <i className="ri-arrow-right-s-line"></i>
-                                                                                }
-                                                                    </span>
+                                                                                                            {
+                                                                                                                subCategory._id === showId ?
+                                                                                                                    <i className="ri-arrow-down-s-line"></i>
+                                                                                                                    :
+                                                                                                                    <i className="ri-arrow-right-s-line"></i>
+                                                                                                            }
+                                                                                                    </span>
                                                                                                 </div>
                                                                                                 {
                                                                                                     subCategory.children.length > 0 && (
@@ -177,18 +181,12 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
                                                                                                             <ul className="children__list">
                                                                                                                 {
                                                                                                                     subCategory.children.map(subSubCategory => (
-                                                                                                                        <li key={subSubCategory._id}
-                                                                                                                            className="children__item">
-                                                                                                                            <Link
-                                                                                                                                to="/"
-                                                                                                                                className="children__link">
-                                                                                                                                <p className="children__title">{subSubCategory.name}</p>
-                                                                                                                                <span
-                                                                                                                                    className="children__count">
-                                                                                                        15
-                                                                                                    </span>
-                                                                                                                            </Link>
-                                                                                                                        </li>
+                                                                                                                        <SubSubCategoriesFilter
+                                                                                                                            key={subSubCategory?._id}
+                                                                                                                            category={category}
+                                                                                                                            subSubCategory={subSubCategory}
+                                                                                                                            subCategory={subCategory}
+                                                                                                                        />
                                                                                                                     ))
                                                                                                                 }
                                                                                                             </ul>
@@ -200,7 +198,7 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
                                                                                             <li key={subCategory._id}
                                                                                                 className="filter__item">
                                                                                                 <Link
-                                                                                                    to={`/category/${category.name}/${subCategory._id}`}>
+                                                                                                    to={`/category/${category.slug}/${subCategory.slug}`}>
                                                                                                     <div
                                                                                                         className="filter__box">
                                                                                                         <div
@@ -387,7 +385,8 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
                                         </div>
                                     </div>
                                 </div>
-                                <CategoryProducts productsLoad={productsLoad} productsErr={productsErr} paginatedProducts={paginatedProducts}/>
+                                <CategoryProducts productsLoad={productsLoad} productsErr={productsErr}
+                                                  paginatedProducts={paginatedProducts}/>
                                 {
                                     filteredProducts?.length > 0 && (
                                         <LoadMoreButton loadMoreProducts={loadMoreProducts}/>
