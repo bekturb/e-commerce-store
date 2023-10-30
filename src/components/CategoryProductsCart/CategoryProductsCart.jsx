@@ -3,6 +3,7 @@ import Ratings from "../Ratings/Ratings";
 import {useDispatch, useSelector} from "react-redux";
 import {addToWishList} from "../../features/wishList";
 import {fetchAuthMe} from "../../features/authMeSlice";
+import toast from "react-hot-toast";
 
 const CategoryProductsCart = ({product}) => {
     const dispatch = useDispatch();
@@ -13,7 +14,9 @@ const CategoryProductsCart = ({product}) => {
         isAuthenticated
     } = useSelector(state => state.authMe);
     const {data: wishListData, loading: wishListLoading, error: wishListErr} = useSelector(state => state.wishlist);
+
     const [oldUserData, setOldUserData] = useState(userData);
+    const [compareProducts, setCompareProducts] = useState([]);
 
     const isProductInWishlist = oldUserData?.wishList.includes(product._id);
 
@@ -22,8 +25,7 @@ const CategoryProductsCart = ({product}) => {
     };
 
     const handleDeleteToWishlist = (productId) => {
-        console.log(productId)
-        // dispatch(addToWishList({productId}));
+        dispatch(addToWishList({productId}));
     };
 
     useEffect(() => {
@@ -37,6 +39,30 @@ const CategoryProductsCart = ({product}) => {
         }
     }, [userData]);
 
+    useEffect(() => {
+        const storedCompareProducts = localStorage.getItem('compareProducts');
+        const initialCompareProducts = storedCompareProducts ? JSON.parse(storedCompareProducts) : [];
+        setCompareProducts(initialCompareProducts);
+    }, []);
+
+    const toggleCompareProduct = (productId) => {
+        const productIndex = compareProducts.indexOf(productId);
+
+        if (productIndex !== -1) {
+            const updatedCompareProducts = [...compareProducts];
+            updatedCompareProducts.splice(productIndex, 1);
+            setCompareProducts(updatedCompareProducts);
+            toast("Product deleted from comparison!");
+        } else {
+            const updatedCompareProducts = [...compareProducts, productId];
+            setCompareProducts(updatedCompareProducts);
+            toast.success("Product added to comparison!");
+        }
+    };
+
+    useEffect(() => {
+        localStorage.setItem('compareProducts', JSON.stringify(compareProducts));
+    }, [compareProducts]);
 
     return (
         <div key={product._id} className="products__item item">
@@ -51,35 +77,47 @@ const CategoryProductsCart = ({product}) => {
                 <div className="products__hover-able">
                     <ul className="products__hover-list">
                         <>
-                            {
-                                isProductInWishlist ? (
-                                    <li onClick={() => handleDeleteToWishlist(product._id)}
-                                        className="products__hover-item active">
-                                <span className="products__hover-link">
-                                    <i className="ri-heart-fill"></i>
-                                </span>
-                                    </li>
-                                ) : (
-                                    <li onClick={() => handleAddToWishlist(product._id)}
-                                        className="products__hover-item active">
-                                <span className="products__hover-link">
-                                    <i className="ri-heart-line"></i>
-                                </span>
-                                    </li>
-                                )
-                            }
+                            <li
+                                className="products__hover-item active">
+                                {
+                                    isProductInWishlist ? (
+                                        <button onClick={() => handleDeleteToWishlist(product._id)}
+                                                className="products__hover-link"
+                                                disabled={wishListLoading}
+                                        >
+                                            <span className="products__icons">
+                                                <i className="ri-heart-fill"></i>
+                                            </span>
+                                        </button>
+                                    ) : (
+                                        <button className="products__hover-link"
+                                                onClick={() => handleAddToWishlist(product._id)}
+                                                disabled={wishListLoading}
+                                        >
+                                            <span className="products__icons">
+                                                <i className="ri-heart-line"></i>
+                                            </span>
+                                        </button>
+                                    )
+                                }
+                            </li>
                         </>
                         <li className="products__hover-item">
-                            <a className="products__hover-link"
-                               href=""><i
-                                className="ri-eye-line"></i>
-                            </a>
+                            <button onClick={() => toggleCompareProduct(product?._id)} className="products__hover-link">
+                               <span className="products__icons">
+                                           {compareProducts.includes(product?._id)
+                                               ? <i className="ri-eye-fill"></i>
+                                               : <i className="ri-eye-line"></i>
+                                           }
+                               </span>
+                            </button>
                         </li>
                         <li className="products__hover-item">
-                            <a className="products__hover-link"
-                               href=""><i
-                                className="ri-shuffle-line"></i>
-                            </a>
+                            <button className="products__hover-link">
+                               <span className="products__icons">
+                                   <i className="ri-shuffle-line"></i>
+                               </span>
+                            </button>
                         </li>
                     </ul>
                 </div>

@@ -1,7 +1,6 @@
 import React from 'react';
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
-import Ratings from "../Ratings/Ratings";
 import CategoryProductsCart from "../CategoryProductsCart/CategoryProductsCart";
 
 const CategoryProducts = ({productsLoad, productsErr, paginatedProducts}) => {
