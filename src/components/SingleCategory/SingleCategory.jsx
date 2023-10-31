@@ -158,7 +158,10 @@ const SingleCategory = () => {
                         showMenu={showMenu}
                     />
                 ) : category?.parentId && !hasSubCategory ? (
-                    <SubSubCategory />
+                    <SubSubCategory
+                        products={products}
+                        category={category}
+                    />
                 ) : !category?.parentId && !hasSubCategory ? (
                     <SubSubCategory />
                 ) : null
