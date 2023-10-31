@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addToWishList} from "../../features/wishList";
 import {fetchAuthMe} from "../../features/authMeSlice";
 import toast from "react-hot-toast";
+import {Link} from "react-router-dom";
 
 const CategoryProductsCart = ({product}) => {
     const dispatch = useDispatch();
@@ -137,8 +138,9 @@ const CategoryProductsCart = ({product}) => {
                                             </span>
                 </div>
                 <h3 className="content__main-links">
-                    <a className="content__link"
-                       href="">{product.name}</a>
+                    <Link to="/" className="content__link">
+                        {product.name}
+                    </Link>
                 </h3>
                 <div className="content__price price">
                     {

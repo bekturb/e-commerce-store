@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Helmet from "../../layout/Helmet";
 import SubCategoryFilterBlock from "../SubCategoryFilterBlock/SubCategoryFilterBlock";
+import SubCategoriesCart from "../SubCategoriesCart/SubCategoriesCart";
 import "./subcategory.scss"
-import {useSelector} from "react-redux";
 
 const Subcategory = ({category, allCategories}) => {
     const showRef = useRef(null);
@@ -33,7 +33,8 @@ const Subcategory = ({category, allCategories}) => {
                                             <ul className="filter__list">
                                                 {
                                                     filteredCategories?.map(subCategory => (
-                                                        <SubCategoryFilterBlock category={category} subCategory={subCategory} />
+                                                        <SubCategoryFilterBlock category={category}
+                                                                                subCategory={subCategory}/>
                                                     ))
                                                 }
                                             </ul>
@@ -68,7 +69,13 @@ const Subcategory = ({category, allCategories}) => {
                                             </div>
                                         </div>
                                     </div>
-                                    SubSub Page
+                                    <div className="subcategories">
+                                        {
+                                            filteredCategories?.map(subCategories => (
+                                                <SubCategoriesCart key={subCategories._id} subCategories={subCategories}/>
+                                            ))
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
