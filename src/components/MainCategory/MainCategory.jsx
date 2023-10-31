@@ -1,15 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import CategoryProducts from "../CategoryProducts/CategoryProducts";
 import LoadMoreButton from "../LoadMoreButton/LoadMoreButton";
-import "./main-category.scss";
 import CategoryFilterBlock from "../CategoryFilterBlock/CategoryFilterBlock";
+import "./main-category.scss";
 
-const MainCategory = ({category, categorySlug, filteredCategories, filteredProducts, uniqueColors, brandCounts}) => {
-    const showRef = useRef(null);
+const MainCategory = ({category, categorySlug, filteredCategories, filteredProducts, uniqueColors, brandCounts, showRef, showMenu}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [sortedItem, setSortedItem] = useState("");
     const [perPage, setPerPage] = useState("10");
@@ -42,21 +41,6 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
             setCategoryProducts([]);
         }
     }, [filteredProducts, categorySlug, productBrand, productColor, productPrice, sortedItem]);
-
-    useEffect(() => {
-        const handleDocumentClick = (e) => {
-            const isClosest = e.target.closest(".filter");
-            if (!isClosest && showRef.current && showRef.current.classList.contains("show")) {
-                showRef.current.classList.remove("show");
-            }
-        };
-
-        document.addEventListener("click", handleDocumentClick);
-
-        return () => {
-            document.removeEventListener("click", handleDocumentClick);
-        };
-    }, []);
 
     function sortProducts(products, sortedItem) {
         return [...products].sort((a, b) => {
@@ -103,12 +87,6 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
 
     const handleSort = (value) => {
         setSortedItem(value)
-    }
-
-    const showMenu = () => {
-        setTimeout(() => {
-            showRef.current.classList.add("show")
-        }, 250);
     }
 
     return (
@@ -162,8 +140,8 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
                                                                                             className="filter__category">{brand.name}</span>
                                                                                     </label>
                                                                                     <span className="filter__count">
-                                                            {brand.count}
-                                                        </span>
+                                                                                        {brand.count}
+                                                                                    </span>
                                                                                 </div>
                                                                             </li>
                                                                         ))}

@@ -1,23 +1,16 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Helmet from "../../layout/Helmet";
 import SubCategoryFilterBlock from "../SubCategoryFilterBlock/SubCategoryFilterBlock";
 import SubCategoriesCart from "../SubCategoriesCart/SubCategoriesCart";
-import "./subcategory.scss"
+import "./subcategory.scss";
 
-const Subcategory = ({category, allCategories}) => {
-    const showRef = useRef(null);
+const Subcategory = ({category, allCategories, showMenu, showRef}) => {
     const [filteredCategories, setFilteredCategories] = useState([])
 
     useEffect(() => {
         const subCategories = allCategories?.filter(subCat => subCat.parentId === category._id);
         setFilteredCategories(subCategories)
-    }, [allCategories, category])
-
-    const showMenu = () => {
-        setTimeout(() => {
-            showRef.current.classList.add("show")
-        }, 250);
-    }
+    }, [allCategories, category]);
 
     return (
         <Helmet title="Category Page">
@@ -33,8 +26,10 @@ const Subcategory = ({category, allCategories}) => {
                                             <ul className="filter__list">
                                                 {
                                                     filteredCategories?.map(subCategory => (
-                                                        <SubCategoryFilterBlock category={category}
-                                                                                subCategory={subCategory}/>
+                                                        <SubCategoryFilterBlock key={subCategory._id}
+                                                                                category={category}
+                                                                                subCategory={subCategory}
+                                                        />
                                                     ))
                                                 }
                                             </ul>
@@ -72,7 +67,12 @@ const Subcategory = ({category, allCategories}) => {
                                     <div className="subcategories">
                                         {
                                             filteredCategories?.map(subCategories => (
-                                                <SubCategoriesCart key={subCategories._id} subCategories={subCategories}/>
+                                                <SubCategoriesCart
+                                                    key={subCategories._id}
+                                                    subCategories={subCategories}
+                                                    category={category}
+                                                    allCategories={allCategories}
+                                                />
                                             ))
                                         }
                                     </div>

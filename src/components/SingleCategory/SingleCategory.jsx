@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategory} from "../../features/singleCategorySlice";
@@ -12,6 +12,7 @@ import SubSubCategory from "../SubSubCategory/SubSubCategory";
 import "./single-category.scss";
 
 const SingleCategory = () => {
+     const showRef = useRef(null);
     const [filteredCategories, setFilteredCategories] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [uniqueColors, setUniqueColors] = useState([]);
@@ -105,6 +106,28 @@ const SingleCategory = () => {
         }
     }, [filteredProducts, brands]);
 
+        useEffect(() => {
+        const handleDocumentClick = (e) => {
+            const isClosest = e.target.closest(".filter");
+            if (!isClosest && showRef.current && showRef.current.classList.contains("show")) {
+                showRef.current.classList.remove("show");
+            }
+        };
+
+        document.addEventListener("click", handleDocumentClick);
+
+        return () => {
+            document.removeEventListener("click", handleDocumentClick);
+        };
+    }, []);
+
+
+    const showMenu = () => {
+        setTimeout(() => {
+            showRef.current.classList.add("show")
+        }, 250);
+    }
+
     return (
         <>
             {
@@ -114,7 +137,7 @@ const SingleCategory = () => {
                     </div>
                 ) : allCateErr || catError ? (
                     <div className="loader-box">
-                        <NotFound />
+                        <NotFound error={allCateErr || catError}/>
                     </div>
                 ) : !category?.parentId && hasSubCategory ? (
                     <MainCategory
@@ -124,11 +147,15 @@ const SingleCategory = () => {
                         filteredProducts={filteredProducts}
                         uniqueColors={uniqueColors}
                         brandCounts={brandCounts}
+                        showRef={showRef}
+                        showMenu={showMenu}
                     />
                 ) : category?.parentId && hasSubCategory ? (
                     <Subcategory
                         category={category}
                         allCategories={allCategories}
+                        showRef={showRef}
+                        showMenu={showMenu}
                     />
                 ) : category?.parentId && !hasSubCategory ? (
                     <SubSubCategory />
