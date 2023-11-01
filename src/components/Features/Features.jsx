@@ -76,7 +76,7 @@ const Features = ({title}) => {
                                                     <Ratings rating={product.totalRating}/>
                                                 </div>
                                                 <span className="content__text mini-text">
-                                                {product.reviews.length}
+                                                ({product.reviews.length})
                                             </span>
                                             </div>
                                             <h3 className="content__main-links">

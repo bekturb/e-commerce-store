@@ -30,7 +30,7 @@ const SingleCategory = () => {
 
     useEffect(() => {
         dispatch(fetchCategory(categorySlug));
-        dispatch(fetchAllCategories())
+        dispatch(fetchAllCategories());
         dispatch(fetchBrands());
     }, [categorySlug]);
 
@@ -161,6 +161,7 @@ const SingleCategory = () => {
                     <SubSubCategory
                         products={products}
                         category={category}
+                        brands={brands}
                     />
                 ) : !category?.parentId && !hasSubCategory ? (
                     <SubSubCategory />

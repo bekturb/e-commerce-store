@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import SecTop from "../SecTop/SecTop";
-import "./subsubcategory.scss"
 import Ratings from "../Ratings/Ratings";
+import "./subsubcategory.scss";
 
-const SubSubCategory = ({products, category}) => {
-    const [filteredProducts , setFilteredProducts] = useState([])
+const SubSubCategory = ({products, category, brands}) => {
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [uniqueColors, setUniqueColors] = useState([]);
+    const [brandCounts, setBrandCounts] = useState([]);
+    const [open, setOpen] = useState(false)
 
     useEffect(() => {
         if (products?.length > 0) {
@@ -13,6 +16,51 @@ const SubSubCategory = ({products, category}) => {
             setFilteredProducts(catProducts)
         }
     }, [products, category]);
+
+    useEffect(() => {
+        if (filteredProducts) {
+            const colors = new Set();
+            filteredProducts.forEach(product => {
+                product.variants.forEach(variant => {
+                    colors.add(variant.color);
+                });
+            });
+            setUniqueColors([...colors]);
+        }
+    }, [products]);
+
+    useEffect(() => {
+        if (filteredProducts && brands) {
+            const brandCounts = {};
+
+            filteredProducts.forEach(product => {
+                const brand = brands.find(brand => brand._id === product.brand);
+                if (brand) {
+                    const brandName = brand.name;
+                    const brandId = brand._id;
+                    if (!brandCounts[brandName]) {
+                        brandCounts[brandName] = {
+                            id: brandId,
+                            count: 1,
+                        };
+                    } else {
+                        brandCounts[brandName].count += 1;
+                    }
+                }
+            });
+
+            const brandCountsArray = [];
+            for (const brandName in brandCounts) {
+                brandCountsArray.push({
+                    name: brandName,
+                    id: brandCounts[brandName].id,
+                    count: brandCounts[brandName].count,
+                });
+            }
+
+            setBrandCounts(brandCountsArray);
+        }
+    }, [filteredProducts, brands]);
 
     return (
         <div className="subcat">
@@ -34,152 +82,264 @@ const SubSubCategory = ({products, category}) => {
                                 </ul>
                             </div>
                             <SecTop title="Accessories"/>
-                            <div className="cat-navigation flexitem">
-                                {/*<div className="cat-navigation__filter desktop-hide">*/}
-                                {/*    <div className="cat-navigation__filter-trigger">*/}
-                                {/*        <i className="ri-menu-2-line ri-2x"></i>*/}
-                                {/*        <span className="cat-navigation__filter-title">filter</span>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
-                                <div className="cat-navigation__sort">
-                                    <div className="cat-navigation__label label">
-                                                    <span className="mobile-hide">
-                                                        Sort by default
-                                                    </span>
-                                        <div className="desktop-hide"></div>
-                                        <i className="ri-arrow-down-s-line"></i>
+                            <div className="dropdown flexitem">
+                                <div className="dropdown__sort">
+                                    <button className="dropdown__button" onClick={() => setOpen(!open)}>
+                                        <span className="dropdown__select">Brands</span>
+                                        {
+                                            open ? <span className="dropdown__icon">
+                                            <i className="ri-arrow-down-s-line"></i>
+                                        </span> : <span className="dropdown__icon">
+                                            <i className="ri-arrow-up-s-line"></i>
+                                        </span>
+                                        }
+                                    </button>
+                                    <div className={open ? "dropdown__filter open" : "dropdown__filter"}>
+                                        <div className="down">
+                                            <div className="down__form desktop-hide">
+                                                <label>
+                                                    <input className="down__input" type="text"/>
+                                                </label>
+                                            </div>
+                                            <ul className="down__list">
+                                                <li className="down__item">
+                                                    <div className="checkbox-with-text">
+                                                        <input
+                                                            className="checkbox-with-text__input"
+                                                            type="checkbox"
+                                                            id="Nike"
+                                                        />
+                                                        <label htmlFor="Nike" className="checkbox-with-text__label">
+                                                            <span className="checkbox-with-text__decor">
+
+                                                            </span>
+                                                            <span className="checkbox-with-text__text">
+                                                            Nike
+                                                                <span className="checkbox-with-text__count">
+                                                                    1200
+                                                                </span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <ul className="cat-navigation__list">
-                                        <li
-                                            className="cat-navigation__item">Default
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Product Name
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Price
-                                        </li>
-                                    </ul>
                                 </div>
-                                <div className="cat-navigation__sort">
-                                    <div className="cat-navigation__label label">
-                                                    <span className="mobile-hide">
-                                                        Sort by default
-                                                    </span>
-                                        <div className="desktop-hide"></div>
-                                        <i className="ri-arrow-down-s-line"></i>
+                                <div className="dropdown__sort">
+                                    <button className="dropdown__button" onClick={() => setOpen(!open)}>
+                                        <span className="dropdown__select">Brands</span>
+                                        {
+                                            open ? <span className="dropdown__icon">
+                                            <i className="ri-arrow-down-s-line"></i>
+                                        </span> : <span className="dropdown__icon">
+                                            <i className="ri-arrow-up-s-line"></i>
+                                        </span>
+                                        }
+                                    </button>
+                                    <div className={open ? "dropdown__filter open" : "dropdown__filter"}>
+                                        <div className="down">
+                                            <div className="down__form desktop-hide">
+                                                <label>
+                                                    <input className="down__input" type="text"/>
+                                                </label>
+                                            </div>
+                                            <ul className="down__list">
+                                                <li className="down__item">
+                                                    <div className="checkbox-with-text">
+                                                        <input
+                                                            className="checkbox-with-text__input"
+                                                            type="checkbox"
+                                                            id="Nike"
+                                                        />
+                                                        <label htmlFor="Nike" className="checkbox-with-text__label">
+                                                            <span className="checkbox-with-text__decor">
+
+                                                            </span>
+                                                            <span className="checkbox-with-text__text">
+                                                            Nike
+                                                                <span className="checkbox-with-text__count">
+                                                                    1200
+                                                                </span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <ul className="cat-navigation__list">
-                                        <li
-                                            className="cat-navigation__item">Default
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Product Name
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Price
-                                        </li>
-                                    </ul>
                                 </div>
-                                <div className="cat-navigation__sort">
-                                    <div className="cat-navigation__label label">
-                                                    <span className="mobile-hide">
-                                                        Sort by default
-                                                    </span>
-                                        <div className="desktop-hide"></div>
-                                        <i className="ri-arrow-down-s-line"></i>
+                                <div className="dropdown__sort">
+                                    <button className="dropdown__button" onClick={() => setOpen(!open)}>
+                                        <span className="dropdown__select">Brands</span>
+                                        {
+                                            open ? <span className="dropdown__icon">
+                                            <i className="ri-arrow-down-s-line"></i>
+                                        </span> : <span className="dropdown__icon">
+                                            <i className="ri-arrow-up-s-line"></i>
+                                        </span>
+                                        }
+                                    </button>
+                                    <div className={open ? "dropdown__filter open" : "dropdown__filter"}>
+                                        <div className="down">
+                                            <div className="down__form desktop-hide">
+                                                <label>
+                                                    <input className="down__input" type="text"/>
+                                                </label>
+                                            </div>
+                                            <ul className="down__list">
+                                                <li className="down__item">
+                                                    <div className="checkbox-with-text">
+                                                        <input
+                                                            className="checkbox-with-text__input"
+                                                            type="checkbox"
+                                                            id="Nike"
+                                                        />
+                                                        <label htmlFor="Nike" className="checkbox-with-text__label">
+                                                            <span className="checkbox-with-text__decor">
+
+                                                            </span>
+                                                            <span className="checkbox-with-text__text">
+                                                            Nike
+                                                                <span className="checkbox-with-text__count">
+                                                                    1200
+                                                                </span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <ul className="cat-navigation__list">
-                                        <li
-                                            className="cat-navigation__item">Default
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Product Name
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Price
-                                        </li>
-                                    </ul>
                                 </div>
-                                <div className="cat-navigation__sort">
-                                    <div className="cat-navigation__label label">
-                                                    <span className="mobile-hide">
-                                                        Sort by default
-                                                    </span>
-                                        <div className="desktop-hide"></div>
-                                        <i className="ri-arrow-down-s-line"></i>
+                                <div className="dropdown__sort">
+                                    <button className="dropdown__button" onClick={() => setOpen(!open)}>
+                                        <span className="dropdown__select">Brands</span>
+                                        {
+                                            open ? <span className="dropdown__icon">
+                                            <i className="ri-arrow-down-s-line"></i>
+                                        </span> : <span className="dropdown__icon">
+                                            <i className="ri-arrow-up-s-line"></i>
+                                        </span>
+                                        }
+                                    </button>
+                                    <div className={open ? "dropdown__filter open" : "dropdown__filter"}>
+                                        <div className="down">
+                                            <div className="down__form desktop-hide">
+                                                <label>
+                                                    <input className="down__input" type="text"/>
+                                                </label>
+                                            </div>
+                                            <ul className="down__list">
+                                                <li className="down__item">
+                                                    <div className="checkbox-with-text">
+                                                        <input
+                                                            className="checkbox-with-text__input"
+                                                            type="checkbox"
+                                                            id="Nike"
+                                                        />
+                                                        <label htmlFor="Nike" className="checkbox-with-text__label">
+                                                            <span className="checkbox-with-text__decor">
+
+                                                            </span>
+                                                            <span className="checkbox-with-text__text">
+                                                            Nike
+                                                                <span className="checkbox-with-text__count">
+                                                                    1200
+                                                                </span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <ul className="cat-navigation__list">
-                                        <li
-                                            className="cat-navigation__item">Default
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Product Name
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Price
-                                        </li>
-                                    </ul>
                                 </div>
-                                <div className="cat-navigation__sort">
-                                    <div className="cat-navigation__label label">
-                                                    <span className="mobile-hide">
-                                                        Sort by default
-                                                    </span>
-                                        <div className="desktop-hide"></div>
-                                        <i className="ri-arrow-down-s-line"></i>
+                                <div className="dropdown__sort">
+                                    <button className="dropdown__button" onClick={() => setOpen(!open)}>
+                                        <span className="dropdown__select">Brands</span>
+                                        {
+                                            open ? <span className="dropdown__icon">
+                                            <i className="ri-arrow-down-s-line"></i>
+                                        </span> : <span className="dropdown__icon">
+                                            <i className="ri-arrow-up-s-line"></i>
+                                        </span>
+                                        }
+                                    </button>
+                                    <div className={open ? "dropdown__filter open" : "dropdown__filter"}>
+                                        <div className="down">
+                                            <div className="down__form desktop-hide">
+                                                <label>
+                                                    <input className="down__input" type="text"/>
+                                                </label>
+                                            </div>
+                                            <ul className="down__list">
+                                                <li className="down__item">
+                                                    <div className="checkbox-with-text">
+                                                        <input
+                                                            className="checkbox-with-text__input"
+                                                            type="checkbox"
+                                                            id="Nike"
+                                                        />
+                                                        <label htmlFor="Nike" className="checkbox-with-text__label">
+                                                            <span className="checkbox-with-text__decor">
+
+                                                            </span>
+                                                            <span className="checkbox-with-text__text">
+                                                            Nike
+                                                                <span className="checkbox-with-text__count">
+                                                                    1200
+                                                                </span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <ul className="cat-navigation__list">
-                                        <li
-                                            className="cat-navigation__item">Default
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Product Name
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Price
-                                        </li>
-                                    </ul>
                                 </div>
-                                <div className="cat-navigation__sort">
-                                    <div className="cat-navigation__label label">
-                                                    <span className="mobile-hide">
-                                                        Sort by default
-                                                    </span>
-                                        <div className="desktop-hide"></div>
-                                        <i className="ri-arrow-down-s-line"></i>
+                                <div className="dropdown__sort">
+                                    <button className="dropdown__button" onClick={() => setOpen(!open)}>
+                                        <span className="dropdown__select">Brands</span>
+                                        {
+                                            open ? <span className="dropdown__icon">
+                                            <i className="ri-arrow-down-s-line"></i>
+                                        </span> : <span className="dropdown__icon">
+                                            <i className="ri-arrow-up-s-line"></i>
+                                        </span>
+                                        }
+                                    </button>
+                                    <div className={open ? "dropdown__filter open" : "dropdown__filter"}>
+                                        <div className="down">
+                                            <div className="down__form desktop-hide">
+                                                <label>
+                                                    <input className="down__input" type="text"/>
+                                                </label>
+                                            </div>
+                                            <ul className="down__list">
+                                                <li className="down__item">
+                                                    <div className="checkbox-with-text">
+                                                        <input
+                                                            className="checkbox-with-text__input"
+                                                            type="checkbox"
+                                                            id="Nike"
+                                                        />
+                                                        <label htmlFor="Nike" className="checkbox-with-text__label">
+                                                            <span className="checkbox-with-text__decor">
+
+                                                            </span>
+                                                            <span className="checkbox-with-text__text">
+                                                            Nike
+                                                                <span className="checkbox-with-text__count">
+                                                                    1200
+                                                                </span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <ul className="cat-navigation__list">
-                                        <li
-                                            className="cat-navigation__item">Default
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Product Name
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Price
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="cat-navigation__sort">
-                                    <div className="cat-navigation__label label">
-                                                    <span className="mobile-hide">
-                                                        Sort by default
-                                                    </span>
-                                        <div className="desktop-hide"></div>
-                                        <i className="ri-arrow-down-s-line"></i>
-                                    </div>
-                                    <ul className="cat-navigation__list">
-                                        <li
-                                            className="cat-navigation__item">Default
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Product Name
-                                        </li>
-                                        <li
-                                            className="cat-navigation__item">Price
-                                        </li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -221,7 +381,7 @@ const SubSubCategory = ({products, category}) => {
                                                         <Ratings rating={product.totalRating}/>
                                                     </div>
                                                     <span className="content__text mini-text">
-                                                {product.reviews.length}
+                                                ({product.reviews.length})
                                             </span>
                                                 </div>
                                                 <h3 className="content__main-links">
