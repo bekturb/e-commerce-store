@@ -1,57 +1,113 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import CategoryProducts from "../CategoryProducts/CategoryProducts";
 import LoadMoreButton from "../LoadMoreButton/LoadMoreButton";
 import CategoryFilterBlock from "../CategoryFilterBlock/CategoryFilterBlock";
+import useFilteredCategoryProducts from "../../customHooks/useFilteredCategoryProducts";
 import "./main-category.scss";
 
-const MainCategory = ({category, categorySlug, filteredCategories, filteredProducts, uniqueColors, brandCounts, showRef, showMenu}) => {
+const MainCategory = ({category, products, categorySlug, showRef, showMenu}) => {
+    const [filteredCategories, setFilteredCategories] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [uniqueColors, setUniqueColors] = useState([]);
+    const [brandCounts, setBrandCounts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [sortedItem, setSortedItem] = useState("");
     const [perPage, setPerPage] = useState("10");
-    const [categoryProducts, setCategoryProducts] = useState([]);
 
     const [productBrand, setProductBrand] = useState([]);
-    const [productColor, setProductColor] = useState("");
+    const [productColor, setProductColor] = useState([]);
     const [productPrice, setProductPrice] = useState(0);
 
-    const {loading: catsLoading, error: catsErr} = useSelector(state => state.categories);
+    const {data: categories, loading: catsLoading, error: catsErr} = useSelector(state => state.categories);
     const {loading: productsLoad, error: productsErr} = useSelector(state => state.products);
-    const {loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
+    const {data: brands, loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
+
+    const categoryProducts = useFilteredCategoryProducts({
+        filteredProducts,
+        categorySlug,
+        productBrand,
+        productColor,
+        productPrice,
+        sortedItem,
+    });
 
     useEffect(() => {
-        if (filteredProducts?.length > 0 && categorySlug) {
-            const updatedFilteredProducts = filteredProducts?.filter(product => {
-                if (
-                    (productBrand?.length === 0 || productBrand?.includes(product.brand)) &&
-                    (!productColor || product.variants.some(variant => variant.color === productColor)) &&
-                    (!productPrice || product.variants.some(variant => variant.originalPrice >= productPrice))
-                ) {
-                    return true;
+        if (categorySlug && categories) {
+            const newFilteredCategories = categories.filter(categoryItem => categoryItem.slug === categorySlug);
+            setFilteredCategories(newFilteredCategories);
+        } else {
+            setFilteredCategories([]);
+        }
+    }, [categorySlug, categories]);
+
+    useEffect(() => {
+        if (categorySlug && products) {
+            const newFilteredProducts = products.filter(product => product.tags.includes(categorySlug));
+            setFilteredProducts(newFilteredProducts);
+        } else {
+            setFilteredProducts([]);
+        }
+    }, [categorySlug, products]);
+
+    useEffect(() => {
+        const uniqueColorsObj = {};
+
+        if (filteredProducts) {
+            filteredProducts.forEach(product => {
+                product.variants.forEach(variant => {
+                    const color = variant.color;
+                    if (uniqueColorsObj[color]) {
+                        uniqueColorsObj[color]++;
+                    } else {
+                        uniqueColorsObj[color] = 1;
+                    }
+                });
+            });
+        }
+
+        const uniqueColorsArray = Object.keys(uniqueColorsObj).map(color => ({
+            color,
+            count: uniqueColorsObj[color]
+        }));
+
+        setUniqueColors(uniqueColorsArray);
+    }, [filteredProducts]);
+
+    useEffect(() => {
+        if (filteredProducts && brands) {
+            const brandCounts = {};
+
+            filteredProducts.forEach(product => {
+                const brand = brands.find(brand => brand._id === product.brand);
+                if (brand) {
+                    const brandName = brand.name;
+                    const brandId = brand._id;
+                    if (!brandCounts[brandName]) {
+                        brandCounts[brandName] = {
+                            id: brandId,
+                            count: 1,
+                        };
+                    } else {
+                        brandCounts[brandName].count += 1;
+                    }
                 }
-                return false;
             });
 
-            const sortedProducts = sortProducts(updatedFilteredProducts, sortedItem);
-            setCategoryProducts(sortedProducts);
-        } else {
-            setCategoryProducts([]);
-        }
-    }, [filteredProducts, categorySlug, productBrand, productColor, productPrice, sortedItem]);
-
-    function sortProducts(products, sortedItem) {
-        return [...products].sort((a, b) => {
-            if (sortedItem === 'Product Name') {
-                return a.name.localeCompare(b.name);
-            } else if (sortedItem === 'Price') {
-                return Math.floor(b.variants[0].originalPrice) - Math.floor(a.variants[0].originalPrice);
+            const brandCountsArray = [];
+            for (const brandName in brandCounts) {
+                brandCountsArray.push({
+                    name: brandName,
+                    id: brandCounts[brandName].id,
+                    count: brandCounts[brandName].count,
+                });
             }
-            return 0;
-        });
-    }
+
+            setBrandCounts(brandCountsArray);
+        }
+    }, [filteredProducts, brands]);
 
     function paginateProducts(products, currentPage, perPage) {
         if (perPage === 'All') {
@@ -75,13 +131,23 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
 
     const paginatedProducts = paginateProducts(categoryProducts, currentPage, perPage);
 
-    const handleCheckboxChange = (event) => {
+    const handleBrandCheckboxChange = (event) => {
         const {value, checked} = event.target;
 
         if (checked) {
             setProductBrand([...productBrand, value]);
         } else {
             setProductBrand(productBrand.filter((item) => item !== value));
+        }
+    };
+
+    const handleColorCheckboxChange = (event) => {
+        const {value, checked} = event.target;
+
+        if (checked) {
+            setProductColor([value]);
+        } else {
+            setProductColor(productBrand.filter((item) => item !== value));
         }
     };
 
@@ -126,7 +192,7 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
                                                                                     <input
                                                                                         name={brand.name}
                                                                                         checked={productBrand[brand.id]}
-                                                                                        onChange={handleCheckboxChange}
+                                                                                        onChange={handleBrandCheckboxChange}
                                                                                         className="filter__input"
                                                                                         type="checkbox"
                                                                                         value={brand.id}
@@ -158,16 +224,16 @@ const MainCategory = ({category, categorySlug, filteredCategories, filteredProdu
                                                                             uniqueColors?.map((color, idx) => (
                                                                                 <li key={idx} className="filter__item">
                                                                                     <input
-                                                                                        onChange={(e) => setProductColor(e.target.value)}
+                                                                                        onChange={handleColorCheckboxChange}
                                                                                         className="filter__input colors__input"
                                                                                         type="radio"
                                                                                         name="color"
-                                                                                        value={color}
-                                                                                        id={color}
+                                                                                        value={color.color}
+                                                                                        id={color.color}
                                                                                     />
                                                                                     <label className="colors__circle circle"
-                                                                                           style={{'--color': `${color}`}}
-                                                                                           htmlFor={color}>
+                                                                                           style={{'--color': `${color.color}`}}
+                                                                                           htmlFor={color.color}>
                                                                                     </label>
                                                                                 </li>
                                                                             ))

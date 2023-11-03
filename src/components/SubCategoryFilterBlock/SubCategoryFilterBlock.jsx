@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 const SubCategoryFilterBlock = ({category, subCategory}) => {
     return (
-        <li key={subCategory._id}
+        <li
             className="filter__item">
             <Link
                 to={`/category/${category.slug}/${subCategory.slug}`}>

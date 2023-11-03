@@ -55,7 +55,7 @@ const CategoryFilterBlock = ({filteredCategories}) => {
                                                         {
                                                             subCategory.children.map(subSubCategory => (
                                                                 <SubSubCategoriesFilter
-                                                                    key={subSubCategory?._id}
+                                                                    key={subSubCategory._id}
                                                                     category={category}
                                                                     subSubCategory={subSubCategory}
                                                                     subCategory={subCategory}
@@ -68,7 +68,7 @@ const CategoryFilterBlock = ({filteredCategories}) => {
                                         }
                                     </li>
                                 ) : (
-                                    <SubCategoryFilterBlock category={category} subCategory={subCategory} />
+                                    <SubCategoryFilterBlock key={subCategory._id} category={category} subCategory={subCategory} />
                                 )
                             ))
                         )

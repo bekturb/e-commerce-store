@@ -6,7 +6,6 @@
 
 .dropdown {
   position: relative;
-  justify-content: flex-end;
   margin-bottom: 2em;
   flex-grow: 1;
 
@@ -31,6 +30,7 @@
     height: 100%;
     border: none;
     background-color: transparent;
+    cursor: pointer;
   }
 
   &__filter {
@@ -75,11 +75,12 @@
     padding-right: 6px;
   }
   &__item {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     position: relative;
-    width: 100%;
+    margin: 5px 0;
   }
 }
 
@@ -125,6 +126,84 @@
     background: #112acb;
     border-color: #1120cb;
     border: 0;
+  }
+
+  &__input:checked + &__label &__decor:after {
+    display: block;
+  }
+
+  &__text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  &__count {
+    margin-left: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #868695;
+  }
+
+  &__circle {
+    width: 26px !important;
+    height: 26px !important;
+    display: block !important;
+    position: relative !important;
+    top: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    z-index: 1 !important;
+
+    &::before {
+      background-color: var(--color)!important;
+      opacity: 1 !important;
+    }
+  }
+}
+
+.radio-with-text {
+  display: inline-block;
+  cursor: pointer;
+  padding-left: 34px;
+  position: relative;
+  font-size: 0;
+  line-height: 0;
+  user-select: none;
+
+  &__input {
+    display: none;
+  }
+
+  &__decor {
+    display: block;
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border: 1px solid #d3d4dd;
+    border-radius: 50%;
+    background: #fff;
+
+    &::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      top: 4px;
+      left: 4px;
+      background: #112acb;
+      border-radius: 50%;
+      position: absolute;
+      display: none;
+    }
+  }
+
+  &__input:checked + &__label &__decor {
+    border: 2px solid #112acb;
   }
 
   &__input:checked + &__label &__decor:after {
