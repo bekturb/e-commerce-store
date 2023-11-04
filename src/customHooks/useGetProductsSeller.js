@@ -1,40 +1,43 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
-const UseGetProductsSeller = (filteredProducts) => {
+const UseGetProductsSeller = (filteredProducts, shops) => {
+
+    const [productsShop, setProductsShop] = useState([]);
 
     useEffect(() => {
-        if (filteredProducts && brands) {
-            const brandCounts = {};
+        if (filteredProducts && shops) {
+            const sellers = {};
 
             filteredProducts.forEach((product) => {
-                const brand = brands.find((brand) => brand._id === product.brand);
-                if (brand) {
-                    const brandName = brand.name;
-                    const brandId = brand._id;
-                    if (!brandCounts[brandName]) {
-                        brandCounts[brandName] = {
-                            id: brandId,
+                const shop = shops.find((shop) => shop._id === product.shopId);
+                if (shop) {
+                    const shopName = shop.name;
+                    const shopId = shop._id;
+                    if (!sellers[shopName]) {
+                        sellers[shopName] = {
+                            name: shopName,
+                            id: shopId,
                             count: 1,
                         };
                     } else {
-                        brandCounts[brandName].count += 1;
+                        sellers[shopName].count += 1;
                     }
                 }
             });
 
-            const brandCountsArray = [];
-            for (const brandName in brandCounts) {
-                brandCountsArray.push({
-                    name: brandName,
-                    id: brandCounts[brandName].id,
-                    count: brandCounts[brandName].count,
+            const shopsArray = [];
+            for (const shopName in sellers) {
+                shopsArray.push({
+                    name: shopName,
+                    id: sellers[shopName].id,
+                    count: sellers[shopName].count,
                 });
             }
 
-            setBrandCounts(brandCountsArray);
+            setProductsShop(shopsArray);
         }
-    }, [filteredProducts, brands]);
+    }, [filteredProducts, shops]);
 
-    return brandCounts;
+    return productsShop;
 }
 export default UseGetProductsSeller;

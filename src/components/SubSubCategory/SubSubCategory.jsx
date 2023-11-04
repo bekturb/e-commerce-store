@@ -7,8 +7,9 @@ import useBrandCounts from "../../customHooks/useBrandCounts";
 import useProductsColor from "../../customHooks/UseProductsColor";
 import {useSelector} from "react-redux";
 import "./subsubcategory.scss";
+import useGetProductsSeller from "../../customHooks/useGetProductsSeller";
 
-const SubSubCategory = ({products, category}) => {
+const SubSubCategory = ({products, category, shops}) => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [open, setOpen] = useState("");
 
@@ -16,6 +17,7 @@ const SubSubCategory = ({products, category}) => {
 
     const brandCounts = useBrandCounts(filteredProducts, brands);
     const uniqueColors = useProductsColor(filteredProducts);
+    const productsShop  = useGetProductsSeller(filteredProducts, shops);
 
     useEffect(() => {
         if (products?.length > 0) {
@@ -77,7 +79,7 @@ const SubSubCategory = ({products, category}) => {
                                                     <ul className="down__list">
                                                         {
                                                             brandCounts.map(brand => (
-                                                                <li key={brand._id} className="down__item">
+                                                                <li key={brand.id} className="down__item">
                                                                     <div className="checkbox-with-text">
                                                                         <input
                                                                             name={brand.name}
@@ -167,74 +169,128 @@ const SubSubCategory = ({products, category}) => {
                                         </div>
                                     )
                                 }
-                                <div className="dropdown__sort">
-                                    <button className="dropdown__button" onClick={() => handleOpenDrop("seller")}>
-                                        <span className="dropdown__select">Seller</span>
-                                        {
-                                            open === "seller" ? <span className="dropdown__icon">
+                                {
+                                    productsShop.length > 0 && (
+                                        <div className="dropdown__sort">
+                                            <button className="dropdown__button" onClick={() => handleOpenDrop("seller")}>
+                                                <span className="dropdown__select">Sellers</span>
+                                                {
+                                                    open === "seller" ? <span className="dropdown__icon">
                                             <i className="ri-arrow-down-s-line"></i>
                                         </span> : <span className="dropdown__icon">
                                             <i className="ri-arrow-up-s-line"></i>
                                         </span>
-                                        }
-                                    </button>
-                                    <div className={open === "seller" ? "dropdown__filter open" : "dropdown__filter"}>
-                                        <div className="down">
-                                            <div className="down__form desktop-hide">
-                                                <label>
-                                                    <input className="down__input" type="text"/>
-                                                </label>
+                                                }
+                                            </button>
+                                            <div
+                                                className={open === "seller" ? "dropdown__filter open" : "dropdown__filter"}>
+                                                <div className="down">
+                                                    <div className="down__form desktop-hide">
+                                                        <label>
+                                                            <input className="down__input" type="text"/>
+                                                        </label>
+                                                    </div>
+                                                    <ul className="down__list">
+                                                        {
+                                                            productsShop.map(shop => (
+                                                                <li key={shop.id} className="down__item">
+                                                                    <div className="checkbox-with-text">
+                                                                        <input
+                                                                            name={shop.name}
+                                                                            // checked={productBrand[brand.id]}
+                                                                            className="filter__input"
+                                                                            type="checkbox"
+                                                                            value={shop.id}
+                                                                            id={shop.id}
+                                                                        />
+                                                                        <label htmlFor={shop.id}
+                                                                               className="checkbox-with-text__label">
+                                                                            <span
+                                                                                className="checkbox-with-text__decor"></span>
+                                                                            <span className="checkbox-with-text__text">
+                                                                                {shop.name}
+                                                                                <span
+                                                                                    className="checkbox-with-text__count">{shop.count}</span>
+                                                                                 </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </li>
+                                                            ))
+                                                        }
+                                                    </ul>
+                                                </div>
                                             </div>
-                                            <ul className="down__list">
-                                                <li className="down__item">
-                                                    <Radio/>
-                                                </li>
-                                                <li className="down__item">
-                                                    <div className="radio-with-text">
-                                                        <input
-                                                            name="brand"
-                                                            className="radio-with-text__input"
-                                                            type="radio"
-                                                            id="b"
-                                                        />
-                                                        <label htmlFor="b" className="radio-with-text__label">
-                                                            <span className="radio-with-text__decor">
-
-                                                            </span>
-                                                            <span className="radio-with-text__text">
-                                                            Nike
-                                                                <span className="radio-with-text__count">
-                                                                    1200
-                                                                </span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li className="down__item">
-                                                    <div className="radio-with-text">
-                                                        <input
-                                                            name="brand"
-                                                            className="radio-with-text__input"
-                                                            type="radio"
-                                                            id="t"
-                                                        />
-                                                        <label htmlFor="t" className="radio-with-text__label">
-                                                            <span className="radio-with-text__decor">
-
-                                                            </span>
-                                                            <span className="radio-with-text__text">
-                                                            Nike
-                                                                <span className="radio-with-text__count">
-                                                                    1200
-                                                                </span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                            </ul>
                                         </div>
-                                    </div>
-                                </div>
+                                    )
+                                }
+                                {/*<div className="dropdown__sort">*/}
+                                {/*    <button className="dropdown__button" onClick={() => handleOpenDrop("seller")}>*/}
+                                {/*        <span className="dropdown__select">Seller</span>*/}
+                                {/*        {*/}
+                                {/*            open === "seller" ? <span className="dropdown__icon">*/}
+                                {/*            <i className="ri-arrow-down-s-line"></i>*/}
+                                {/*        </span> : <span className="dropdown__icon">*/}
+                                {/*            <i className="ri-arrow-up-s-line"></i>*/}
+                                {/*        </span>*/}
+                                {/*        }*/}
+                                {/*    </button>*/}
+                                {/*    <div className={open === "seller" ? "dropdown__filter open" : "dropdown__filter"}>*/}
+                                {/*        <div className="down">*/}
+                                {/*            <div className="down__form desktop-hide">*/}
+                                {/*                <label>*/}
+                                {/*                    <input className="down__input" type="text"/>*/}
+                                {/*                </label>*/}
+                                {/*            </div>*/}
+                                {/*            <ul className="down__list">*/}
+                                {/*                <li className="down__item">*/}
+                                {/*                    <Radio/>*/}
+                                {/*                </li>*/}
+                                {/*                <li className="down__item">*/}
+                                {/*                    <div className="radio-with-text">*/}
+                                {/*                        <input*/}
+                                {/*                            name="brand"*/}
+                                {/*                            className="radio-with-text__input"*/}
+                                {/*                            type="radio"*/}
+                                {/*                            id="b"*/}
+                                {/*                        />*/}
+                                {/*                        <label htmlFor="b" className="radio-with-text__label">*/}
+                                {/*                            <span className="radio-with-text__decor">*/}
+
+                                {/*                            </span>*/}
+                                {/*                            <span className="radio-with-text__text">*/}
+                                {/*                            Nike*/}
+                                {/*                                <span className="radio-with-text__count">*/}
+                                {/*                                    1200*/}
+                                {/*                                </span>*/}
+                                {/*                            </span>*/}
+                                {/*                        </label>*/}
+                                {/*                    </div>*/}
+                                {/*                </li>*/}
+                                {/*                <li className="down__item">*/}
+                                {/*                    <div className="radio-with-text">*/}
+                                {/*                        <input*/}
+                                {/*                            name="brand"*/}
+                                {/*                            className="radio-with-text__input"*/}
+                                {/*                            type="radio"*/}
+                                {/*                            id="t"*/}
+                                {/*                        />*/}
+                                {/*                        <label htmlFor="t" className="radio-with-text__label">*/}
+                                {/*                            <span className="radio-with-text__decor">*/}
+
+                                {/*                            </span>*/}
+                                {/*                            <span className="radio-with-text__text">*/}
+                                {/*                            Nike*/}
+                                {/*                                <span className="radio-with-text__count">*/}
+                                {/*                                    1200*/}
+                                {/*                                </span>*/}
+                                {/*                            </span>*/}
+                                {/*                        </label>*/}
+                                {/*                    </div>*/}
+                                {/*                </li>*/}
+                                {/*            </ul>*/}
+                                {/*        </div>*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
                             </div>
                         </div>
                         <div className="subcat__body">

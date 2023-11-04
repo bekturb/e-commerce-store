@@ -27,8 +27,6 @@ const SingleCategory = () => {
     const {data: products} = useSelector(state => state.products);
     const {data: shops, loading: shopsLoading, error: shopsErr} = useSelector(state => state.shops);
 
-    console.log(shops, 'sss')
-
     const dispatch = useDispatch();
     const {slug: categorySlug} = useParams();
 
@@ -156,6 +154,7 @@ const SingleCategory = () => {
                     <SubSubCategory
                         products={products}
                         category={category}
+                        shops={shops}
                     />
                 ) : !category?.parentId && !hasSubCategory ? (
                     <SubSubCategory />
