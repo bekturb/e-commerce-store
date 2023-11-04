@@ -44,8 +44,16 @@ function useFilteredCategoryProducts({
         return [...products].sort((a, b) => {
             if (sortedItem === 'Product Name') {
                 return a.name.localeCompare(b.name);
-            } else if (sortedItem === 'Price') {
+            } else if (sortedItem === 'Descending Price') {
                 return Math.floor(b.variants[0].originalPrice) - Math.floor(a.variants[0].originalPrice);
+            }else if (sortedItem === 'Ascending Price') {
+                return Math.floor(a.variants[0].originalPrice) - Math.floor(b.variants[0].originalPrice);
+            } else if (sortedItem === 'Popularity') {
+                return Math.floor(a.totalSold) - Math.floor(b.totalSold);
+            }else if (sortedItem === 'Rating') {
+                return Math.floor(a.totalRating) - Math.floor(b.totalRating);
+            }else if (sortedItem === 'New') {
+                return new Date(a.createdAt) - new Date(b.createdAt);
             }
             return 0;
         });

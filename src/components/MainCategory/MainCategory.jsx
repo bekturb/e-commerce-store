@@ -6,20 +6,13 @@ import CategoryProducts from "../CategoryProducts/CategoryProducts";
 import LoadMoreButton from "../LoadMoreButton/LoadMoreButton";
 import CategoryFilterBlock from "../CategoryFilterBlock/CategoryFilterBlock";
 import useFilteredCategoryProducts from "../../customHooks/useFilteredCategoryProducts";
+import useBrandCounts from "../../customHooks/useBrandCounts";
+import useProductsColor from "../../customHooks/UseProductsColor";
 import "./main-category.scss";
 
-const MainCategory = ({category, products, categorySlug, showRef, showMenu}) => {
+const MainCategory = ({category, products, categorySlug, currentPage, sortedItem, productColor, productBrand, productPrice, setProductPrice, perPage, paginateProducts, handlePerPageChange, loadMoreProducts, handleBrandCheckboxChange, handleColorCheckboxChange, handleSort, showRef, showMenu}) => {
     const [filteredCategories, setFilteredCategories] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
-    const [uniqueColors, setUniqueColors] = useState([]);
-    const [brandCounts, setBrandCounts] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [sortedItem, setSortedItem] = useState("");
-    const [perPage, setPerPage] = useState("10");
-
-    const [productBrand, setProductBrand] = useState([]);
-    const [productColor, setProductColor] = useState([]);
-    const [productPrice, setProductPrice] = useState(0);
 
     const {data: categories, loading: catsLoading, error: catsErr} = useSelector(state => state.categories);
     const {loading: productsLoad, error: productsErr} = useSelector(state => state.products);
@@ -33,6 +26,8 @@ const MainCategory = ({category, products, categorySlug, showRef, showMenu}) => 
         productPrice,
         sortedItem,
     });
+    const brandCounts = useBrandCounts(filteredProducts, brands);
+    const uniqueColors = useProductsColor(filteredProducts);
 
     useEffect(() => {
         if (categorySlug && categories) {
@@ -52,108 +47,7 @@ const MainCategory = ({category, products, categorySlug, showRef, showMenu}) => 
         }
     }, [categorySlug, products]);
 
-    useEffect(() => {
-        const uniqueColorsObj = {};
-
-        if (filteredProducts) {
-            filteredProducts.forEach(product => {
-                product.variants.forEach(variant => {
-                    const color = variant.color;
-                    if (uniqueColorsObj[color]) {
-                        uniqueColorsObj[color]++;
-                    } else {
-                        uniqueColorsObj[color] = 1;
-                    }
-                });
-            });
-        }
-
-        const uniqueColorsArray = Object.keys(uniqueColorsObj).map(color => ({
-            color,
-            count: uniqueColorsObj[color]
-        }));
-
-        setUniqueColors(uniqueColorsArray);
-    }, [filteredProducts]);
-
-    useEffect(() => {
-        if (filteredProducts && brands) {
-            const brandCounts = {};
-
-            filteredProducts.forEach(product => {
-                const brand = brands.find(brand => brand._id === product.brand);
-                if (brand) {
-                    const brandName = brand.name;
-                    const brandId = brand._id;
-                    if (!brandCounts[brandName]) {
-                        brandCounts[brandName] = {
-                            id: brandId,
-                            count: 1,
-                        };
-                    } else {
-                        brandCounts[brandName].count += 1;
-                    }
-                }
-            });
-
-            const brandCountsArray = [];
-            for (const brandName in brandCounts) {
-                brandCountsArray.push({
-                    name: brandName,
-                    id: brandCounts[brandName].id,
-                    count: brandCounts[brandName].count,
-                });
-            }
-
-            setBrandCounts(brandCountsArray);
-        }
-    }, [filteredProducts, brands]);
-
-    function paginateProducts(products, currentPage, perPage) {
-        if (perPage === 'All') {
-            return products;
-        }
-
-        const startIndex = (currentPage - 1) * +perPage;
-        const endIndex = startIndex + +perPage;
-        return products.slice(startIndex, endIndex);
-    }
-
-    function handlePerPageChange(page) {
-        setPerPage(page);
-        setCurrentPage(1);
-    }
-
-    function loadMoreProducts() {
-        const plusToPerPage = +perPage + 10
-        setPerPage(plusToPerPage);
-    }
-
     const paginatedProducts = paginateProducts(categoryProducts, currentPage, perPage);
-
-    const handleBrandCheckboxChange = (event) => {
-        const {value, checked} = event.target;
-
-        if (checked) {
-            setProductBrand([...productBrand, value]);
-        } else {
-            setProductBrand(productBrand.filter((item) => item !== value));
-        }
-    };
-
-    const handleColorCheckboxChange = (event) => {
-        const {value, checked} = event.target;
-
-        if (checked) {
-            setProductColor([value]);
-        } else {
-            setProductColor(productBrand.filter((item) => item !== value));
-        }
-    };
-
-    const handleSort = (value) => {
-        setSortedItem(value)
-    }
 
     return (
         <div className="single-category">
@@ -178,7 +72,8 @@ const MainCategory = ({category, products, categorySlug, showRef, showMenu}) => 
                                                     <>
                                                         {
                                                             filteredCategories?.length > 0 && (
-                                                                <CategoryFilterBlock filteredCategories={filteredCategories}/>
+                                                                <CategoryFilterBlock
+                                                                    filteredCategories={filteredCategories}/>
                                                             )
                                                         }
                                                         {
@@ -307,14 +202,23 @@ const MainCategory = ({category, products, categorySlug, showRef, showMenu}) => 
                                                     <i className="ri-arrow-down-s-line"></i>
                                                 </div>
                                                 <ul className="cat-navigation__list">
-                                                    <li onClick={() => handleSort("Default")}
-                                                        className="cat-navigation__item">Default
+                                                    <li onClick={() => handleSort("Popularity")}
+                                                        className="cat-navigation__item">Popularity
                                                     </li>
                                                     <li onClick={() => handleSort("Product Name")}
                                                         className="cat-navigation__item">Product Name
                                                     </li>
-                                                    <li onClick={() => handleSort("Price")}
-                                                        className="cat-navigation__item">Price
+                                                    <li onClick={() => handleSort("Ascending Price")}
+                                                        className="cat-navigation__item">Ascending Price
+                                                    </li>
+                                                    <li onClick={() => handleSort("Descending Price")}
+                                                        className="cat-navigation__item">Descending Price
+                                                    </li>
+                                                    <li onClick={() => handleSort("Rating")}
+                                                        className="cat-navigation__item">Rating
+                                                    </li>
+                                                    <li onClick={() => handleSort("New")}
+                                                        className="cat-navigation__item">New
                                                     </li>
                                                 </ul>
                                             </div>

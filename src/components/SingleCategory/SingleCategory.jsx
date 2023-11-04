@@ -14,6 +14,12 @@ import "./single-category.scss";
 const SingleCategory = () => {
      const showRef = useRef(null);
     const [hasSubCategory, setHasSubCategory] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [sortedItem, setSortedItem] = useState("Popularity");
+    const [perPage, setPerPage] = useState("10");
+    const [productBrand, setProductBrand] = useState([]);
+    const [productColor, setProductColor] = useState([]);
+    const [productPrice, setProductPrice] = useState(0);
 
     const {data: category, loading: catLoading, error: catError} = useSelector(state => state.category);
     const {data: allCategories, loading: allCatLoading, error: allCateErr} = useSelector(state => state.allCategories);
@@ -52,6 +58,49 @@ const SingleCategory = () => {
         };
     }, []);
 
+    function paginateProducts(products, currentPage, perPage) {
+        if (perPage === 'All') {
+            return products;
+        }
+
+        const startIndex = (currentPage - 1) * +perPage;
+        const endIndex = startIndex + +perPage;
+        return products.slice(startIndex, endIndex);
+    }
+
+    function handlePerPageChange(page) {
+        setPerPage(page);
+        setCurrentPage(1);
+    }
+
+    function loadMoreProducts() {
+        const plusToPerPage = +perPage + 10
+        setPerPage(plusToPerPage);
+    }
+
+    const handleBrandCheckboxChange = (event) => {
+        const {value, checked} = event.target;
+
+        if (checked) {
+            setProductBrand([...productBrand, value]);
+        } else {
+            setProductBrand(productBrand.filter((item) => item !== value));
+        }
+    };
+
+    const handleColorCheckboxChange = (event) => {
+        const {value, checked} = event.target;
+
+        if (checked) {
+            setProductColor([value]);
+        } else {
+            setProductColor(productBrand.filter((item) => item !== value));
+        }
+    };
+
+    const handleSort = (value) => {
+        setSortedItem(value)
+    }
 
     const showMenu = () => {
         setTimeout(() => {
@@ -75,6 +124,19 @@ const SingleCategory = () => {
                         categorySlug={categorySlug}
                         category={category}
                         products={products}
+                        currentPage={currentPage}
+                        sortedItem={sortedItem}
+                        productColor={productColor}
+                        productBrand={productBrand}
+                        productPrice={productPrice}
+                        perPage={perPage}
+                        setProductPrice={setProductPrice}
+                        paginateProducts={paginateProducts}
+                        handlePerPageChange={handlePerPageChange}
+                        loadMoreProducts={loadMoreProducts}
+                        handleBrandCheckboxChange={handleBrandCheckboxChange}
+                        handleColorCheckboxChange={handleColorCheckboxChange}
+                        handleSort={handleSort}
                         showRef={showRef}
                         showMenu={showMenu}
                     />
