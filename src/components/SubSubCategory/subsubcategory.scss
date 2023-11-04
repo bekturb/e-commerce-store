@@ -149,16 +149,17 @@
   }
 
   &__circle {
-    width: 26px !important;
-    height: 26px !important;
-    display: block !important;
     position: relative !important;
+    width: 26px!important;
+    height: 26px!important;
     top: 0 !important;
     margin: 0 !important;
     cursor: pointer !important;
     z-index: 1 !important;
 
     &::before {
+      top: 0;
+      left: 0;
       background-color: var(--color)!important;
       opacity: 1 !important;
     }

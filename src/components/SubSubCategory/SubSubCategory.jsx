@@ -2,15 +2,20 @@ import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import SecTop from "../SecTop/SecTop";
 import Ratings from "../Ratings/Ratings";
-import Checkbox from "../Checkbox/Checkbox";
 import Radio from "../Radio/Radio";
+import useBrandCounts from "../../customHooks/useBrandCounts";
+import useProductsColor from "../../customHooks/UseProductsColor";
+import {useSelector} from "react-redux";
 import "./subsubcategory.scss";
 
-const SubSubCategory = ({products, category, brands}) => {
+const SubSubCategory = ({products, category}) => {
     const [filteredProducts, setFilteredProducts] = useState([]);
-    const [uniqueColors, setUniqueColors] = useState([]);
-    const [brandCounts, setBrandCounts] = useState([]);
     const [open, setOpen] = useState("");
+
+    const {data: brands, loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
+
+    const brandCounts = useBrandCounts(filteredProducts, brands);
+    const uniqueColors = useProductsColor(filteredProducts);
 
     useEffect(() => {
         if (products?.length > 0) {
@@ -19,55 +24,10 @@ const SubSubCategory = ({products, category, brands}) => {
         }
     }, [products, category]);
 
-    useEffect(() => {
-        if (filteredProducts) {
-            const colors = new Set();
-            filteredProducts.forEach(product => {
-                product.variants.forEach(variant => {
-                    colors.add(variant.color);
-                });
-            });
-            setUniqueColors([...colors]);
-        }
-    }, [products]);
-
-    useEffect(() => {
-        if (filteredProducts && brands) {
-            const brandCounts = {};
-
-            filteredProducts.forEach(product => {
-                const brand = brands.find(brand => brand._id === product.brand);
-                if (brand) {
-                    const brandName = brand.name;
-                    const brandId = brand._id;
-                    if (!brandCounts[brandName]) {
-                        brandCounts[brandName] = {
-                            id: brandId,
-                            count: 1,
-                        };
-                    } else {
-                        brandCounts[brandName].count += 1;
-                    }
-                }
-            });
-
-            const brandCountsArray = [];
-            for (const brandName in brandCounts) {
-                brandCountsArray.push({
-                    name: brandName,
-                    id: brandCounts[brandName].id,
-                    count: brandCounts[brandName].count,
-                });
-            }
-
-            setBrandCounts(brandCountsArray);
-        }
-    }, [filteredProducts, brands]);
-
     const handleOpenDrop = (openDrop) => {
         if (open === openDrop) {
             setOpen("");
-        }else{
+        } else {
             setOpen(openDrop)
         }
     }
@@ -106,7 +66,8 @@ const SubSubCategory = ({products, category, brands}) => {
                                         </span>
                                                 }
                                             </button>
-                                            <div className={open === "brands" ? "dropdown__filter open" : "dropdown__filter"}>
+                                            <div
+                                                className={open === "brands" ? "dropdown__filter open" : "dropdown__filter"}>
                                                 <div className="down">
                                                     <div className="down__form desktop-hide">
                                                         <label>
@@ -117,7 +78,86 @@ const SubSubCategory = ({products, category, brands}) => {
                                                         {
                                                             brandCounts.map(brand => (
                                                                 <li key={brand._id} className="down__item">
-                                                                    <Checkbox brand={brand}/>
+                                                                    <div className="checkbox-with-text">
+                                                                        <input
+                                                                            name={brand.name}
+                                                                            // checked={productBrand[brand.id]}
+                                                                            className="filter__input"
+                                                                            type="checkbox"
+                                                                            value={brand.id}
+                                                                            id={brand.id}
+                                                                        />
+                                                                        <label htmlFor={brand.id}
+                                                                               className="checkbox-with-text__label">
+                                                                            <span
+                                                                                className="checkbox-with-text__decor"></span>
+                                                                            <span className="checkbox-with-text__text">
+                                                                                {brand.name}
+                                                                                <span
+                                                                                    className="checkbox-with-text__count">{brand.count}</span>
+                                                                                 </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </li>
+                                                            ))
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                                {
+                                    uniqueColors.length > 0 && (
+                                        <div className="dropdown__sort">
+                                            <button className="dropdown__button" onClick={() => handleOpenDrop("colors")}>
+                                                <span className="dropdown__select">Colors</span>
+                                                {
+                                                    open === "colors" ? <span className="dropdown__icon">
+                                            <i className="ri-arrow-down-s-line"></i>
+                                        </span> : <span className="dropdown__icon">
+                                            <i className="ri-arrow-up-s-line"></i>
+                                        </span>
+                                                }
+                                            </button>
+                                            <div
+                                                className={open === "colors" ? "dropdown__filter open" : "dropdown__filter"}>
+                                                <div className="down">
+                                                    <div className="down__form desktop-hide">
+                                                        <label>
+                                                            <input className="down__input" type="text"/>
+                                                        </label>
+                                                    </div>
+                                                    <ul className="down__list">
+                                                        {
+                                                            uniqueColors.map((color, idx) => (
+                                                                <li key={idx} className="down__item">
+                                                                    <div className="checkbox-with-text">
+                                                                        <input
+                                                                            name={color.color}
+                                                                            // checked={productBrand[brand.id]}
+                                                                            className="filter__input"
+                                                                            type="checkbox"
+                                                                            value={color.color}
+                                                                            id={color.color}
+                                                                        />
+                                                                        <label htmlFor={color.color}
+                                                                               className="checkbox-with-text__label">
+                                                                            <span
+                                                                                className="checkbox-with-text__decor"></span>
+                                                                            <span className="checkbox-with-text__text">
+                                                                            <span
+                                                                                className="checkbox-with-text__circle circle"
+                                                                                style={{'--color': `${color.color}`}}
+                                                                            >
+
+                                                                            </span>
+                                                                                {color.color}
+                                                                                <span
+                                                                                    className="checkbox-with-text__count">{color.count}</span>
+                                                                                 </span>
+                                                                        </label>
+                                                                    </div>
                                                                 </li>
                                                             ))
                                                         }

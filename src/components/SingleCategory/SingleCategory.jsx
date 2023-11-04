@@ -10,6 +10,7 @@ import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import SubSubCategory from "../SubSubCategory/SubSubCategory";
 import "./single-category.scss";
+import {getAllShops} from "../../features/shopsSlice";
 
 const SingleCategory = () => {
      const showRef = useRef(null);
@@ -24,6 +25,9 @@ const SingleCategory = () => {
     const {data: category, loading: catLoading, error: catError} = useSelector(state => state.category);
     const {data: allCategories, loading: allCatLoading, error: allCateErr} = useSelector(state => state.allCategories);
     const {data: products} = useSelector(state => state.products);
+    const {data: shops, loading: shopsLoading, error: shopsErr} = useSelector(state => state.shops);
+
+    console.log(shops, 'sss')
 
     const dispatch = useDispatch();
     const {slug: categorySlug} = useParams();
@@ -32,6 +36,7 @@ const SingleCategory = () => {
         dispatch(fetchCategory(categorySlug));
         dispatch(fetchAllCategories());
         dispatch(fetchBrands());
+        dispatch(getAllShops());
     }, [categorySlug]);
 
     useEffect(() => {
