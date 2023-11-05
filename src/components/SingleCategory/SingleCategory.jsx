@@ -95,9 +95,9 @@ const SingleCategory = () => {
         const {value, checked} = event.target;
 
         if (checked) {
-            setProductColor([value]);
+            setProductColor([...productColor, value]);
         } else {
-            setProductColor(productBrand.filter((item) => item !== value));
+            setProductColor(productColor.filter((item) => item !== value));
         }
     };
 
@@ -152,8 +152,21 @@ const SingleCategory = () => {
                     />
                 ) : category?.parentId && !hasSubCategory ? (
                     <SubSubCategory
+                        categorySlug={categorySlug}
                         products={products}
                         category={category}
+                        currentPage={currentPage}
+                        sortedItem={sortedItem}
+                        productColor={productColor}
+                        productBrand={productBrand}
+                        productPrice={productPrice}
+                        perPage={perPage}
+                        setProductPrice={setProductPrice}
+                        paginateProducts={paginateProducts}
+                        handlePerPageChange={handlePerPageChange}
+                        handleBrandCheckboxChange={handleBrandCheckboxChange}
+                        handleColorCheckboxChange={handleColorCheckboxChange}
+                        handleSort={handleSort}
                         shops={shops}
                     />
                 ) : !category?.parentId && !hasSubCategory ? (

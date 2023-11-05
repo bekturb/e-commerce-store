@@ -1,20 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
 import SecTop from "../SecTop/SecTop";
 import Ratings from "../Ratings/Ratings";
-import Radio from "../Radio/Radio";
 import useBrandCounts from "../../customHooks/useBrandCounts";
 import useProductsColor from "../../customHooks/UseProductsColor";
-import {useSelector} from "react-redux";
-import "./subsubcategory.scss";
 import useGetProductsSeller from "../../customHooks/useGetProductsSeller";
+import useFilteredCategoryProducts from "../../customHooks/useFilteredCategoryProducts";
+import "./subsubcategory.scss";
 
-const SubSubCategory = ({products, category, shops}) => {
+const SubSubCategory = ({categorySlug, products, category, currentPage, sortedItem, productColor, productPrice, perPage, setProductPrice, paginateProducts, handlePerPageChange, handleSort, handleColorCheckboxChange, handleBrandCheckboxChange, productBrand, shops}) => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [open, setOpen] = useState("");
 
     const {data: brands, loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
 
+    const categoryProducts = useFilteredCategoryProducts({
+        filteredProducts,
+        categorySlug,
+        productBrand,
+        productColor,
+        productPrice,
+        sortedItem,
+    });
     const brandCounts = useBrandCounts(filteredProducts, brands);
     const uniqueColors = useProductsColor(filteredProducts);
     const productsShop  = useGetProductsSeller(filteredProducts, shops);
@@ -82,9 +90,10 @@ const SubSubCategory = ({products, category, shops}) => {
                                                                 <li key={brand.id} className="down__item">
                                                                     <div className="checkbox-with-text">
                                                                         <input
+                                                                            onChange={handleBrandCheckboxChange}
                                                                             name={brand.name}
-                                                                            // checked={productBrand[brand.id]}
-                                                                            className="filter__input"
+                                                                            checked={productBrand[brand.id]}
+                                                                            className="checkbox-with-text__input"
                                                                             type="checkbox"
                                                                             value={brand.id}
                                                                             id={brand.id}
@@ -136,9 +145,10 @@ const SubSubCategory = ({products, category, shops}) => {
                                                                 <li key={idx} className="down__item">
                                                                     <div className="checkbox-with-text">
                                                                         <input
+                                                                            onChange={handleColorCheckboxChange}
                                                                             name={color.color}
-                                                                            // checked={productBrand[brand.id]}
-                                                                            className="filter__input"
+                                                                            checked={productColor[color.color]}
+                                                                            className="checkbox-with-text__input"
                                                                             type="checkbox"
                                                                             value={color.color}
                                                                             id={color.color}
@@ -197,8 +207,8 @@ const SubSubCategory = ({products, category, shops}) => {
                                                                     <div className="checkbox-with-text">
                                                                         <input
                                                                             name={shop.name}
-                                                                            // checked={productBrand[brand.id]}
-                                                                            className="filter__input"
+                                                                            // checked={productsShop[brand.id]}
+                                                                            className="checkbox-with-text__input"
                                                                             type="checkbox"
                                                                             value={shop.id}
                                                                             id={shop.id}
@@ -296,7 +306,7 @@ const SubSubCategory = ({products, category, shops}) => {
                         <div className="subcat__body">
                             <div className="products pro flexwrap">
                                 {
-                                    filteredProducts?.map(product => (
+                                    categoryProducts?.map(product => (
                                         <div key={product._id} className="products__item item">
                                             <div className="products__media media">
                                                 <div className="products__thumbnail thumbnail">

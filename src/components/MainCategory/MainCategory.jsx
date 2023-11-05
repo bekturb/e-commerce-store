@@ -121,8 +121,8 @@ const MainCategory = ({category, products, categorySlug, currentPage, sortedItem
                                                                                     <input
                                                                                         onChange={handleColorCheckboxChange}
                                                                                         className="filter__input colors__input"
-                                                                                        type="radio"
-                                                                                        name="color"
+                                                                                        type="checkbox"
+                                                                                        name={color.color}
                                                                                         value={color.color}
                                                                                         id={color.color}
                                                                                     />

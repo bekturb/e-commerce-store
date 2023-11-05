@@ -107,6 +107,7 @@
     background: #fff;
     border: 1px solid #d3d4dd;
     border-radius: 6px;
+    cursor: pointer;
 
     &::after {
       content: '';
@@ -136,15 +137,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     gap: 10px;
     font-size: 16px;
     line-height: 22px;
   }
 
   &__count {
-    margin-left: 10px;
     font-size: 14px;
-    line-height: 20px;
     color: #868695;
   }
 
