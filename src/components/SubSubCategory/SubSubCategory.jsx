@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {useSelector} from "react-redux";
 import SecTop from "../SecTop/SecTop";
-import Ratings from "../Ratings/Ratings";
 import useBrandCounts from "../../customHooks/useBrandCounts";
 import useProductsColor from "../../customHooks/UseProductsColor";
 import useGetProductsSeller from "../../customHooks/useGetProductsSeller";
 import useFilteredCategoryProducts from "../../customHooks/useFilteredCategoryProducts";
-import "./subsubcategory.scss";
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import ProductsCart from "../ProductsCart/ProductsCart";
+import "./subsubcategory.scss";
+import Pagination from "../Pagination/Pagination";
 
 const SubSubCategory = ({categorySlug, products, category, currentPage, sortedItem, productColor, productPrice, perPage, setProductPrice, paginateProducts, handlePerPageChange, handleSort, handleColorCheckboxChange, handleBrandCheckboxChange, productBrand, shops}) => {
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -379,7 +379,7 @@ const SubSubCategory = ({categorySlug, products, category, currentPage, sortedIt
                             </div>
                         </div>
                         <div className="subcat__foot">
-
+                            <Pagination posts={categoryProducts}/>
                         </div>
                     </div>
                 </div>

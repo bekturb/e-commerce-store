@@ -2,6 +2,11 @@
   & .cat-navigation {
     justify-content: flex-start !important;
   }
+
+  &__foot {
+    width: 100%;
+    margin: 20px auto;
+  }
 }
 
 .dropdown {
