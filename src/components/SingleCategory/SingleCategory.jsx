@@ -16,8 +16,8 @@ const SingleCategory = () => {
      const showRef = useRef(null);
     const [hasSubCategory, setHasSubCategory] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [sortedItem, setSortedItem] = useState("Popularity");
     const [perPage, setPerPage] = useState("10");
+    const [sortedItem, setSortedItem] = useState("Popularity");
     const [productBrand, setProductBrand] = useState([]);
     const [productColor, setProductColor] = useState([]);
     const [productPrice, setProductPrice] = useState(0);
@@ -156,14 +156,12 @@ const SingleCategory = () => {
                         products={products}
                         category={category}
                         currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
                         sortedItem={sortedItem}
                         productColor={productColor}
                         productBrand={productBrand}
-                        productPrice={productPrice}
                         perPage={perPage}
-                        setProductPrice={setProductPrice}
-                        paginateProducts={paginateProducts}
-                        handlePerPageChange={handlePerPageChange}
+                        setPerPage={setPerPage}
                         handleBrandCheckboxChange={handleBrandCheckboxChange}
                         handleColorCheckboxChange={handleColorCheckboxChange}
                         handleSort={handleSort}

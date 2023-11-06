@@ -1,15 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import "./pagination.scss";
 
-const Pagination = ({posts}) => {
+const Pagination = ({posts, currentPage, postPerPage, SetCurrentPage, SetPageItem}) => {
 
-    const [postPerPage, SetPostPerPage] = useState(10);
-    const [currentPage, SetCurrentPage] = useState(1);
 
-    const [pageItem, SetPageItem] = useState({
-        start: 0,
-        end: postPerPage
-    })
 
     const onPageChangeEvent = (start, end) => {
         SetPageItem({
@@ -18,15 +12,9 @@ const Pagination = ({posts}) => {
         })
     }
 
-    const OnPerPostChangeEvent = (e) => {
-        SetPostPerPage(e.target.value);
-        SetCurrentPage(1);
-    }
 
 
-
-    const numOfPages = Math.ceil(posts.length / postPerPage);
-    // console.log(numOfPages);
+    const numOfPages = Math.ceil(posts.length / +postPerPage);
 
     const numOfButtons = [];
     for (let i = 1; i <= numOfPages; i++) {
@@ -73,19 +61,18 @@ const Pagination = ({posts}) => {
         }
 
         else if (currentPage > 4 && currentPage < numOfButtons.length - 2) {
-            // from 5 to 8 -> (10 - 2)
-            const sliced1 = numOfButtons.slice(currentPage - 2, currentPage)
-            // sliced1 (5-2, 5) -> [4,5]
-            const sliced2 = numOfButtons.slice(currentPage, currentPage + 1)
-            // sliced1 (5, 5+1) -> [6]
+
+            const sliced1 = numOfButtons.slice(currentPage - 2, currentPage);
+
+            const sliced2 = numOfButtons.slice(currentPage, currentPage + 1);
+
             tempNumberOfButtons = ([1, dotsLeft, ...sliced1, ...sliced2, dotsRight, numOfButtons.length])
-            // [1, '...', 4, 5, 6, '...', 10]
         }
 
         else if (currentPage > numOfButtons.length - 3) {
-            // > 7
+
             const sliced = numOfButtons.slice(numOfButtons.length - 4)
-            // slice(10-4)
+
             tempNumberOfButtons = ([1, dotsLeft, ...sliced])
         }
 
@@ -101,9 +88,9 @@ const Pagination = ({posts}) => {
         }
 
         setArrOfCurrButtons(tempNumberOfButtons);
-        const value = currentPage * postPerPage;
+        const value = currentPage * +postPerPage;
 
-        onPageChangeEvent(value - postPerPage, value)
+        onPageChangeEvent(value - +postPerPage, value)
     }, [currentPage, postPerPage, numOfPages]);
 
     return (

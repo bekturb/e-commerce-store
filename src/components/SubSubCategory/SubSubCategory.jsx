@@ -8,12 +8,16 @@ import useGetProductsSeller from "../../customHooks/useGetProductsSeller";
 import useFilteredCategoryProducts from "../../customHooks/useFilteredCategoryProducts";
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import ProductsCart from "../ProductsCart/ProductsCart";
-import "./subsubcategory.scss";
 import Pagination from "../Pagination/Pagination";
+import "./subsubcategory.scss";
 
-const SubSubCategory = ({categorySlug, products, category, currentPage, sortedItem, productColor, productPrice, perPage, setProductPrice, paginateProducts, handlePerPageChange, handleSort, handleColorCheckboxChange, handleBrandCheckboxChange, productBrand, shops}) => {
+const SubSubCategory = ({categorySlug, products, category, currentPage, setCurrentPage, sortedItem, productColor, productPrice, perPage, setPerPage, handleSort, handleColorCheckboxChange, handleBrandCheckboxChange, productBrand, shops}) => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [open, setOpen] = useState("");
+    const [pageItem, SetPageItem] = useState({
+        start: 0,
+        end: perPage
+    })
     const location = useLocation();
 
     const {data: brands, loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
@@ -372,14 +376,20 @@ const SubSubCategory = ({categorySlug, products, category, currentPage, sortedIt
                         <div className="subcat__body">
                             <div className="products pro flexwrap">
                                 {
-                                    categoryProducts?.map(product => (
+                                    categoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
                                         <ProductsCart product={product}/>
                                     ))
                                 }
                             </div>
                         </div>
                         <div className="subcat__foot">
-                            <Pagination posts={categoryProducts}/>
+                            <Pagination
+                                posts={categoryProducts}
+                                postPerPage={perPage}
+                                currentPage={currentPage}
+                                SetCurrentPage={setCurrentPage}
+                                SetPageItem={SetPageItem}
+                            />
                         </div>
                     </div>
                 </div>

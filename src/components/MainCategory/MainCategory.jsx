@@ -157,7 +157,7 @@ const MainCategory = ({category, products, categorySlug, currentPage, sortedItem
                                                                         <div className="byprice__price-range">
                                                                             <span
                                                                                 className="byprice__form">${productPrice}</span>
-                                                                            <span className="byprice__to">$500</span>
+                                                                            <span className="byprice__to">$100000</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
