@@ -9,8 +9,8 @@ import MainCategory from "../MainCategory/MainCategory";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import SubSubCategory from "../SubSubCategory/SubSubCategory";
-import "./single-category.scss";
 import {getAllShops} from "../../features/shopsSlice";
+import "./single-category.scss";
 
 const SingleCategory = () => {
      const showRef = useRef(null);

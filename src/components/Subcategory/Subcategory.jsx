@@ -2,10 +2,14 @@ import React, {useEffect, useState} from 'react';
 import Helmet from "../../layout/Helmet";
 import SubCategoryFilterBlock from "../SubCategoryFilterBlock/SubCategoryFilterBlock";
 import SubCategoriesCart from "../SubCategoriesCart/SubCategoriesCart";
+import {useLocation} from "react-router-dom";
+import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import "./subcategory.scss";
 
 const Subcategory = ({category, allCategories, showMenu, showRef}) => {
-    const [filteredCategories, setFilteredCategories] = useState([])
+    const [filteredCategories, setFilteredCategories] = useState([]);
+
+    const location = useLocation();
 
     useEffect(() => {
         const subCategories = allCategories?.filter(subCat => subCat.parentId === category._id);
@@ -39,16 +43,7 @@ const Subcategory = ({category, allCategories, showMenu, showRef}) => {
                                 <div className="section single-category__section">
                                     <div className="row section__row">
                                         <div className="cat-head">
-                                            <div className="breadcrumb">
-                                                <ul className="breadcrumb__list flexitem">
-                                                    <li className="breadcrumb__item">
-                                                        <a className="breadcrumb__link" href="#">Home</a>
-                                                    </li>
-                                                    <li className="breadcrumb__item">
-                                                        <a className="breadcrumb__link" href="#">{category?.name}</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                            <Breadcrumb location={location}/>
                                             <div className="cat-head__page">
                                                 <h1 className="cat-head__title">
                                                     {category?.name}

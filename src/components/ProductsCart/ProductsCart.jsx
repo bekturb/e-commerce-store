@@ -4,14 +4,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {addToWishList} from "../../features/wishList";
 import {fetchAuthMe} from "../../features/authMeSlice";
 import toast from "react-hot-toast";
-import {Link} from "react-router-dom";
 
-const CategoryProductsCart = ({product}) => {
+const ProductsCart = ({product}) => {
     const dispatch = useDispatch();
-    const {
-        data: userData,
-    } = useSelector(state => state.authMe);
-    const {data: wishListData, loading: wishListLoading, error: wishListErr} = useSelector(state => state.wishlist);
+
+    const {data: userData} = useSelector(state => state.authMe);
+    const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
 
     const [oldUserData, setOldUserData] = useState(userData);
     const [compareProducts, setCompareProducts] = useState([]);
@@ -63,43 +61,33 @@ const CategoryProductsCart = ({product}) => {
     }, [compareProducts]);
 
     return (
-        <div className="products__item item">
+        <div key={product._id} className="products__item item">
             <div className="products__media media">
                 <div className="products__thumbnail thumbnail">
                     <a className="products__link" href="">
                         <img className="products__image"
-                             src={product.variants[0].images[0].url}
-                             alt=""/>
+                             src={product.variants[0].images[0].url} alt=""/>
                     </a>
                 </div>
                 <div className="products__hover-able">
                     <ul className="products__hover-list">
-                        <>
-                            <li
-                                className="products__hover-item active">
-                                {
-                                    isProductInWishlist ? (
-                                        <button onClick={() => handleDeleteToWishlist(product._id)}
-                                                className="products__hover-link"
-                                                disabled={wishListLoading}
-                                        >
-                                            <span className="products__icons">
-                                                <i className="ri-heart-fill"></i>
-                                            </span>
-                                        </button>
-                                    ) : (
-                                        <button className="products__hover-link"
-                                                onClick={() => handleAddToWishlist(product._id)}
-                                                disabled={wishListLoading}
-                                        >
-                                            <span className="products__icons">
-                                                <i className="ri-heart-line"></i>
-                                            </span>
-                                        </button>
-                                    )
-                                }
-                            </li>
-                        </>
+                        <li className="products__hover-item active">
+                            <button
+                                onClick={isProductInWishlist ? () => handleDeleteToWishlist(product._id) : () => handleAddToWishlist(product._id)}
+                                className="products__hover-link"
+                                disabled={wishListLoading}
+                            >
+                                <span className="products__icons">
+                                    {
+                                        isProductInWishlist ? (
+                                            <i className="ri-heart-fill"></i>
+                                        ) : (
+                                            <i className="ri-heart-line"></i>
+                                        )
+                                    }
+                                </span>
+                            </button>
+                        </li>
                         <li className="products__hover-item">
                             <button onClick={() => toggleCompareProduct(product?._id)} className="products__hover-link">
                                <span className="products__icons">
@@ -111,33 +99,24 @@ const CategoryProductsCart = ({product}) => {
                             </button>
                         </li>
                         <li className="products__hover-item">
-                            <button className="products__hover-link">
-                               <span className="products__icons">
-                                   <i className="ri-shuffle-line"></i>
-                               </span>
-                            </button>
+                            <a className="products__hover-link" href=""><i
+                                className="ri-shuffle-line"></i>
+                            </a>
                         </li>
                     </ul>
-                </div>
-                <div className="products__discount circle">
-                     <span className="products__percentage">
-                          {product.salePercentage}%
-                     </span>
                 </div>
             </div>
             <div className="products__content content">
                 <div className="content__rating">
                     <div className="content__stars">
-                        <Ratings rating={product?.totalRating}/>
+                        <Ratings rating={product.totalRating}/>
                     </div>
                     <span className="content__text mini-text">
-                                                ({product?.reviews.length})
+                                                ({product.reviews.length})
                                             </span>
                 </div>
                 <h3 className="content__main-links">
-                    <Link to="/" className="content__link">
-                        {product.name}
-                    </Link>
+                    <a className="content__link" href="">{product.name}</a>
                 </h3>
                 <div className="content__price price">
                     {
@@ -148,8 +127,7 @@ const CategoryProductsCart = ({product}) => {
                                                 ${product.variants[0].originalPrice}
                                             </span>
                     }
-                    {
-                        product.variants[0].discountPrice &&
+                    {product.variants[0].discountPrice &&
                         <span className="price__old mini-text">
                                                 ${product.variants[0].originalPrice}
                                             </span>}
@@ -159,4 +137,4 @@ const CategoryProductsCart = ({product}) => {
     );
 };
 
-export default CategoryProductsCart;
+export default ProductsCart;

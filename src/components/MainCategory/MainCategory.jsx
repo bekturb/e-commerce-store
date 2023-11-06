@@ -8,11 +8,14 @@ import CategoryFilterBlock from "../CategoryFilterBlock/CategoryFilterBlock";
 import useFilteredCategoryProducts from "../../customHooks/useFilteredCategoryProducts";
 import useBrandCounts from "../../customHooks/useBrandCounts";
 import useProductsColor from "../../customHooks/UseProductsColor";
+import Breadcrumb from "../Breadcrumbs/Breadcrumb";
+import {useLocation} from "react-router-dom";
 import "./main-category.scss";
 
 const MainCategory = ({category, products, categorySlug, currentPage, sortedItem, productColor, productBrand, productPrice, setProductPrice, perPage, paginateProducts, handlePerPageChange, loadMoreProducts, handleBrandCheckboxChange, handleColorCheckboxChange, handleSort, showRef, showMenu}) => {
     const [filteredCategories, setFilteredCategories] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const location = useLocation();
 
     const {data: categories, loading: catsLoading, error: catsErr} = useSelector(state => state.categories);
     const {loading: productsLoad, error: productsErr} = useSelector(state => state.products);
@@ -171,16 +174,7 @@ const MainCategory = ({category, products, categorySlug, currentPage, sortedItem
                             <div className="section single-category__section">
                                 <div className="row section__row">
                                     <div className="cat-head">
-                                        <div className="breadcrumb">
-                                            <ul className="breadcrumb__list flexitem">
-                                                <li className="breadcrumb__item">
-                                                    <a className="breadcrumb__link" href="#">Home</a>
-                                                </li>
-                                                <li className="breadcrumb__item">
-                                                    <a className="breadcrumb__link" href="#">{category?.name}</a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <Breadcrumb location={location}/>
                                         <div className="cat-head__page">
                                             <h1 className="cat-head__title">
                                                 {category?.name}
