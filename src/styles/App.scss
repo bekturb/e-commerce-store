@@ -206,6 +206,19 @@ h4{
   }
 }
 
+.view-all {
+  font-size: var(--font-small);
+  display: flex;
+  gap: 1em;
+  transition: var(--trans-color);
+  border: none;
+  background-color: transparent;
+
+  &:hover {
+    color: var(--light-text-color);
+  }
+}
+
 .error {
   color: var(--primary-color);
   font-weight: 400;

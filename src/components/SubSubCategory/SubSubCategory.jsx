@@ -10,10 +10,28 @@ import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import ProductsCart from "../ProductsCart/ProductsCart";
 import Pagination from "../Pagination/Pagination";
 import "./subsubcategory.scss";
+import Search from "../Search/Search";
 
-const SubSubCategory = ({categorySlug, products, category, currentPage, setCurrentPage, sortedItem, productColor, productPrice, perPage, setPerPage, handleSort, handleColorCheckboxChange, handleBrandCheckboxChange, productBrand, shops}) => {
+const SubSubCategory = ({
+                            categorySlug,
+                            products,
+                            category,
+                            currentPage,
+                            setCurrentPage,
+                            sortedItem,
+                            productColor,
+                            productPrice,
+                            perPage,
+                            handleSort,
+                            handleColorCheckboxChange,
+                            handleBrandCheckboxChange,
+                            productBrand,
+                            shops
+                        }) => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [open, setOpen] = useState("");
+    const [showOtherColors, setShowOtherColors] = useState(false);
+    const [filteredColors, setFilteredColors] = useState([]);
     const [pageItem, SetPageItem] = useState({
         start: 0,
         end: perPage
@@ -32,14 +50,29 @@ const SubSubCategory = ({categorySlug, products, category, currentPage, setCurre
     });
     const brandCounts = useBrandCounts(filteredProducts, brands);
     const uniqueColors = useProductsColor(filteredProducts);
-    const productsShop  = useGetProductsSeller(filteredProducts, shops);
+    const productsShop = useGetProductsSeller(filteredProducts, shops);
+
+    const handleSearchColors = (query) => {
+
+        const filteringColors = uniqueColors.filter((color) =>
+                color.color.toLowerCase().includes(query.toLowerCase())
+            )
+
+        setFilteredColors(filteringColors);
+    };
+
+    useEffect(() => {
+        if (uniqueColors.length > 0) {
+            setFilteredColors(uniqueColors)
+        }
+    },[uniqueColors])
 
     useEffect(() => {
         if (products?.length > 0) {
             const catProducts = products.filter(pro => pro.category === category._id);
             setFilteredProducts(catProducts)
         }
-    }, [products, category]);
+        }, [products, category]);
 
     const handleOpenDrop = (openDrop) => {
         if (open === openDrop) {
@@ -81,7 +114,7 @@ const SubSubCategory = ({categorySlug, products, category, currentPage, setCurre
                                                     </div>
                                                     <ul className="down__list">
                                                         {
-                                                            brandCounts.map(brand => (
+                                                            brandCounts.slice(0, 7).map(brand => (
                                                                 <li key={brand.id} className="down__item">
                                                                     <div className="checkbox-with-text">
                                                                         <input
@@ -115,7 +148,7 @@ const SubSubCategory = ({categorySlug, products, category, currentPage, setCurre
                                 }
                                 {
                                     uniqueColors.length > 0 && (
-                                        <div className="dropdown__sort">
+                                        <div className={open === "colors" ? "dropdown__sort open" : "dropdown__sort"}>
                                             <button className="dropdown__button" onClick={() => handleOpenDrop("colors")}>
                                                 <span className="dropdown__select">Colors</span>
                                                 {
@@ -129,14 +162,14 @@ const SubSubCategory = ({categorySlug, products, category, currentPage, setCurre
                                             <div
                                                 className={open === "colors" ? "dropdown__filter open" : "dropdown__filter"}>
                                                 <div className="down">
-                                                    <div className="down__form desktop-hide">
-                                                        <label>
-                                                            <input className="down__input" type="text"/>
-                                                        </label>
-                                                    </div>
+                                                    {
+                                                        showOtherColors && (
+                                                            <Search onSearch={handleSearchColors}/>
+                                                        )
+                                                    }
                                                     <ul className="down__list">
                                                         {
-                                                            uniqueColors.map((color, idx) => (
+                                                            filteredColors?.slice(0, 7).map((color, idx) => (
                                                                 <li key={idx} className="down__item">
                                                                     <div className="checkbox-with-text">
                                                                         <input
@@ -168,7 +201,46 @@ const SubSubCategory = ({categorySlug, products, category, currentPage, setCurre
                                                                 </li>
                                                             ))
                                                         }
+                                                        {
+                                                            showOtherColors &&  (
+                                                                filteredColors?.slice(7).map((color, idx) => (
+                                                                    <li key={idx} className="down__item">
+                                                                        <div className="checkbox-with-text">
+                                                                            <input
+                                                                                onChange={handleColorCheckboxChange}
+                                                                                name={color.color}
+                                                                                checked={productColor[color.color]}
+                                                                                className="checkbox-with-text__input"
+                                                                                type="checkbox"
+                                                                                value={color.color}
+                                                                                id={color.color}
+                                                                            />
+                                                                            <label htmlFor={color.color}
+                                                                                   className="checkbox-with-text__label">
+                                                                            <span
+                                                                                className="checkbox-with-text__decor"></span>
+                                                                                <span className="checkbox-with-text__text">
+                                                                            <span
+                                                                                className="checkbox-with-text__circle circle"
+                                                                                style={{'--color': `${color.color}`}}
+                                                                            >
+
+                                                                            </span>
+                                                                                    {color.color}
+                                                                                    <span
+                                                                                        className="checkbox-with-text__count">{color.count}</span>
+                                                                                 </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </li>
+                                                                ))
+                                                            )
+                                                        }
                                                     </ul>
+                                                    <button onClick={() => setShowOtherColors(true)}
+                                                            className="view-all down__view-all">View all
+                                                        <i className="ri-arrow-right-line"></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -377,7 +449,7 @@ const SubSubCategory = ({categorySlug, products, category, currentPage, setCurre
                             <div className="products pro flexwrap">
                                 {
                                     categoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
-                                        <ProductsCart product={product}/>
+                                        <ProductsCart key={product._id} product={product}/>
                                     ))
                                 }
                             </div>

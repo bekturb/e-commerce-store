@@ -100,7 +100,7 @@ const HeaderNav = () => {
                                                                                                 </ul>
                                                                                             )
                                                                                         }
-                                                                                        <a className="mega__view-all" href="">View all
+                                                                                        <a className="view-all" href="">View all
                                                                                             brands <i
                                                                                                 className="ri-arrow-right-line"></i></a>
                                                                                     </div>

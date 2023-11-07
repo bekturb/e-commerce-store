@@ -110,17 +110,6 @@
       color: var(--light-text-color);
     }
   }
-
-  &__view-all {
-    font-size: var(--font-small);
-    display: flex;
-    gap: 1em;
-    transition: var(--trans-color);
-
-    &:hover {
-      color: var(--light-text-color);
-    }
-  }
 }
 
 .fly-item {
