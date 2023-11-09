@@ -1,6 +1,6 @@
 .subcat {
   & .cat-navigation {
-    justify-content: flex-start !important;
+    justify-content: flex-end !important;
   }
 
   &__foot {
@@ -10,10 +10,24 @@
 }
 
 .dropdown {
-  display: none;
   position: relative;
+  justify-content: flex-end;
   margin-bottom: 2em;
   flex-grow: 1;
+
+  &__trigger {
+    position: relative;
+    margin-right: auto;
+  }
+
+  &__trigger-item {
+    align-items: center;
+    text-transform: uppercase;
+  }
+
+  &__items {
+    display: none;
+  }
 
   &__sort {
     position: relative;
@@ -22,11 +36,16 @@
     &.open .dropdown__filter {
       display: flex;
     }
+
+    &__all-btn {
+    }
   }
 
   &__button {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 10px;
     font-size: 14px;
     line-height: 20px;
     text-overflow: ellipsis;
@@ -43,6 +62,10 @@
     cursor: pointer;
   }
 
+  &__button-icon {
+    font-size: 1.2em;
+  }
+
   &__filter {
     display: none;
     flex-direction: column;
@@ -51,7 +74,7 @@
     padding: 20px;
     position: absolute;
     top: calc(100% + 20px);
-    left: calc(50% - 170px / 2);
+    left: calc(50% - 300px / 2);
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0, 0, 0, .1);
     background: #fff;
@@ -262,6 +285,9 @@
 
 @media screen and (min-width: 993px) {
   .dropdown {
-    display: flex;
+
+    &__items {
+      display: flex;
+    }
   }
 }

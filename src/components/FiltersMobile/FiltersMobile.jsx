@@ -1,6 +1,6 @@
 import React from 'react';
-import "./filter-mobile.scss"
 import Search from "../Search/Search";
+import "./filter-mobile.scss"
 
 const FiltersMobile = () => {
     return (
