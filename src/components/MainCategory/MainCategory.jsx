@@ -12,7 +12,7 @@ import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import {useLocation} from "react-router-dom";
 import "./main-category.scss";
 
-const MainCategory = ({category, products, categorySlug, currentPage, sortedItem, productColor, productBrand, productPrice, setProductPrice, perPage, paginateProducts, handlePerPageChange, loadMoreProducts, handleBrandCheckboxChange, handleColorCheckboxChange, handleSort, showRef, showMenu}) => {
+const MainCategory = ({category, products, categorySlug, currentPage, sortedItem, productColor, productBrand, productPrice, productMaxPrice, setProductPrice, perPage, paginateProducts, handlePerPageChange, loadMoreProducts, handleBrandCheckboxChange, handleColorCheckboxChange, handleSort, showRef, showMenu}) => {
     const [filteredCategories, setFilteredCategories] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const location = useLocation();
@@ -27,6 +27,7 @@ const MainCategory = ({category, products, categorySlug, currentPage, sortedItem
         productBrand,
         productColor,
         productPrice,
+        productMaxPrice,
         sortedItem,
     });
     const brandCounts = useBrandCounts(filteredProducts, brands);

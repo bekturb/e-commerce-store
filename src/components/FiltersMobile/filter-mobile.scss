@@ -4,12 +4,16 @@
   opacity: 1;
   display: block;
   top: 0;
-  right: 0;
+  right: -100%;
   width: 50%;
   height: 100%;
   overflow: hidden;
   background-color: #fff;
   transition: right .3s ease 0s;
+
+  &.show {
+    right: 0;
+  }
 
   &__wrapper {
     width: 100%;

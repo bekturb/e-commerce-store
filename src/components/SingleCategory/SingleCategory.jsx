@@ -21,6 +21,7 @@ const SingleCategory = () => {
     const [productBrand, setProductBrand] = useState([]);
     const [productColor, setProductColor] = useState([]);
     const [productPrice, setProductPrice] = useState(0);
+    const [productMaxPrice, setProductMaxPrice] = useState(100000);
 
     const {data: category, loading: catLoading, error: catError} = useSelector(state => state.category);
     const {data: allCategories, loading: allCatLoading, error: allCateErr} = useSelector(state => state.allCategories);
@@ -132,6 +133,7 @@ const SingleCategory = () => {
                         productColor={productColor}
                         productBrand={productBrand}
                         productPrice={productPrice}
+                        productMaxPrice={productMaxPrice}
                         perPage={perPage}
                         setProductPrice={setProductPrice}
                         paginateProducts={paginateProducts}
@@ -155,6 +157,10 @@ const SingleCategory = () => {
                         categorySlug={categorySlug}
                         products={products}
                         category={category}
+                        productPrice={productPrice}
+                        setProductPrice={setProductPrice}
+                        productMaxPrice={productMaxPrice}
+                        setProductMaxPrice={setProductMaxPrice}
                         currentPage={currentPage}
                         setCurrentPage={setCurrentPage}
                         sortedItem={sortedItem}

@@ -1,25 +1,24 @@
 import { useEffect, useState } from 'react';
 
 function useFilteredCategoryProducts({
-                                         filteredProducts,
-                                         categorySlug,
-                                         productBrand,
-                                         productColor,
-                                         productPrice,
-                                         sortedItem,
+                                         filteredProducts:filteredProducts,
+                                         productBrand:productBrand,
+                                         productColor:productColor,
+                                         productPrice:productPrice,
+                                         productMaxPrice:productMaxPrice,
+                                         sortedItem:sortedItem,
                                      }) {
     const [categoryProducts, setCategoryProducts] = useState([]);
 
     useEffect(() => {
         if (
-            filteredProducts?.length > 0 &&
-            categorySlug
+            filteredProducts?.length > 0
         ) {
             const updatedFilteredProducts = filteredProducts?.filter((product) => {
                 if (
                     (!productBrand || productBrand.length === 0 || productBrand.includes(product.brand)) &&
                     (!productColor || productColor.length === 0 || product.variants.some((variant) => productColor.includes(variant.color))) &&
-                    (!productPrice || productPrice.length === 0 || product.variants.some((variant) => variant.originalPrice >= productPrice))
+                    (!productPrice || productPrice.length === 0 || !productMaxPrice || productMaxPrice.length === 0 || product.variants.some((variant) => variant.originalPrice >= productPrice && variant.originalPrice <= productMaxPrice))
                 ) {
                     return true;
                 }
@@ -33,10 +32,10 @@ function useFilteredCategoryProducts({
         }
     }, [
         filteredProducts,
-        categorySlug,
         productBrand,
         productColor,
         productPrice,
+        productMaxPrice,
         sortedItem,
     ]);
 

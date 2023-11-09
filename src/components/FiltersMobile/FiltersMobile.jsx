@@ -1,17 +1,45 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Search from "../Search/Search";
-import "./filter-mobile.scss"
+import useFilteredCategoryProducts from "../../customHooks/useFilteredCategoryProducts";
+import "./filter-mobile.scss";
 
-const FiltersMobile = () => {
+const FiltersMobile = ({
+                           setShowMobileFilter,
+                           showMobileFilter,
+                           filteredProducts,
+                           setFilteredCategoryProducts
+                       }) => {
+
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(0);
+
+    const categoryProducts = useFilteredCategoryProducts({
+        filteredProducts:filteredProducts,
+        productPrice:minPrice,
+        productMaxPrice:maxPrice,
+    });
+
+    const handleGetMaxPrice = (query) => {
+        setMaxPrice(query)
+    }
+
+    const handleGetMinPrice = (query) => {
+        setMinPrice(query)
+    }
+
+    const handleSubmitAll = () => {
+        setFilteredCategoryProducts(categoryProducts)
+    }
+
     return (
-        <div className="filters-mobile">
+        <div className={showMobileFilter ? "filters-mobile show" : "filters-mobile"}>
             <div className="filters-mobile__wrapper">
                 <div className="filters-mobile__container">
                     <div className="filters-mobile__header">
                         <h3 className="filters-mobile__title">Filter</h3>
                         <div className="filters-mobile__buttons">
                             <button className="filters-mobile__reset-btn">Reset</button>
-                            <button className="filters-mobile__close-btn"></button>
+                            <button onClick={() => setShowMobileFilter(false)} className="filters-mobile__close-btn"></button>
                         </div>
                     </div>
                     <div className="filters-mobile__list">
@@ -25,13 +53,13 @@ const FiltersMobile = () => {
                                         <h3 className="filter-fill__price-title">
                                             From
                                         </h3>
-                                        <Search/>
+                                        <Search onSearch={handleGetMinPrice}/>
                                     </div>
                                     <div className="filter-fill__price-item">
                                         <h3 className="filter-fill__price-title">
-                                            From
+                                            To
                                         </h3>
-                                        <Search/>
+                                        <Search onSearch={handleGetMaxPrice}/>
                                     </div>
                                 </div>
                             </div>
@@ -74,8 +102,8 @@ const FiltersMobile = () => {
                     </div>
                     <div className="filters-mobile__footer">
                         <div className="filters-mobile__btn-wrap">
-                            <button className="filters-mobile__btn-main">
-                                Show 22222 products
+                            <button onClick={handleSubmitAll} className="filters-mobile__btn-main">
+                                Show {categoryProducts.length} products
                             </button>
                         </div>
                     </div>

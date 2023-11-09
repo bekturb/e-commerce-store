@@ -17,11 +17,14 @@ const SubSubCategory = ({
                             categorySlug,
                             products,
                             category,
+                            productPrice,
+                            setProductPrice,
+                            productMaxPrice,
+                            setProductMaxPrice,
                             currentPage,
                             setCurrentPage,
                             sortedItem,
                             productColor,
-                            productPrice,
                             perPage,
                             handleSort,
                             handleColorCheckboxChange,
@@ -30,6 +33,7 @@ const SubSubCategory = ({
                             shops
                         }) => {
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filteredCategoryProducts, setFilteredCategoryProducts] = useState([]);
     const [open, setOpen] = useState("");
     const [showMobileFilter, setShowMobileFilter] = useState(true)
     const [showOtherColors, setShowOtherColors] = useState(false);
@@ -47,12 +51,11 @@ const SubSubCategory = ({
     const {data: brands, loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
 
     const categoryProducts = useFilteredCategoryProducts({
-        filteredProducts,
-        categorySlug,
-        productBrand,
-        productColor,
-        productPrice,
-        sortedItem,
+        filteredProducts:filteredProducts,
+        productBrand:productBrand,
+        productColor:productColor,
+        productPrice:productPrice,
+        sortedItem:sortedItem,
     });
     const brandCounts = useBrandCounts(filteredProducts, brands);
     const uniqueColors = useProductsColor(filteredProducts);
@@ -80,10 +83,11 @@ const SubSubCategory = ({
     };
 
     useEffect(() => {
-        setFilteredColors(uniqueColors)
-        setFilteredBrands(brandCounts)
-        setFilteredShops(productsShop)
-    }, [uniqueColors, brandCounts, productsShop])
+        setFilteredColors(uniqueColors);
+        setFilteredBrands(brandCounts);
+        setFilteredShops(productsShop);
+        setFilteredCategoryProducts(categoryProducts)
+    }, [uniqueColors, brandCounts, productsShop, categoryProducts])
 
     useEffect(() => {
         if (products?.length > 0) {
@@ -102,11 +106,16 @@ const SubSubCategory = ({
 
     return (
         <>
-            {
-                showMobileFilter && (
-                    <FiltersMobile/>
-                )
-            }
+             <FiltersMobile
+                 setShowMobileFilter={setShowMobileFilter}
+                 showMobileFilter={showMobileFilter}
+                 filteredProducts={filteredProducts}
+                 setFilteredCategoryProducts={setFilteredCategoryProducts}
+                 // productPrice={productPrice}
+                 // setProductPrice={setProductPrice}
+                 // productMaxPrice={productMaxPrice}
+                 // setProductMaxPrice={setProductMaxPrice}
+             />
             <div className="subcat">
                 <div className={showMobileFilter ? "overlay show" : "overlay"}></div>
                 <div className="container">
@@ -540,7 +549,7 @@ const SubSubCategory = ({
                                                 </div>
                                             </div>
                                         </div>
-                                        <button className="dropdown__button">
+                                        <button onClick={() => setShowMobileFilter(true)} className="dropdown__button">
                                             <span className="dropdown__button-icon">
                                                 <i className="ri-equalizer-line"></i>
                                             </span>
@@ -552,7 +561,7 @@ const SubSubCategory = ({
                             <div className="subcat__body">
                                 <div className="products pro flexwrap">
                                     {
-                                        categoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
+                                        filteredCategoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
                                             <ProductsCart key={product._id} product={product}/>
                                         ))
                                     }
