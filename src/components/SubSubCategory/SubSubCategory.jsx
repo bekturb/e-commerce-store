@@ -14,13 +14,9 @@ import FiltersMobile from "../FiltersMobile/FiltersMobile";
 import "./subsubcategory.scss";
 
 const SubSubCategory = ({
-                            categorySlug,
                             products,
                             category,
                             productPrice,
-                            setProductPrice,
-                            productMaxPrice,
-                            setProductMaxPrice,
                             currentPage,
                             setCurrentPage,
                             sortedItem,
@@ -29,13 +25,17 @@ const SubSubCategory = ({
                             handleSort,
                             handleColorCheckboxChange,
                             handleBrandCheckboxChange,
+                            handleShopCheckboxChange,
+                            productMaxPrice,
+                            setProductMaxPrice,
+                            setProductPrice,
                             productBrand,
+                            productShop,
                             shops
                         }) => {
     const [filteredProducts, setFilteredProducts] = useState([]);
-    const [filteredCategoryProducts, setFilteredCategoryProducts] = useState([]);
     const [open, setOpen] = useState("");
-    const [showMobileFilter, setShowMobileFilter] = useState(true)
+    const [showMobileFilter, setShowMobileFilter] = useState(false)
     const [showOtherColors, setShowOtherColors] = useState(false);
     const [showOtherBrands, setShowOtherBrands] = useState(false);
     const [showOtherShops, setShowOtherShops] = useState(false);
@@ -55,6 +55,7 @@ const SubSubCategory = ({
         productBrand:productBrand,
         productColor:productColor,
         productPrice:productPrice,
+        productShop: productShop,
         sortedItem:sortedItem,
     });
     const brandCounts = useBrandCounts(filteredProducts, brands);
@@ -86,8 +87,7 @@ const SubSubCategory = ({
         setFilteredColors(uniqueColors);
         setFilteredBrands(brandCounts);
         setFilteredShops(productsShop);
-        setFilteredCategoryProducts(categoryProducts)
-    }, [uniqueColors, brandCounts, productsShop, categoryProducts])
+    }, [uniqueColors, brandCounts, productsShop])
 
     useEffect(() => {
         if (products?.length > 0) {
@@ -107,10 +107,9 @@ const SubSubCategory = ({
     return (
         <>
              <FiltersMobile
+                 categoryProducts={categoryProducts}
                  setShowMobileFilter={setShowMobileFilter}
                  showMobileFilter={showMobileFilter}
-                 filteredProducts={filteredProducts}
-                 setFilteredCategoryProducts={setFilteredCategoryProducts}
                  filteredColors={filteredColors}
                  filteredBrands={filteredBrands}
                  filteredShops={filteredShops}
@@ -120,7 +119,18 @@ const SubSubCategory = ({
                  handleSearchBrands={handleSearchBrands}
                  handleSearchColors={handleSearchColors}
                  handleSearchShops={handleSearchShops}
-             />
+                 setProductMaxPrice={setProductMaxPrice}
+                 setProductPrice={setProductPrice}
+                 productPrice={productPrice}
+                 sortedItem={sortedItem}
+                 productColor={productColor}
+                 handleSort={handleSort}
+                 handleColorCheckboxChange={handleColorCheckboxChange}
+                 handleBrandCheckboxChange={handleBrandCheckboxChange}
+                 handleShopCheckboxChange={handleShopCheckboxChange}
+                 productBrand={productBrand}
+                 productShop={productShop}
+                 shops={shops}/>
             <div className="subcat">
                 <div className={showMobileFilter ? "overlay show" : "overlay"}></div>
                 <div className="container">
@@ -166,7 +176,7 @@ const SubSubCategory = ({
                                                                                 <input
                                                                                     onChange={handleBrandCheckboxChange}
                                                                                     name={brand.name}
-                                                                                    checked={productBrand[brand.id]}
+                                                                                    checked={productBrand.includes(brand.id)}
                                                                                     className="checkbox-with-text__input"
                                                                                     type="checkbox"
                                                                                     value={brand.id}
@@ -194,7 +204,7 @@ const SubSubCategory = ({
                                                                                     <input
                                                                                         onChange={handleBrandCheckboxChange}
                                                                                         name={brand.name}
-                                                                                        checked={productBrand[brand.id]}
+                                                                                        checked={productBrand.includes(brand.id)}
                                                                                         className="checkbox-with-text__input"
                                                                                         type="checkbox"
                                                                                         value={brand.id}
@@ -254,7 +264,7 @@ const SubSubCategory = ({
                                                                                 <input
                                                                                     onChange={handleColorCheckboxChange}
                                                                                     name={color.color}
-                                                                                    checked={productColor[color.color]}
+                                                                                    checked={productColor.includes(color.color)}
                                                                                     className="checkbox-with-text__input"
                                                                                     type="checkbox"
                                                                                     value={color.color}
@@ -288,7 +298,7 @@ const SubSubCategory = ({
                                                                                     <input
                                                                                         onChange={handleColorCheckboxChange}
                                                                                         name={color.color}
-                                                                                        checked={productColor[color.color]}
+                                                                                        checked={productColor.includes(color.color)}
                                                                                         className="checkbox-with-text__input"
                                                                                         type="checkbox"
                                                                                         value={color.color}
@@ -329,7 +339,7 @@ const SubSubCategory = ({
                                             productsShop.length > 0 && (
                                                 <div className={open === "seller" ? "dropdown__sort open" : "dropdown__sort"}>
                                                     <button className="dropdown__button" onClick={() => handleOpenDrop("seller")}>
-                                                        <span className="dropdown__select">Sellers</span>
+                                                        <span className="dropdown__select">Seller</span>
                                                         {
                                                             open === "seller" ? <span className="dropdown__icon">
                                             <i className="ri-arrow-down-s-line"></i>
@@ -352,8 +362,9 @@ const SubSubCategory = ({
                                                                         <li key={shop.id} className="down__item">
                                                                             <div className="checkbox-with-text">
                                                                                 <input
+                                                                                    onChange={handleShopCheckboxChange}
                                                                                     name={shop.name}
-                                                                                    // checked={productsShop[brand.id]}
+                                                                                    checked={productShop.includes(shop.id)}
                                                                                     className="checkbox-with-text__input"
                                                                                     type="checkbox"
                                                                                     value={shop.id}
@@ -379,8 +390,9 @@ const SubSubCategory = ({
                                                                             <li key={shop.id} className="down__item">
                                                                                 <div className="checkbox-with-text">
                                                                                     <input
+                                                                                        onChange={handleShopCheckboxChange}
                                                                                         name={shop.name}
-                                                                                        // checked={productsShop[brand.id]}
+                                                                                        checked={productShop.includes(shop.id)}
                                                                                         className="checkbox-with-text__input"
                                                                                         type="checkbox"
                                                                                         value={shop.id}
@@ -433,7 +445,7 @@ const SubSubCategory = ({
                                                         <li className="down__item">
                                                             <div className="radio-with-text">
                                                                 <input
-                                                                    onChange={(e) => handleSort(e.target.value)}
+                                                                    onChange={handleSort}
                                                                     name="filter"
                                                                     className="radio-with-text__input"
                                                                     value="Popularity"
@@ -453,7 +465,7 @@ const SubSubCategory = ({
                                                         <li className="down__item">
                                                             <div className="radio-with-text">
                                                                 <input
-                                                                    onChange={(e) => handleSort(e.target.value)}
+                                                                    onChange={handleSort}
                                                                     name="filter"
                                                                     className="radio-with-text__input"
                                                                     value="Product Name"
@@ -473,7 +485,7 @@ const SubSubCategory = ({
                                                         <li className="down__item">
                                                             <div className="radio-with-text">
                                                                 <input
-                                                                    onChange={(e) => handleSort(e.target.value)}
+                                                                    onChange={handleSort}
                                                                     name="filter"
                                                                     className="radio-with-text__input"
                                                                     value="Ascending Price"
@@ -493,7 +505,7 @@ const SubSubCategory = ({
                                                         <li className="down__item">
                                                             <div className="radio-with-text">
                                                                 <input
-                                                                    onChange={(e) => handleSort(e.target.value)}
+                                                                    onChange={handleSort}
                                                                     name="filter"
                                                                     className="radio-with-text__input"
                                                                     value="Descending Price"
@@ -513,7 +525,7 @@ const SubSubCategory = ({
                                                         <li className="down__item">
                                                             <div className="radio-with-text">
                                                                 <input
-                                                                    onChange={(e) => handleSort(e.target.value)}
+                                                                    onChange={handleSort}
                                                                     name="filter"
                                                                     className="radio-with-text__input"
                                                                     value="Rating"
@@ -533,7 +545,7 @@ const SubSubCategory = ({
                                                         <li className="down__item">
                                                             <div className="radio-with-text">
                                                                 <input
-                                                                    onChange={(e) => handleSort(e.target.value)}
+                                                                    onChange={handleSort}
                                                                     name="filter"
                                                                     className="radio-with-text__input"
                                                                     type="radio"
@@ -566,7 +578,7 @@ const SubSubCategory = ({
                             <div className="subcat__body">
                                 <div className="products pro flexwrap">
                                     {
-                                        filteredCategoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
+                                        categoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
                                             <ProductsCart key={product._id} product={product}/>
                                         ))
                                     }

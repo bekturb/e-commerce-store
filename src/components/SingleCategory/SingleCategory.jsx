@@ -20,6 +20,7 @@ const SingleCategory = () => {
     const [sortedItem, setSortedItem] = useState("Popularity");
     const [productBrand, setProductBrand] = useState([]);
     const [productColor, setProductColor] = useState([]);
+    const [productShop, setProductShop] = useState([]);
     const [productPrice, setProductPrice] = useState(0);
     const [productMaxPrice, setProductMaxPrice] = useState(100000);
 
@@ -83,26 +84,40 @@ const SingleCategory = () => {
     }
 
     const handleBrandCheckboxChange = (event) => {
-        const {value, checked} = event.target;
+        const {value} = event.target;
+        const findBrand = productBrand.indexOf(value)
 
-        if (checked) {
-            setProductBrand([...productBrand, value]);
-        } else {
+        if (findBrand !== -1) {
             setProductBrand(productBrand.filter((item) => item !== value));
+        } else {
+            setProductBrand([...productBrand, value]);
         }
     };
 
     const handleColorCheckboxChange = (event) => {
-        const {value, checked} = event.target;
+        const {value} = event.target;
+        const findColor = productColor.indexOf(value)
 
-        if (checked) {
-            setProductColor([...productColor, value]);
-        } else {
+        if (findColor !== -1) {
             setProductColor(productColor.filter((item) => item !== value));
+        } else {
+            setProductColor([...productColor, value]);
         }
     };
 
-    const handleSort = (value) => {
+    const handleShopCheckboxChange = (event) => {
+        const {value} = event.target;
+        const findShop = productShop.indexOf(value)
+
+        if (findShop !== -1) {
+            setProductShop(productShop.filter((item) => item !== value));
+        } else {
+            setProductShop([...productShop, value]);
+        }
+    };
+
+    const handleSort = (event) => {
+        const {value} = event.target;
         setSortedItem(value)
     }
 
@@ -154,7 +169,6 @@ const SingleCategory = () => {
                     />
                 ) : category?.parentId && !hasSubCategory ? (
                     <SubSubCategory
-                        categorySlug={categorySlug}
                         products={products}
                         category={category}
                         productPrice={productPrice}
@@ -166,10 +180,12 @@ const SingleCategory = () => {
                         sortedItem={sortedItem}
                         productColor={productColor}
                         productBrand={productBrand}
+                        productShop={productShop}
                         perPage={perPage}
                         setPerPage={setPerPage}
                         handleBrandCheckboxChange={handleBrandCheckboxChange}
                         handleColorCheckboxChange={handleColorCheckboxChange}
+                        handleShopCheckboxChange={handleShopCheckboxChange}
                         handleSort={handleSort}
                         shops={shops}
                     />

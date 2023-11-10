@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import Search from "../Search/Search";
-import useFilteredCategoryProducts from "../../customHooks/useFilteredCategoryProducts";
 import "./filter-mobile.scss";
 
 const FiltersMobile = ({
+                           categoryProducts,
                            setShowMobileFilter,
                            showMobileFilter,
-                           filteredProducts,
                            filteredColors,
                            filteredBrands,
                            filteredShops,
@@ -15,59 +14,25 @@ const FiltersMobile = ({
                            productsShop,
                            handleSearchBrands,
                            handleSearchColors,
-                           handleSearchShops,
-                           setFilteredCategoryProducts
+                           handleSearchShops, setProductPrice, setProductMaxPrice,
+                           productPrice,
+                           sortedItem,
+                           productColor,
+                           handleSort,
+                           handleColorCheckboxChange,
+                           handleBrandCheckboxChange,
+                           handleShopCheckboxChange,
+                           productBrand,
+                           productShop,
+                           shops
                        }) => {
 
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(0);
-    const [brandValue, setBrandValue] = useState([]);
     const [showAllBrands, setShowAllBrands] = useState(false);
-    const [colorValue, setColorValue] = useState([]);
     const [showAllColors, setShowAllColors] = useState(false);
     const [showAllShops, setShowAllShops] = useState(false);
 
-    const categoryProducts = useFilteredCategoryProducts({
-        filteredProducts: filteredProducts,
-        productPrice: minPrice,
-        productMaxPrice: maxPrice,
-        productBrand: brandValue,
-        productColor: colorValue,
-    });
-
-    const handleGetMaxPrice = (query) => {
-        setMaxPrice(query)
-    }
-
-    const handleGetMinPrice = (query) => {
-        setMinPrice(query)
-    }
-
-    const handleBrandCheckboxChange = (event) => {
-        const {value} = event.target;
-        const findBrand = brandValue.indexOf(value)
-
-        if (findBrand !== -1) {
-            setBrandValue(brandValue.filter((item) => item !== value));
-        } else {
-            setBrandValue([...brandValue, value]);
-        }
-    };
-
-    const handleColorCheckboxChange = (event) => {
-        const {value} = event.target;
-        const findColor = colorValue.indexOf(value)
-
-        if (findColor !== -1) {
-            setColorValue(colorValue.filter((item) => item !== value));
-        } else {
-            setColorValue([...colorValue, value]);
-        }
-    };
-
     const handleSubmitAll = () => {
-        setFilteredCategoryProducts(categoryProducts);
-        setShowMobileFilter(false);
+        setShowMobileFilter(false)
     }
 
     return (
@@ -93,13 +58,13 @@ const FiltersMobile = ({
                                         <h3 className="filter-fill__price-title">
                                             From
                                         </h3>
-                                        <Search onSearch={handleGetMinPrice}/>
+                                        <Search onSearch={setProductPrice}/>
                                     </div>
                                     <div className="filter-fill__price-item">
                                         <h3 className="filter-fill__price-title">
                                             To
                                         </h3>
-                                        <Search onSearch={handleGetMaxPrice}/>
+                                        <Search onSearch={setProductMaxPrice}/>
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +75,9 @@ const FiltersMobile = ({
                                     <div className="filters-mobile__item-head">
                                         <h3 className="filters-mobile__item-title">Brand</h3>
                                         <button className="filters-mobile__reset-btn">Reset</button>
-                                        <button onClick={() => setShowAllBrands(true)} className="filters-mobile__btn-cat">All</button>
+                                        <button onClick={() => setShowAllBrands(true)}
+                                                className="filters-mobile__btn-cat">All
+                                        </button>
                                     </div>
                                     <div className="filter-fill">
                                         <div className="down">
@@ -130,7 +97,7 @@ const FiltersMobile = ({
                                                                             <input
                                                                                 onChange={handleBrandCheckboxChange}
                                                                                 name={brand.name}
-                                                                                checked={brandValue[brand.id]}
+                                                                                checked={productBrand.includes(brand.id)}
                                                                                 className="checkbox-with-text__input"
                                                                                 type="checkbox"
                                                                                 value={brand.id}
@@ -155,12 +122,12 @@ const FiltersMobile = ({
                                                 ) : (
                                                     <ul className="filter-fill__slide">
                                                         {
-                                                            filteredBrands?.slice(0,2).map(brand => (
+                                                            filteredBrands?.slice(0, 5).map(brand => (
                                                                 <li key={brand.id} className="filter-fill__slide-item">
                                                                     <button
                                                                         onClick={handleBrandCheckboxChange}
                                                                         className={`filter-fill__slide-btn ${
-                                                                            brandValue.includes(brand.id) ? 'selected' : ''}`}
+                                                                            productBrand.includes(brand.id) ? 'selected' : ''}`}
                                                                         value={brand.id}
                                                                     >
                                                                         {brand.name}
@@ -185,7 +152,9 @@ const FiltersMobile = ({
                                     <div className="filters-mobile__item-head">
                                         <h3 className="filters-mobile__item-title">Color</h3>
                                         <button className="filters-mobile__reset-btn">Reset</button>
-                                        <button onClick={() => setShowAllColors(true)} className="filters-mobile__btn-cat">All</button>
+                                        <button onClick={() => setShowAllColors(true)}
+                                                className="filters-mobile__btn-cat">All
+                                        </button>
                                     </div>
                                     <div className="filter-fill">
                                         <div className="down">
@@ -205,7 +174,7 @@ const FiltersMobile = ({
                                                                             <input
                                                                                 onChange={handleColorCheckboxChange}
                                                                                 name={color.color}
-                                                                                checked={colorValue[color.color]}
+                                                                                checked={productColor.includes(color.color)}
                                                                                 className="checkbox-with-text__input"
                                                                                 type="checkbox"
                                                                                 value={color.color}
@@ -236,12 +205,12 @@ const FiltersMobile = ({
                                                 ) : (
                                                     <ul className="filter-fill__slide">
                                                         {
-                                                            filteredColors?.slice(0,2).map((color, idx) => (
+                                                            filteredColors?.slice(0, 5).map((color, idx) => (
                                                                 <li key={idx} className="filter-fill__slide-item">
                                                                     <button
                                                                         onClick={handleColorCheckboxChange}
                                                                         className={`filter-fill__slide-btn ${
-                                                                            colorValue.includes(color.color) ? 'selected' : ''}`}
+                                                                            productColor.includes(color.color) ? 'selected' : ''}`}
                                                                         value={color.color}
                                                                     >
                                                                         {color.color}
@@ -266,7 +235,9 @@ const FiltersMobile = ({
                                     <div className="filters-mobile__item-head">
                                         <h3 className="filters-mobile__item-title">Shop</h3>
                                         <button className="filters-mobile__reset-btn">Reset</button>
-                                        <button onClick={() => setShowAllShops(true)} className="filters-mobile__btn-cat">All</button>
+                                        <button onClick={() => setShowAllShops(true)}
+                                                className="filters-mobile__btn-cat">All
+                                        </button>
                                     </div>
                                     <div className="filter-fill">
                                         <div className="down">
@@ -280,26 +251,26 @@ const FiltersMobile = ({
                                                     <ul className="down__list">
                                                         {
                                                             showAllShops && (
-                                                                filteredBrands.map(brand => (
-                                                                    <li key={brand.id} className="down__item">
+                                                                filteredShops.map(shop => (
+                                                                    <li key={shop.id} className="down__item">
                                                                         <div className="checkbox-with-text">
                                                                             <input
-                                                                                onChange={handle}
-                                                                                name={brand.name}
-                                                                                checked={brandValue[brand.id]}
+                                                                                onChange={handleShopCheckboxChange}
+                                                                                name={shop.name}
+                                                                                checked={productShop.includes(shop.id)}
                                                                                 className="checkbox-with-text__input"
                                                                                 type="checkbox"
-                                                                                value={brand.id}
-                                                                                id={brand.id}
+                                                                                value={shop.id}
+                                                                                id={shop.id}
                                                                             />
-                                                                            <label htmlFor={brand.id}
+                                                                            <label htmlFor={shop.id}
                                                                                    className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
                                                                                 <span className="checkbox-with-text__text">
-                                                                                {brand.name}
+                                                                                {shop.name}
                                                                                     <span
-                                                                                        className="checkbox-with-text__count">{brand.count}</span>
+                                                                                        className="checkbox-with-text__count">{shop.count}</span>
                                                                                  </span>
                                                                             </label>
                                                                         </div>
@@ -311,17 +282,17 @@ const FiltersMobile = ({
                                                 ) : (
                                                     <ul className="filter-fill__slide">
                                                         {
-                                                            filteredBrands?.slice(0,2).map(brand => (
-                                                                <li key={brand.id} className="filter-fill__slide-item">
+                                                            filteredShops?.slice(0, 5).map(shop => (
+                                                                <li key={shop.id} className="filter-fill__slide-item">
                                                                     <button
-                                                                        onClick={handleBrandCheckboxChange}
+                                                                        onClick={handleShopCheckboxChange}
                                                                         className={`filter-fill__slide-btn ${
-                                                                            brandValue.includes(brand.id) ? 'selected' : ''}`}
-                                                                        value={brand.id}
+                                                                            productShop.includes(shop.id) ? 'selected' : ''}`}
+                                                                        value={shop.id}
                                                                     >
-                                                                        {brand.name}
+                                                                        {shop.name}
                                                                         <span className="filter-fill__slide-count">
-                                                                            {brand.count}
+                                                                            {shop.count}
                                                                         </span>
                                                                     </button>
                                                                 </li>

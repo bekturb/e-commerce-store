@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 
 function useFilteredCategoryProducts({
-                                         filteredProducts:filteredProducts,
-                                         productBrand:productBrand,
-                                         productColor:productColor,
-                                         productPrice:productPrice,
-                                         productMaxPrice:productMaxPrice,
-                                         sortedItem:sortedItem,
+                                         filteredProducts,
+                                         productBrand,
+                                         productColor,
+                                         productPrice,
+                                         productMaxPrice,
+                                         productShop,
+                                         sortedItem,
                                      }) {
     const [categoryProducts, setCategoryProducts] = useState([]);
 
@@ -18,6 +19,7 @@ function useFilteredCategoryProducts({
                 if (
                     (!productBrand || productBrand.length === 0 || productBrand.includes(product.brand)) &&
                     (!productColor || productColor.length === 0 || product.variants.some((variant) => productColor.includes(variant.color))) &&
+                    (!productShop || productShop.length === 0 || productShop.includes(product.shopId)) &&
                     (!productPrice || productPrice.length === 0 || !productMaxPrice || productMaxPrice.length === 0 || product.variants.some((variant) => variant.originalPrice >= productPrice && variant.originalPrice <= productMaxPrice))
                 ) {
                     return true;
@@ -34,6 +36,7 @@ function useFilteredCategoryProducts({
         filteredProducts,
         productBrand,
         productColor,
+        productShop,
         productPrice,
         productMaxPrice,
         sortedItem,
