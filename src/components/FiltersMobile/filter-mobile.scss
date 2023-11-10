@@ -5,7 +5,7 @@
   display: block;
   top: 0;
   right: -100%;
-  width: 50%;
+  width: 30rem;
   height: 100%;
   overflow: hidden;
   background-color: #fff;
@@ -23,7 +23,7 @@
   &__container {
     width: 100%;
     height: 100%;
-    padding: 16px;
+    padding: 24px 40px;
   }
 
   &__header {
@@ -141,6 +141,7 @@
     margin-left: 20px;
     border: none;
     background-color: transparent;
+    cursor: pointer;
   }
 
   &__footer {
@@ -231,6 +232,11 @@
     cursor: pointer;
     min-width: 50px;
     background-color: transparent;
+
+    &.selected {
+      background: #f1f1f5;
+      border-color: #f1f1f5;
+    }
   }
 
   &__slide-count {

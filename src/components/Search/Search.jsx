@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 const Search = ({onSearch}) => {
     const handleSearch = (e) => {
@@ -13,6 +13,7 @@ const Search = ({onSearch}) => {
                     onChange={handleSearch}
                     className="down__input"
                     type="text"
+                    placeholder="search..."
                 />
             </label>
         </div>

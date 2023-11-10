@@ -111,10 +111,15 @@ const SubSubCategory = ({
                  showMobileFilter={showMobileFilter}
                  filteredProducts={filteredProducts}
                  setFilteredCategoryProducts={setFilteredCategoryProducts}
-                 // productPrice={productPrice}
-                 // setProductPrice={setProductPrice}
-                 // productMaxPrice={productMaxPrice}
-                 // setProductMaxPrice={setProductMaxPrice}
+                 filteredColors={filteredColors}
+                 filteredBrands={filteredBrands}
+                 filteredShops={filteredShops}
+                 brandCounts={brandCounts}
+                 uniqueColors={uniqueColors}
+                 productsShop={productsShop}
+                 handleSearchBrands={handleSearchBrands}
+                 handleSearchColors={handleSearchColors}
+                 handleSearchShops={handleSearchShops}
              />
             <div className="subcat">
                 <div className={showMobileFilter ? "overlay show" : "overlay"}></div>
@@ -139,10 +144,10 @@ const SubSubCategory = ({
                                                         <span className="dropdown__select">Brands</span>
                                                         {
                                                             open === "brands" ? <span className="dropdown__icon">
-                                            <i className="ri-arrow-down-s-line"></i>
-                                        </span> : <span className="dropdown__icon">
-                                            <i className="ri-arrow-up-s-line"></i>
-                                        </span>
+                                                                <i className="ri-arrow-down-s-line"></i>
+                                                            </span> : <span className="dropdown__icon">
+                                                                <i className="ri-arrow-up-s-line"></i>
+                                                            </span>
                                                         }
                                                     </button>
                                                     <div
