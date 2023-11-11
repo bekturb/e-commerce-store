@@ -12,6 +12,7 @@ import Pagination from "../Pagination/Pagination";
 import Search from "../Search/Search";
 import FiltersMobile from "../FiltersMobile/FiltersMobile";
 import "./subsubcategory.scss";
+import Popup from "../Popup/Popup";
 
 const SubSubCategory = ({
                             products,
@@ -35,7 +36,8 @@ const SubSubCategory = ({
                         }) => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [open, setOpen] = useState("");
-    const [showMobileFilter, setShowMobileFilter] = useState(false)
+    const [showMobileFilter, setShowMobileFilter] = useState(false);
+    const [showMobileSort, setShowMobileSort] = useState(false);
     const [showOtherColors, setShowOtherColors] = useState(false);
     const [showOtherBrands, setShowOtherBrands] = useState(false);
     const [showOtherShops, setShowOtherShops] = useState(false);
@@ -122,6 +124,7 @@ const SubSubCategory = ({
                  setProductMaxPrice={setProductMaxPrice}
                  setProductPrice={setProductPrice}
                  productPrice={productPrice}
+                 productMaxPrice={productMaxPrice}
                  sortedItem={sortedItem}
                  productColor={productColor}
                  handleSort={handleSort}
@@ -131,8 +134,9 @@ const SubSubCategory = ({
                  productBrand={productBrand}
                  productShop={productShop}
                  shops={shops}/>
+            <Popup show={showMobileSort}/>
             <div className="subcat">
-                <div className={showMobileFilter ? "overlay show" : "overlay"}></div>
+                <div className={showMobileFilter || showMobileSort ? "overlay show" : "overlay"}></div>
                 <div className="container">
                     <div className="subcat__wrapper">
                         <div className="subcat__column">
@@ -140,13 +144,20 @@ const SubSubCategory = ({
                                 <Breadcrumb location={location}/>
                                 <SecTop title={category?.name}/>
                                 <div className="dropdown flexitem">
-                                    <div className="dropdown__trigger desktop-hide">
-                                        <div className="dropdown__trigger-item">
-                                            <i className="ri-menu-2-line ri-2x"></i>
-                                            <span className="dropdown__trigger-title">filter</span>
+                                    <div className="sorter-mobile desktop-hide">
+                                        <div className="sorter-mobile__wrapper flexitem">
+                                            <div onClick={() => setShowMobileFilter(true)} className="dropdown__trigger">
+                                                <div className="sorter-mobile__trigger-item">
+                                                    <i className="ri-menu-2-line ri-2x"></i>
+                                                    <span className="sorter-mobile__trigger-title">filter</span>
+                                                </div>
+                                            </div>
+                                            <button onClick={() => setShowMobileSort(true)} className="sorter-mobile__btn">
+                                                {sortedItem}
+                                            </button>
                                         </div>
                                     </div>
-                                    <div className="dropdown__items flexitem">
+                                    <div className="dropdown__items">
                                         {
                                             brandCounts.length > 0 && (
                                                 <div className={open === "brands" ? "dropdown__sort open" : "dropdown__sort"}>

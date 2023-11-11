@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Search = ({onSearch}) => {
+const Search = ({onSearch, value}) => {
     const handleSearch = (e) => {
         const query = e.target.value;
         onSearch(query);
@@ -13,6 +13,7 @@ const Search = ({onSearch}) => {
                     onChange={handleSearch}
                     className="down__input"
                     type="text"
+                    defaultValue={value}
                     placeholder="search..."
                 />
             </label>

@@ -16,15 +16,13 @@ const FiltersMobile = ({
                            handleSearchColors,
                            handleSearchShops, setProductPrice, setProductMaxPrice,
                            productPrice,
-                           sortedItem,
+                           productMaxPrice,
                            productColor,
-                           handleSort,
                            handleColorCheckboxChange,
                            handleBrandCheckboxChange,
                            handleShopCheckboxChange,
                            productBrand,
                            productShop,
-                           shops
                        }) => {
 
     const [showAllBrands, setShowAllBrands] = useState(false);
@@ -58,13 +56,13 @@ const FiltersMobile = ({
                                         <h3 className="filter-fill__price-title">
                                             From
                                         </h3>
-                                        <Search onSearch={setProductPrice}/>
+                                        <Search onSearch={setProductPrice} value={productPrice}/>
                                     </div>
                                     <div className="filter-fill__price-item">
                                         <h3 className="filter-fill__price-title">
                                             To
                                         </h3>
-                                        <Search onSearch={setProductMaxPrice}/>
+                                        <Search onSearch={setProductMaxPrice} value={productMaxPrice}/>
                                     </div>
                                 </div>
                             </div>

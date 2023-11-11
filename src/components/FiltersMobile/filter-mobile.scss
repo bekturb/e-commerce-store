@@ -5,7 +5,7 @@
   display: block;
   top: 0;
   right: -100%;
-  width: 30rem;
+  width: 100%;
   height: 100%;
   overflow: hidden;
   background-color: #fff;
@@ -242,5 +242,11 @@
   &__slide-count {
     color: #9d9da5;
     margin-left: 4px;
+  }
+}
+
+@media screen and (min-width: 993px) {
+  .filters-mobile {
+    width: 30rem;
   }
 }

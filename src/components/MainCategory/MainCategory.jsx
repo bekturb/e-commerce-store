@@ -152,6 +152,7 @@ const MainCategory = ({category, products, categorySlug, currentPage, sortedItem
                                                                                 min="0"
                                                                                 max="100000"
                                                                                 className="byprice__input"
+                                                                                defaultValue={productPrice}
                                                                                 onChange={e => setProductPrice(e.target.value)}
                                                                             />
                                                                         </div>
