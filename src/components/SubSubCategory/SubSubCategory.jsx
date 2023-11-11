@@ -14,9 +14,10 @@ import FiltersMobile from "../FiltersMobile/FiltersMobile";
 import Popup from "../Popup/Popup";
 import {sortData} from "../../customData/sortData";
 import "./subsubcategory.scss";
+import Loader from "../Loader/Loader";
+import NotFound from "../NotFound/NotFound";
 
 const SubSubCategory = ({
-                            products,
                             category,
                             productPrice,
                             currentPage,
@@ -53,6 +54,7 @@ const SubSubCategory = ({
     const location = useLocation();
 
     const {data: brands, loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
+    const {data: products, loading: productsLoad, error: productsErr} = useSelector(state => state.products);
 
     const categoryProducts = useFilteredCategoryProducts({
         filteredProducts:filteredProducts,
@@ -497,21 +499,47 @@ const SubSubCategory = ({
                             <div className="subcat__body">
                                 <div className="products pro flexwrap">
                                     {
-                                        categoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
-                                            <ProductsCart key={product._id} product={product}/>
-                                        ))
+                                        productsLoad ? (
+                                            <div className="trending__loader">
+                                                <Loader />
+                                            </div>
+                                        ) : (
+                                            productsErr ? (
+                                                <div className="trending__loader">
+                                                    <NotFound error={productsErr} />
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    {
+                                                        categoryProducts?.length > 0 ? (
+                                                            categoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
+                                                                <ProductsCart key={product._id} product={product}/>
+                                                            ))
+                                                        ) : (
+                                                            <div>
+                                                                Not Found
+                                                            </div>
+                                                        )
+                                                    }
+                                                </>
+                                            )
+                                        )
                                     }
                                 </div>
                             </div>
-                            <div className="subcat__foot">
-                                <Pagination
-                                    posts={categoryProducts}
-                                    postPerPage={perPage}
-                                    currentPage={currentPage}
-                                    SetCurrentPage={setCurrentPage}
-                                    SetPageItem={SetPageItem}
-                                />
-                            </div>
+                            {
+                                categoryProducts.length > 1 && (
+                                    <div className="subcat__foot">
+                                        <Pagination
+                                            posts={categoryProducts}
+                                            postPerPage={perPage}
+                                            currentPage={currentPage}
+                                            SetCurrentPage={setCurrentPage}
+                                            SetPageItem={SetPageItem}
+                                        />
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
                 </div>

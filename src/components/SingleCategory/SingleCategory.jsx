@@ -168,7 +168,6 @@ const SingleCategory = () => {
                     />
                 ) : category?.parentId && !hasSubCategory ? (
                     <SubSubCategory
-                        products={products}
                         category={category}
                         productPrice={productPrice}
                         setProductPrice={setProductPrice}
