@@ -116,8 +116,7 @@ const SingleCategory = () => {
         }
     };
 
-    const handleSort = (event) => {
-        const {value} = event.target;
+    const handleSort = (value) => {
         setSortedItem(value)
     }
 
@@ -177,6 +176,7 @@ const SingleCategory = () => {
                         setProductMaxPrice={setProductMaxPrice}
                         currentPage={currentPage}
                         setCurrentPage={setCurrentPage}
+                        setSortedItem={setSortedItem}
                         sortedItem={sortedItem}
                         productColor={productColor}
                         productBrand={productBrand}

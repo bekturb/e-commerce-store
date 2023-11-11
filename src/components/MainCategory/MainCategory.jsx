@@ -10,6 +10,7 @@ import useBrandCounts from "../../customHooks/useBrandCounts";
 import useProductsColor from "../../customHooks/UseProductsColor";
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import {useLocation} from "react-router-dom";
+import {sortData} from "../../customData/sortData";
 import "./main-category.scss";
 
 const MainCategory = ({category, products, categorySlug, currentPage, sortedItem, productColor, productBrand, productPrice, productMaxPrice, setProductPrice, perPage, paginateProducts, handlePerPageChange, loadMoreProducts, handleBrandCheckboxChange, handleColorCheckboxChange, handleSort, showRef, showMenu}) => {
@@ -198,24 +199,13 @@ const MainCategory = ({category, products, categorySlug, currentPage, sortedItem
                                                     <i className="ri-arrow-down-s-line"></i>
                                                 </div>
                                                 <ul className="cat-navigation__list">
-                                                    <li onClick={() => handleSort("Popularity")}
-                                                        className="cat-navigation__item">Popularity
-                                                    </li>
-                                                    <li onClick={() => handleSort("Product Name")}
-                                                        className="cat-navigation__item">Product Name
-                                                    </li>
-                                                    <li onClick={() => handleSort("Ascending Price")}
-                                                        className="cat-navigation__item">Ascending Price
-                                                    </li>
-                                                    <li onClick={() => handleSort("Descending Price")}
-                                                        className="cat-navigation__item">Descending Price
-                                                    </li>
-                                                    <li onClick={() => handleSort("Rating")}
-                                                        className="cat-navigation__item">Rating
-                                                    </li>
-                                                    <li onClick={() => handleSort("New")}
-                                                        className="cat-navigation__item">New
-                                                    </li>
+                                                    {
+                                                        sortData.map((el,idx) => (
+                                                            <li key={idx} onClick={() => handleSort(el.name)}
+                                                                className="cat-navigation__item">{el.name}
+                                                            </li>
+                                                        ))
+                                                    }
                                                 </ul>
                                             </div>
                                             <div className="cat-navigation__perpage mobile-hide">

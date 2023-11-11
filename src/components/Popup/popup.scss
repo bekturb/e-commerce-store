@@ -48,10 +48,10 @@
     padding: 8px 0;
     border-radius: 8px;
     cursor: pointer;
+  }
 
-    &:active {
-      background-color: #f6f6f9;
-    }
+  &__item-bg {
+    background-color: #f6f6f9!important;
   }
 
   &__btn {

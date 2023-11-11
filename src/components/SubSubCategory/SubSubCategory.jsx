@@ -11,8 +11,9 @@ import ProductsCart from "../ProductsCart/ProductsCart";
 import Pagination from "../Pagination/Pagination";
 import Search from "../Search/Search";
 import FiltersMobile from "../FiltersMobile/FiltersMobile";
-import "./subsubcategory.scss";
 import Popup from "../Popup/Popup";
+import {sortData} from "../../customData/sortData";
+import "./subsubcategory.scss";
 
 const SubSubCategory = ({
                             products,
@@ -24,6 +25,7 @@ const SubSubCategory = ({
                             productColor,
                             perPage,
                             handleSort,
+                            setSortedItem,
                             handleColorCheckboxChange,
                             handleBrandCheckboxChange,
                             handleShopCheckboxChange,
@@ -47,7 +49,7 @@ const SubSubCategory = ({
     const [pageItem, SetPageItem] = useState({
         start: 0,
         end: perPage
-    })
+    });
     const location = useLocation();
 
     const {data: brands, loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
@@ -57,6 +59,7 @@ const SubSubCategory = ({
         productBrand:productBrand,
         productColor:productColor,
         productPrice:productPrice,
+        productMaxPrice:productMaxPrice,
         productShop: productShop,
         sortedItem:sortedItem,
     });
@@ -134,7 +137,7 @@ const SubSubCategory = ({
                  productBrand={productBrand}
                  productShop={productShop}
                  shops={shops}/>
-            <Popup show={showMobileSort}/>
+            <Popup show={showMobileSort} setShow={setShowMobileSort} setSortedItem={setSortedItem} sortedItem={sortedItem}/>
             <div className="subcat">
                 <div className={showMobileFilter || showMobileSort ? "overlay show" : "overlay"}></div>
                 <div className="container">
@@ -453,126 +456,31 @@ const SubSubCategory = ({
                                                         </label>
                                                     </div>
                                                     <ul className="down__list">
-                                                        <li className="down__item">
-                                                            <div className="radio-with-text">
-                                                                <input
-                                                                    onChange={handleSort}
-                                                                    name="filter"
-                                                                    className="radio-with-text__input"
-                                                                    value="Popularity"
-                                                                    type="radio"
-                                                                    id="popularity"
-                                                                />
-                                                                <label htmlFor="popularity" className="radio-with-text__label">
+                                                        {
+                                                            sortData?.map((el, idx) => (
+                                                                <li key={idx} className="down__item">
+                                                                    <div className="radio-with-text">
+                                                                        <input
+                                                                            onChange={() => handleSort(el.name)}
+                                                                            name="filter"
+                                                                            checked={sortedItem === el.name}
+                                                                            className="radio-with-text__input"
+                                                                            value={el.name}
+                                                                            type="radio"
+                                                                            id={el.name}
+                                                                        />
+                                                                        <label htmlFor={el.name} className="radio-with-text__label">
                                                             <span className="radio-with-text__decor">
 
                                                             </span>
-                                                                    <span className="radio-with-text__text">
-                                                            Popularity
+                                                                            <span className="radio-with-text__text">
+                                                            {el.name}
                                                             </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li className="down__item">
-                                                            <div className="radio-with-text">
-                                                                <input
-                                                                    onChange={handleSort}
-                                                                    name="filter"
-                                                                    className="radio-with-text__input"
-                                                                    value="Product Name"
-                                                                    type="radio"
-                                                                    id="name"
-                                                                />
-                                                                <label htmlFor="name" className="radio-with-text__label">
-                                                            <span className="radio-with-text__decor">
-
-                                                            </span>
-                                                                    <span className="radio-with-text__text">
-                                                            Product Name
-                                                            </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li className="down__item">
-                                                            <div className="radio-with-text">
-                                                                <input
-                                                                    onChange={handleSort}
-                                                                    name="filter"
-                                                                    className="radio-with-text__input"
-                                                                    value="Ascending Price"
-                                                                    type="radio"
-                                                                    id="ascending"
-                                                                />
-                                                                <label htmlFor="ascending" className="radio-with-text__label">
-                                                            <span className="radio-with-text__decor">
-
-                                                            </span>
-                                                                    <span className="radio-with-text__text">
-                                                            Ascending Price
-                                                            </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li className="down__item">
-                                                            <div className="radio-with-text">
-                                                                <input
-                                                                    onChange={handleSort}
-                                                                    name="filter"
-                                                                    className="radio-with-text__input"
-                                                                    value="Descending Price"
-                                                                    type="radio"
-                                                                    id="descending"
-                                                                />
-                                                                <label htmlFor="descending" className="radio-with-text__label">
-                                                            <span className="radio-with-text__decor">
-
-                                                            </span>
-                                                                    <span className="radio-with-text__text">
-                                                            Descending Price
-                                                            </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li className="down__item">
-                                                            <div className="radio-with-text">
-                                                                <input
-                                                                    onChange={handleSort}
-                                                                    name="filter"
-                                                                    className="radio-with-text__input"
-                                                                    value="Rating"
-                                                                    type="radio"
-                                                                    id="rating"
-                                                                />
-                                                                <label htmlFor="rating" className="radio-with-text__label">
-                                                            <span className="radio-with-text__decor">
-
-                                                            </span>
-                                                                    <span className="radio-with-text__text">
-                                                            Rating
-                                                            </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li className="down__item">
-                                                            <div className="radio-with-text">
-                                                                <input
-                                                                    onChange={handleSort}
-                                                                    name="filter"
-                                                                    className="radio-with-text__input"
-                                                                    type="radio"
-                                                                    value="New"
-                                                                    id="new"
-                                                                />
-                                                                <label htmlFor="new" className="radio-with-text__label">
-                                                            <span className="radio-with-text__decor">
-
-                                                            </span>
-                                                                    <span className="radio-with-text__text">
-                                                            New
-                                                            </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
+                                                                        </label>
+                                                                    </div>
+                                                                </li>
+                                                            ))
+                                                        }
                                                     </ul>
                                                 </div>
                                             </div>

@@ -1,30 +1,27 @@
 import React from 'react';
+import {sortData} from "../../customData/sortData";
 import "./popup.scss"
 
-const Popup = ({show}) => {
+const Popup = ({show, setShow, setSortedItem, sortedItem}) => {
+
+    const handleListItem = (value) => {
+        setSortedItem(value)
+    }
 
     return (
         <div className={`popup popup-sorting ${show && " slideUp"}`}>
             <div className="content">
                 <div className="popup__content">
                     <ul className="popup-sorting__list">
-                        <li className="popup-sorting__item">
-                            Popularity
-                        </li>
-                        <li className="popup-sorting__item">
-                            Ascending Price
-                        </li>
-                        <li className="popup-sorting__item">
-                            Descending Price
-                        </li>
-                        <li className="popup-sorting__item">
-                            New
-                        </li>
-                        <li className="popup-sorting__item">
-                            Rating
-                        </li>
+                        {
+                            sortData.map((el,idx) => (
+                                <li key={idx} onClick={() => handleListItem(el.name)} className={`popup-sorting__item ${sortedItem === el.name && "popup-sorting__item-bg"}`}>
+                                    {el.name}
+                                </li>
+                            ))
+                        }
                     </ul>
-                    <button className="popup-sorting__btn popup__btn-main" type="button">Show</button>
+                    <button onClick={() => setShow(false)} className="popup-sorting__btn popup__btn-main" type="button">Show</button>
                 </div>
             </div>
         </div>
