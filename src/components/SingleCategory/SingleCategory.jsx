@@ -27,7 +27,7 @@ const SingleCategory = () => {
     const {data: category, loading: catLoading, error: catError} = useSelector(state => state.category);
     const {data: allCategories, loading: allCatLoading, error: allCateErr} = useSelector(state => state.allCategories);
     const {data: products} = useSelector(state => state.products);
-    const {data: shops, loading: shopsLoading, error: shopsErr} = useSelector(state => state.shops);
+    const {data: shops} = useSelector(state => state.shops);
 
     const dispatch = useDispatch();
     const {slug: categorySlug} = useParams();

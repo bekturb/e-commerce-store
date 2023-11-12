@@ -53,7 +53,7 @@ const SubSubCategory = ({
     });
     const location = useLocation();
 
-    const {data: brands, loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
+    const {data: brands} = useSelector(state => state.brands);
     const {data: products, loading: productsLoad, error: productsErr} = useSelector(state => state.products);
 
     const categoryProducts = useFilteredCategoryProducts({
@@ -143,427 +143,431 @@ const SubSubCategory = ({
                 shops={shops}/>
             <Popup show={showMobileSort} setShow={setShowMobileSort} setSortedItem={setSortedItem}
                    sortedItem={sortedItem}/>
+            <div className={showMobileFilter || showMobileSort ? "overlay show" : "overlay"}></div>
             <div className="subcat">
-                <div className={showMobileFilter || showMobileSort ? "overlay show" : "overlay"}></div>
                 <div className="container">
                     <div className="subcat__wrapper">
                         <div className="subcat__column">
                             <div className="subcat__head">
                                 <Breadcrumb location={location}/>
                                 <SecTop title={category?.name}/>
-                                <div className="dropdown flexitem">
-                                    <div className="sorter-mobile desktop-hide">
-                                        <div className="sorter-mobile__wrapper flexitem">
-                                            <div onClick={() => setShowMobileFilter(true)}
-                                                 className="dropdown__trigger">
-                                                <div className="sorter-mobile__trigger-item">
-                                                    <i className="ri-menu-2-line ri-2x"></i>
-                                                    <span className="sorter-mobile__trigger-title">filter</span>
-                                                    {
-                                                        sumOfLengths > 0 && (
-                                                            <span className="sorter-mobile__count">
+                                {
+                                    categoryProducts.length > 0 && (
+                                        <div className="dropdown flexitem">
+                                            <div className="sorter-mobile desktop-hide">
+                                                <div className="sorter-mobile__wrapper flexitem">
+                                                    <div onClick={() => setShowMobileFilter(true)}
+                                                         className="dropdown__trigger">
+                                                        <div className="sorter-mobile__trigger-item">
+                                                            <i className="ri-menu-2-line ri-2x"></i>
+                                                            <span className="sorter-mobile__trigger-title">filter</span>
+                                                            {
+                                                                sumOfLengths > 0 && (
+                                                                    <span className="sorter-mobile__count">
                                                                 {sumOfLengths}
                                                             </span>
-                                                        )
-                                                    }
+                                                                )
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <button onClick={() => setShowMobileSort(true)}
+                                                            className="sorter-mobile__btn">
+                                                        {sortedItem}
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <button onClick={() => setShowMobileSort(true)}
-                                                    className="sorter-mobile__btn">
-                                                {sortedItem}
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div className="dropdown__items">
-                                        {
-                                            brandCounts.length > 0 && (
-                                                <div
-                                                    className={open === "brands" ? "dropdown__sort open" : "dropdown__sort"}>
-                                                    <button className="dropdown__button"
-                                                            onClick={() => handleOpenDrop("brands")}>
-                                                        <span className="dropdown__select">Brands</span>
-                                                        {
-                                                            open === "brands" ? <span className="dropdown__icon">
+                                            <div className="dropdown__items">
+                                                {
+                                                    brandCounts.length > 0 && (
+                                                        <div
+                                                            className={open === "brands" ? "dropdown__sort open" : "dropdown__sort"}>
+                                                            <button className="dropdown__button"
+                                                                    onClick={() => handleOpenDrop("brands")}>
+                                                                <span className="dropdown__select">Brands</span>
+                                                                {
+                                                                    open === "brands" ? <span className="dropdown__icon">
                                                                 <i className="ri-arrow-down-s-line"></i>
                                                             </span> : <span className="dropdown__icon">
                                                                 <i className="ri-arrow-up-s-line"></i>
                                                             </span>
-                                                        }
-                                                    </button>
-                                                    {
-                                                        productBrand.length > 0 && (
-                                                            <span className="dropdown__count">
+                                                                }
+                                                            </button>
+                                                            {
+                                                                productBrand.length > 0 && (
+                                                                    <span className="dropdown__count">
                                                                 {productBrand.length}
                                                             </span>
-                                                        )
-                                                    }
-                                                    <div
-                                                        className="dropdown__filter">
-                                                        <div className="down">
-                                                            {
-                                                                showOtherBrands && (
-                                                                    <Search onSearch={handleSearchBrands}/>
                                                                 )
                                                             }
-                                                            <ul className="down__list">
-                                                                {
-                                                                    filteredBrands.slice(0, 7).map(brand => (
-                                                                        <li key={brand.id} className="down__item">
-                                                                            <div className="checkbox-with-text">
-                                                                                <input
-                                                                                    onChange={handleBrandCheckboxChange}
-                                                                                    name={brand.name}
-                                                                                    checked={productBrand.includes(brand.id)}
-                                                                                    className="checkbox-with-text__input"
-                                                                                    type="checkbox"
-                                                                                    value={brand.id}
-                                                                                    id={brand.id}
-                                                                                />
-                                                                                <label htmlFor={brand.id}
-                                                                                       className="checkbox-with-text__label">
+                                                            <div
+                                                                className="dropdown__filter">
+                                                                <div className="down">
+                                                                    {
+                                                                        showOtherBrands && (
+                                                                            <Search onSearch={handleSearchBrands}/>
+                                                                        )
+                                                                    }
+                                                                    <ul className="down__list">
+                                                                        {
+                                                                            filteredBrands.slice(0, 7).map(brand => (
+                                                                                <li key={brand.id} className="down__item">
+                                                                                    <div className="checkbox-with-text">
+                                                                                        <input
+                                                                                            onChange={handleBrandCheckboxChange}
+                                                                                            name={brand.name}
+                                                                                            checked={productBrand.includes(brand.id)}
+                                                                                            className="checkbox-with-text__input"
+                                                                                            type="checkbox"
+                                                                                            value={brand.id}
+                                                                                            id={brand.id}
+                                                                                        />
+                                                                                        <label htmlFor={brand.id}
+                                                                                               className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
-                                                                                    <span
-                                                                                        className="checkbox-with-text__text">
-                                                                                {brand.name}
-                                                                                        <span
-                                                                                            className="checkbox-with-text__count">{brand.count}</span>
-                                                                                 </span>
-                                                                                </label>
-                                                                            </div>
-                                                                        </li>
-                                                                    ))
-                                                                }
-                                                                {
-                                                                    showOtherBrands && (
-                                                                        filteredBrands.slice(7).map(brand => (
-                                                                            <li key={brand.id} className="down__item">
-                                                                                <div className="checkbox-with-text">
-                                                                                    <input
-                                                                                        onChange={handleBrandCheckboxChange}
-                                                                                        name={brand.name}
-                                                                                        checked={productBrand.includes(brand.id)}
-                                                                                        className="checkbox-with-text__input"
-                                                                                        type="checkbox"
-                                                                                        value={brand.id}
-                                                                                        id={brand.id}
-                                                                                    />
-                                                                                    <label htmlFor={brand.id}
-                                                                                           className="checkbox-with-text__label">
-                                                                            <span
-                                                                                className="checkbox-with-text__decor"></span>
-                                                                                        <span
-                                                                                            className="checkbox-with-text__text">
-                                                                                {brand.name}
                                                                                             <span
-                                                                                                className="checkbox-with-text__count">{brand.count}</span>
+                                                                                                className="checkbox-with-text__text">
+                                                                                {brand.name}
+                                                                                                <span
+                                                                                                    className="checkbox-with-text__count">{brand.count}</span>
                                                                                  </span>
-                                                                                    </label>
-                                                                                </div>
-                                                                            </li>
-                                                                        ))
-                                                                    )
-                                                                }
-                                                            </ul>
-                                                            {
-                                                                brandCounts.length > 7 && (
-                                                                    <button onClick={() => setShowOtherBrands(true)}
-                                                                            className="view-all down__view-all">View all
-                                                                        <i className="ri-arrow-right-line"></i>
-                                                                    </button>
-                                                                )
-                                                            }
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+                                                                            ))
+                                                                        }
+                                                                        {
+                                                                            showOtherBrands && (
+                                                                                filteredBrands.slice(7).map(brand => (
+                                                                                    <li key={brand.id} className="down__item">
+                                                                                        <div className="checkbox-with-text">
+                                                                                            <input
+                                                                                                onChange={handleBrandCheckboxChange}
+                                                                                                name={brand.name}
+                                                                                                checked={productBrand.includes(brand.id)}
+                                                                                                className="checkbox-with-text__input"
+                                                                                                type="checkbox"
+                                                                                                value={brand.id}
+                                                                                                id={brand.id}
+                                                                                            />
+                                                                                            <label htmlFor={brand.id}
+                                                                                                   className="checkbox-with-text__label">
+                                                                            <span
+                                                                                className="checkbox-with-text__decor"></span>
+                                                                                                <span
+                                                                                                    className="checkbox-with-text__text">
+                                                                                {brand.name}
+                                                                                                    <span
+                                                                                                        className="checkbox-with-text__count">{brand.count}</span>
+                                                                                 </span>
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    </li>
+                                                                                ))
+                                                                            )
+                                                                        }
+                                                                    </ul>
+                                                                    {
+                                                                        brandCounts.length > 7 && (
+                                                                            <button onClick={() => setShowOtherBrands(true)}
+                                                                                    className="view-all down__view-all">View all
+                                                                                <i className="ri-arrow-right-line"></i>
+                                                                            </button>
+                                                                        )
+                                                                    }
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            )
-                                        }
-                                        {
-                                            uniqueColors.length > 0 && (
-                                                <div
-                                                    className={open === "colors" ? "dropdown__sort open" : "dropdown__sort"}>
-                                                    <button className="dropdown__button"
-                                                            onClick={() => handleOpenDrop("colors")}>
-                                                        <span className="dropdown__select">Colors</span>
-                                                        {
-                                                            open === "colors" ? <span className="dropdown__icon">
+                                                    )
+                                                }
+                                                {
+                                                    uniqueColors.length > 0 && (
+                                                        <div
+                                                            className={open === "colors" ? "dropdown__sort open" : "dropdown__sort"}>
+                                                            <button className="dropdown__button"
+                                                                    onClick={() => handleOpenDrop("colors")}>
+                                                                <span className="dropdown__select">Colors</span>
+                                                                {
+                                                                    open === "colors" ? <span className="dropdown__icon">
                                             <i className="ri-arrow-down-s-line"></i>
                                         </span> : <span className="dropdown__icon">
                                             <i className="ri-arrow-up-s-line"></i>
                                         </span>
-                                                        }
-                                                    </button>
-                                                    {
-                                                        productColor.length > 0 && (
-                                                            <span className="dropdown__count">
+                                                                }
+                                                            </button>
+                                                            {
+                                                                productColor.length > 0 && (
+                                                                    <span className="dropdown__count">
                                                                 {productColor.length}
                                                             </span>
-                                                        )
-                                                    }
-                                                    <div
-                                                        className="dropdown__filter">
-                                                        <div className="down">
-                                                            {
-                                                                showOtherColors && (
-                                                                    <Search onSearch={handleSearchColors}/>
                                                                 )
                                                             }
-                                                            <ul className="down__list">
-                                                                {
-                                                                    filteredColors?.slice(0, 7).map((color, idx) => (
-                                                                        <li key={idx} className="down__item">
-                                                                            <div className="checkbox-with-text">
-                                                                                <input
-                                                                                    onChange={handleColorCheckboxChange}
-                                                                                    name={color.color}
-                                                                                    checked={productColor.includes(color.color)}
-                                                                                    className="checkbox-with-text__input"
-                                                                                    type="checkbox"
-                                                                                    value={color.color}
-                                                                                    id={color.color}
-                                                                                />
-                                                                                <label htmlFor={color.color}
-                                                                                       className="checkbox-with-text__label">
+                                                            <div
+                                                                className="dropdown__filter">
+                                                                <div className="down">
+                                                                    {
+                                                                        showOtherColors && (
+                                                                            <Search onSearch={handleSearchColors}/>
+                                                                        )
+                                                                    }
+                                                                    <ul className="down__list">
+                                                                        {
+                                                                            filteredColors?.slice(0, 7).map((color, idx) => (
+                                                                                <li key={idx} className="down__item">
+                                                                                    <div className="checkbox-with-text">
+                                                                                        <input
+                                                                                            onChange={handleColorCheckboxChange}
+                                                                                            name={color.color}
+                                                                                            checked={productColor.includes(color.color)}
+                                                                                            className="checkbox-with-text__input"
+                                                                                            type="checkbox"
+                                                                                            value={color.color}
+                                                                                            id={color.color}
+                                                                                        />
+                                                                                        <label htmlFor={color.color}
+                                                                                               className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
-                                                                                    <span
-                                                                                        className="checkbox-with-text__text">
-                                                                            <span
-                                                                                className="checkbox-with-text__circle circle"
-                                                                                style={{'--color': `${color.color}`}}
-                                                                            >
-
-                                                                            </span>
-                                                                                        {color.color}
-                                                                                        <span
-                                                                                            className="checkbox-with-text__count">{color.count}</span>
-                                                                                 </span>
-                                                                                </label>
-                                                                            </div>
-                                                                        </li>
-                                                                    ))
-                                                                }
-                                                                {
-                                                                    showOtherColors && (
-                                                                        filteredColors?.slice(7).map((color, idx) => (
-                                                                            <li key={idx} className="down__item">
-                                                                                <div className="checkbox-with-text">
-                                                                                    <input
-                                                                                        onChange={handleColorCheckboxChange}
-                                                                                        name={color.color}
-                                                                                        checked={productColor.includes(color.color)}
-                                                                                        className="checkbox-with-text__input"
-                                                                                        type="checkbox"
-                                                                                        value={color.color}
-                                                                                        id={color.color}
-                                                                                    />
-                                                                                    <label htmlFor={color.color}
-                                                                                           className="checkbox-with-text__label">
-                                                                            <span
-                                                                                className="checkbox-with-text__decor"></span>
-                                                                                        <span
-                                                                                            className="checkbox-with-text__text">
-                                                                            <span
-                                                                                className="checkbox-with-text__circle circle"
-                                                                                style={{'--color': `${color.color}`}}
-                                                                            >
-
-                                                                            </span>
-                                                                                            {color.color}
                                                                                             <span
-                                                                                                className="checkbox-with-text__count">{color.count}</span>
+                                                                                                className="checkbox-with-text__text">
+                                                                            <span
+                                                                                className="checkbox-with-text__circle circle"
+                                                                                style={{'--color': `${color.color}`}}
+                                                                            >
+
+                                                                            </span>
+                                                                                                {color.color}
+                                                                                                <span
+                                                                                                    className="checkbox-with-text__count">{color.count}</span>
                                                                                  </span>
-                                                                                    </label>
-                                                                                </div>
-                                                                            </li>
-                                                                        ))
-                                                                    )
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+                                                                            ))
+                                                                        }
+                                                                        {
+                                                                            showOtherColors && (
+                                                                                filteredColors?.slice(7).map((color, idx) => (
+                                                                                    <li key={idx} className="down__item">
+                                                                                        <div className="checkbox-with-text">
+                                                                                            <input
+                                                                                                onChange={handleColorCheckboxChange}
+                                                                                                name={color.color}
+                                                                                                checked={productColor.includes(color.color)}
+                                                                                                className="checkbox-with-text__input"
+                                                                                                type="checkbox"
+                                                                                                value={color.color}
+                                                                                                id={color.color}
+                                                                                            />
+                                                                                            <label htmlFor={color.color}
+                                                                                                   className="checkbox-with-text__label">
+                                                                            <span
+                                                                                className="checkbox-with-text__decor"></span>
+                                                                                                <span
+                                                                                                    className="checkbox-with-text__text">
+                                                                            <span
+                                                                                className="checkbox-with-text__circle circle"
+                                                                                style={{'--color': `${color.color}`}}
+                                                                            >
+
+                                                                            </span>
+                                                                                                    {color.color}
+                                                                                                    <span
+                                                                                                        className="checkbox-with-text__count">{color.count}</span>
+                                                                                 </span>
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    </li>
+                                                                                ))
+                                                                            )
+                                                                        }
+                                                                    </ul>
+                                                                    {
+                                                                        uniqueColors.length > 7 && (
+                                                                            <button onClick={() => setShowOtherColors(true)}
+                                                                                    className="view-all down__view-all">View all
+                                                                                <i className="ri-arrow-right-line"></i>
+                                                                            </button>
+                                                                        )
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+                                                {
+                                                    productsShop.length > 0 && (
+                                                        <div
+                                                            className={open === "seller" ? "dropdown__sort open" : "dropdown__sort"}>
+                                                            <button className="dropdown__button"
+                                                                    onClick={() => handleOpenDrop("seller")}>
+                                                                <span className="dropdown__select">Seller</span>
+                                                                {
+                                                                    open === "seller" ? <span className="dropdown__icon">
+                                            <i className="ri-arrow-down-s-line"></i>
+                                        </span> : <span className="dropdown__icon">
+                                            <i className="ri-arrow-up-s-line"></i>
+                                        </span>
                                                                 }
-                                                            </ul>
+                                                            </button>
                                                             {
-                                                                uniqueColors.length > 7 && (
-                                                                    <button onClick={() => setShowOtherColors(true)}
-                                                                            className="view-all down__view-all">View all
-                                                                        <i className="ri-arrow-right-line"></i>
-                                                                    </button>
+                                                                productShop.length > 0 && (
+                                                                    <span className="dropdown__count">
+                                                                {productShop.length}
+                                                            </span>
                                                                 )
                                                             }
+                                                            <div
+                                                                className="dropdown__filter">
+                                                                <div className="down">
+                                                                    {
+                                                                        showOtherShops && (
+                                                                            <Search onSearch={handleSearchShops}/>
+                                                                        )
+                                                                    }
+                                                                    <ul className="down__list">
+                                                                        {
+                                                                            filteredShops.slice(0, 7).map(shop => (
+                                                                                <li key={shop.id} className="down__item">
+                                                                                    <div className="checkbox-with-text">
+                                                                                        <input
+                                                                                            onChange={handleShopCheckboxChange}
+                                                                                            name={shop.name}
+                                                                                            checked={productShop.includes(shop.id)}
+                                                                                            className="checkbox-with-text__input"
+                                                                                            type="checkbox"
+                                                                                            value={shop.id}
+                                                                                            id={shop.id}
+                                                                                        />
+                                                                                        <label htmlFor={shop.id}
+                                                                                               className="checkbox-with-text__label">
+                                                                            <span
+                                                                                className="checkbox-with-text__decor"></span>
+                                                                                            <span
+                                                                                                className="checkbox-with-text__text">
+                                                                                {shop.name}
+                                                                                                <span
+                                                                                                    className="checkbox-with-text__count">{shop.count}</span>
+                                                                                 </span>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+                                                                            ))
+                                                                        }
+                                                                        {
+                                                                            showOtherShops && (
+                                                                                filteredShops.slice(7).map(shop => (
+                                                                                    <li key={shop.id} className="down__item">
+                                                                                        <div className="checkbox-with-text">
+                                                                                            <input
+                                                                                                onChange={handleShopCheckboxChange}
+                                                                                                name={shop.name}
+                                                                                                checked={productShop.includes(shop.id)}
+                                                                                                className="checkbox-with-text__input"
+                                                                                                type="checkbox"
+                                                                                                value={shop.id}
+                                                                                                id={shop.id}
+                                                                                            />
+                                                                                            <label htmlFor={shop.id}
+                                                                                                   className="checkbox-with-text__label">
+                                                                            <span
+                                                                                className="checkbox-with-text__decor"></span>
+                                                                                                <span
+                                                                                                    className="checkbox-with-text__text">
+                                                                                {shop.name}
+                                                                                                    <span
+                                                                                                        className="checkbox-with-text__count">{shop.count}</span>
+                                                                                 </span>
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    </li>
+                                                                                ))
+                                                                            )
+                                                                        }
+                                                                    </ul>
+                                                                    {
+                                                                        productsShop.length > 7 && (
+                                                                            <button onClick={() => setShowOtherShops(true)}
+                                                                                    className="view-all down__view-all">View all
+                                                                                <i className="ri-arrow-right-line"></i>
+                                                                            </button>
+                                                                        )
+                                                                    }
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            )
-                                        }
-                                        {
-                                            productsShop.length > 0 && (
-                                                <div
-                                                    className={open === "seller" ? "dropdown__sort open" : "dropdown__sort"}>
+                                                    )
+                                                }
+                                                <div className={open === "filter" ? "dropdown__sort open" : "dropdown__sort"}>
                                                     <button className="dropdown__button"
-                                                            onClick={() => handleOpenDrop("seller")}>
-                                                        <span className="dropdown__select">Seller</span>
+                                                            onClick={() => handleOpenDrop("filter")}>
+                                                        <span className="dropdown__select">{sortedItem}</span>
                                                         {
-                                                            open === "seller" ? <span className="dropdown__icon">
+                                                            open === "filter" ? <span className="dropdown__icon">
                                             <i className="ri-arrow-down-s-line"></i>
                                         </span> : <span className="dropdown__icon">
                                             <i className="ri-arrow-up-s-line"></i>
                                         </span>
                                                         }
                                                     </button>
-                                                    {
-                                                        productShop.length > 0 && (
-                                                            <span className="dropdown__count">
-                                                                {productShop.length}
-                                                            </span>
-                                                        )
-                                                    }
-                                                    <div
-                                                        className="dropdown__filter">
+                                                    <div className="dropdown__filter">
                                                         <div className="down">
-                                                            {
-                                                                showOtherShops && (
-                                                                    <Search onSearch={handleSearchShops}/>
-                                                                )
-                                                            }
+                                                            <div className="down__form desktop-hide">
+                                                                <label>
+                                                                    <input className="down__input" type="text"/>
+                                                                </label>
+                                                            </div>
                                                             <ul className="down__list">
                                                                 {
-                                                                    filteredShops.slice(0, 7).map(shop => (
-                                                                        <li key={shop.id} className="down__item">
-                                                                            <div className="checkbox-with-text">
+                                                                    sortData?.map((el, idx) => (
+                                                                        <li key={idx} className="down__item">
+                                                                            <div className="radio-with-text">
                                                                                 <input
-                                                                                    onChange={handleShopCheckboxChange}
-                                                                                    name={shop.name}
-                                                                                    checked={productShop.includes(shop.id)}
-                                                                                    className="checkbox-with-text__input"
-                                                                                    type="checkbox"
-                                                                                    value={shop.id}
-                                                                                    id={shop.id}
+                                                                                    onChange={() => handleSort(el.name)}
+                                                                                    name="filter"
+                                                                                    checked={sortedItem === el.name}
+                                                                                    className="radio-with-text__input"
+                                                                                    value={el.name}
+                                                                                    type="radio"
+                                                                                    id={el.name}
                                                                                 />
-                                                                                <label htmlFor={shop.id}
-                                                                                       className="checkbox-with-text__label">
-                                                                            <span
-                                                                                className="checkbox-with-text__decor"></span>
-                                                                                    <span
-                                                                                        className="checkbox-with-text__text">
-                                                                                {shop.name}
-                                                                                        <span
-                                                                                            className="checkbox-with-text__count">{shop.count}</span>
-                                                                                 </span>
-                                                                                </label>
-                                                                            </div>
-                                                                        </li>
-                                                                    ))
-                                                                }
-                                                                {
-                                                                    showOtherShops && (
-                                                                        filteredShops.slice(7).map(shop => (
-                                                                            <li key={shop.id} className="down__item">
-                                                                                <div className="checkbox-with-text">
-                                                                                    <input
-                                                                                        onChange={handleShopCheckboxChange}
-                                                                                        name={shop.name}
-                                                                                        checked={productShop.includes(shop.id)}
-                                                                                        className="checkbox-with-text__input"
-                                                                                        type="checkbox"
-                                                                                        value={shop.id}
-                                                                                        id={shop.id}
-                                                                                    />
-                                                                                    <label htmlFor={shop.id}
-                                                                                           className="checkbox-with-text__label">
-                                                                            <span
-                                                                                className="checkbox-with-text__decor"></span>
-                                                                                        <span
-                                                                                            className="checkbox-with-text__text">
-                                                                                {shop.name}
-                                                                                            <span
-                                                                                                className="checkbox-with-text__count">{shop.count}</span>
-                                                                                 </span>
-                                                                                    </label>
-                                                                                </div>
-                                                                            </li>
-                                                                        ))
-                                                                    )
-                                                                }
-                                                            </ul>
-                                                            {
-                                                                productsShop.length > 7 && (
-                                                                    <button onClick={() => setShowOtherShops(true)}
-                                                                            className="view-all down__view-all">View all
-                                                                        <i className="ri-arrow-right-line"></i>
-                                                                    </button>
-                                                                )
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )
-                                        }
-                                        <div className={open === "filter" ? "dropdown__sort open" : "dropdown__sort"}>
-                                            <button className="dropdown__button"
-                                                    onClick={() => handleOpenDrop("filter")}>
-                                                <span className="dropdown__select">{sortedItem}</span>
-                                                {
-                                                    open === "filter" ? <span className="dropdown__icon">
-                                            <i className="ri-arrow-down-s-line"></i>
-                                        </span> : <span className="dropdown__icon">
-                                            <i className="ri-arrow-up-s-line"></i>
-                                        </span>
-                                                }
-                                            </button>
-                                            <div className="dropdown__filter">
-                                                <div className="down">
-                                                    <div className="down__form desktop-hide">
-                                                        <label>
-                                                            <input className="down__input" type="text"/>
-                                                        </label>
-                                                    </div>
-                                                    <ul className="down__list">
-                                                        {
-                                                            sortData?.map((el, idx) => (
-                                                                <li key={idx} className="down__item">
-                                                                    <div className="radio-with-text">
-                                                                        <input
-                                                                            onChange={() => handleSort(el.name)}
-                                                                            name="filter"
-                                                                            checked={sortedItem === el.name}
-                                                                            className="radio-with-text__input"
-                                                                            value={el.name}
-                                                                            type="radio"
-                                                                            id={el.name}
-                                                                        />
-                                                                        <label htmlFor={el.name}
-                                                                               className="radio-with-text__label">
+                                                                                <label htmlFor={el.name}
+                                                                                       className="radio-with-text__label">
                                                             <span className="radio-with-text__decor">
 
                                                             </span>
-                                                                            <span className="radio-with-text__text">
+                                                                                    <span className="radio-with-text__text">
                                                             {el.name}
                                                             </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </li>
-                                                            ))
-                                                        }
-                                                    </ul>
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                    ))
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div className={open === "filter" ? "dropdown__sort open" : "dropdown__sort"}>
-                                            <button onClick={() => setShowMobileFilter(true)}
-                                                    className="dropdown__button">
+                                                <div className={open === "filter" ? "dropdown__sort open" : "dropdown__sort"}>
+                                                    <button onClick={() => setShowMobileFilter(true)}
+                                                            className="dropdown__button">
                                             <span className="dropdown__button-icon">
                                                 <i className="ri-equalizer-line"></i>
                                             </span>
-                                                All Filter
-                                            </button>
-                                            {
-                                                sumOfLengths > 0 && (
-                                                    <span className="dropdown__count">
+                                                        All Filter
+                                                    </button>
+                                                    {
+                                                        sumOfLengths > 0 && (
+                                                            <span className="dropdown__count">
                                                         {sumOfLengths}
                                                     </span>
-                                                )
-                                            }
+                                                        )
+                                                    }
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    )
+                                }
                             </div>
                             <div className="subcat__body">
                                 <div className="products pro flexwrap">
