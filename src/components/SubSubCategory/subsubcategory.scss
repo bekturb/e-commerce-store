@@ -16,8 +16,26 @@
   flex-grow: 1;
 
   &__items {
+    position: relative;
     display: none;
     align-items: center;
+  }
+
+  &__count {
+    font-size: 10px;
+    line-height: 13px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: 700;
+    display: block;
+    min-width: 16px;
+    text-align: center;
+    background: #f55123;
+    padding: 2px 5px 1px;
+    border-radius: 13px;
+    position: absolute;
+    top: -4px;
+    right: -4px;
   }
 
   &__sort {
@@ -289,6 +307,7 @@
   }
 
   &__trigger-item {
+    position: relative;
     align-items: center;
     text-transform: uppercase;
   }
@@ -314,6 +333,23 @@
       margin-left: 5px;
       transform: rotate(180deg);
     }
+  }
+
+  &__count {
+    font-size: 10px;
+    line-height: 13px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: 700;
+    display: block;
+    min-width: 16px;
+    text-align: center;
+    background: #f55123;
+    padding: 2px 5px 1px;
+    border-radius: 13px;
+    position: absolute;
+    top: -4px;
+    right: -4px;
   }
 }
 

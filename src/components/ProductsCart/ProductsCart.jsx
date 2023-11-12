@@ -61,7 +61,7 @@ const ProductsCart = ({product}) => {
     }, [compareProducts]);
 
     return (
-        <div key={product._id} className="products__item item">
+        <div className="products__item item">
             <div className="products__media media">
                 <div className="products__thumbnail thumbnail">
                     <a className="products__link" href="">

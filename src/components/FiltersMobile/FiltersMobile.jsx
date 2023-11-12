@@ -73,9 +73,13 @@ const FiltersMobile = ({
                                     <div className="filters-mobile__item-head">
                                         <h3 className="filters-mobile__item-title">Brand</h3>
                                         <button className="filters-mobile__reset-btn">Reset</button>
-                                        <button onClick={() => setShowAllBrands(true)}
-                                                className="filters-mobile__btn-cat">All
-                                        </button>
+                                        {
+                                            brandCounts?.length > 7 && (
+                                                <button onClick={() => setShowAllBrands(true)}
+                                                        className="filters-mobile__btn-cat">All
+                                                </button>
+                                            )
+                                        }
                                     </div>
                                     <div className="filter-fill">
                                         <div className="down">
@@ -150,9 +154,13 @@ const FiltersMobile = ({
                                     <div className="filters-mobile__item-head">
                                         <h3 className="filters-mobile__item-title">Color</h3>
                                         <button className="filters-mobile__reset-btn">Reset</button>
-                                        <button onClick={() => setShowAllColors(true)}
-                                                className="filters-mobile__btn-cat">All
-                                        </button>
+                                        {
+                                            uniqueColors?.length > 7 && (
+                                                <button onClick={() => setShowAllColors(true)}
+                                                        className="filters-mobile__btn-cat">All
+                                                </button>
+                                            )
+                                        }
                                     </div>
                                     <div className="filter-fill">
                                         <div className="down">
@@ -233,9 +241,13 @@ const FiltersMobile = ({
                                     <div className="filters-mobile__item-head">
                                         <h3 className="filters-mobile__item-title">Shop</h3>
                                         <button className="filters-mobile__reset-btn">Reset</button>
-                                        <button onClick={() => setShowAllShops(true)}
-                                                className="filters-mobile__btn-cat">All
-                                        </button>
+                                        {
+                                            productsShop?.length > 7 && (
+                                                <button onClick={() => setShowAllShops(true)}
+                                                        className="filters-mobile__btn-cat">All
+                                                </button>
+                                            )
+                                        }
                                     </div>
                                     <div className="filter-fill">
                                         <div className="down">

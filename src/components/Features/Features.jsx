@@ -41,7 +41,7 @@ const Features = ({title}) => {
                         <div className="products pro flexwrap">
                             {
                                 sortedProducts?.map(product => (
-                                    <ProductsCart product={product}/>
+                                    <ProductsCart key={product._id} product={product}/>
                                 ))
                             }
                         </div>

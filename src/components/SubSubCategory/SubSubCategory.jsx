@@ -13,9 +13,9 @@ import Search from "../Search/Search";
 import FiltersMobile from "../FiltersMobile/FiltersMobile";
 import Popup from "../Popup/Popup";
 import {sortData} from "../../customData/sortData";
-import "./subsubcategory.scss";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
+import "./subsubcategory.scss";
 
 const SubSubCategory = ({
                             category,
@@ -57,17 +57,19 @@ const SubSubCategory = ({
     const {data: products, loading: productsLoad, error: productsErr} = useSelector(state => state.products);
 
     const categoryProducts = useFilteredCategoryProducts({
-        filteredProducts:filteredProducts,
-        productBrand:productBrand,
-        productColor:productColor,
-        productPrice:productPrice,
-        productMaxPrice:productMaxPrice,
+        filteredProducts: filteredProducts,
+        productBrand: productBrand,
+        productColor: productColor,
+        productPrice: productPrice,
+        productMaxPrice: productMaxPrice,
         productShop: productShop,
-        sortedItem:sortedItem,
+        sortedItem: sortedItem,
     });
     const brandCounts = useBrandCounts(filteredProducts, brands);
     const uniqueColors = useProductsColor(filteredProducts);
     const productsShop = useGetProductsSeller(filteredProducts, shops);
+
+    const sumOfLengths = productBrand?.length + productColor?.length + productShop?.length;
 
     const handleSearchColors = (query) => {
         const filteringColors = uniqueColors.filter((color) =>
@@ -98,7 +100,7 @@ const SubSubCategory = ({
 
     useEffect(() => {
         if (products?.length > 0) {
-            const catProducts = products.filter(pro => pro.category === category._id);
+            const catProducts = products.filter(pro => pro.category === category?._id);
             setFilteredProducts(catProducts)
         }
     }, [products, category]);
@@ -113,33 +115,34 @@ const SubSubCategory = ({
 
     return (
         <>
-             <FiltersMobile
-                 categoryProducts={categoryProducts}
-                 setShowMobileFilter={setShowMobileFilter}
-                 showMobileFilter={showMobileFilter}
-                 filteredColors={filteredColors}
-                 filteredBrands={filteredBrands}
-                 filteredShops={filteredShops}
-                 brandCounts={brandCounts}
-                 uniqueColors={uniqueColors}
-                 productsShop={productsShop}
-                 handleSearchBrands={handleSearchBrands}
-                 handleSearchColors={handleSearchColors}
-                 handleSearchShops={handleSearchShops}
-                 setProductMaxPrice={setProductMaxPrice}
-                 setProductPrice={setProductPrice}
-                 productPrice={productPrice}
-                 productMaxPrice={productMaxPrice}
-                 sortedItem={sortedItem}
-                 productColor={productColor}
-                 handleSort={handleSort}
-                 handleColorCheckboxChange={handleColorCheckboxChange}
-                 handleBrandCheckboxChange={handleBrandCheckboxChange}
-                 handleShopCheckboxChange={handleShopCheckboxChange}
-                 productBrand={productBrand}
-                 productShop={productShop}
-                 shops={shops}/>
-            <Popup show={showMobileSort} setShow={setShowMobileSort} setSortedItem={setSortedItem} sortedItem={sortedItem}/>
+            <FiltersMobile
+                categoryProducts={categoryProducts}
+                setShowMobileFilter={setShowMobileFilter}
+                showMobileFilter={showMobileFilter}
+                filteredColors={filteredColors}
+                filteredBrands={filteredBrands}
+                filteredShops={filteredShops}
+                brandCounts={brandCounts}
+                uniqueColors={uniqueColors}
+                productsShop={productsShop}
+                handleSearchBrands={handleSearchBrands}
+                handleSearchColors={handleSearchColors}
+                handleSearchShops={handleSearchShops}
+                setProductMaxPrice={setProductMaxPrice}
+                setProductPrice={setProductPrice}
+                productPrice={productPrice}
+                productMaxPrice={productMaxPrice}
+                sortedItem={sortedItem}
+                productColor={productColor}
+                handleSort={handleSort}
+                handleColorCheckboxChange={handleColorCheckboxChange}
+                handleBrandCheckboxChange={handleBrandCheckboxChange}
+                handleShopCheckboxChange={handleShopCheckboxChange}
+                productBrand={productBrand}
+                productShop={productShop}
+                shops={shops}/>
+            <Popup show={showMobileSort} setShow={setShowMobileSort} setSortedItem={setSortedItem}
+                   sortedItem={sortedItem}/>
             <div className="subcat">
                 <div className={showMobileFilter || showMobileSort ? "overlay show" : "overlay"}></div>
                 <div className="container">
@@ -151,13 +154,22 @@ const SubSubCategory = ({
                                 <div className="dropdown flexitem">
                                     <div className="sorter-mobile desktop-hide">
                                         <div className="sorter-mobile__wrapper flexitem">
-                                            <div onClick={() => setShowMobileFilter(true)} className="dropdown__trigger">
+                                            <div onClick={() => setShowMobileFilter(true)}
+                                                 className="dropdown__trigger">
                                                 <div className="sorter-mobile__trigger-item">
                                                     <i className="ri-menu-2-line ri-2x"></i>
                                                     <span className="sorter-mobile__trigger-title">filter</span>
+                                                    {
+                                                        sumOfLengths > 0 && (
+                                                            <span className="sorter-mobile__count">
+                                                                {sumOfLengths}
+                                                            </span>
+                                                        )
+                                                    }
                                                 </div>
                                             </div>
-                                            <button onClick={() => setShowMobileSort(true)} className="sorter-mobile__btn">
+                                            <button onClick={() => setShowMobileSort(true)}
+                                                    className="sorter-mobile__btn">
                                                 {sortedItem}
                                             </button>
                                         </div>
@@ -165,8 +177,10 @@ const SubSubCategory = ({
                                     <div className="dropdown__items">
                                         {
                                             brandCounts.length > 0 && (
-                                                <div className={open === "brands" ? "dropdown__sort open" : "dropdown__sort"}>
-                                                    <button className="dropdown__button" onClick={() => handleOpenDrop("brands")}>
+                                                <div
+                                                    className={open === "brands" ? "dropdown__sort open" : "dropdown__sort"}>
+                                                    <button className="dropdown__button"
+                                                            onClick={() => handleOpenDrop("brands")}>
                                                         <span className="dropdown__select">Brands</span>
                                                         {
                                                             open === "brands" ? <span className="dropdown__icon">
@@ -176,6 +190,13 @@ const SubSubCategory = ({
                                                             </span>
                                                         }
                                                     </button>
+                                                    {
+                                                        productBrand.length > 0 && (
+                                                            <span className="dropdown__count">
+                                                                {productBrand.length}
+                                                            </span>
+                                                        )
+                                                    }
                                                     <div
                                                         className="dropdown__filter">
                                                         <div className="down">
@@ -202,7 +223,8 @@ const SubSubCategory = ({
                                                                                        className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
-                                                                                    <span className="checkbox-with-text__text">
+                                                                                    <span
+                                                                                        className="checkbox-with-text__text">
                                                                                 {brand.name}
                                                                                         <span
                                                                                             className="checkbox-with-text__count">{brand.count}</span>
@@ -230,7 +252,8 @@ const SubSubCategory = ({
                                                                                            className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
-                                                                                        <span className="checkbox-with-text__text">
+                                                                                        <span
+                                                                                            className="checkbox-with-text__text">
                                                                                 {brand.name}
                                                                                             <span
                                                                                                 className="checkbox-with-text__count">{brand.count}</span>
@@ -242,10 +265,14 @@ const SubSubCategory = ({
                                                                     )
                                                                 }
                                                             </ul>
-                                                            <button onClick={() => setShowOtherBrands(true)}
-                                                                    className="view-all down__view-all">View all
-                                                                <i className="ri-arrow-right-line"></i>
-                                                            </button>
+                                                            {
+                                                                brandCounts.length > 7 && (
+                                                                    <button onClick={() => setShowOtherBrands(true)}
+                                                                            className="view-all down__view-all">View all
+                                                                        <i className="ri-arrow-right-line"></i>
+                                                                    </button>
+                                                                )
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -253,8 +280,10 @@ const SubSubCategory = ({
                                         }
                                         {
                                             uniqueColors.length > 0 && (
-                                                <div className={open === "colors" ? "dropdown__sort open" : "dropdown__sort"}>
-                                                    <button className="dropdown__button" onClick={() => handleOpenDrop("colors")}>
+                                                <div
+                                                    className={open === "colors" ? "dropdown__sort open" : "dropdown__sort"}>
+                                                    <button className="dropdown__button"
+                                                            onClick={() => handleOpenDrop("colors")}>
                                                         <span className="dropdown__select">Colors</span>
                                                         {
                                                             open === "colors" ? <span className="dropdown__icon">
@@ -264,6 +293,13 @@ const SubSubCategory = ({
                                         </span>
                                                         }
                                                     </button>
+                                                    {
+                                                        productColor.length > 0 && (
+                                                            <span className="dropdown__count">
+                                                                {productColor.length}
+                                                            </span>
+                                                        )
+                                                    }
                                                     <div
                                                         className="dropdown__filter">
                                                         <div className="down">
@@ -290,7 +326,8 @@ const SubSubCategory = ({
                                                                                        className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
-                                                                                    <span className="checkbox-with-text__text">
+                                                                                    <span
+                                                                                        className="checkbox-with-text__text">
                                                                             <span
                                                                                 className="checkbox-with-text__circle circle"
                                                                                 style={{'--color': `${color.color}`}}
@@ -324,7 +361,8 @@ const SubSubCategory = ({
                                                                                            className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
-                                                                                        <span className="checkbox-with-text__text">
+                                                                                        <span
+                                                                                            className="checkbox-with-text__text">
                                                                             <span
                                                                                 className="checkbox-with-text__circle circle"
                                                                                 style={{'--color': `${color.color}`}}
@@ -342,10 +380,14 @@ const SubSubCategory = ({
                                                                     )
                                                                 }
                                                             </ul>
-                                                            <button onClick={() => setShowOtherColors(true)}
-                                                                    className="view-all down__view-all">View all
-                                                                <i className="ri-arrow-right-line"></i>
-                                                            </button>
+                                                            {
+                                                                uniqueColors.length > 7 && (
+                                                                    <button onClick={() => setShowOtherColors(true)}
+                                                                            className="view-all down__view-all">View all
+                                                                        <i className="ri-arrow-right-line"></i>
+                                                                    </button>
+                                                                )
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -353,8 +395,10 @@ const SubSubCategory = ({
                                         }
                                         {
                                             productsShop.length > 0 && (
-                                                <div className={open === "seller" ? "dropdown__sort open" : "dropdown__sort"}>
-                                                    <button className="dropdown__button" onClick={() => handleOpenDrop("seller")}>
+                                                <div
+                                                    className={open === "seller" ? "dropdown__sort open" : "dropdown__sort"}>
+                                                    <button className="dropdown__button"
+                                                            onClick={() => handleOpenDrop("seller")}>
                                                         <span className="dropdown__select">Seller</span>
                                                         {
                                                             open === "seller" ? <span className="dropdown__icon">
@@ -364,6 +408,13 @@ const SubSubCategory = ({
                                         </span>
                                                         }
                                                     </button>
+                                                    {
+                                                        productShop.length > 0 && (
+                                                            <span className="dropdown__count">
+                                                                {productShop.length}
+                                                            </span>
+                                                        )
+                                                    }
                                                     <div
                                                         className="dropdown__filter">
                                                         <div className="down">
@@ -374,7 +425,7 @@ const SubSubCategory = ({
                                                             }
                                                             <ul className="down__list">
                                                                 {
-                                                                    filteredShops.slice(0,7).map(shop => (
+                                                                    filteredShops.slice(0, 7).map(shop => (
                                                                         <li key={shop.id} className="down__item">
                                                                             <div className="checkbox-with-text">
                                                                                 <input
@@ -390,7 +441,8 @@ const SubSubCategory = ({
                                                                                        className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
-                                                                                    <span className="checkbox-with-text__text">
+                                                                                    <span
+                                                                                        className="checkbox-with-text__text">
                                                                                 {shop.name}
                                                                                         <span
                                                                                             className="checkbox-with-text__count">{shop.count}</span>
@@ -418,7 +470,8 @@ const SubSubCategory = ({
                                                                                            className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
-                                                                                        <span className="checkbox-with-text__text">
+                                                                                        <span
+                                                                                            className="checkbox-with-text__text">
                                                                                 {shop.name}
                                                                                             <span
                                                                                                 className="checkbox-with-text__count">{shop.count}</span>
@@ -430,17 +483,22 @@ const SubSubCategory = ({
                                                                     )
                                                                 }
                                                             </ul>
-                                                            <button onClick={() => setShowOtherShops(true)}
-                                                                    className="view-all down__view-all">View all
-                                                                <i className="ri-arrow-right-line"></i>
-                                                            </button>
+                                                            {
+                                                                productsShop.length > 7 && (
+                                                                    <button onClick={() => setShowOtherShops(true)}
+                                                                            className="view-all down__view-all">View all
+                                                                        <i className="ri-arrow-right-line"></i>
+                                                                    </button>
+                                                                )
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
                                             )
                                         }
                                         <div className={open === "filter" ? "dropdown__sort open" : "dropdown__sort"}>
-                                            <button className="dropdown__button" onClick={() => handleOpenDrop("filter")}>
+                                            <button className="dropdown__button"
+                                                    onClick={() => handleOpenDrop("filter")}>
                                                 <span className="dropdown__select">{sortedItem}</span>
                                                 {
                                                     open === "filter" ? <span className="dropdown__icon">
@@ -471,7 +529,8 @@ const SubSubCategory = ({
                                                                             type="radio"
                                                                             id={el.name}
                                                                         />
-                                                                        <label htmlFor={el.name} className="radio-with-text__label">
+                                                                        <label htmlFor={el.name}
+                                                                               className="radio-with-text__label">
                                                             <span className="radio-with-text__decor">
 
                                                             </span>
@@ -487,12 +546,22 @@ const SubSubCategory = ({
                                                 </div>
                                             </div>
                                         </div>
-                                        <button onClick={() => setShowMobileFilter(true)} className="dropdown__button">
+                                        <div className={open === "filter" ? "dropdown__sort open" : "dropdown__sort"}>
+                                            <button onClick={() => setShowMobileFilter(true)}
+                                                    className="dropdown__button">
                                             <span className="dropdown__button-icon">
                                                 <i className="ri-equalizer-line"></i>
                                             </span>
-                                            All Filter
-                                        </button>
+                                                All Filter
+                                            </button>
+                                            {
+                                                sumOfLengths > 0 && (
+                                                    <span className="dropdown__count">
+                                                        {sumOfLengths}
+                                                    </span>
+                                                )
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -501,19 +570,19 @@ const SubSubCategory = ({
                                     {
                                         productsLoad ? (
                                             <div className="trending__loader">
-                                                <Loader />
+                                                <Loader/>
                                             </div>
                                         ) : (
                                             productsErr ? (
                                                 <div className="trending__loader">
-                                                    <NotFound error={productsErr} />
+                                                    <NotFound error={productsErr}/>
                                                 </div>
                                             ) : (
                                                 <>
                                                     {
                                                         categoryProducts?.length > 0 ? (
                                                             categoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
-                                                                <ProductsCart key={product._id} product={product}/>
+                                                                <ProductsCart key={product?._id} product={product}/>
                                                             ))
                                                         ) : (
                                                             <div>
