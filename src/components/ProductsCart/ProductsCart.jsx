@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addToWishList} from "../../features/wishList";
 import {fetchAuthMe} from "../../features/authMeSlice";
 import toast from "react-hot-toast";
+import {Link} from "react-router-dom";
 
 const ProductsCart = ({product}) => {
     const dispatch = useDispatch();
@@ -64,10 +65,10 @@ const ProductsCart = ({product}) => {
         <div className="products__item item">
             <div className="products__media media">
                 <div className="products__thumbnail thumbnail">
-                    <a className="products__link" href="">
+                    <Link to={`/catalog/${product._id}`} className="products__link">
                         <img className="products__image"
                              src={product.variants[0].images[0].url} alt=""/>
-                    </a>
+                    </Link>
                 </div>
                 <div className="products__hover-able">
                     <ul className="products__hover-list">
@@ -116,7 +117,7 @@ const ProductsCart = ({product}) => {
                                             </span>
                 </div>
                 <h3 className="content__main-links">
-                    <a className="content__link" href="">{product.name}</a>
+                    <Link to={`/catalog/${product._id}`} className="content__link">{product.name}</Link>
                 </h3>
                 <div className="content__price price">
                     {

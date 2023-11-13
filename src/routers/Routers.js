@@ -14,7 +14,6 @@ const Routers = () => {
     return (
         <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/single-page" element={<SinglePage/>}/>
             <Route path="/offer-page" element={<OfferPage/>}/>
             <Route path="/offer-page" element={<OfferPage/>}/>
             <Route path="/cart-page" element={<Cart/>}/>
@@ -25,6 +24,7 @@ const Routers = () => {
             <Route path="/category/:slug" element={<CategoryPage/>}/>
             <Route path="/category/:mainCategorySlug/:slug" element={<CategoryPage/>}/>
             <Route path="/category/:mainCategorySlug/:subCategorySlug/:slug" element={<CategoryPage/>}/>
+            <Route path="/catalog/:productId" element={<SinglePage/>}/>
         </Routes>
     )
 };

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Routers from "../../routers/Routers";
 import {useLocation} from "react-router-dom";
 import Header from "../Header";
@@ -16,6 +16,10 @@ const Layout = () => {
     const shouldDisplayHeaderFooter = (path) => {
         return !['/register', '/login', '/otp'].some(route => path.includes(route));
     };
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     return (
         <>

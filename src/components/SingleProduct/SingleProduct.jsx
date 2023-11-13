@@ -12,8 +12,9 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import {Link, useLocation} from "react-router-dom";
 
-const SingleProduct = () => {
+const SingleProduct = ({product}) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [expand, setExpand] = useState("info");
 
@@ -22,7 +23,16 @@ const SingleProduct = () => {
             <div className="single-product">
                 <div className="container">
                     <div className="single-product__wrapper">
-                        <Breadcrumb/>
+                        <div className="breadcrumb">
+                            <ul className="breadcrumb__list flexitem">
+                                <li className="breadcrumb__item">
+                                    <Link to="/" className="breadcrumb__link">Home</Link>
+                                </li>
+                                <li className="breadcrumb__item">
+                                    <Link to="/" className="breadcrumb__link">{product?.name}</Link>
+                                </li>
+                            </ul>
+                        </div>
                         <div className="column">
                             <div className="products one">
                                 <div className="flexwrap">
@@ -30,7 +40,7 @@ const SingleProduct = () => {
                                         <div className="products__item one__item one__item-sticky">
                                             <div className="one__price">
                                         <span className="one__discount">
-                                            32%
+                                            {product?.salePercentage}%
                                             <br/>
                                             OFF
                                         </span>
@@ -46,46 +56,20 @@ const SingleProduct = () => {
                                                         modules={[FreeMode, Navigation, Thumbs]}
                                                         className="mySwiper2"
                                                     >
-                                                        <SwiperSlide>
-                                                            <div className="big-image__wrapper">
-                                                                <div className="big-image__show">
-                                                                    <a href={image1} className="big-image__link">
-                                                                        <img className="big-image__img img" src={image1}
-                                                                             alt=""/>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </SwiperSlide>
-                                                        <SwiperSlide>
-                                                            <div className="big-image__wrapper">
-                                                                <div className="big-image__show">
-                                                                    <a href={image2} className="big-image__link">
-                                                                        <img className="big-image__img img" src={image2}
-                                                                             alt=""/>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </SwiperSlide>
-                                                        <SwiperSlide>
-                                                            <div className="big-image__wrapper">
-                                                                <div className="big-image__show">
-                                                                    <a href={image3} className="big-image__link">
-                                                                        <img className="big-image__img img" src={image3}
-                                                                             alt=""/>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </SwiperSlide>
-                                                        <SwiperSlide>
-                                                            <div className="big-image__wrapper">
-                                                                <div className="big-image__show">
-                                                                    <a href={image4} className="big-image__link">
-                                                                        <img className="big-image__img img" src={image4}
-                                                                             alt=""/>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </SwiperSlide>
+                                                        {
+                                                            product?.variants?.map(pro => (
+                                                                <SwiperSlide>
+                                                                    <div className="big-image__wrapper">
+                                                                        <div className="big-image__show">
+                                                                            <Link to="/" className="big-image__link">
+                                                                                <img className="big-image__img img" src={image1}
+                                                                                     alt=""/>
+                                                                            </Link>
+                                                                        </div>
+                                                                    </div>
+                                                                </SwiperSlide>
+                                                            ))
+                                                        }
                                                     </Swiper>
                                                 </SRLWrapper>
                                             </div>

@@ -11,7 +11,8 @@ import {resendOtpReducer} from "../features/resendOtpSlice";
 import {brandsReducer} from "../features/brandSlice";
 import {allCategoriesReducer} from "../features/allCategories";
 import {offerReducer} from "../features/offerSlice";
-import {productReducer} from "../features/productsSlice";
+import {productsReducer} from "../features/productsSlice";
+import {productReducer} from "../features/getProduct";
 import {categoryReducer} from "../features/singleCategorySlice";
 import {shopsReducer} from "../features/shopsSlice";
 import {accountReducer} from "../features/accountSlice";
@@ -30,7 +31,8 @@ const store = configureStore({
         resendOtp: resendOtpReducer,
         brands: brandsReducer,
         offers: offerReducer,
-        products: productReducer,
+        products: productsReducer,
+        product: productReducer,
         accounts: accountReducer,
         category: categoryReducer,
         allCategories: allCategoriesReducer,

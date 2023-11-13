@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../utils/axios-utils";
 
-export const fetchProducts = createAsyncThunk(
-    "auth/fetchProducts",
-    async (_, { rejectWithValue }) => {
+export const fetchSingleProduct = createAsyncThunk(
+    "get/singleProduct",
+    async (productId, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get("/api/products");
+            const { data } = await axios.get(`/api/products/get-product/${productId}`);
             return data;
         } catch (error) {
             return rejectWithValue(error.response);
@@ -19,26 +19,26 @@ const initialState = {
     error: null,
 };
 
-const productSlice = createSlice({
-    name: "products",
+const singleProductSlice = createSlice({
+    name: "single-product",
     initialState,
     extraReducers: (builder) => {
         builder
-            .addCase(fetchProducts.pending, (state) => {
+            .addCase(fetchSingleProduct.pending, (state) => {
                 state.loading = true;
                 state.data = null;
                 state.error = null;
             })
-            .addCase(fetchProducts.fulfilled, (state, action) => {
+            .addCase(fetchSingleProduct.fulfilled, (state, action) => {
                 state.loading = false;
                 state.data = action.payload;
                 state.error = null;
             })
-            .addCase(fetchProducts.rejected, (state, action) => {
+            .addCase(fetchSingleProduct.rejected, (state, action) => {
                 state.loading = false;
                 state.data = null;
                 state.error = action.payload;
             });
     },
 });
-export const productsReducer = productSlice.reducer;
+export const productReducer = singleProductSlice.reducer;
