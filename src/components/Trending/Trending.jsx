@@ -137,12 +137,12 @@ const Trending = () => {
                                                 </h3>
                                                 <div className="content__price price">
                                             <span className="price__current">
-                                                ${bigItem.variants[0].originalPrice}
+                                                ${bigItem.variants[0].discountPrice}
                                             </span>
 
                                                     {bigItem.variants[0].discountPrice &&
                                                         <span className="price__old mini-text">
-                                                ${bigItem.variants[0].discountPrice}
+                                                ${bigItem.variants[0].originalPrice}
                                             </span>
                                                     }
                                                 </div>
@@ -205,10 +205,10 @@ const Trending = () => {
                                                         </div>
                                                         <div className="content__price price">
                                             <span className="price__current">
-                                                ${miniProduct?.variants[0].originalPrice}
+                                                ${miniProduct?.variants[0].discountPrice}
                                             </span>
                                                             <span className="price__old mini-text">
-                                                ${miniProduct?.variants[0].discountPrice}
+                                                ${miniProduct?.variants[0].originalPrice}
                                             </span>
                                                         </div>
                                                         <div className="content__info info mini-text">

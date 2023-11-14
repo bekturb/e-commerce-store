@@ -253,7 +253,8 @@ const SubSubCategory = ({
                                                                                             <label htmlFor={brand.id}
                                                                                                    className="checkbox-with-text__label">
                                                                             <span
-                                                                                className="checkbox-with-text__decor"></span>
+                                                                                className="checkbox-with-text__decor">
+                                                                            </span>
                                                                                                 <span
                                                                                                     className="checkbox-with-text__text">
                                                                                 {brand.name}

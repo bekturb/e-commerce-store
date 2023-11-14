@@ -1,0 +1,58 @@
+.sizes {
+
+  &__form {
+    display: flex;
+    margin-top: 0.5em;
+  }
+
+  &__variant {
+    position: relative;
+    margin: 0 0.5em 0.5em;
+  }
+
+  &__circle {
+    display: block !important;
+    position: static !important;
+    top: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    z-index: 1 !important;
+
+    &:before {
+      background-color: var(--white-color) !important;
+      opacity: 1 !important;
+    }
+  }
+
+  &__number {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--percent100);
+    height: var(--percent100);
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__input {
+    clip: rect(0, 0, 0, 0);
+    overflow: hidden;
+    position: absolute;
+    height: 0;
+    width: 0;
+  }
+
+  :checked + &__circle::before {
+    background-color: var(--dark-color) !important;
+    border: 2px solid var(--dark-color) !important;
+    opacity: 1 !important;
+  }
+
+  :checked + &__circle {
+    background-color: transparent !important;
+    border: 2px solid var(--dark-color) !important;
+    color: var(--white-color);
+  }
+}

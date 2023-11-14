@@ -1,22 +1,29 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {Link} from "react-router-dom";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Thumbs, FreeMode} from "swiper";
 import {SRLWrapper} from "simple-react-lightbox"
-import Breadcrumb from "../Breadcrumbs/Breadcrumb";
-import image1 from "../../assets/products/shoe1.jpg";
-import image2 from "../../assets/products/shoe1-1.jpg";
-import image3 from "../../assets/products/shoe1-2.jpg";
-import image4 from "../../assets/products/shoe1-3.jpg";
 import "./single-product.scss";
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
-import {Link, useLocation} from "react-router-dom";
 
 const SingleProduct = ({product}) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [expand, setExpand] = useState("info");
+    const [selectedVariant, setSelectedVariant] = useState({});
+
+    const handleSelectColor = (variantId) => {
+        const productVariant = product?.variants?.find(various => various._id === variantId);
+        setSelectedVariant(productVariant)
+    }
+
+    useEffect(() => {
+        if (product && product.variants && product.variants.length > 0) {
+            setSelectedVariant(product.variants[0]);
+        }
+    },[product]);
 
     return (
         <>
@@ -29,7 +36,7 @@ const SingleProduct = ({product}) => {
                                     <Link to="/" className="breadcrumb__link">Home</Link>
                                 </li>
                                 <li className="breadcrumb__item">
-                                    <Link to="/" className="breadcrumb__link">{product?.name}</Link>
+                                    <Link to={`/catalog/${product._id}`} className="breadcrumb__link">{product?.name}</Link>
                                 </li>
                             </ul>
                         </div>
@@ -45,35 +52,38 @@ const SingleProduct = ({product}) => {
                                             OFF
                                         </span>
                                             </div>
-                                            <div className="one__big-image big-image">
-                                                <SRLWrapper>
-                                                    <Swiper
-                                                        loop={true}
-                                                        autoHeight={true}
-                                                        spaceBetween={10}
-                                                        navigation={true}
-                                                        thumbs={{swiper: thumbsSwiper}}
-                                                        modules={[FreeMode, Navigation, Thumbs]}
-                                                        className="mySwiper2"
-                                                    >
-                                                        {
-                                                            product?.variants?.map(pro => (
-                                                                <SwiperSlide>
-                                                                    <div className="big-image__wrapper">
-                                                                        <div className="big-image__show">
-                                                                            <Link to="/" className="big-image__link">
-                                                                                <img className="big-image__img img" src={image1}
-                                                                                     alt=""/>
-                                                                            </Link>
-                                                                        </div>
-                                                                    </div>
-                                                                </SwiperSlide>
-                                                            ))
-                                                        }
-                                                    </Swiper>
-                                                </SRLWrapper>
-                                            </div>
-
+                                            {
+                                                selectedVariant && (
+                                                    <div className="one__big-image big-image">
+                                                        <SRLWrapper>
+                                                            <Swiper
+                                                                loop={true}
+                                                                autoHeight={true}
+                                                                spaceBetween={10}
+                                                                navigation={true}
+                                                                thumbs={{swiper: thumbsSwiper}}
+                                                                modules={[FreeMode, Navigation, Thumbs]}
+                                                                className="mySwiper2"
+                                                            >
+                                                                {
+                                                                    selectedVariant?.images?.map(image => (
+                                                                        <SwiperSlide key={image._id}>
+                                                                            <div className="big-image__wrapper">
+                                                                                <div className="big-image__show">
+                                                                                    <Link to={image.url} className="big-image__link">
+                                                                                        <img className="big-image__img img" src={image.url}
+                                                                                             alt=""/>
+                                                                                    </Link>
+                                                                                </div>
+                                                                            </div>
+                                                                        </SwiperSlide>
+                                                                    ))
+                                                                }
+                                                            </Swiper>
+                                                        </SRLWrapper>
+                                                    </div>
+                                                )
+                                            }
                                             <div className="one__small-image small-image">
                                                 <ul className="small-image__wrapper">
                                                     <Swiper
@@ -91,30 +101,16 @@ const SingleProduct = ({product}) => {
                                                         modules={[FreeMode, Navigation, Thumbs]}
                                                         className="mySwiper"
                                                     >
-                                                        <SwiperSlide>
-                                                            <li className="small-image__show">
-                                                                <img className="small-image__img img" src={image1}
-                                                                     alt=""/>
-                                                            </li>
-                                                        </SwiperSlide>
-                                                        <SwiperSlide>
-                                                            <li className="small-image__show">
-                                                                <img className="small-image__img img" src={image2}
-                                                                     alt=""/>
-                                                            </li>
-                                                        </SwiperSlide>
-                                                        <SwiperSlide>
-                                                            <li className="small-image__show">
-                                                                <img className="small-image__img img" src={image3}
-                                                                     alt=""/>
-                                                            </li>
-                                                        </SwiperSlide>
-                                                        <SwiperSlide>
-                                                            <li className="small-image__show">
-                                                                <img className="small-image__img img" src={image4}
-                                                                     alt=""/>
-                                                            </li>
-                                                        </SwiperSlide>
+                                                        {
+                                                            selectedVariant?.images?.map(image => (
+                                                                <SwiperSlide key={image._id}>
+                                                                    <li className="small-image__show">
+                                                                        <img className="small-image__img img" src={image.url}
+                                                                             alt=""/>
+                                                                    </li>
+                                                                </SwiperSlide>
+                                                            ))
+                                                        }
                                                     </Swiper>
                                                 </ul>
                                             </div>
@@ -123,67 +119,63 @@ const SingleProduct = ({product}) => {
                                     <div className="one__row row">
                                         <div className="one__item">
                                             <h1 className="one__name">
-                                                Men Slip On Shoes Casual with Arch Support Insoles
+                                                {product?.name}
                                             </h1>
                                             <div className="one__content content">
                                                 <div className="content__rating one__rating">
                                                     <div className="content__stars one__stars"></div>
-                                                    <a className="one__num-review mini-text" href="">2,251</a>
+                                                    <a className="one__num-review mini-text" href="">{product?.numOfReviews}</a>
                                                     <a href="" className="one__add-review mini-text">Add Your Review</a>
                                                 </div>
                                                 <div className="one__stock-squ stock-squ">
                                                     <span className="stock-squ__available">In Stock </span>
                                                     <span className="stock-squ__squ mini-text">
-                                                        SQU-881
+                                                        {product?.stock}
                                                     </span>
                                                 </div>
                                                 <div className="price one__price">
-                                                    <span className="price__current one__current">
-                                                        $80.90
-                                                    </span>
-                                                    <span className="price__old">
-                                                        $119.90
-                                                    </span>
+                                                    {
+                                                        selectedVariant?.discountPrice ? (
+                                                            <span className="price__current one__current">
+                                                                ${selectedVariant?.discountPrice}
+                                                            </span>
+                                                        ) : (
+                                                            <span className="price__current one__current">
+                                                                ${selectedVariant?.originalPrice}
+                                                            </span>
+                                                        )
+                                                    }
+                                                    {
+                                                        selectedVariant?.discountPrice ? (
+                                                            <span className="price__old">
+                                                                ${selectedVariant?.originalPrice}
+                                                            </span>
+                                                        ) : null
+                                                    }
                                                 </div>
                                                 <div className="colors">
                                                     <p className="colors__title">Color</p>
                                                     <div className="colors__variants">
                                                         <form className="colors__form" action="">
-                                                            <p className="colors__variant">
-                                                                <input className="colors__input" type="radio" name="color" id="cogrey"/>
-                                                                <label htmlFor="cogrey" className="colors__circle circle"></label>
-                                                            </p>
-                                                            <p className="colors__variant">
-                                                                <input className="colors__input" type="radio" name="color" id="coblue"/>
-                                                                <label htmlFor="coblue" className="colors__circle circle"></label>
-                                                            </p>
-                                                            <p className="colors__variant">
-                                                                <input className="colors__input" type="radio" name="color" id="cogreen"/>
-                                                                <label htmlFor="cogreen" className="colors__circle circle"></label>
-                                                            </p>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                <div className="sizes">
-                                                    <p className="sizes__title">Size</p>
-                                                    <div className="sizes__variants">
-                                                        <form className="sizes__form" action="">
-                                                            <p className="sizes__variant">
-                                                                <input className="sizes__input" type="radio" name="size" id="size-41"/>
-                                                                <label htmlFor="size-41" className="sizes__circle circle"><span className="sizes__number">41</span></label>
-                                                            </p>
-                                                            <p className="sizes__variant">
-                                                                <input className="colors__input" type="radio" name="size" id="size-42"/>
-                                                                <label htmlFor="size-42" className="sizes__circle circle"><span className="sizes__number">42</span></label>
-                                                            </p>
-                                                            <p className="sizes__variant">
-                                                                <input className="colors__input" type="radio" name="size" id="size-43"/>
-                                                                <label htmlFor="size-43" className="sizes__circle circle"><span className="sizes__number">43</span></label>
-                                                            </p>
-                                                            <p className="sizes__variant">
-                                                                <input className="colors__input" type="radio" name="size" id="size-44"/>
-                                                                <label htmlFor="size-44" className="sizes__circle circle"><span className="sizes__number">44</span></label>
-                                                            </p>
+                                                            {
+                                                                product?.variants?.map(variant => (
+                                                                    <p key={variant._id} className="colors__variant">
+                                                                        <input
+                                                                            onChange={() => handleSelectColor(variant?._id)}
+                                                                            className="colors__input"
+                                                                            type="radio"
+                                                                            name="color"
+                                                                            id={variant?._id}
+                                                                        />
+                                                                        <label
+                                                                            htmlFor={variant?._id}
+                                                                            className="colors__circle circle"
+                                                                            style={{'--color': `${variant?.color}`}}
+                                                                        >
+                                                                        </label>
+                                                                    </p>
+                                                                ))
+                                                            }
                                                         </form>
                                                     </div>
                                                 </div>
