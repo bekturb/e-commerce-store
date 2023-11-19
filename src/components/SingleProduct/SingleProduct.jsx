@@ -8,6 +8,7 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import {useSelector} from "react-redux";
 
 const SingleProduct = ({product}) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -19,11 +20,13 @@ const SingleProduct = ({product}) => {
         setSelectedVariant(productVariant)
     }
 
+    console.log(product, "p")
+
     useEffect(() => {
         if (product && product.variants && product.variants.length > 0) {
             setSelectedVariant(product.variants[0]);
         }
-    },[product]);
+    }, [product]);
 
     return (
         <>
@@ -36,7 +39,8 @@ const SingleProduct = ({product}) => {
                                     <Link to="/" className="breadcrumb__link">Home</Link>
                                 </li>
                                 <li className="breadcrumb__item">
-                                    <Link to={`/catalog/${product._id}`} className="breadcrumb__link">{product?.name}</Link>
+                                    <Link to={`/catalog/${product._id}`}
+                                          className="breadcrumb__link">{product?.name}</Link>
                                 </li>
                             </ul>
                         </div>
@@ -70,8 +74,10 @@ const SingleProduct = ({product}) => {
                                                                         <SwiperSlide key={image._id}>
                                                                             <div className="big-image__wrapper">
                                                                                 <div className="big-image__show">
-                                                                                    <Link to={image.url} className="big-image__link">
-                                                                                        <img className="big-image__img img" src={image.url}
+                                                                                    <Link to={image.url}
+                                                                                          className="big-image__link">
+                                                                                        <img className="big-image__img img"
+                                                                                             src={image.url}
                                                                                              alt=""/>
                                                                                     </Link>
                                                                                 </div>
@@ -105,7 +111,8 @@ const SingleProduct = ({product}) => {
                                                             selectedVariant?.images?.map(image => (
                                                                 <SwiperSlide key={image._id}>
                                                                     <li className="small-image__show">
-                                                                        <img className="small-image__img img" src={image.url}
+                                                                        <img className="small-image__img img"
+                                                                             src={image.url}
                                                                              alt=""/>
                                                                     </li>
                                                                 </SwiperSlide>
@@ -124,7 +131,8 @@ const SingleProduct = ({product}) => {
                                             <div className="one__content content">
                                                 <div className="content__rating one__rating">
                                                     <div className="content__stars one__stars"></div>
-                                                    <a className="one__num-review mini-text" href="">{product?.numOfReviews}</a>
+                                                    <a className="one__num-review mini-text"
+                                                       href="">{product?.numOfReviews}</a>
                                                     <a href="" className="one__add-review mini-text">Add Your Review</a>
                                                 </div>
                                                 <div className="one__stock-squ stock-squ">
@@ -214,41 +222,52 @@ const SingleProduct = ({product}) => {
                                                 <div className="description">
                                                     <ul className="description__list">
                                                         <li className="description__item child">
-                                                            <div className={expand === "info" ? "description__link description__link-minus" : "description__link"} onClick={expand === "info" ? () => setExpand("") : () => setExpand("info")}>Information</div>
+                                                            <div
+                                                                className={expand === "info" ? "description__link description__link-minus" : "description__link"}
+                                                                onClick={expand === "info" ? () => setExpand("") : () => setExpand("info")}>Information
+                                                            </div>
                                                             <ul className={expand === "info" ? "content description__content description__content-display" : "content description__content"}>
                                                                 <li className="description__brand">
-                                                                    <span className="description__brand-title">Brands</span>
-                                                                    <span className="description__brand-name">Nike</span>
+                                                                    <span
+                                                                        className="description__brand-title">Brands</span>
+                                                                    <span
+                                                                        className="description__brand-name">{product?.brand?.name}</span>
                                                                 </li>
-                                                                <li className="description__brand">
-                                                                    <span className="description__brand-title">Activity</span>
-                                                                    <span className="description__brand-name">Running</span>
-                                                                </li>
-                                                                <li className="description__brand">
-                                                                    <span className="description__brand-title">Material</span>
-                                                                    <span className="description__brand-name">Fleece</span>
-                                                                </li>
-                                                                <li className="description__brand">
-                                                                    <span className="description__brand-title">Gender</span>
-                                                                    <span className="description__brand-name">Men</span>
-                                                                </li>
+                                                                {
+                                                                    product?.anotherNewField ? (
+                                                                        Object.keys(product?.anotherNewField).map(key => (
+                                                                            <li key={key} className="description__brand">
+                                                                                    <span
+                                                                                        className="description__brand-title">{key}</span>
+                                                                                     <span
+                                                                                    className="description__brand-name">{product?.anotherNewField[key]}</span>
+                                                                            </li>
+                                                                        ))
+                                                                    ) : null
+                                                                }
                                                             </ul>
                                                         </li>
                                                         <li className="description__item child">
-                                                            <div className={expand === "detail" ? "description__link description__link-minus" : "description__link"} onClick={expand === "detail" ? () => setExpand("") : () => setExpand("detail")}>Details</div>
-                                                            <div className={expand === "detail" ? "content description__content description__content-display" : "content description__content"}>
-                                                                <p className="description__desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab enim itaque minus mollitia non vel.</p>
-                                                                <p className="description__desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid consectetur, cupiditate iusto molestias nobis omnis pariatur sit tenetur? Alias animi, beatae deleniti nulla quod voluptates?</p>
+                                                            <div
+                                                                className={expand === "detail" ? "description__link description__link-minus" : "description__link"}
+                                                                onClick={expand === "detail" ? () => setExpand("") : () => setExpand("detail")}>Details
+                                                            </div>
+                                                            <div
+                                                                className={expand === "detail" ? "content description__content description__content-display" : "content description__content"}>
+                                                                <p className="description__desc">{product?.description}</p>
                                                             </div>
                                                         </li>
                                                         <li className="description__item reviews">
-                                                            <div className={expand === "review" ? "description__link description__link-minus icon-sm" : "description__link icon-sm"} onClick={expand === "review" ? () => setExpand("") : () => setExpand("review")}>
-                                                                    Reviews
+                                                            <div
+                                                                className={expand === "review" ? "description__link description__link-minus icon-sm" : "description__link icon-sm"}
+                                                                onClick={expand === "review" ? () => setExpand("") : () => setExpand("review")}>
+                                                                Reviews
                                                                 <span className="reviews__number mini-text">
                                                                     2.2k
                                                                 </span>
                                                             </div>
-                                                            <div className={expand === "review" ? "content description__content description__content-display" : "content description__content"}>
+                                                            <div
+                                                                className={expand === "review" ? "content description__content description__content-display" : "content description__content"}>
                                                                 <div className="reviews__review">
                                                                     <h4 className="reviews__main-title">
                                                                         Customer Reviews
@@ -256,86 +275,144 @@ const SingleProduct = ({product}) => {
                                                                     <div className="reviews__block">
                                                                         <div className="reviews__head">
                                                                             <div className="flexitem">
-                                                                                <span className="reviews__rate">4.9</span>
+                                                                                <span
+                                                                                    className="reviews__rate">4.9</span>
                                                                                 <span className="reviews__sum">2,251 Reviews</span>
                                                                             </div>
-                                                                            <a href="#reviews-form" className="reviews__btn secondary-button">Write review</a>
+                                                                            <a href="#reviews-form"
+                                                                               className="reviews__btn secondary-button">Write
+                                                                                review</a>
                                                                         </div>
                                                                         <div className="reviews__body">
                                                                             <ul className="reviews__info">
                                                                                 <li className="reviews__item">
                                                                                     <div className="reviews__form">
-                                                                                        <p className="reviews__owner">Review by Sarah</p>
-                                                                                        <p className="reviews__date mini-text">On 7/7/22</p>
+                                                                                        <p className="reviews__owner">Review
+                                                                                            by Sarah</p>
+                                                                                        <p className="reviews__date mini-text">On
+                                                                                            7/7/22</p>
                                                                                     </div>
-                                                                                    <div className="reviews__rating content__rating">
+                                                                                    <div
+                                                                                        className="reviews__rating content__rating">
                                                                                         <div className="content__stars">
 
                                                                                         </div>
                                                                                     </div>
                                                                                     <div className="reviews__title">
-                                                                                        <p className="reviews__title-item">Awesome Product</p>
+                                                                                        <p className="reviews__title-item">Awesome
+                                                                                            Product</p>
                                                                                     </div>
                                                                                     <div className="reviews__text">
                                                                                         <p className="reviews__text-item">
-                                                                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aspernatur atque commodi consequuntur distinctio ducimus esse excepturi explicabo harum inventore, iusto magnam nesciunt nihil quas quis quo recusandae reprehenderit voluptas!
+                                                                                            Lorem ipsum dolor sit amet,
+                                                                                            consectetur adipisicing
+                                                                                            elit. Alias aspernatur atque
+                                                                                            commodi consequuntur
+                                                                                            distinctio ducimus esse
+                                                                                            excepturi explicabo harum
+                                                                                            inventore, iusto magnam
+                                                                                            nesciunt nihil quas quis quo
+                                                                                            recusandae reprehenderit
+                                                                                            voluptas!
                                                                                         </p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li className="reviews__item">
                                                                                     <div className="reviews__form">
-                                                                                        <p className="reviews__owner">Review by Sarah</p>
-                                                                                        <p className="reviews__date mini-text">On 7/7/22</p>
+                                                                                        <p className="reviews__owner">Review
+                                                                                            by Sarah</p>
+                                                                                        <p className="reviews__date mini-text">On
+                                                                                            7/7/22</p>
                                                                                     </div>
-                                                                                    <div className="reviews__rating content__rating">
+                                                                                    <div
+                                                                                        className="reviews__rating content__rating">
                                                                                         <div className="content__stars">
 
                                                                                         </div>
                                                                                     </div>
                                                                                     <div className="reviews__title">
-                                                                                        <p className="reviews__title-item">Awesome Product</p>
+                                                                                        <p className="reviews__title-item">Awesome
+                                                                                            Product</p>
                                                                                     </div>
                                                                                     <div className="reviews__text">
                                                                                         <p className="reviews__text-item">
-                                                                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aspernatur atque commodi consequuntur distinctio ducimus esse excepturi explicabo harum inventore, iusto magnam nesciunt nihil quas quis quo recusandae reprehenderit voluptas!
+                                                                                            Lorem ipsum dolor sit amet,
+                                                                                            consectetur adipisicing
+                                                                                            elit. Alias aspernatur atque
+                                                                                            commodi consequuntur
+                                                                                            distinctio ducimus esse
+                                                                                            excepturi explicabo harum
+                                                                                            inventore, iusto magnam
+                                                                                            nesciunt nihil quas quis quo
+                                                                                            recusandae reprehenderit
+                                                                                            voluptas!
                                                                                         </p>
                                                                                     </div>
                                                                                 </li>
                                                                             </ul>
                                                                             <div className="reviews__second-links">
-                                                                                <a href="" className="view-all reviews__view-all">View all Reviews <i className="ri-arrow-right-line"></i></a>
+                                                                                <a href=""
+                                                                                   className="view-all reviews__view-all">View
+                                                                                    all Reviews <i
+                                                                                        className="ri-arrow-right-line"></i></a>
                                                                             </div>
                                                                         </div>
                                                                         <div className="reviews-form">
-                                                                            <h4 className="reviews-form__title">Write a review</h4>
+                                                                            <h4 className="reviews-form__title">Write a
+                                                                                review</h4>
                                                                             <div className="reviews-form__rating">
                                                                                 <p className="reviews-form__quest">
                                                                                     Are you satisfied enough?
                                                                                 </p>
                                                                                 <div className="rate-this">
-                                                                                    <input className="rate-this__input" type="radio" name="rating" id="star5"/>
-                                                                                    <label htmlFor="star5" className="rate-this__label"><i className="ri-star-fill"></i></label>
+                                                                                    <input className="rate-this__input"
+                                                                                           type="radio" name="rating"
+                                                                                           id="star5"/>
+                                                                                    <label htmlFor="star5"
+                                                                                           className="rate-this__label"><i
+                                                                                        className="ri-star-fill"></i></label>
 
-                                                                                    <input className="rate-this__input" type="radio" name="rating" id="star4"/>
-                                                                                    <label htmlFor="star4" className="rate-this__label"><i className="ri-star-fill"></i></label>
+                                                                                    <input className="rate-this__input"
+                                                                                           type="radio" name="rating"
+                                                                                           id="star4"/>
+                                                                                    <label htmlFor="star4"
+                                                                                           className="rate-this__label"><i
+                                                                                        className="ri-star-fill"></i></label>
 
-                                                                                    <input className="rate-this__input" type="radio" name="rating" id="star3"/>
-                                                                                    <label htmlFor="star3" className="rate-this__label"><i className="ri-star-fill"></i></label>
+                                                                                    <input className="rate-this__input"
+                                                                                           type="radio" name="rating"
+                                                                                           id="star3"/>
+                                                                                    <label htmlFor="star3"
+                                                                                           className="rate-this__label"><i
+                                                                                        className="ri-star-fill"></i></label>
 
-                                                                                    <input className="rate-this__input" type="radio" name="rating" id="star2"/>
-                                                                                    <label htmlFor="star2" className="rate-this__label"><i className="ri-star-fill"></i></label>
+                                                                                    <input className="rate-this__input"
+                                                                                           type="radio" name="rating"
+                                                                                           id="star2"/>
+                                                                                    <label htmlFor="star2"
+                                                                                           className="rate-this__label"><i
+                                                                                        className="ri-star-fill"></i></label>
 
-                                                                                    <input className="rate-this__input" type="radio" name="rating" id="star1"/>
-                                                                                    <label htmlFor="star1" className="rate-this__label"><i className="ri-star-fill"></i></label>
+                                                                                    <input className="rate-this__input"
+                                                                                           type="radio" name="rating"
+                                                                                           id="star1"/>
+                                                                                    <label htmlFor="star1"
+                                                                                           className="rate-this__label"><i
+                                                                                        className="ri-star-fill"></i></label>
                                                                                 </div>
                                                                             </div>
-                                                                            <form action="" className="reviews-form__form">
+                                                                            <form action=""
+                                                                                  className="reviews-form__form">
                                                                                 <p className="reviews-form__item">
-                                                                                    <label htmlFor="" className="reviews-form__label">Review</label>
-                                                                                    <textarea cols="30" rows="10" className="reviews-form__textarea"/>
+                                                                                    <label htmlFor=""
+                                                                                           className="reviews-form__label">Review</label>
+                                                                                    <textarea cols="30" rows="10"
+                                                                                              className="reviews-form__textarea"/>
                                                                                 </p>
                                                                                 <p className="reviews-form__item">
-                                                                                    <a href="" className="primary-button">Submit Review</a>
+                                                                                    <a href=""
+                                                                                       className="primary-button">Submit
+                                                                                        Review</a>
                                                                                 </p>
                                                                             </form>
                                                                         </div>
