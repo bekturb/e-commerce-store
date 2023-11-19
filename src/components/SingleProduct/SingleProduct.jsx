@@ -8,19 +8,43 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
-import {useSelector} from "react-redux";
 
 const SingleProduct = ({product}) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [expand, setExpand] = useState("info");
     const [selectedVariant, setSelectedVariant] = useState({});
+    const [cartProduct, setCartProduct] = useState([]);
+    const [cartProductQty, setCartProductQty] = useState(132);
 
     const handleSelectColor = (variantId) => {
         const productVariant = product?.variants?.find(various => various._id === variantId);
         setSelectedVariant(productVariant)
     }
 
-    console.log(product, "p")
+    const addQtyOfProduct = (qty) => {
+        if (selectedVariant.quantity > cartProductQty) {
+            setCartProductQty(cartProductQty + qty)
+        }
+    }
+
+    const minusQtyOfProduct = (qty) => {
+        if (cartProductQty > 0){
+            setCartProductQty(cartProductQty - qty)
+        }
+    }
+
+    const addProductToCart = (pro, variant, qty) => {
+        const cartItem = {
+            productId: pro._id,
+            variantId: variant._id,
+            variantColor: variant.color,
+            quantity: qty || 1,
+        };
+
+        setCartProduct([...cartProduct, cartItem]);
+        localStorage.setItem('cart', JSON.stringify([...cartProduct, cartItem]));
+
+    }
 
     useEffect(() => {
         if (product && product.variants && product.variants.length > 0) {
@@ -189,12 +213,12 @@ const SingleProduct = ({product}) => {
                                                 </div>
                                                 <div className="actions">
                                                     <div className="actions__qty-control flexitem">
-                                                        <button className="actions__minus circle">-</button>
-                                                        <input className="actions__input" type="text" value="1"/>
-                                                        <button className="actions__plus circle">+</button>
+                                                        <button onClick={() => minusQtyOfProduct(1)} className="actions__minus circle">-</button>
+                                                        <input className="actions__input" type="text" value={cartProductQty}/>
+                                                        <button onClick={() => addQtyOfProduct(1)} className="actions__plus circle">+</button>
                                                     </div>
                                                     <div className="actions__button-cart">
-                                                        <button className="actions__btn primary-button">
+                                                        <button onClick={() => addProductToCart(product, selectedVariant, cartProductQty)} className="actions__btn primary-button">
                                                             Add to cart
                                                         </button>
                                                     </div>
