@@ -10,6 +10,13 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import ReviewDetail from "../ReviewDetail/ReviewDetail";
 
+const formatNumber = (number) => {
+    if (number >= 1000) {
+        return (number / 1000).toFixed(1) + 'k';
+    }
+    return number;
+};
+
 const SingleProduct = ({product}) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [expand, setExpand] = useState("info");
@@ -309,10 +316,16 @@ const SingleProduct = ({product}) => {
                                                                 onClick={expand === "review" ? () => setExpand("") : () => setExpand("review")}>
                                                                 Reviews
                                                                 <span className="reviews__number mini-text">
-                                                                    2.2k
+                                                                    {
+                                                                        product?.numOfReviews > 0 && formatNumber(product?.numOfReviews)
+                                                                    }
                                                                 </span>
                                                             </div>
-                                                            <ReviewDetail expand={expand}/>
+                                                            <ReviewDetail
+                                                                expand={expand}
+                                                                product={product}
+                                                                reviews={product?.reviews}
+                                                            />
                                                         </li>
                                                     </ul>
                                                 </div>

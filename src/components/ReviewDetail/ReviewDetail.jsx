@@ -1,6 +1,8 @@
 import React from 'react';
+import EachReview from "../EachReview/EachReview";
 
-const ReviewDetail = ({expand}) => {
+const ReviewDetail = ({expand, product, reviews}) => {
+
     return (
         <div
             className={expand === "review" ? "content description__content description__content-display" : "content description__content"}>
@@ -11,10 +13,10 @@ const ReviewDetail = ({expand}) => {
                 <div className="reviews__block">
                     <div className="reviews__head">
                         <div className="flexitem">
-                           <span
-                               className="reviews__rate">4.9
+                           <span className="reviews__rate">
+                               {product?.totalRating}
                            </span>
-                            <span className="reviews__sum">2,251 Reviews</span>
+                            <span className="reviews__sum">{product?.numOfReviews} Reviews</span>
                         </div>
                         <a href="#reviews-form" className="reviews__btn secondary-button">
                             Write review
@@ -22,71 +24,11 @@ const ReviewDetail = ({expand}) => {
                     </div>
                     <div className="reviews__body">
                         <ul className="reviews__info">
-                            <li className="reviews__item">
-                                <div className="reviews__form">
-                                    <p className="reviews__owner">Review
-                                        by Sarah</p>
-                                    <p className="reviews__date mini-text">On
-                                        7/7/22</p>
-                                </div>
-                                <div
-                                    className="reviews__rating content__rating">
-                                    <div className="content__stars">
-
-                                    </div>
-                                </div>
-                                <div className="reviews__title">
-                                    <p className="reviews__title-item">
-                                        Awesome Product
-                                    </p>
-                                </div>
-                                <div className="reviews__text">
-                                    <p className="reviews__text-item">
-                                        Lorem ipsum dolor sit amet,
-                                        consectetur adipisicing
-                                        elit. Alias aspernatur atque
-                                        commodi consequuntur
-                                        distinctio ducimus esse
-                                        excepturi explicabo harum
-                                        inventore, iusto magnam
-                                        nesciunt nihil quas quis quo
-                                        recusandae reprehenderit
-                                        voluptas!
-                                    </p>
-                                </div>
-                            </li>
-                            <li className="reviews__item">
-                                <div className="reviews__form">
-                                    <p className="reviews__owner">Review
-                                        by Sarah</p>
-                                    <p className="reviews__date mini-text">On
-                                        7/7/22</p>
-                                </div>
-                                <div
-                                    className="reviews__rating content__rating">
-                                    <div className="content__stars">
-
-                                    </div>
-                                </div>
-                                <div className="reviews__title">
-                                    <p className="reviews__title-item">Awesome
-                                        Product</p>
-                                </div>
-                                <div className="reviews__text">
-                                    <p className="reviews__text-item">
-                                        Lorem ipsum dolor sit amet,
-                                        consectetur adipisicing
-                                        elit. Alias aspernatur atque
-                                        commodi consequuntur
-                                        distinctio ducimus esse
-                                        excepturi explicabo harum
-                                        inventore, iusto magnam
-                                        nesciunt nihil quas quis quo
-                                        recusandae reprehenderit
-                                        voluptas!
-                                    </p>
-                                </div>
-                            </li>
+                            {
+                                reviews?.map((review, idx) => (
+                                    <EachReview key={idx} review={review}/>
+                                ))
+                            }
                         </ul>
                         <div className="reviews__second-links">
                             <a href=""
