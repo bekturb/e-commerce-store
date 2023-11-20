@@ -3,6 +3,11 @@ import EachReview from "../EachReview/EachReview";
 
 const ReviewDetail = ({expand, product, reviews}) => {
 
+    const handleChangeStar = (e) => {
+        const changedRating = e.target.value;
+        console.log(changedRating, "rat")
+    }
+
     return (
         <div
             className={expand === "review" ? "content description__content description__content-display" : "content description__content"}>
@@ -45,44 +50,75 @@ const ReviewDetail = ({expand, product, reviews}) => {
                                 Are you satisfied enough?
                             </p>
                             <div className="rate-this">
-                                <input className="rate-this__input"
-                                       type="radio" name="rating"
-                                       id="star5"/>
+                                <input
+                                    onClick={(e) => handleChangeStar(e)}
+                                    className="rate-this__input"
+                                    type="radio"
+                                    name="rating"
+                                    id="star5"
+                                    value={5}
+                                />
                                 <label htmlFor="star5"
                                        className="rate-this__label"><i
                                     className="ri-star-fill"></i></label>
 
-                                <input className="rate-this__input"
-                                       type="radio" name="rating"
-                                       id="star4"/>
+                                <input
+                                    onClick={(e) => handleChangeStar(e)}
+                                    className="rate-this__input"
+                                    type="radio"
+                                    name="rating"
+                                    id="star4"
+                                    value={4}
+                                />
                                 <label htmlFor="star4"
                                        className="rate-this__label"><i
                                     className="ri-star-fill"></i></label>
 
-                                <input className="rate-this__input"
-                                       type="radio" name="rating"
-                                       id="star3"/>
+                                <input
+                                    onClick={(e) => handleChangeStar(e)}
+                                    className="rate-this__input"
+                                    type="radio"
+                                    name="rating"
+                                    id="star3"
+                                    value={3}
+                                />
                                 <label htmlFor="star3"
                                        className="rate-this__label"><i
                                     className="ri-star-fill"></i></label>
 
-                                <input className="rate-this__input"
-                                       type="radio" name="rating"
-                                       id="star2"/>
+                                <input
+                                    onClick={(e) => handleChangeStar(e)}
+                                    className="rate-this__input"
+                                    type="radio"
+                                    name="rating"
+                                    id="star2"
+                                    value={2}
+                                />
                                 <label htmlFor="star2"
                                        className="rate-this__label"><i
                                     className="ri-star-fill"></i></label>
 
-                                <input className="rate-this__input"
-                                       type="radio" name="rating"
-                                       id="star1"/>
+                                <input
+                                    onClick={(e) => handleChangeStar(e)}
+                                    className="rate-this__input"
+                                    type="radio"
+                                    name="rating"
+                                    id="star1"
+                                    value={1}
+                                />
                                 <label htmlFor="star1"
                                        className="rate-this__label"><i
-                                    className="ri-star-fill"></i></label>
+                                    className="ri-star-fill"></i>
+                                </label>
                             </div>
                         </div>
                         <form action=""
                               className="reviews-form__form">
+                            <p className="reviews-form__item">
+                                <label htmlFor=""
+                                       className="reviews-form__label">Title</label>
+                                <input className="reviews-form__textarea"/>
+                            </p>
                             <p className="reviews-form__item">
                                 <label htmlFor=""
                                        className="reviews-form__label">Review</label>

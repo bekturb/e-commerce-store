@@ -34,21 +34,12 @@ const EachReview = ({review}) => {
             </div>
             <div className="reviews__title">
                 <p className="reviews__title-item">
-                    Awesome Product
+                    {review.title}
                 </p>
             </div>
             <div className="reviews__text">
                 <p className="reviews__text-item">
-                    Lorem ipsum dolor sit amet,
-                    consectetur adipisicing
-                    elit. Alias aspernatur atque
-                    commodi consequuntur
-                    distinctio ducimus esse
-                    excepturi explicabo harum
-                    inventore, iusto magnam
-                    nesciunt nihil quas quis quo
-                    recusandae reprehenderit
-                    voluptas!
+                    {review.comment}
                 </p>
             </div>
         </li>
