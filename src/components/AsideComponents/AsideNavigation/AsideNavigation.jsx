@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import apparel4 from "../../assets/products/apparel4.jpg";
+import apparel4 from "../../../assets/products/apparel4.jpg";
 import "./aside-navigation.scss"
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";

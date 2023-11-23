@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import AsideNavigation from "../../components/AsideNavigation/AsideNavigation";
-import AsideTopNav from "../../components/AsideTopNav/AsideTopNav";
-import AsideDepartments from "../../components/AsideDepartments/AsideDepartments";
+import AsideNavigation from "../../components/AsideComponents/AsideNavigation/AsideNavigation";
+import AsideTopNav from "../../components/AsideComponents/AsideTopNav/AsideTopNav";
+import AsideDepartments from "../../components/AsideComponents/AsideDepartments/AsideDepartments";
 import "../../styles/aside.scss"
 import {menuActions} from "../../features/menuSlice";
 

@@ -18,6 +18,10 @@ const EachReview = ({review}) => {
         setFormattedString(formattedDateString);
     }, [review]);
 
+    if(!review.comment){
+        return null;
+    }
+
     return (
         <li className="reviews__item">
             <div className="reviews__form">

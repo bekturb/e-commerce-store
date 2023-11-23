@@ -397,6 +397,11 @@
     margin-bottom: 2em;
   }
 
+  &__btn {
+    border: none!important;
+    cursor: pointer;
+  }
+
   &__textarea {
     line-height: 1;
     padding: 1em;

@@ -5,8 +5,8 @@ import Features from "../../components/Features/Features";
 import Banners from "../../components/Banners/Banners";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import "../../styles/single-page.scss";
 import {fetchSingleProduct} from "../../features/getProduct";
+import "../../styles/single-page.scss";
 
 const SinglePage = () => {
 

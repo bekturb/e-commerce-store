@@ -3,12 +3,12 @@ import {Link} from "react-router-dom";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Thumbs, FreeMode} from "swiper";
 import {SRLWrapper} from "simple-react-lightbox"
+import ReviewDetail from "../ReviewDetail/ReviewDetail";
 import "./single-product.scss";
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
-import ReviewDetail from "../ReviewDetail/ReviewDetail";
 
 const formatNumber = (number) => {
     if (number >= 1000) {
