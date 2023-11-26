@@ -324,7 +324,6 @@ const SingleProduct = ({product}) => {
                                                             <ReviewDetail
                                                                 expand={expand}
                                                                 product={product}
-                                                                reviews={product?.reviews}
                                                             />
                                                         </li>
                                                     </ul>

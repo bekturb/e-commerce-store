@@ -1,36 +1,19 @@
 import React, {useState} from 'react';
-import toast from "react-hot-toast";
-import {postReviewData} from "../../features/reviewSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import {postReviewData} from "../../features/getAllReviewSlice";
 
 const ReviewsForm = ({product}) => {
-    const [review, setReview] = useState({});
+    const [star, setStar] = useState(0);
+    const [title, setTitle] = useState("");
+    const [comment, setComment] = useState("");
 
     const dispatch = useDispatch();
 
-    const {data, loading, error} = useSelector(state => state.postReview)
-
-    const handleChangeStar = (e) => {
-        const {name, value} = e.target;
-        setReview({...review, [name]: value, productId: product._id});
-    }
-
     const submitReview = (e) => {
         e.preventDefault();
-        dispatch(postReviewData(review));
+        const productId = product._id
+        dispatch(postReviewData({star, title, comment, productId}));
     };
-
-    if (data) {
-        toast.success("Your review saved successfully");
-    }
-
-    if (loading) {
-        toast.loading("Loading...");
-    }
-
-    if (error) {
-        toast.error(error.message);
-    }
 
     return (
         <div id="reviews-form" className="reviews-form">
@@ -42,7 +25,7 @@ const ReviewsForm = ({product}) => {
                 </p>
                 <div className="rate-this">
                     <input
-                        onChange={(e) => handleChangeStar(e)}
+                        onChange={(e) => setStar(e.target.value)}
                         className="rate-this__input"
                         type="radio"
                         name="star"
@@ -54,7 +37,7 @@ const ReviewsForm = ({product}) => {
                         className="ri-star-fill"></i></label>
 
                     <input
-                        onChange={(e) => handleChangeStar(e)}
+                        onChange={(e) => setStar(e.target.value)}
                         className="rate-this__input"
                         type="radio"
                         name="star"
@@ -66,7 +49,7 @@ const ReviewsForm = ({product}) => {
                         className="ri-star-fill"></i></label>
 
                     <input
-                        onChange={(e) => handleChangeStar(e)}
+                        onChange={(e) => setStar(e.target.value)}
                         className="rate-this__input"
                         type="radio"
                         name="star"
@@ -78,7 +61,7 @@ const ReviewsForm = ({product}) => {
                         className="ri-star-fill"></i></label>
 
                     <input
-                        onChange={(e) => handleChangeStar(e)}
+                        onChange={(e) => setStar(e.target.value)}
                         className="rate-this__input"
                         type="radio"
                         name="star"
@@ -90,7 +73,7 @@ const ReviewsForm = ({product}) => {
                         className="ri-star-fill"></i></label>
 
                     <input
-                        onChange={(e) => handleChangeStar(e)}
+                        onChange={(e) => setStar(e.target.value)}
                         className="rate-this__input"
                         type="radio"
                         name="star"
@@ -111,11 +94,11 @@ const ReviewsForm = ({product}) => {
                         className="reviews-form__label">
                         Title</label>
                     <input
-                        onChange={(e) => handleChangeStar(e)}
+                        onChange={(e) => setTitle(e.target.value)}
                         id="title"
                         className="reviews-form__textarea"
                         name="title"
-                        value={review.title}
+                        value={title}
                     />
                 </p>
                 <p className="reviews-form__item">
@@ -123,12 +106,12 @@ const ReviewsForm = ({product}) => {
                         Review
                     </label>
                     <textarea
-                        onChange={(e) => handleChangeStar(e)}
+                        onChange={(e) => setComment(e.target.value)}
                         id="comment"
                         cols="30" rows="10"
                         className="reviews-form__textarea"
                         name="comment"
-                        value={review.comment}
+                        value={comment}
                     />
                 </p>
                 <p className="reviews-form__item">

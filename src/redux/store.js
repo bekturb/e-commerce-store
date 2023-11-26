@@ -2,7 +2,7 @@ import {configureStore} from "@reduxjs/toolkit";
 import menuReducer from "../features/menuSlice";
 import cartReducer from "../features/miniCartSlice";
 import {registerReducer} from "../features/registerSlice";
-import {reviewReducer} from "../features/reviewSlice";
+import {allReviewsReducer} from "../features/getAllReviewSlice";
 import {otpReducer} from "../features/otpSlice";
 import {authReducer} from "../features/authSlice";
 import {authMeReducer} from "../features/authMeSlice";
@@ -24,7 +24,7 @@ const store = configureStore({
         showMenu: menuReducer,
         showCart: cartReducer,
         register: registerReducer,
-        postReview: reviewReducer,
+        allReviewsReducer,
         otp: otpReducer,
         auth: authReducer,
         authMe: authMeReducer,
