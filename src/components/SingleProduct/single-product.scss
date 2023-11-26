@@ -398,6 +398,7 @@
   }
 
   &__btn {
+    width: 150px!important;
     border: none!important;
     cursor: pointer;
   }
@@ -414,6 +415,11 @@
     font-weight: var(--fw6);
     margin-bottom: 0.5em;
     text-transform: uppercase;
+  }
+
+  &__error {
+    margin-top: 20px;
+    font-size: 1em!important;
   }
 }
 

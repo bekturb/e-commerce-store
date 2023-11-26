@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {postReviewData} from "../../features/getAllReviewSlice";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 
 const ReviewsForm = ({product}) => {
     const [star, setStar] = useState(0);
@@ -8,6 +10,8 @@ const ReviewsForm = ({product}) => {
     const [comment, setComment] = useState("");
 
     const dispatch = useDispatch();
+
+    const {loading, error} = useSelector(state => state.allReviewsReducer);
 
     const submitReview = (e) => {
         e.preventDefault();
@@ -113,13 +117,16 @@ const ReviewsForm = ({product}) => {
                         name="comment"
                         value={comment}
                     />
+                    { error &&
+                        <span className="error reviews-form__error">*{error.message}</span>}
                 </p>
                 <p className="reviews-form__item">
                     <button
                         type="submit"
                         className="primary-button reviews-form__btn"
+                        disabled={loading}
                     >
-                        Submit Review
+                        {loading ? <FontAwesomeIcon icon={faSpinner} spinPulse/> : "Submit Review"}
                     </button>
                 </p>
             </form>

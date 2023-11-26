@@ -1,12 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import EachReview from "../EachReview/EachReview";
 import ReviewsForm from "../ReviewsForm/ReviewsForm";
 import {useDispatch, useSelector} from "react-redux";
 import {getReviews} from "../../features/getAllReviewSlice";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
-import SingleProduct from "../SingleProduct/SingleProduct";
-import Features from "../Features/Features";
 
 const ReviewDetail = ({expand, product}) => {
 
