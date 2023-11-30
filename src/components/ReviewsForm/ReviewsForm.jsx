@@ -11,7 +11,7 @@ const ReviewsForm = ({product}) => {
 
     const dispatch = useDispatch();
 
-    const {loading, error} = useSelector(state => state.allReviewsReducer);
+    const {postReviewLoading, postReviewError} = useSelector(state => state.allReviewsReducer);
 
     const submitReview = (e) => {
         e.preventDefault();
@@ -117,16 +117,16 @@ const ReviewsForm = ({product}) => {
                         name="comment"
                         value={comment}
                     />
-                    { error &&
-                        <span className="error reviews-form__error">*{error.message}</span>}
+                    { postReviewError &&
+                        <span className="error reviews-form__error">*{postReviewError.message}</span>}
                 </p>
                 <p className="reviews-form__item">
                     <button
                         type="submit"
                         className="primary-button reviews-form__btn"
-                        disabled={loading}
+                        disabled={postReviewLoading}
                     >
-                        {loading ? <FontAwesomeIcon icon={faSpinner} spinPulse/> : "Submit Review"}
+                        {postReviewLoading ? <FontAwesomeIcon icon={faSpinner} spinPulse/> : "Submit Review"}
                     </button>
                 </p>
             </form>

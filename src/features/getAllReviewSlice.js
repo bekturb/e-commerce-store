@@ -3,8 +3,10 @@ import axios from "../utils/axios-utils";
 
 const initialState = {
     data: [],
-    loading: false,
-    error: null,
+    getReviewsLoading: false,
+    postReviewLoading: false,
+    getReviewsError: null,
+    postReviewError: null,
 };
 
 export const getReviews = createAsyncThunk(
@@ -32,53 +34,54 @@ export const postReviewData = createAsyncThunk(
 );
 
 const allReviewsSlice = createSlice({
-    name: "allReviews",
+    name: "reviews",
     initialState,
-    reducers: {},
-    extraReducers:  {
-        [getReviews.pending] : (state) => {
-            state.loading = true;
-            state.data = [];
-            state.error = null;
-        },
-        [getReviews.fulfilled] : (state, action) => {
-            state.loading = false;
-            state.data = action.payload;
-            state.error = null;
-        },
-        [getReviews.rejected] : (state, action) => {
-            state.loading = false;
-            state.data = [];
-            state.error = action.payload;
-        },
-        [postReviewData.pending] : (state) => {
-            state.loading = true;
-            state.error = null;
-        },
-        [postReviewData.fulfilled]: (state, action) => {
-            const newCmt = action.payload;
-            const alreadyRatedIndex = state.data.findIndex(cmt => cmt.postedBy._id === newCmt.postedBy._id);
+    extraReducers: (builder) => {
+        builder
+            .addCase(getReviews.pending, (state) => {
+                state.getReviewsLoading = true;
+                state.data = [];
+                state.getReviewsError = null;
+            })
+            .addCase(getReviews.fulfilled, (state, action) => {
+                state.getReviewsLoading = false;
+                state.data = action.payload;
+                state.getReviewsError = null;
+            })
+            .addCase(getReviews.rejected, (state, action) => {
+                state.getReviewsLoading = false;
+                state.data = [];
+                state.getReviewsError = action.payload;
+            })
+            .addCase(postReviewData.pending, (state) => {
+                state.postReviewLoading = true;
+                state.postReviewError = null;
+            })
+            .addCase(postReviewData.fulfilled, (state, action) => {
+                const newCmt = action.payload;
+                const alreadyRatedIndex = state.data.findIndex((cmt) => cmt.postedBy._id === newCmt.postedBy._id);
 
-            let newCmtData;
+                let newCmtData;
 
-            if (alreadyRatedIndex !== -1) {
-                newCmtData = [...state.data];
-                newCmtData[alreadyRatedIndex] = newCmt;
-            } else {
-                newCmtData = [...state.data, newCmt];
-            }
+                if (alreadyRatedIndex !== -1) {
+                    newCmtData = [...state.data];
+                    newCmtData[alreadyRatedIndex] = newCmt;
+                } else {
+                    newCmtData = [...state.data, newCmt];
+                }
 
-            return {
-                ...state,
-                loading: false,
-                data: newCmtData,
-                error: null,
-            };
-        },
-        [postReviewData.rejected] : (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        },
+                return {
+                    ...state,
+                    postReviewLoading: false,
+                    data: newCmtData,
+                    postReviewError: null,
+                };
+            })
+            .addCase(postReviewData.rejected, (state, action) => {
+                state.postReviewLoading = false;
+                state.postReviewError = action.payload;
+            });
     },
 });
+
 export const allReviewsReducer = allReviewsSlice.reducer;

@@ -28,7 +28,6 @@ const authMeSlice = createSlice({
         builder
             .addCase(fetchAuthMe.pending, (state) => {
                 state.loading = true;
-                state.data = null;
                 state.error = null;
             })
             .addCase(fetchAuthMe.fulfilled, (state, action) => {

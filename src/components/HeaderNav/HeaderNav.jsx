@@ -4,28 +4,34 @@ import {useDispatch, useSelector} from "react-redux";
 import {menuActions} from "../../features/menuSlice";
 import {Link} from "react-router-dom";
 import {fetchCategories} from "../../features/categoriesSlice";
+import {getPersonalWishlist} from "../../features/wishList";
+import {compareProductsActions} from "../../features/compareProducts";
 import MiniCart from "../MiniCart/MiniCart";
 import HoverMiniCart from "../HoverMiniCart/HoverMiniCart";
 import HeaderNavSkeleton from "../Skeletons/HeaderNavSkeleton/HeaderNavSkeleton";
 import NotFound from "../NotFound/NotFound";
-import "./header-nav.scss"
+import "./header-nav.scss";
 
 const HeaderNav = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const {data: categories, loading: catLoading, error: catErr} = useSelector(state => state.categories);
+    const {data: wishListData} = useSelector(state => state.wishlist);
+    const {data: compareProducts} = useSelector(state => state.compareProducts);
 
     const [categoriesToExclude] = useState(["Shop", "Women", "Men", "Sports"]);
     const filteredCategories = categories ? categories.filter(category => categoriesToExclude.includes(category.name)).sort((a,b) => categoriesToExclude.indexOf(a.name) - categoriesToExclude.indexOf(b.name)
     ) : [];
 
     function openMenu() {
-        dispatch(menuActions.showMenu())
+        dispatch(menuActions.showMenu());
     }
 
     useEffect(() => {
-        dispatch(fetchCategories())
-    }, [dispatch])
+        dispatch(fetchCategories());
+        dispatch(getPersonalWishlist());
+        dispatch(compareProductsActions.getCompareProducts());
+    }, [dispatch]);
 
     return (
         <div className="nav">
@@ -169,7 +175,7 @@ const HeaderNav = () => {
                                         </span>
                                             <span className="fly-item package__fly-item">
                                             <span className="package__number">
-                                                0
+                                                {wishListData?.length}
                                             </span>
                                         </span>
                                         </a>

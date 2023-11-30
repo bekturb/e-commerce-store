@@ -437,8 +437,7 @@
   &__label:hover ~ &__input:checked ~ &__label,
   &__input:checked ~ &__label:hover ~ &__label {
     color: #ffed85;
-  }
-;
+  };
 
   &__input {
     display: none;

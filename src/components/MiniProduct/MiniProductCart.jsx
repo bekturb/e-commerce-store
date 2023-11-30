@@ -3,10 +3,9 @@ import Ratings from "../Ratings/Ratings";
 import {useDispatch} from "react-redux";
 import {addToWishList} from "../../features/wishList";
 import toast from "react-hot-toast";
-import {Link} from "react-router-dom";
 import {compareProductsActions} from "../../features/compareProducts";
 
-const ProductsCart = ({product, wishListLoading, wishListData, compareProducts}) => {
+const MiniProductCart = ({miniProduct, wishListLoading, wishListData, compareProducts}) => {
 
     const [isClicked, setIsClicked] = useState(false);
     const [isCompared, setIsCompared] = useState(false);
@@ -16,8 +15,8 @@ const ProductsCart = ({product, wishListLoading, wishListData, compareProducts})
         setIsClicked(true);
         dispatch(addToWishList({productId}))
             .then(() => {
-            toast.success("Product added to cart!")
-        })
+                toast.success("Product added to cart!")
+            })
     };
 
     const handleDeleteToWishlist = (productId) => {
@@ -33,7 +32,7 @@ const ProductsCart = ({product, wishListLoading, wishListData, compareProducts})
     };
 
     useEffect(() => {
-        const productId = product._id
+        const productId = miniProduct._id
         const isProductInWishlist = wishListData.findIndex(data => data._id === productId);
         if (isProductInWishlist === -1){
             setIsClicked(false)
@@ -43,7 +42,7 @@ const ProductsCart = ({product, wishListLoading, wishListData, compareProducts})
     }, [wishListData]);
 
     useEffect(() => {
-        const productId = product._id
+        const productId = miniProduct._id
         const isProductCompared = compareProducts.findIndex(data => data._id === productId);
         if (isProductCompared === -1){
             setIsCompared(false)
@@ -51,21 +50,21 @@ const ProductsCart = ({product, wishListLoading, wishListData, compareProducts})
             setIsCompared(true)
         }
     }, [compareProducts]);
-
     return (
-        <div className="products__item item">
-            <div className="products__media media">
-                <div className="products__thumbnail thumbnail">
-                    <Link to={`/catalog/${product._id}`} className="products__link">
+        <div className="products__item products__mini-item">
+            <div className="products__media products__media-mini">
+                <div className="thumbnail">
+                    <a className="products__link" href="">
                         <img className="products__image"
-                             src={product.variants[0].images[0].url} alt=""/>
-                    </Link>
+                             src={miniProduct.variants[0].images[0].url}
+                             alt=""/>
+                    </a>
                 </div>
                 <div className="products__hover-able">
                     <ul className="products__hover-list">
                         <li className="products__hover-item active">
                             <button
-                                onClick={isClicked ? () => handleDeleteToWishlist(product._id) : () => handleAddToWishlist(product._id)}
+                                onClick={isClicked ? () => handleDeleteToWishlist(miniProduct._id) : () => handleAddToWishlist(miniProduct._id)}
                                 className="products__hover-link"
                                 disabled={wishListLoading}
                             >
@@ -75,7 +74,7 @@ const ProductsCart = ({product, wishListLoading, wishListData, compareProducts})
                             </button>
                         </li>
                         <li className="products__hover-item">
-                            <button onClick={() => toggleCompareProduct(product)} className="products__hover-link">
+                            <button onClick={() => toggleCompareProduct(miniProduct)} className="products__hover-link">
                                <span className="products__icons" aria-disabled={wishListLoading}>
                                            { isCompared ?
                                                <i className="ri-eye-fill"></i>
@@ -86,42 +85,45 @@ const ProductsCart = ({product, wishListLoading, wishListData, compareProducts})
                             </button>
                         </li>
                         <li className="products__hover-item">
-                            <Link to={`/catalog/${product._id}`} className="products__hover-link"><i
+                            <a className="products__hover-link" href=""><i
                                 className="ri-shuffle-line"></i>
-                            </Link>
+                            </a>
                         </li>
                     </ul>
                 </div>
-            </div>
-            <div className="products__content content">
-                <div className="content__rating">
-                    <div className="content__stars">
-                        <Ratings rating={product.totalRating}/>
-                    </div>
-                    <span className="content__text mini-text">
-                                                ({product.reviews.length})
+                <div className="products__discount circle">
+                                            <span className="products__percentage">
+                                                {miniProduct?.salePercentage}%
                                             </span>
                 </div>
+            </div>
+            <div className="products__content content">
                 <h3 className="content__main-links">
-                    <Link to={`/catalog/${product._id}`} className="content__link">{product.name}</Link>
+                    <a className="content__link" href="">{miniProduct?.name}</a>
                 </h3>
-                <div className="content__price price">
-                    {
-                        product.variants[0].discountPrice ?
-                            <span className="price__current">
-                                                ${product.variants[0].discountPrice}
-                                            </span> : <span className="price__current">
-                                                ${product.variants[0].originalPrice}
+                <div className="content__rating">
+                    <div className="content__stars">
+                        <Ratings rating={miniProduct.totalRating}/>
+                    </div>
+                    <span className="content__text mini-text">
+                                                ({miniProduct?.reviews.length})
                                             </span>
-                    }
-                    {product.variants[0].discountPrice &&
-                        <span className="price__old mini-text">
-                                                ${product.variants[0].originalPrice}
-                                            </span>}
+                </div>
+                <div className="content__price price">
+                                            <span className="price__current">
+                                                ${miniProduct?.variants[0].discountPrice}
+                                            </span>
+                    <span className="price__old mini-text">
+                                                ${miniProduct?.variants[0].originalPrice}
+                                            </span>
+                </div>
+                <div className="content__info info mini-text">
+                    <p className="info__sold">{miniProduct?.totalSold} sold</p>
+                    <p className="info__shipping">Free Shipping</p>
                 </div>
             </div>
         </div>
     );
 };
 
-export default ProductsCart;
+export default MiniProductCart;

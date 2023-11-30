@@ -1,5 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit";
 import menuReducer from "../features/menuSlice";
+import compareProductsReducer from "../features/compareProducts";
 import cartReducer from "../features/miniCartSlice";
 import {registerReducer} from "../features/registerSlice";
 import {allReviewsReducer} from "../features/getAllReviewSlice";
@@ -22,6 +23,7 @@ import {wishListReducer} from "../features/wishList";
 const store = configureStore({
     reducer: {
         showMenu: menuReducer,
+        compareProducts: compareProductsReducer,
         showCart: cartReducer,
         register: registerReducer,
         allReviewsReducer,

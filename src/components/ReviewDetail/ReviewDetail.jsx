@@ -9,10 +9,7 @@ import NotFound from "../NotFound/NotFound";
 const ReviewDetail = ({expand, product}) => {
 
     const dispatch = useDispatch();
-
-    const {data: reviews, loading, error} = useSelector(state => state.allReviewsReducer);
-
-    console.log(reviews, "pro")
+    const {data: reviews, getReviewsLoading, getReviewsError} = useSelector(state => state.allReviewsReducer);
 
     const fetchReviews = useCallback(async () => {
         const productId = product._id
@@ -46,13 +43,13 @@ const ReviewDetail = ({expand, product}) => {
                             Write review
                         </a>
                     </div>
-                    {loading ? (
+                    {getReviewsLoading ? (
                         <div className="trending__loader">
                             <Loader />
                         </div>
-                    ) : error ? (
+                    ) : getReviewsError ? (
                         <div className="trending__loader">
-                            <NotFound error={error}/>
+                            <NotFound error={getReviewsError}/>
                         </div>
                     ) : reviews?.length > 0 ? (
                             <div className="reviews__body">

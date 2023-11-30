@@ -4,6 +4,7 @@ import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import ProductsCart from "../ProductsCart/ProductsCart";
 import "./features.scss";
+import ProductsComp from "../ProductsComp/ProductsComp";
 
 const Features = ({title}) => {
 
@@ -38,13 +39,7 @@ const Features = ({title}) => {
                                 </div>
                             )
                         }
-                        <div className="products pro flexwrap">
-                            {
-                                sortedProducts?.map(product => (
-                                    <ProductsCart key={product._id} product={product}/>
-                                ))
-                            }
-                        </div>
+                        <ProductsComp products={sortedProducts} />
                     </div>
                 </div>
             </div>
