@@ -4,6 +4,7 @@ import {fetchBrands} from "../../features/brandSlice";
 import BrandsSkeleton from "../Skeletons/BrandsSkeleton/BrandsSkeleton";
 import NotFound from "../NotFound/NotFound";
 import "./brands.scss";
+import {Link} from "react-router-dom";
 
 const Brands = () => {
 
@@ -35,9 +36,9 @@ const Brands = () => {
                     {
                         filteredBrands.length > 0 && filteredBrands.map(brand => (
                             <div key={brand._id} className="brands__item">
-                                <a className="brands__link" href="">
+                                <Link to={`/brand/${brand._id}`} className="brands__link">
                                     <img className="brands__image" src={brand.brandImage} alt=""/>
-                                </a>
+                                </Link>
                             </div>
                         ))
                     }

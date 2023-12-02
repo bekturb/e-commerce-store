@@ -9,6 +9,7 @@ import OfferPage from "../pages/OfferPage";
 import CategoryPage from "../pages/CategoryPage";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
+import SingleBrand from "../pages/SingleBrand/SingleBrand";
 
 const Routers = () => {
     return (
@@ -25,6 +26,7 @@ const Routers = () => {
             <Route path="/category/:mainCategorySlug/:slug" element={<CategoryPage/>}/>
             <Route path="/category/:mainCategorySlug/:subCategorySlug/:slug" element={<CategoryPage/>}/>
             <Route path="/catalog/:productId" element={<SinglePage/>}/>
+            <Route path="/brand/:brandId" element={<SingleBrand/>}/>
         </Routes>
     )
 };

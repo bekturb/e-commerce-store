@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
+import {Link} from "react-router-dom";
 
 const MegaProductCart = ({category}) => {
 
@@ -32,8 +33,7 @@ const MegaProductCart = ({category}) => {
                 </div>
                 <div className="products__text-content">
                     <h4 className="products__pop">Most Wanted!</h4>
-                    <a className="primary-button products__button"
-                       href="">Order Now</a>
+                    <Link to={`/catalog/${bigItem._id}`} className="primary-button products__button">Order Now</Link>
                 </div>
             </div>
         </div> : null
