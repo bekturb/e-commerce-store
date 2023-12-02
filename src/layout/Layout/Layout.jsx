@@ -13,27 +13,21 @@ const Layout = () => {
     const location = useLocation();
     const { pathname } = location;
 
-    const shouldDisplayHeaderFooter = (path) => {
-        return !['/register', '/login', '/otp'].some(route => path.includes(route));
-    };
-
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
 
     return (
         <>
-            {shouldDisplayHeaderFooter(pathname) && <>
                 <Aside/>
                 <Header />
-            </>}
             <main>
                 <Routers />
             </main>
-            {shouldDisplayHeaderFooter(pathname) && <Footer />}
             <MenuBottom setShowSearchBottom={setShowSearchBottom} />
             <SearchBottom showSearchBottom={showSearchBottom} setShowSearchBottom={setShowSearchBottom} />
             <Overlay />
+            <Footer/>
         </>
     );
 };

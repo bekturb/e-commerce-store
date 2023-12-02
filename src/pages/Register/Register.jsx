@@ -123,15 +123,6 @@ const Register = () => {
 
     return (
         <Helmet title="Register">
-        <Toaster
-            position="top-center"
-            reverseOrder={false}
-            toastOptions={{
-                duration: 2000, style: {
-                    height: "40px"
-                }
-            }}
-        />
         <div className="register">
             <div className="container">
                 <div className="register__wrapper">

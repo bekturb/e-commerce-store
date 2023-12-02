@@ -18,7 +18,7 @@ const ReviewDetail = ({expand, product}) => {
         }catch (err) {
             alert(err)
         }
-    },[dispatch])
+    },[dispatch, product._id])
 
     useEffect(() => {
         fetchReviews();

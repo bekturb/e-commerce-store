@@ -50,9 +50,7 @@ const Trending = () => {
                             }
                             {
                                 miniChunks?.map((miniChunk, chunkIndex) => (
-                                    <MiniProduct
-                                        miniChunk={miniChunk}
-                                        chunkIndex={chunkIndex}
+                                    <MiniProduct key={chunkIndex} miniChunk={miniChunk} chunkIndex={chunkIndex}
                                     />
                                 ))
                             }

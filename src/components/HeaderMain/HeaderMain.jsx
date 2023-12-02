@@ -5,6 +5,7 @@ import {fetchProducts} from "../../features/productsSlice";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import "./header-main.scss"
+import SearchProducts from "../SearchProducts/SearchProducts";
 
 const HeaderMain = () => {
     const [showCat, setShowCat] = useState(false);
@@ -180,10 +181,7 @@ const HeaderMain = () => {
                                                 searchData &&
                                                     searchData.map((i) => {
                                                         return (
-                                                            <li key={i._id} className="panel__product">
-                                                                <img className="panel__img" src={i.variants[0]?.images[0]?.url} alt=""/>
-                                                                <p className="panel__title">{i.name}</p>
-                                                            </li>
+                                                            <SearchProducts key={i._id} i={i}/>
                                                         )
                                                     })
                                             }

@@ -55,6 +55,8 @@ const SubSubCategory = ({
 
     const {data: brands} = useSelector(state => state.brands);
     const {data: products, loading: productsLoad, error: productsErr} = useSelector(state => state.products);
+    const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
+    const {data: compareProducts} = useSelector(state => state.compareProducts);
 
     const categoryProducts = useFilteredCategoryProducts({
         filteredProducts: filteredProducts,
@@ -587,7 +589,7 @@ const SubSubCategory = ({
                                                     {
                                                         categoryProducts?.length > 0 ? (
                                                             categoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
-                                                                <ProductsCart key={product?._id} product={product}/>
+                                                                <ProductsCart key={product?._id} product={product} wishListData={wishListData} wishListLoading={wishListLoading} compareProducts={compareProducts}/>
                                                             ))
                                                         ) : (
                                                             <div>

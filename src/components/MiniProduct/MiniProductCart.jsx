@@ -39,17 +39,17 @@ const MiniProductCart = ({miniProduct, wishListLoading, wishListData, comparePro
         }else {
             setIsClicked(true)
         }
-    }, [wishListData]);
+    }, [wishListData, miniProduct._id]);
 
     useEffect(() => {
         const productId = miniProduct._id
-        const isProductCompared = compareProducts.findIndex(data => data._id === productId);
+        const isProductCompared = compareProducts?.findIndex(data => data._id === productId);
         if (isProductCompared === -1){
             setIsCompared(false)
         }else {
             setIsCompared(true)
         }
-    }, [compareProducts]);
+    }, [compareProducts, miniProduct._id]);
     return (
         <div className="products__item products__mini-item">
             <div className="products__media products__media-mini">

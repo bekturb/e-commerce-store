@@ -11,6 +11,7 @@ import HoverMiniCart from "../HoverMiniCart/HoverMiniCart";
 import HeaderNavSkeleton from "../Skeletons/HeaderNavSkeleton/HeaderNavSkeleton";
 import NotFound from "../NotFound/NotFound";
 import "./header-nav.scss";
+import MegaProductCart from "../MegaProductCart/MegaProductCart";
 
 const HeaderNav = () => {
 
@@ -137,24 +138,7 @@ const HeaderNav = () => {
                                                                                 </div>
                                                                         ))
                                                                         }
-                                                                        <div className="products mega__products">
-                                                                            <div className="products__row">
-                                                                                <div className="products__media">
-                                                                                    <div className="products__thumbnail">
-                                                                                        <a className="products__image-cover"
-                                                                                           href="">
-                                                                                            <img className="products__img"
-                                                                                                 src={apparel4} alt="apparel4"/>
-                                                                                        </a>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="products__text-content">
-                                                                                    <h4 className="products__pop">Most Wanted!</h4>
-                                                                                    <a className="primary-button products__button"
-                                                                                       href="">Order Now</a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                                        <MegaProductCart category={category.slug}/>
                                                                     </div>
                                                                 </div>
                                                             </div>

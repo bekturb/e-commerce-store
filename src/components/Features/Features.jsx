@@ -2,9 +2,8 @@ import React from 'react';
 import {useSelector} from "react-redux";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
-import ProductsCart from "../ProductsCart/ProductsCart";
-import "./features.scss";
 import ProductsComp from "../ProductsComp/ProductsComp";
+import "./features.scss";
 
 const Features = ({title}) => {
 

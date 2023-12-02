@@ -1,66 +1,56 @@
 import React, {useEffect, useState} from 'react';
 import Ratings from "../Ratings/Ratings";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {addToWishList} from "../../features/wishList";
-import {fetchAuthMe} from "../../features/authMeSlice";
 import toast from "react-hot-toast";
 import {Link} from "react-router-dom";
+import {compareProductsActions} from "../../features/compareProducts";
 
-const CategoryProductsCart = ({product}) => {
+const CategoryProductsCart = ({product, wishListLoading, wishListData, compareProducts}) => {
+
+    const [isClicked, setIsClicked] = useState(false);
+    const [isCompared, setIsCompared] = useState(false);
     const dispatch = useDispatch();
-    const {
-        data: userData,
-    } = useSelector(state => state.authMe);
-    const {data: wishListData, loading: wishListLoading, error: wishListErr} = useSelector(state => state.wishlist);
-
-    const [oldUserData, setOldUserData] = useState(userData);
-    const [compareProducts, setCompareProducts] = useState([]);
-
-    const isProductInWishlist = oldUserData?.wishList.includes(product._id);
 
     const handleAddToWishlist = (productId) => {
+        setIsClicked(true);
         dispatch(addToWishList({productId}))
+            .then(() => {
+                toast.success("Product added to cart!");
+            })
     };
 
     const handleDeleteToWishlist = (productId) => {
-        dispatch(addToWishList({productId}));
+        setIsClicked(false);
+        dispatch(addToWishList({productId}))
+            .then(() => {
+                toast.success("Product deleted from cart!")
+            });
+    };
+
+    const toggleCompareProduct = (product) => {
+        dispatch(compareProductsActions.setCompareProducts(product))
     };
 
     useEffect(() => {
-        dispatch(fetchAuthMe());
-    }, [wishListData]);
-
-
-    useEffect(() => {
-        if (userData) {
-            setOldUserData(userData);
+        const productId = product._id
+        const isProductInWishlist = wishListData.findIndex(data => data._id === productId);
+        if (isProductInWishlist === -1){
+            setIsClicked(false)
+        }else {
+            setIsClicked(true)
         }
-    }, [userData]);
+    }, [wishListData, product._id]);
 
     useEffect(() => {
-        const storedCompareProducts = localStorage.getItem('compareProducts');
-        const initialCompareProducts = storedCompareProducts ? JSON.parse(storedCompareProducts) : [];
-        setCompareProducts(initialCompareProducts);
-    }, []);
-
-    const toggleCompareProduct = (productId) => {
-        const productIndex = compareProducts.indexOf(productId);
-
-        if (productIndex !== -1) {
-            const updatedCompareProducts = [...compareProducts];
-            updatedCompareProducts.splice(productIndex, 1);
-            setCompareProducts(updatedCompareProducts);
-            toast("Product deleted from comparison!");
-        } else {
-            const updatedCompareProducts = [...compareProducts, productId];
-            setCompareProducts(updatedCompareProducts);
-            toast.success("Product added to comparison!");
+        const productId = product._id
+        const isProductCompared = compareProducts?.findIndex(data => data._id === productId);
+        if (isProductCompared === -1){
+            setIsCompared(false)
+        }else {
+            setIsCompared(true)
         }
-    };
-
-    useEffect(() => {
-        localStorage.setItem('compareProducts', JSON.stringify(compareProducts));
-    }, [compareProducts]);
+    }, [compareProducts, product._id]);
 
     return (
         <div className="products__item item">
@@ -77,45 +67,32 @@ const CategoryProductsCart = ({product}) => {
                         <>
                             <li
                                 className="products__hover-item active">
-                                {
-                                    isProductInWishlist ? (
-                                        <button onClick={() => handleDeleteToWishlist(product._id)}
-                                                className="products__hover-link"
-                                                disabled={wishListLoading}
-                                        >
-                                            <span className="products__icons">
-                                                <i className="ri-heart-fill"></i>
-                                            </span>
-                                        </button>
-                                    ) : (
-                                        <button className="products__hover-link"
-                                                onClick={() => handleAddToWishlist(product._id)}
-                                                disabled={wishListLoading}
-                                        >
-                                            <span className="products__icons">
-                                                <i className="ri-heart-line"></i>
-                                            </span>
-                                        </button>
-                                    )
-                                }
+                                <button
+                                    onClick={isClicked ? () => handleDeleteToWishlist(product._id) : () => handleAddToWishlist(product._id)}
+                                    className="products__hover-link"
+                                    disabled={wishListLoading}
+                                >
+                                <span className={isClicked ? "products__icons color" : "products__icons"}>
+                                   <i className={isClicked ? "ri-heart-fill" : "ri-heart-line"}></i>
+                                </span>
+                                </button>
                             </li>
                         </>
                         <li className="products__hover-item">
-                            <button onClick={() => toggleCompareProduct(product?._id)} className="products__hover-link">
-                               <span className="products__icons">
-                                           {compareProducts.includes(product?._id)
-                                               ? <i className="ri-eye-fill"></i>
-                                               : <i className="ri-eye-line"></i>
+                            <button onClick={() => toggleCompareProduct(product)} className="products__hover-link">
+                               <span className="products__icons" aria-disabled={wishListLoading}>
+                                           { isCompared ?
+                                               <i className="ri-eye-fill"></i>
+                                               :
+                                               <i className="ri-eye-line"></i>
                                            }
                                </span>
                             </button>
                         </li>
                         <li className="products__hover-item">
-                            <button className="products__hover-link">
-                               <span className="products__icons">
-                                   <i className="ri-shuffle-line"></i>
-                               </span>
-                            </button>
+                            <Link to={`/catalog/${product._id}`} className="products__hover-link">
+                                <i className="ri-shuffle-line"></i>
+                            </Link>
                         </li>
                     </ul>
                 </div>

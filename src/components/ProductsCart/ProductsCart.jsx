@@ -16,7 +16,7 @@ const ProductsCart = ({product, wishListLoading, wishListData, compareProducts})
         setIsClicked(true);
         dispatch(addToWishList({productId}))
             .then(() => {
-            toast.success("Product added to cart!")
+            toast.success("Product added to cart!");
         })
     };
 
@@ -40,17 +40,17 @@ const ProductsCart = ({product, wishListLoading, wishListData, compareProducts})
         }else {
             setIsClicked(true)
         }
-    }, [wishListData]);
+    }, [wishListData, product._id]);
 
     useEffect(() => {
         const productId = product._id
-        const isProductCompared = compareProducts.findIndex(data => data._id === productId);
+        const isProductCompared = compareProducts?.findIndex(data => data._id === productId);
         if (isProductCompared === -1){
             setIsCompared(false)
         }else {
             setIsCompared(true)
         }
-    }, [compareProducts]);
+    }, [compareProducts, product._id]);
 
     return (
         <div className="products__item item">
@@ -86,8 +86,8 @@ const ProductsCart = ({product, wishListLoading, wishListData, compareProducts})
                             </button>
                         </li>
                         <li className="products__hover-item">
-                            <Link to={`/catalog/${product._id}`} className="products__hover-link"><i
-                                className="ri-shuffle-line"></i>
+                            <Link to={`/catalog/${product._id}`} className="products__hover-link">
+                                <i className="ri-shuffle-line"></i>
                             </Link>
                         </li>
                     </ul>
