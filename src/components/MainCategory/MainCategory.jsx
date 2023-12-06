@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import CategoryProducts from "../CategoryProducts/CategoryProducts";
@@ -11,28 +11,62 @@ import useProductsColor from "../../customHooks/UseProductsColor";
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import {useLocation} from "react-router-dom";
 import {sortData} from "../../customData/sortData";
+import {filterProductsActions} from "../../features/productFilterSlice";
 import "./main-category.scss";
 
-const MainCategory = ({category, products, categorySlug, currentPage, sortedItem, productColor, productBrand, productPrice, productMaxPrice, setProductPrice, perPage, paginateProducts, handlePerPageChange, loadMoreProducts, handleBrandCheckboxChange, handleColorCheckboxChange, handleSort, showRef, showMenu}) => {
+const MainCategory = ({
+                          category,
+                          products,
+                          categorySlug,
+                          showRef,
+                          showMenu
+}) => {
     const [filteredCategories, setFilteredCategories] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
+
+    const dispatch = useDispatch();
     const location = useLocation();
 
     const {data: categories, loading: catsLoading, error: catsErr} = useSelector(state => state.categories);
     const {loading: productsLoad, error: productsErr} = useSelector(state => state.products);
     const {data: brands, loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
+    const {productBrand, productColor, productSort, productMinPrice, productMaxPrice, currentPage, perPage} = useSelector(state => state.filterProducts);
 
     const categoryProducts = useFilteredCategoryProducts({
         filteredProducts,
         categorySlug,
         productBrand,
         productColor,
-        productPrice,
-        productMaxPrice,
-        sortedItem,
+        productSort,
+        productMinPrice,
+        productMaxPrice
     });
+
     const brandCounts = useBrandCounts(filteredProducts, brands);
     const uniqueColors = useProductsColor(filteredProducts);
+
+    const handleChangeMinPrice = (value) => {
+        dispatch(filterProductsActions.setProductMinPrice(value))
+    }
+
+    const handlePerPageChange = (value) => {
+        dispatch(filterProductsActions.setPerPage(value))
+    }
+
+    function loadMoreProducts() {
+        const plusToPerPage = +perPage + 10
+        dispatch(filterProductsActions.setPerPage(plusToPerPage))
+    }
+
+    function paginateProducts(products, currentPage, perPage) {
+        if (perPage === 'All') {
+            return products;
+        }
+
+        const startIndex = (currentPage - 1) * +perPage;
+        const endIndex = startIndex + +perPage;
+        return products.slice(startIndex, endIndex);
+    }
 
     useEffect(() => {
         if (categorySlug && categories) {
@@ -92,7 +126,7 @@ const MainCategory = ({category, products, categorySlug, currentPage, sortedItem
                                                                                     <input
                                                                                         name={brand.name}
                                                                                         checked={productBrand[brand.id]}
-                                                                                        onChange={handleBrandCheckboxChange}
+                                                                                        onChange={() => dispatch(filterProductsActions.setProductBrand(brand.id))}
                                                                                         className="filter__input"
                                                                                         type="checkbox"
                                                                                         value={brand.id}
@@ -124,7 +158,7 @@ const MainCategory = ({category, products, categorySlug, currentPage, sortedItem
                                                                             uniqueColors?.map((color, idx) => (
                                                                                 <li key={idx} className="filter__item">
                                                                                     <input
-                                                                                        onChange={handleColorCheckboxChange}
+                                                                                        onChange={() => dispatch(filterProductsActions.setProductColor(color.color))}
                                                                                         className="filter__input colors__input"
                                                                                         type="checkbox"
                                                                                         name={color.color}
@@ -153,13 +187,13 @@ const MainCategory = ({category, products, categorySlug, currentPage, sortedItem
                                                                                 min="0"
                                                                                 max="100000"
                                                                                 className="byprice__input"
-                                                                                defaultValue={productPrice}
-                                                                                onChange={e => setProductPrice(e.target.value)}
+                                                                                defaultValue={productMinPrice}
+                                                                                onChange={e => handleChangeMinPrice(e.target.value)}
                                                                             />
                                                                         </div>
                                                                         <div className="byprice__price-range">
                                                                             <span
-                                                                                className="byprice__form">${productPrice}</span>
+                                                                                className="byprice__form">${productMinPrice}</span>
                                                                             <span className="byprice__to">$100000</span>
                                                                         </div>
                                                                     </div>
@@ -193,15 +227,15 @@ const MainCategory = ({category, products, categorySlug, currentPage, sortedItem
                                             <div className="cat-navigation__sort">
                                                 <div className="cat-navigation__label label">
                                                     <span className="mobile-hide">
-                                                        {sortedItem ? sortedItem : "Sort by default"}
+                                                        {productSort ? productSort : "Sort by default"}
                                                     </span>
-                                                    <div className="desktop-hide">{sortedItem}</div>
+                                                    <div className="desktop-hide">{productSort}</div>
                                                     <i className="ri-arrow-down-s-line"></i>
                                                 </div>
                                                 <ul className="cat-navigation__list">
                                                     {
                                                         sortData.map((el,idx) => (
-                                                            <li key={idx} onClick={() => handleSort(el.name)}
+                                                            <li key={idx} onClick={() => dispatch(filterProductsActions.setProductSort(el.name))}
                                                                 className="cat-navigation__item">{el.name}
                                                             </li>
                                                         ))

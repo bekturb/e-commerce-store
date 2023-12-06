@@ -14,7 +14,7 @@ export const fetchSingleBrand = createAsyncThunk(
 );
 
 const initialState = {
-    data: [],
+    data: {},
     loading: false,
     error: null,
 };

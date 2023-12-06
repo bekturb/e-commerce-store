@@ -13,6 +13,7 @@ import {resendOtpReducer} from "../features/resendOtpSlice";
 import {brandsReducer} from "../features/brandSlice";
 import {brandReducer} from "../features/getSingleBrand";
 import {allCategoriesReducer} from "../features/allCategories";
+import filterReducer from "../features/productFilterSlice";
 import {offerReducer} from "../features/offerSlice";
 import {productsReducer} from "../features/productsSlice";
 import {productReducer} from "../features/getProduct";
@@ -24,6 +25,7 @@ import {wishListReducer} from "../features/wishList";
 const store = configureStore({
     reducer: {
         showMenu: menuReducer,
+        filterProducts: filterReducer,
         compareProducts: compareProductsReducer,
         showCart: cartReducer,
         register: registerReducer,

@@ -1,18 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import "./pagination.scss";
 
-const Pagination = ({posts, currentPage, postPerPage, SetCurrentPage, SetPageItem}) => {
-
-
+const Pagination = ({posts, currentPage, postPerPage, setCurrentPage, setPageItem}) => {
 
     const onPageChangeEvent = (start, end) => {
-        SetPageItem({
+        setPageItem({
             start: start,
             end: end
         })
     }
-
-
 
     const numOfPages = Math.ceil(posts.length / +postPerPage);
 
@@ -23,18 +19,18 @@ const Pagination = ({posts, currentPage, postPerPage, SetCurrentPage, SetPageIte
 
     const prevPageClick = () => {
         if (currentPage === 1) {
-            SetCurrentPage(currentPage);
+            setCurrentPage(currentPage);
         } else {
-            SetCurrentPage(currentPage - 1);
+            setCurrentPage(currentPage - 1);
         }
     }
 
 
     const nextPageClick = () => {
         if (currentPage === numOfButtons.length) {
-            SetCurrentPage(currentPage);
+            setCurrentPage(currentPage);
         } else {
-            SetCurrentPage(currentPage + 1);
+            setCurrentPage(currentPage + 1);
         }
     }
 
@@ -77,14 +73,14 @@ const Pagination = ({posts, currentPage, postPerPage, SetCurrentPage, SetPageIte
         }
 
         else if (currentPage === dotsInitial) {
-            SetCurrentPage(arrOfCurrButtons[arrOfCurrButtons.length - 3] + 1)
+            setCurrentPage(arrOfCurrButtons[arrOfCurrButtons.length - 3] + 1)
         }
         else if (currentPage === dotsRight) {
-            SetCurrentPage(arrOfCurrButtons[3] + 2)
+            setCurrentPage(arrOfCurrButtons[3] + 2)
         }
 
         else if (currentPage === dotsLeft) {
-            SetCurrentPage(arrOfCurrButtons[3] - 2)
+            setCurrentPage(arrOfCurrButtons[3] - 2)
         }
 
         setArrOfCurrButtons(tempNumberOfButtons);
@@ -101,7 +97,7 @@ const Pagination = ({posts, currentPage, postPerPage, SetCurrentPage, SetPageIte
                     {
                         arrOfCurrButtons.map((data, index) => {
                             return (
-                                <li key={index} className={`dt-item ${currentPage === data ? 'active' : ''}`}><a className="dt-link" onClick={() => SetCurrentPage(data)}>{data}</a></li>
+                                <li key={index} className={`dt-item ${currentPage === data ? 'active' : ''}`}><a className="dt-link" onClick={() => setCurrentPage(data)}>{data}</a></li>
                             )
                         })
                     }

@@ -4,10 +4,10 @@ function useFilteredCategoryProducts({
                                          filteredProducts,
                                          productBrand,
                                          productColor,
-                                         productPrice,
+                                         productMinPrice,
                                          productMaxPrice,
                                          productShop,
-                                         sortedItem,
+                                         productSort,
                                      }) {
     const [categoryProducts, setCategoryProducts] = useState([]);
 
@@ -20,14 +20,14 @@ function useFilteredCategoryProducts({
                     (!productBrand || productBrand.length === 0 || productBrand.includes(product.brand)) &&
                     (!productColor || productColor.length === 0 || product.variants.some((variant) => productColor.includes(variant.color))) &&
                     (!productShop || productShop.length === 0 || productShop.includes(product.shopId)) &&
-                    (!productPrice || productPrice.length === 0 || !productMaxPrice || productMaxPrice.length === 0 || product.variants.some((variant) => variant.originalPrice >= productPrice && variant.originalPrice <= productMaxPrice))
+                    (!productMinPrice || productMinPrice.length === 0 || !productMaxPrice || productMaxPrice.length === 0 || product.variants.some((variant) => variant.originalPrice >= productMinPrice && variant.originalPrice <= productMaxPrice))
                 ) {
                     return true;
                 }
                 return false;
             });
 
-            const sortedProducts = sortProducts(updatedFilteredProducts, sortedItem);
+            const sortedProducts = sortProducts(updatedFilteredProducts, productSort);
             setCategoryProducts(sortedProducts);
         } else {
             setCategoryProducts(filteredProducts);
@@ -37,9 +37,9 @@ function useFilteredCategoryProducts({
         productBrand,
         productColor,
         productShop,
-        productPrice,
+        productMinPrice,
         productMaxPrice,
-        sortedItem,
+        productSort,
     ]);
 
     function sortProducts(products, sortedItem) {

@@ -13,24 +13,16 @@ import {getAllShops} from "../../features/shopsSlice";
 import "./single-category.scss";
 
 const SingleCategory = () => {
-     const showRef = useRef(null);
     const [hasSubCategory, setHasSubCategory] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [perPage, setPerPage] = useState("10");
-    const [sortedItem, setSortedItem] = useState("Popularity");
-    const [productBrand, setProductBrand] = useState([]);
-    const [productColor, setProductColor] = useState([]);
-    const [productShop, setProductShop] = useState([]);
-    const [productPrice, setProductPrice] = useState(0);
-    const [productMaxPrice, setProductMaxPrice] = useState(100000);
+    const showRef = useRef(null);
 
     const {data: category, loading: catLoading, error: catError} = useSelector(state => state.category);
     const {data: allCategories, loading: allCatLoading, error: allCateErr} = useSelector(state => state.allCategories);
     const {data: products} = useSelector(state => state.products);
     const {data: shops} = useSelector(state => state.shops);
 
-    const dispatch = useDispatch();
     const {slug: categorySlug} = useParams();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchCategory(categorySlug));
@@ -48,7 +40,7 @@ const SingleCategory = () => {
         }
     }, [category, allCategories]);
 
-        useEffect(() => {
+    useEffect(() => {
         const handleDocumentClick = (e) => {
             const isClosest = e.target.closest(".filter");
             if (!isClosest && showRef.current && showRef.current.classList.contains("show")) {
@@ -63,63 +55,6 @@ const SingleCategory = () => {
         };
     }, []);
 
-    function paginateProducts(products, currentPage, perPage) {
-        if (perPage === 'All') {
-            return products;
-        }
-
-        const startIndex = (currentPage - 1) * +perPage;
-        const endIndex = startIndex + +perPage;
-        return products.slice(startIndex, endIndex);
-    }
-
-    function handlePerPageChange(page) {
-        setPerPage(page);
-        setCurrentPage(1);
-    }
-
-    function loadMoreProducts() {
-        const plusToPerPage = +perPage + 10
-        setPerPage(plusToPerPage);
-    }
-
-    const handleBrandCheckboxChange = (event) => {
-        const {value} = event.target;
-        const findBrand = productBrand.indexOf(value)
-
-        if (findBrand !== -1) {
-            setProductBrand(productBrand.filter((item) => item !== value));
-        } else {
-            setProductBrand([...productBrand, value]);
-        }
-    };
-
-    const handleColorCheckboxChange = (event) => {
-        const {value} = event.target;
-        const findColor = productColor.indexOf(value)
-
-        if (findColor !== -1) {
-            setProductColor(productColor.filter((item) => item !== value));
-        } else {
-            setProductColor([...productColor, value]);
-        }
-    };
-
-    const handleShopCheckboxChange = (event) => {
-        const {value} = event.target;
-        const findShop = productShop.indexOf(value)
-
-        if (findShop !== -1) {
-            setProductShop(productShop.filter((item) => item !== value));
-        } else {
-            setProductShop([...productShop, value]);
-        }
-    };
-
-    const handleSort = (value) => {
-        setSortedItem(value)
-    }
-
     const showMenu = () => {
         setTimeout(() => {
             showRef.current.classList.add("show")
@@ -131,7 +66,7 @@ const SingleCategory = () => {
             {
                 allCatLoading || catLoading ? (
                     <div className="loader-box">
-                        <Loader />
+                        <Loader/>
                     </div>
                 ) : allCateErr || catError ? (
                     <div className="loader-box">
@@ -142,20 +77,6 @@ const SingleCategory = () => {
                         categorySlug={categorySlug}
                         category={category}
                         products={products}
-                        currentPage={currentPage}
-                        sortedItem={sortedItem}
-                        productColor={productColor}
-                        productBrand={productBrand}
-                        productPrice={productPrice}
-                        productMaxPrice={productMaxPrice}
-                        perPage={perPage}
-                        setProductPrice={setProductPrice}
-                        paginateProducts={paginateProducts}
-                        handlePerPageChange={handlePerPageChange}
-                        loadMoreProducts={loadMoreProducts}
-                        handleBrandCheckboxChange={handleBrandCheckboxChange}
-                        handleColorCheckboxChange={handleColorCheckboxChange}
-                        handleSort={handleSort}
                         showRef={showRef}
                         showMenu={showMenu}
                     />
@@ -169,27 +90,13 @@ const SingleCategory = () => {
                 ) : category?.parentId && !hasSubCategory ? (
                     <SubSubCategory
                         category={category}
-                        productPrice={productPrice}
-                        setProductPrice={setProductPrice}
-                        productMaxPrice={productMaxPrice}
-                        setProductMaxPrice={setProductMaxPrice}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                        setSortedItem={setSortedItem}
-                        sortedItem={sortedItem}
-                        productColor={productColor}
-                        productBrand={productBrand}
-                        productShop={productShop}
-                        perPage={perPage}
-                        setPerPage={setPerPage}
-                        handleBrandCheckboxChange={handleBrandCheckboxChange}
-                        handleColorCheckboxChange={handleColorCheckboxChange}
-                        handleShopCheckboxChange={handleShopCheckboxChange}
-                        handleSort={handleSort}
                         shops={shops}
                     />
                 ) : !category?.parentId && !hasSubCategory ? (
-                    <SubSubCategory />
+                    <SubSubCategory
+                        category={category}
+                        shops={shops}
+                    />
                 ) : null
             }
         </>
