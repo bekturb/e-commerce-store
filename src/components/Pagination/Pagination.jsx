@@ -1,7 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import "./pagination.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {filterProductsActions} from "../../features/productFilterSlice";
 
-const Pagination = ({posts, currentPage, postPerPage, setCurrentPage, setPageItem}) => {
+const Pagination = ({posts, setPageItem}) => {
+
+    const {currentPage, perPage} = useSelector(state => state.filterProducts);
+
+    const dispatch = useDispatch();
 
     const onPageChangeEvent = (start, end) => {
         setPageItem({
@@ -10,7 +16,7 @@ const Pagination = ({posts, currentPage, postPerPage, setCurrentPage, setPageIte
         })
     }
 
-    const numOfPages = Math.ceil(posts.length / +postPerPage);
+    const numOfPages = Math.ceil(posts.length / +perPage);
 
     const numOfButtons = [];
     for (let i = 1; i <= numOfPages; i++) {
@@ -19,18 +25,18 @@ const Pagination = ({posts, currentPage, postPerPage, setCurrentPage, setPageIte
 
     const prevPageClick = () => {
         if (currentPage === 1) {
-            setCurrentPage(currentPage);
+            dispatch(filterProductsActions.setCurrentPage(currentPage))
         } else {
-            setCurrentPage(currentPage - 1);
+            dispatch(filterProductsActions.setCurrentPage(currentPage - 1))
         }
     }
 
 
     const nextPageClick = () => {
         if (currentPage === numOfButtons.length) {
-            setCurrentPage(currentPage);
+            dispatch(filterProductsActions.setCurrentPage(currentPage))
         } else {
-            setCurrentPage(currentPage + 1);
+            dispatch(filterProductsActions.setCurrentPage(currentPage + 1))
         }
     }
 
@@ -73,21 +79,21 @@ const Pagination = ({posts, currentPage, postPerPage, setCurrentPage, setPageIte
         }
 
         else if (currentPage === dotsInitial) {
-            setCurrentPage(arrOfCurrButtons[arrOfCurrButtons.length - 3] + 1)
+            dispatch(filterProductsActions.setCurrentPage(arrOfCurrButtons[arrOfCurrButtons.length - 3] + 1))
         }
         else if (currentPage === dotsRight) {
-            setCurrentPage(arrOfCurrButtons[3] + 2)
+            dispatch(filterProductsActions.setCurrentPage(arrOfCurrButtons[3] + 2))
         }
 
         else if (currentPage === dotsLeft) {
-            setCurrentPage(arrOfCurrButtons[3] - 2)
+            dispatch(filterProductsActions.setCurrentPage(arrOfCurrButtons[3] - 2))
         }
 
         setArrOfCurrButtons(tempNumberOfButtons);
-        const value = currentPage * +postPerPage;
+        const value = currentPage * +perPage;
 
-        onPageChangeEvent(value - +postPerPage, value)
-    }, [currentPage, postPerPage, numOfPages]);
+        onPageChangeEvent(value - +perPage, value)
+    }, [currentPage, perPage, numOfPages]);
 
     return (
         <>
@@ -97,7 +103,7 @@ const Pagination = ({posts, currentPage, postPerPage, setCurrentPage, setPageIte
                     {
                         arrOfCurrButtons.map((data, index) => {
                             return (
-                                <li key={index} className={`dt-item ${currentPage === data ? 'active' : ''}`}><a className="dt-link" onClick={() => setCurrentPage(data)}>{data}</a></li>
+                                <li key={index} className={`dt-item ${currentPage === data ? 'active' : ''}`}><a className="dt-link" onClick={() => dispatch(filterProductsActions.setCurrentPage(data))}>{data}</a></li>
                             )
                         })
                     }

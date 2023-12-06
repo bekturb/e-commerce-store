@@ -8,8 +8,8 @@ import useGetProductsSeller from "../../customHooks/useGetProductsSeller";
 import useFilteredCategoryProducts from "../../customHooks/useFilteredCategoryProducts";
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import ProductsCart from "../ProductsCart/ProductsCart";
-// import Pagination from "../Pagination/Pagination";
-// import FiltersMobile from "../FiltersMobile/FiltersMobile";
+import Pagination from "../Pagination/Pagination";
+import FiltersMobile from "../FiltersMobile/FiltersMobile";
 import Popup from "../Popup/Popup";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
@@ -26,17 +26,18 @@ const SubSubCategory = ({
     const [filteredColors, setFilteredColors] = useState([]);
     const [filteredBrands, setFilteredBrands] = useState([]);
     const [filteredShops, setFilteredShops] = useState([]);
-    // const [pageItem, setPageItem] = useState({
-    //     start: 0,
-    //     end: perPage
-    // });
     const location = useLocation();
 
     const {data: brands} = useSelector(state => state.brands);
     const {data: products, loading: productsLoad, error: productsErr} = useSelector(state => state.products);
     const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
     const {data: compareProducts} = useSelector(state => state.compareProducts);
-    const {productBrand, productColor, productSort, productMinPrice, productMaxPrice, productShop, currentPage, perPage} = useSelector(state => state.filterProducts);
+    const {productBrand, productColor, productSort, productMinPrice, productMaxPrice, productShop, perPage} = useSelector(state => state.filterProducts);
+
+    const [pageItem, setPageItem] = useState({
+        start: 0,
+        end: perPage
+    });
 
     const categoryProducts = useFilteredCategoryProducts({
         filteredProducts,
@@ -88,25 +89,20 @@ const SubSubCategory = ({
 
     return (
         <>
-            {/*<FiltersMobile*/}
-            {/*    categoryProducts={categoryProducts}*/}
-            {/*    setShowMobileFilter={setShowMobileFilter}*/}
-            {/*    showMobileFilter={showMobileFilter}*/}
-            {/*    filteredColors={filteredColors}*/}
-            {/*    filteredBrands={filteredBrands}*/}
-            {/*    filteredShops={filteredShops}*/}
-            {/*    brandCounts={brandCounts}*/}
-            {/*    uniqueColors={uniqueColors}*/}
-            {/*    productsShop={productsShop}*/}
-            {/*    handleSearchBrands={handleSearchBrands}*/}
-            {/*    handleSearchColors={handleSearchColors}*/}
-            {/*    handleSearchShops={handleSearchShops}*/}
-            {/*    setProductMaxPrice={setProductMaxPrice}*/}
-            {/*    setProductPrice={setProductPrice}*/}
-            {/*    productPrice={productPrice}*/}
-            {/*    productMaxPrice={productMaxPrice}*/}
-            {/*    handleSort={handleSort}*/}
-            {/*    shops={shops}/>*/}
+            <FiltersMobile
+                categoryProducts={categoryProducts}
+                setShowMobileFilter={setShowMobileFilter}
+                showMobileFilter={showMobileFilter}
+                filteredColors={filteredColors}
+                filteredBrands={filteredBrands}
+                filteredShops={filteredShops}
+                brandCounts={brandCounts}
+                uniqueColors={uniqueColors}
+                productsShop={productsShop}
+                handleSearchBrands={handleSearchBrands}
+                handleSearchColors={handleSearchColors}
+                handleSearchShops={handleSearchShops}
+                shops={shops}/>
             <Popup show={showMobileSort} setShow={setShowMobileSort}/>
             <div className={showMobileFilter || showMobileSort ? "overlay show" : "overlay"}></div>
             <div className="subcat">
@@ -150,7 +146,7 @@ const SubSubCategory = ({
                                                 <>
                                                     {
                                                         categoryProducts?.length > 0 ? (
-                                                            categoryProducts?.slice(0, 10).map(product => (
+                                                            categoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
                                                                 <ProductsCart key={product?._id} product={product} wishListData={wishListData} wishListLoading={wishListLoading} compareProducts={compareProducts}/>
                                                             ))
                                                         ) : (
@@ -165,19 +161,16 @@ const SubSubCategory = ({
                                     }
                                 </div>
                             </div>
-                            {/*{*/}
-                            {/*    categoryProducts.length > 1 && (*/}
-                            {/*        <div className="subcat__foot">*/}
-                            {/*            <Pagination*/}
-                            {/*                posts={categoryProducts}*/}
-                            {/*                postPerPage={perPage}*/}
-                            {/*                currentPage={currentPage}*/}
-                            {/*                setCurrentPage={setCurrentPage}*/}
-                            {/*                setPageItem={setPageItem}*/}
-                            {/*            />*/}
-                            {/*        </div>*/}
-                            {/*    )*/}
-                            {/*}*/}
+                            {
+                                categoryProducts.length > 1 && (
+                                    <div className="subcat__foot">
+                                        <Pagination
+                                            posts={categoryProducts}
+                                            setPageItem={setPageItem}
+                                        />
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
                 </div>

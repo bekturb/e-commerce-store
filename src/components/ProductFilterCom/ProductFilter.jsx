@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
-import {sortData} from "../../customData/sortData";
+import React from 'react';
 import FilterByBrand from "../FilterItems/FilterByBrand";
 import FilterByColors from "../FilterItems/FilterByColors";
 import FilterByShop from "../FilterItems/FilterByShop";
 import {useSelector} from "react-redux";
+import SortByAdvantages from "../FilterItems/SortByAdvantages";
+import useOpenDrop from "../../customHooks/useOpenDrop";
 
 const ProductFilter = ({
                            setShowMobileFilter,
@@ -20,6 +21,7 @@ const ProductFilter = ({
                        }) => {
 
     const {productBrand, productColor, productShop, productSort, productMinPrice, productMaxPrice, currentPage, perPage} = useSelector(state => state.filterProducts);
+    const {handleOpenDrop, open} = useOpenDrop();
     const sumOfLengths = productBrand?.length + productColor?.length + productShop?.length;
 
     return (
@@ -77,72 +79,25 @@ const ProductFilter = ({
                         />
                     )
                 }
-                {/*<div className={open === "filter" ? "dropdown__sort open" : "dropdown__sort"}>*/}
-                {/*    <button className="dropdown__button"*/}
-                {/*            onClick={() => handleOpenDrop("filter")}>*/}
-                {/*        <span className="dropdown__select">{sortedItem}</span>*/}
-                {/*        {*/}
-                {/*            open === "filter" ? <span className="dropdown__icon">*/}
-                {/*                            <i className="ri-arrow-down-s-line"></i>*/}
-                {/*                        </span> : <span className="dropdown__icon">*/}
-                {/*                            <i className="ri-arrow-up-s-line"></i>*/}
-                {/*                        </span>*/}
-                {/*        }*/}
-                {/*    </button>*/}
-                {/*    <div className="dropdown__filter">*/}
-                {/*        <div className="down">*/}
-                {/*            <div className="down__form desktop-hide">*/}
-                {/*                <label>*/}
-                {/*                    <input className="down__input" type="text"/>*/}
-                {/*                </label>*/}
-                {/*            </div>*/}
-                {/*            <ul className="down__list">*/}
-                {/*                {*/}
-                {/*                    sortData?.map((el, idx) => (*/}
-                {/*                        <li key={idx} className="down__item">*/}
-                {/*                            <div className="radio-with-text">*/}
-                {/*                                <input*/}
-                {/*                                    onChange={() => handleSortProducts(el.name)}*/}
-                {/*                                    name="filter"*/}
-                {/*                                    checked={sortedItem === el.name}*/}
-                {/*                                    className="radio-with-text__input"*/}
-                {/*                                    value={el.name}*/}
-                {/*                                    type="radio"*/}
-                {/*                                    id={el.name}*/}
-                {/*                                />*/}
-                {/*                                <label htmlFor={el.name}*/}
-                {/*                                       className="radio-with-text__label">*/}
-                {/*                                            <span className="radio-with-text__decor">*/}
-
-                {/*                                            </span>*/}
-                {/*                                    <span className="radio-with-text__text">*/}
-                {/*                                            {el.name}*/}
-                {/*                                            </span>*/}
-                {/*                                </label>*/}
-                {/*                            </div>*/}
-                {/*                        </li>*/}
-                {/*                    ))*/}
-                {/*                }*/}
-                {/*            </ul>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-                {/*<div className={open === "filter" ? "dropdown__sort open" : "dropdown__sort"}>*/}
-                {/*    <button onClick={() => setShowMobileFilter(true)}*/}
-                {/*            className="dropdown__button">*/}
-                {/*                            <span className="dropdown__button-icon">*/}
-                {/*                                <i className="ri-equalizer-line"></i>*/}
-                {/*                            </span>*/}
-                {/*        All Filter*/}
-                {/*    </button>*/}
-                {/*    {*/}
-                {/*        sumOfLengths > 0 && (*/}
-                {/*            <span className="dropdown__count">*/}
-                {/*                                        {sumOfLengths}*/}
-                {/*                                    </span>*/}
-                {/*        )*/}
-                {/*    }*/}
-                {/*</div>*/}
+                <SortByAdvantages
+                    productSort={productSort}
+                />
+                <div className={open === "filter" ? "dropdown__sort open" : "dropdown__sort"}>
+                    <button onClick={() => setShowMobileFilter(true)}
+                            className="dropdown__button">
+                                            <span className="dropdown__button-icon">
+                                                <i className="ri-equalizer-line"></i>
+                                            </span>
+                        All Filter
+                    </button>
+                    {
+                        sumOfLengths > 0 && (
+                            <span className="dropdown__count">
+                                                        {sumOfLengths}
+                                                    </span>
+                        )
+                    }
+                </div>
             </div>
         </div>
     );

@@ -4,7 +4,7 @@ const initialState = {
     productBrand: [],
     productColor: [],
     productShop: [],
-    productSort: "",
+    productSort: "Popularity",
     productMinPrice: 0,
     productMaxPrice: 100000,
     currentPage: 1,
@@ -54,6 +54,10 @@ const productFilterSlice = createSlice({
 
         setProductMinPrice: (state, action) => {
             state.productMinPrice = action.payload;
+        },
+
+        setCurrentPage: (state, action) => {
+            state.currentPage = action.payload;
         },
 
         setPerPage: (state, action) => {
