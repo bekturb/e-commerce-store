@@ -12,6 +12,8 @@ import HeaderNavSkeleton from "../Skeletons/HeaderNavSkeleton/HeaderNavSkeleton"
 import NotFound from "../NotFound/NotFound";
 import "./header-nav.scss";
 import MegaProductCart from "../MegaProductCart/MegaProductCart";
+import {cartProductsActions} from "../../features/cartSlice";
+import {fetchAllCategories} from "../../features/allCategories";
 
 const HeaderNav = () => {
 
@@ -19,6 +21,7 @@ const HeaderNav = () => {
     const {data: categories, loading: catLoading, error: catErr} = useSelector(state => state.categories);
     const {data: wishListData} = useSelector(state => state.wishlist);
     const {data: compareProducts} = useSelector(state => state.compareProducts);
+    const {data: cartProducts} = useSelector(state => state.cart);
 
     const [categoriesToExclude] = useState(["Shop", "Women", "Men", "Sports"]);
     const filteredCategories = categories ? categories.filter(category => categoriesToExclude.includes(category.name)).sort((a,b) => categoriesToExclude.indexOf(a.name) - categoriesToExclude.indexOf(b.name)
@@ -31,7 +34,9 @@ const HeaderNav = () => {
     useEffect(() => {
         dispatch(fetchCategories());
         dispatch(getPersonalWishlist());
+        dispatch(fetchAllCategories());
         dispatch(compareProductsActions.getCompareProducts());
+        dispatch(cartProductsActions.getCartProducts())
     }, [dispatch]);
 
     return (
@@ -170,7 +175,7 @@ const HeaderNav = () => {
                                                 <i className="ri-shopping-cart-line"></i>
                                                 <span className="fly-item package__fly-item">
                                             <span className="package__number">
-                                                5
+                                                {cartProducts?.length}
                                             </span>
                                         </span>
                                             </div>

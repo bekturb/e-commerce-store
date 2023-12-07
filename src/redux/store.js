@@ -1,7 +1,9 @@
 import {configureStore} from "@reduxjs/toolkit";
 import menuReducer from "../features/menuSlice";
 import compareProductsReducer from "../features/compareProducts";
-import cartReducer from "../features/miniCartSlice";
+import miniCartReducer from "../features/miniCartSlice";
+import filterReducer from "../features/productFilterSlice";
+import cartReducer from "../features/cartSlice";
 import {registerReducer} from "../features/registerSlice";
 import {allReviewsReducer} from "../features/getAllReviewSlice";
 import {otpReducer} from "../features/otpSlice";
@@ -13,7 +15,6 @@ import {resendOtpReducer} from "../features/resendOtpSlice";
 import {brandsReducer} from "../features/brandSlice";
 import {brandReducer} from "../features/getSingleBrand";
 import {allCategoriesReducer} from "../features/allCategories";
-import filterReducer from "../features/productFilterSlice";
 import {offerReducer} from "../features/offerSlice";
 import {productsReducer} from "../features/productsSlice";
 import {productReducer} from "../features/getProduct";
@@ -27,7 +28,8 @@ const store = configureStore({
         showMenu: menuReducer,
         filterProducts: filterReducer,
         compareProducts: compareProductsReducer,
-        showCart: cartReducer,
+        showCart: miniCartReducer,
+        cart: cartReducer,
         register: registerReducer,
         allReviewsReducer,
         otp: otpReducer,

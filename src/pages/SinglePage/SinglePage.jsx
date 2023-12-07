@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Helmet from "../../layout/Helmet";
 import SingleProduct from "../../components/SingleProduct/SingleProduct";
-import Features from "../../components/Features/Features";
+import RelatedProducts from "../../components/RelatedProducts/RelatedProducts";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchSingleProduct} from "../../features/getProduct";
@@ -13,24 +13,12 @@ const SinglePage = () => {
 
     const {productId} = useParams();
     const dispatch = useDispatch();
-    const [isClicked, setIsClicked] = useState(false);
 
     const {data: productData, loading: productLoading, error: productErr} = useSelector(state => state.product);
-    const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
 
     useEffect(() => {
         dispatch(fetchSingleProduct(productId))
     }, [productId]);
-
-    useEffect(() => {
-        const id = productId
-        const isProductInWishlist = wishListData.findIndex(data => data._id === id);
-        if (isProductInWishlist === -1){
-            setIsClicked(false)
-        }else {
-            setIsClicked(true)
-        }
-    }, [wishListData, productId]);
 
     return (
         <Helmet title="Single-Page">
@@ -44,8 +32,8 @@ const SinglePage = () => {
                 </div>
             ) : productData ? (
                 <>
-                    <SingleProduct product={productData} isClicked={isClicked} setIsClicked={setIsClicked}/>
-                    <Features title="Related Products" />
+                    <SingleProduct product={productData}/>
+                    <RelatedProducts title="Related Products" product={productData} />
                 </>
             ) : null}
         </Helmet>

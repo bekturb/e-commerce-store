@@ -6,12 +6,13 @@ import {SRLWrapper} from "simple-react-lightbox"
 import ReviewDetail from "../ReviewDetail/ReviewDetail";
 import {addToWishList} from "../../features/wishList";
 import toast from "react-hot-toast";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import "./single-product.scss";
+import {cartProductsActions} from "../../features/cartSlice";
 
 const formatNumber = (number) => {
     if (number >= 1000) {
@@ -20,13 +21,18 @@ const formatNumber = (number) => {
     return number;
 };
 
-const SingleProduct = ({product, isClicked, setIsClicked}) => {
+const SingleProduct = ({product}) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [expand, setExpand] = useState("info");
     const [selectedVariant, setSelectedVariant] = useState({});
-    const [cartProduct, setCartProduct] = useState([]);
     const [cartProductQty, setCartProductQty] = useState(1);
     const [isProductInCart, setIsProductInCart] = useState(false);
+    const [isClicked, setIsClicked] = useState(false);
+
+    const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
+    const {data: cartProducts} = useSelector(state => state.cart);
+
+    console.log(cartProducts, "cart")
 
     const dispatch = useDispatch();
 
@@ -71,19 +77,24 @@ const SingleProduct = ({product, isClicked, setIsClicked}) => {
             variantColor: variant.color,
             quantity: qty || 1,
         };
-
-            const updatedCart = [...cartProduct, cartItem];
-            setCartProduct(updatedCart);
-            localStorage.setItem('cart', JSON.stringify(updatedCart));
+        dispatch(cartProductsActions.setCartProducts(cartItem))
     };
 
     useEffect(() => {
-        const storedProducts = JSON.parse(localStorage.getItem('cart')) || [];
+        const id = product._id
+        const isProductInWishlist = wishListData.findIndex(data => data._id === id);
+        if (isProductInWishlist === -1){
+            setIsClicked(false)
+        }else {
+            setIsClicked(true)
+        }
+    }, [wishListData, product._id]);
 
-        const productExists = storedProducts.some(product => product.id === product?._id);
-
+    useEffect(() => {
+        const productId = product._id
+        const productExists = cartProducts.some(product => product.productId === productId);
         setIsProductInCart(productExists);
-    }, [cartProduct]);
+    }, [cartProducts, product?._id]);
 
     useEffect(() => {
         if (product && product.variants && product.variants.length > 0) {
@@ -266,7 +277,10 @@ const SingleProduct = ({product, isClicked, setIsClicked}) => {
                                                                     </button>
                                                                 </Link>
                                                             ) : (
-                                                                <button onClick={() => addProductToCart(product, selectedVariant, cartProductQty)} className="actions__btn primary-button">
+                                                                <button
+                                                                    onClick={() => addProductToCart(product, selectedVariant, cartProductQty)}
+                                                                    className="actions__btn primary-button"
+                                                                >
                                                                     Add to cart
                                                                 </button>
                                                             )
@@ -277,7 +291,9 @@ const SingleProduct = ({product, isClicked, setIsClicked}) => {
                                                             <li className="wish-share__link-list">
                                                                 <button
                                                                     onClick={isClicked ? () => handleDeleteToWishlist(product._id) : () => handleAddToWishlist(product._id)}
-                                                                    className="wish-share__link">
+                                                                    className="wish-share__link"
+                                                                    disabled={wishListLoading}
+                                                                >
                                                                     {
                                                                         isClicked ? (
                                                                             <span className="icon-lg wish-share__heart-icon color">

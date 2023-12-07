@@ -26,7 +26,6 @@ const SingleCategory = () => {
 
     useEffect(() => {
         dispatch(fetchCategory(categorySlug));
-        dispatch(fetchAllCategories());
         dispatch(fetchBrands());
         dispatch(getAllShops());
     }, [categorySlug]);
