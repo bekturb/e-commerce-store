@@ -20,31 +20,29 @@ const Brands = () => {
     }, [])
 
     return (
-        <div className="brands">
-            <div className="container">
-                <div className="brands__wrapper flexitem">
-                    {
-                        loading && (
-                            <BrandsSkeleton cards={6} />
-                        )
-                    }
-                    {
-                        error && (
+        <>
+            <div className="brands">
+                <div className="container">
+                    <div className="brands__wrapper flexitem">
+                        {
+                            loading ? (
+                                <BrandsSkeleton cards={6} />
+                            ) : error ? (
                                 <NotFound error={error}/>
-                        )
-                    }
-                    {
-                        filteredBrands.length > 0 && filteredBrands.map(brand => (
-                            <div key={brand._id} className="brands__item">
-                                <Link to={`/brand/${brand._id}`} className="brands__link">
-                                    <img className="brands__image" src={brand.brandImage} alt=""/>
-                                </Link>
-                            </div>
-                        ))
-                    }
+                            ) : filteredBrands.length > 0 ? (
+                                filteredBrands.map(brand => (
+                                    <div key={brand._id} className="brands__item">
+                                        <Link to={`/brand/${brand._id}`} className="brands__link">
+                                            <img className="brands__image" src={brand.brandImage} alt=""/>
+                                        </Link>
+                                    </div>
+                                ))
+                            ) : null
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

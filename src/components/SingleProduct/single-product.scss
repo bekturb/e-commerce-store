@@ -227,11 +227,21 @@
     font-weight: var(--fw7);
     margin: 1em 2em 1em 0;
     tarnsition: var(--trans-color);
+    border: none!important;
+    outline: none!important;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  &__heart-icon {
+
+    &.color {
+      color: red;
+    }
   }
 }
 
 .description {
-
   &__item, {
     padding: 1em 0;
     border-top: 1px solid var(--border-color);

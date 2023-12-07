@@ -15,30 +15,32 @@ const Features = ({title}) => {
             <div className="container">
                 <div className="features__wrapper">
                     <div className="features__column">
-                        <div className="secTop flexitem">
-                            <h2 className="secTop__inner">
-                                <span className="secTop__circle circle"></span>
-                                <span className="secTop__title">{title}</span>
-                            </h2>
-                            <div className="secTop__second-links">
-                                <a className="view-all" href="#">View all <i className="ri-arrow-right-line"></i></a>
-                            </div>
-                        </div>
                         {
-                            productsLoad && (
+                            sortedProducts?.length > 0 && (
+                                <div className="secTop flexitem">
+                                    <h2 className="secTop__inner">
+                                        <span className="secTop__circle circle"></span>
+                                        <span className="secTop__title">{title}</span>
+                                    </h2>
+                                    <div className="secTop__second-links">
+                                        <a className="view-all" href="#">View all <i className="ri-arrow-right-line"></i></a>
+                                    </div>
+                                </div>
+                            )
+                        }
+                        {
+                            productsLoad ? (
                                 <div className="trending__loader">
                                     <Loader />
                                 </div>
-                            )
-                        }
-                        {
-                            productsErr && (
+                            ) : productsErr ? (
                                 <div className="trending__loader">
                                     <NotFound error={productsErr} />
                                 </div>
-                            )
+                            ) : sortedProducts.length > 0 ? (
+                                <ProductsComp products={sortedProducts} />
+                            ) : null
                         }
-                        <ProductsComp products={sortedProducts} />
                     </div>
                 </div>
             </div>

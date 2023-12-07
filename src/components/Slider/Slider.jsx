@@ -25,31 +25,27 @@ const Slider = () => {
             <div className="container">
                 <div className="slider__wrapper">
                     {
-                        loading &&
-                        <div className="mySlider">
-                            <div className="mySlider__wrapper">
-                                <div className="slider__slide">
-                                    <div className="slider__item">
-                                        <Loader/>
+                        loading ? (
+                            <div className="mySlider">
+                                <div className="mySlider__wrapper">
+                                    <div className="slider__slide">
+                                        <div className="slider__item">
+                                            <Loader/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                    {
-                        error &&
-                        <div className="mySlider">
-                            <div className="mySlider__wrapper">
-                                <div className="slider__slide">
-                                    <div className="slider__item">
-                                        <NotFound error={error}/>
+                        ) : error ? (
+                            <div className="mySlider">
+                                <div className="mySlider__wrapper">
+                                    <div className="slider__slide">
+                                        <div className="slider__item">
+                                            <NotFound error={error}/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                    {
-                        pages?.length > 0 && (
+                        ) : pages?.length > 0 ? (
                             <Swiper pagination={{clickable: true,}}
                                     modules={[Autoplay, Pagination]}
                                     loop={true}
@@ -83,7 +79,7 @@ const Slider = () => {
                                     ))
                                 }
                             </Swiper>
-                        )
+                        ) : <div>Not Found</div>
                     }
                 </div>
             </div>

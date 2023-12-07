@@ -30,13 +30,13 @@ const HeaderTop = () => {
                             {
                                 isAuthenticated === false &&
                                 <li className="top__item">
-                                    <Link className="top__link" to="/login">Sign Up</Link>
+                                    <Link className="top__link" to="/register">Sign Up</Link>
                                 </li>
                             }
                             {
                                 isAuthenticated === false &&
                                 <li className="top__item">
-                                    <Link className="top__link" to="/register">Sign In</Link>
+                                    <Link className="top__link" to="/login">Sign In</Link>
                                 </li>
                             }
                             {

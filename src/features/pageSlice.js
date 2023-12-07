@@ -26,7 +26,7 @@ const pageSlice = createSlice({
         builder
             .addCase(fetchPages.pending, (state) => {
                 state.loading = true;
-                state.data = null;
+                state.data = [];
                 state.error = null;
             })
             .addCase(fetchPages.fulfilled, (state, action) => {
@@ -36,7 +36,7 @@ const pageSlice = createSlice({
             })
             .addCase(fetchPages.rejected, (state, action) => {
                 state.loading = false;
-                state.data = null;
+                state.data = [];
                 state.error = action.payload;
             });
     },

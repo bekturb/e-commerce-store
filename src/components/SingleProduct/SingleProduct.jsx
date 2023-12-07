@@ -4,11 +4,14 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Thumbs, FreeMode} from "swiper";
 import {SRLWrapper} from "simple-react-lightbox"
 import ReviewDetail from "../ReviewDetail/ReviewDetail";
-import "./single-product.scss";
+import {addToWishList} from "../../features/wishList";
+import toast from "react-hot-toast";
+import {useDispatch} from "react-redux";
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import "./single-product.scss";
 
 const formatNumber = (number) => {
     if (number >= 1000) {
@@ -17,7 +20,7 @@ const formatNumber = (number) => {
     return number;
 };
 
-const SingleProduct = ({product}) => {
+const SingleProduct = ({product, isClicked, setIsClicked}) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [expand, setExpand] = useState("info");
     const [selectedVariant, setSelectedVariant] = useState({});
@@ -25,10 +28,28 @@ const SingleProduct = ({product}) => {
     const [cartProductQty, setCartProductQty] = useState(1);
     const [isProductInCart, setIsProductInCart] = useState(false);
 
+    const dispatch = useDispatch();
+
     const handleSelectColor = (variantId) => {
         const productVariant = product?.variants?.find(various => various._id === variantId);
         setSelectedVariant(productVariant)
     }
+
+    const handleAddToWishlist = (productId) => {
+        setIsClicked(true);
+        dispatch(addToWishList({productId}))
+            .then(() => {
+                toast.success("Product added to cart!")
+            })
+    };
+
+    const handleDeleteToWishlist = (productId) => {
+        setIsClicked(false);
+        dispatch(addToWishList({productId}))
+            .then(() => {
+                toast.success("Product deleted from cart!")
+            });
+    };
 
     const addQtyOfProduct = (qty) => {
         if (selectedVariant.quantity > cartProductQty) {
@@ -254,12 +275,22 @@ const SingleProduct = ({product}) => {
                                                     <div className="wish-share">
                                                         <ul className="flexitem wish-share__second-links">
                                                             <li className="wish-share__link-list">
-                                                                <a className="wish-share__link" href="">
-                                                                        <span className="icon-lg">
-                                                                            <i className="ri-heart-line"></i>
-                                                                        </span>
+                                                                <button
+                                                                    onClick={isClicked ? () => handleDeleteToWishlist(product._id) : () => handleAddToWishlist(product._id)}
+                                                                    className="wish-share__link">
+                                                                    {
+                                                                        isClicked ? (
+                                                                            <span className="icon-lg wish-share__heart-icon color">
+                                                                                <i className="ri-heart-fill"></i>
+                                                                            </span>
+                                                                        ) : (
+                                                                            <span className="icon-lg wish-share__heart-icon">
+                                                                                <i className="ri-heart-line"></i>
+                                                                            </span>
+                                                                        )
+                                                                    }
                                                                     <span>Wishlist</span>
-                                                                </a>
+                                                                </button>
                                                             </li>
                                                             <li className="wish-share__link-list">
                                                                 <a className="wish-share__link" href="">

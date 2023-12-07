@@ -17,18 +17,22 @@ const Layout = () => {
         window.scrollTo(0, 0);
     }, [pathname]);
 
+    const routesWithoutHeaderFooter = ['/login', '/register', '/:id/otp'];
+    const shouldRenderHeaderFooter = !routesWithoutHeaderFooter.includes(pathname);
+
     return (
         <>
-                <Aside/>
-                <Header />
+            <Aside />
+            {shouldRenderHeaderFooter && <Header />}
             <main>
                 <Routers />
             </main>
+            {shouldRenderHeaderFooter && <Footer />}
             <MenuBottom setShowSearchBottom={setShowSearchBottom} />
             <SearchBottom showSearchBottom={showSearchBottom} setShowSearchBottom={setShowSearchBottom} />
             <Overlay />
-            <Footer/>
         </>
     );
 };
+
 export default Layout;
