@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useSelector} from "react-redux";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
@@ -7,8 +7,8 @@ import {Link} from "react-router-dom";
 
 const RelatedProducts = ({title, product}) => {
     const {data: products, loading: productsLoad, error:productsErr} = useSelector(state => state.products);
-    const {data: allCategories, loading: allCatLoading, error: allCateErr} = useSelector(state => state.allCategories);
-    const sortedProducts = products ? [...products].filter(prod => prod.category === product?.category) : [];
+    const {data: allCategories} = useSelector(state => state.allCategories);
+    const sortedProducts = products ? [...products].filter(prod => prod.category === product?.category).slice(0, 8) : [];
     const relatedCat = allCategories.find(cat => cat._id === product.category)
 
     return (

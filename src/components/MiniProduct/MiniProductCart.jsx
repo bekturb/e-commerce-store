@@ -4,6 +4,7 @@ import {useDispatch} from "react-redux";
 import {addToWishList} from "../../features/wishList";
 import toast from "react-hot-toast";
 import {compareProductsActions} from "../../features/compareProducts";
+import {Link} from "react-router-dom";
 
 const MiniProductCart = ({miniProduct, wishListLoading, wishListData, compareProducts}) => {
 
@@ -54,11 +55,11 @@ const MiniProductCart = ({miniProduct, wishListLoading, wishListData, comparePro
         <div className="products__item products__mini-item">
             <div className="products__media products__media-mini">
                 <div className="thumbnail">
-                    <a className="products__link" href="">
+                    <Link to={`/catalog/${miniProduct._id}`} className="products__link">
                         <img className="products__image"
                              src={miniProduct.variants[0].images[0].url}
                              alt=""/>
-                    </a>
+                    </Link>
                 </div>
                 <div className="products__hover-able">
                     <ul className="products__hover-list">
@@ -85,9 +86,9 @@ const MiniProductCart = ({miniProduct, wishListLoading, wishListData, comparePro
                             </button>
                         </li>
                         <li className="products__hover-item">
-                            <a className="products__hover-link" href=""><i
+                            <Link to={`/catalog/${miniProduct._id}`} className="products__hover-link"><i
                                 className="ri-shuffle-line"></i>
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -99,7 +100,7 @@ const MiniProductCart = ({miniProduct, wishListLoading, wishListData, comparePro
             </div>
             <div className="products__content content">
                 <h3 className="content__main-links">
-                    <a className="content__link" href="">{miniProduct?.name}</a>
+                    <Link to={`/catalog/${miniProduct._id}`} className="content__link">{miniProduct?.name}</Link>
                 </h3>
                 <div className="content__rating">
                     <div className="content__stars">

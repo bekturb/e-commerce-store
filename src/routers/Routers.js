@@ -15,8 +15,6 @@ const Routers = () => {
     return (
         <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/offer-page" element={<OfferPage/>}/>
-            <Route path="/offer-page" element={<OfferPage/>}/>
             <Route path="/cart-page" element={<Cart/>}/>
             <Route path="/checkout-page" element={<Checkout/>}/>
             <Route path="/:id/otp" element={<Otp/>}/>

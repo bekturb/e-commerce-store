@@ -11,12 +11,13 @@ import "./offer-product.scss"
 const OfferProduct = () => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [expand, setExpand] = useState("info");
+
     return (
         <>
             <div className="single-product">
                 <div className="container">
                     <div className="single-product__wrapper">
-                        <Breadcrumb/>
+                        {/*<Breadcrumb/>*/}
                         <div className="column">
                             <div className="products one">
                                 <div className="flexwrap">
@@ -139,26 +140,7 @@ const OfferProduct = () => {
                                                         $119.90
                                                     </span>
                                                 </div>
-                                                <div className="one__stock stock mini-text">
-                                                    <div className="stock__qty">
-                                                <span className="qty__span">Stock: <strong
-                                                    className="qty__available">107</strong></span>
-                                                        <span className="qty__span qty__span-color">Sold: <strong
-                                                            className="qty__sold">3,459</strong></span>
-                                                    </div>
-                                                    <div className="stock__bar one__bar">
-                                                        <div className="bar__available bar__available-offer"></div>
-                                                    </div>
-                                                </div>
-                                                <div className="offer one__offer">
-                                                    <p className="offer__end">Offer ends at</p>
-                                                    <ul className="offer__timeList">
-                                                        <li className="offer__time">1</li>
-                                                        <li className="offer__time">15</li>
-                                                        <li className="offer__time">27</li>
-                                                        <li className="offer__time">60</li>
-                                                    </ul>
-                                                </div>
+
                                                 <div className="sizes">
                                                     <p className="sizes__title">Size</p>
                                                     <div className="sizes__variants">

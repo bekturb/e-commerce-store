@@ -1,27 +1,18 @@
 import React, {useEffect, useState} from 'react';
+import {Link} from "react-router-dom";
 import Ratings from "../Ratings/Ratings";
 import StockBar from "../StockBar";
 import {useDispatch, useSelector} from "react-redux";
+import useCalculateSaleTime from "../../customHooks/useCalculateSaleTime";
 import {addToWishList} from "../../features/wishList";
-import toast from "react-hot-toast";
 import {compareProductsActions} from "../../features/compareProducts";
+import toast from "react-hot-toast";
+import RemainingSaleTime from "../RemainingSaleTime/RemainingSaleTime";
 
 const BigProduct = ({bigItem}) => {
-    const [remainingTime, setRemainingTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
+    const  remainingTime  = useCalculateSaleTime(bigItem)
     const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
     const {data: compareProducts} = useSelector(state => state.compareProducts);
-
-    const calculateTimeRemaining = (startDate, endDate) => {
-        const currentTime = new Date();
-        const endTime = new Date(endDate);
-        const timeRemaining = endTime - currentTime;
-        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-        return { days, hours, minutes, seconds };
-    };
 
     const [isClicked, setIsClicked] = useState(false);
     const [isCompared, setIsCompared] = useState(false);
@@ -48,20 +39,6 @@ const BigProduct = ({bigItem}) => {
     };
 
     useEffect(() => {
-        const updateRemainingTime = () => {
-            if (bigItem) {
-                const timeRemaining = calculateTimeRemaining(bigItem.startDate, bigItem.endDate);
-                setRemainingTime(timeRemaining);
-            }
-        };
-        updateRemainingTime();
-
-        const intervalId = setInterval(updateRemainingTime, 1000);
-
-        return () => clearInterval(intervalId);
-    }, [bigItem]);
-
-    useEffect(() => {
         const productId = bigItem._id
         const isProductInWishlist = wishListData.findIndex(data => data._id === productId);
         if (isProductInWishlist === -1){
@@ -84,29 +61,13 @@ const BigProduct = ({bigItem}) => {
     return (
         <div className="products big" key={bigItem._id}>
             <div className="products__item big__item" key={bigItem._id}>
-                <div className="products__offer">
-                    <p className="products__end">Offer ends at</p>
-                    <ul className="products__timeList">
-                        {
-                            <li className="products__time">{remainingTime.days}</li>
-                        }
-                        {
-                            <li className="products__time">{remainingTime.hours}</li>
-                        }
-                        {
-                            <li className="products__time">{remainingTime.minutes}</li>
-                        }
-                        {
-                            <li className="products__time">{remainingTime.seconds}</li>
-                        }
-                    </ul>
-                </div>
+                <RemainingSaleTime remainingTime={remainingTime}/>
                 <div className=" products__media big__media">
                     <div className="media__image image">
-                        <a className="products__link" href="">
+                        <Link to={`/catalog/${bigItem._id}`} className="products__link">
                             <img className="products__image"
                                  src={bigItem.variants[0].images[0].url} alt=""/>
-                        </a>
+                        </Link>
                     </div>
                     <div className="products__hover-able">
                         <ul className="products__hover-list">
@@ -133,9 +94,9 @@ const BigProduct = ({bigItem}) => {
                             </button>
                             </li>
                             <li className="products__hover-item">
-                                <a className="products__hover-link" href=""><i
+                                <Link to={`/catalog/${bigItem._id}`} className="products__hover-link"><i
                                     className="ri-shuffle-line"></i>
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -155,7 +116,7 @@ const BigProduct = ({bigItem}) => {
                                             </span>
                     </div>
                     <h3 className="content__main-links">
-                        <a className="content__link" href="">{bigItem.name}</a>
+                        <Link to={`/catalog/${bigItem._id}`} className="content__link">{bigItem.name}</Link>
                     </h3>
                     <div className="content__price price">
                                             <span className="price__current">

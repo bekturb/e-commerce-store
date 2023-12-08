@@ -13,6 +13,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import "./single-product.scss";
 import {cartProductsActions} from "../../features/cartSlice";
+import useCalculateSaleTime from "../../customHooks/useCalculateSaleTime";
+import RemainingSaleTime from "../RemainingSaleTime/RemainingSaleTime";
+import SingleProductStockBar from "../SingleProductStockBar/SingleProductStockBar";
 
 const formatNumber = (number) => {
     if (number >= 1000) {
@@ -28,6 +31,7 @@ const SingleProduct = ({product}) => {
     const [cartProductQty, setCartProductQty] = useState(1);
     const [isProductInCart, setIsProductInCart] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
+    const  remainingTime  = useCalculateSaleTime(product)
 
     const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
     const {data: cartProducts} = useSelector(state => state.cart);
@@ -123,13 +127,17 @@ const SingleProduct = ({product}) => {
                                 <div className="flexwrap">
                                     <div className="one__row row">
                                         <div className="products__item one__item one__item-sticky">
-                                            <div className="one__price">
-                                        <span className="one__discount">
-                                            {product?.salePercentage}%
-                                            <br/>
-                                            OFF
-                                        </span>
-                                            </div>
+                                            {
+                                                product?.salePercentage && product?.salePercentage > 0 && (
+                                                    <div className="one__price">
+                                                        <span className="one__discount">
+                                                            {product?.salePercentage}%
+                                                            <br/>
+                                                            OFF
+                                                        </span>
+                                                    </div>
+                                                )
+                                            }
                                             {
                                                 selectedVariant && (
                                                     <div className="one__big-image big-image">
@@ -235,6 +243,16 @@ const SingleProduct = ({product}) => {
                                                         ) : null
                                                     }
                                                 </div>
+                                                {
+                                                    product?.salePercentage && product?.salePercentage > 0 && (
+                                                        <SingleProductStockBar totalQuantity={selectedVariant.quantity} totalSold={selectedVariant.sold}/>
+                                                    )
+                                                }
+                                                {
+                                                    remainingTime && (
+                                                        <RemainingSaleTime remainingTime={remainingTime}/>
+                                                    )
+                                                }
                                                 <div className="colors">
                                                     <p className="colors__title">Color</p>
                                                     <div className="colors__variants">
@@ -339,7 +357,7 @@ const SingleProduct = ({product}) => {
                                                                             <li key={key} className="description__brand">
                                                                                     <span
                                                                                         className="description__brand-title">{key}</span>
-                                                                                     <span
+                                                                                <span
                                                                                     className="description__brand-name">{product?.anotherNewField[key]}</span>
                                                                             </li>
                                                                         ))
