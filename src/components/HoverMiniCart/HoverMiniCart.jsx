@@ -1,19 +1,11 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {cartProductsActions} from "../../features/cartSlice";
+import {useDispatch} from "react-redux";
 
-const HoverMiniCart = () => {
-    const {data: cartProducts} = useSelector(state => state.cart);
+const HoverMiniCart = ({cartProducts, roundedTotalPrice}) => {
 
     const dispatch = useDispatch();
-
-    const totalPrice = cartProducts?.reduce((asc, rec) => {
-        return asc + (rec.price * rec.quantity)
-    }, 0);
-
-    const roundedTotalPrice = totalPrice?.toFixed(2);
-
     const handleDelete = (proId) => {
        dispatch(cartProductsActions.deleteCartProduct(proId))
     }

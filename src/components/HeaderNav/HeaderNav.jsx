@@ -198,8 +198,8 @@ const HeaderNav = () => {
                                             <span className="package__total-number">${roundedTotalPrice}</span>
                                         </span>
                                         </div>
-                                        <HoverMiniCart/>
-                                        <MiniCart/>
+                                        <HoverMiniCart cartProducts={cartProducts} roundedTotalPrice={roundedTotalPrice}/>
+                                        <MiniCart cartProducts={cartProducts} roundedTotalPrice={roundedTotalPrice}/>
                                     </li>
                                 </ul>
                             </div>
