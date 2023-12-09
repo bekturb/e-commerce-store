@@ -7,11 +7,24 @@ const CartProduct = ({pro}) => {
 
     const dispatch = useDispatch();
 
-    const handleDelete = (proId) => {
+    const handleDelete = (e, proId) => {
+        e.preventDefault();
         dispatch(cartProductsActions.deleteCartProduct(proId))
     }
 
     const totalPrice = pro?.price * pro?.quantity;
+
+    const roundedTotalPrice = totalPrice?.toFixed(2);
+
+    const handleAddQty = (e, proId) => {
+        e.preventDefault();
+        dispatch(cartProductsActions.addQuantity(proId));
+    }
+
+    const handleDeleteQty = (e, proId) => {
+        e.preventDefault();
+        dispatch(cartProductsActions.decreaseQuantity(proId));
+    }
 
     return (
         <tr className="cart__contents">
@@ -31,16 +44,16 @@ const CartProduct = ({pro}) => {
             <td className="cart__content-item">${pro.price}</td>
             <td className="cart__content-item">
                 <div className="cart__qty-control qty-control flexitem">
-                    <button className="cart__minus">-</button>
+                    <button className="cart__minus" onClick={(e) => handleDeleteQty(e, pro.variantId)}>-</button>
                     <input className="cart__input" type="text" value={pro.quantity} min="1"/>
-                    <button className="cart__plus">+</button>
+                    <button className="cart__plus" onClick={(e) => handleAddQty(e, pro.variantId)}>+</button>
                 </div>
             </td>
             <td className="cart__content-item">
-                ${totalPrice}
+                ${roundedTotalPrice}
             </td>
             <td className="cart__content-item">
-                <span className="item-remove" onClick={() => handleDelete(pro.variantId)}>
+                <span className="item-remove" onClick={(e) => handleDelete(e, pro.variantId)}>
                     <i className="ri-close-line"></i>
                 </span>
             </td>

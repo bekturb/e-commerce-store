@@ -27,6 +27,28 @@ const cartProducts = createSlice({
             localStorage.setItem('cart', JSON.stringify([...state.data]));
             toast.success('Product removed from cart!');
         },
+
+        addQuantity: (state, action) => {
+            const productId = action.payload;
+            state.data.forEach((el) => {
+                if (el.variantId === productId && el.quantity < el.proQty) {
+                    el.quantity += 1;
+                }
+            });
+
+            localStorage.setItem('cart', JSON.stringify([...state.data]));
+        },
+
+        decreaseQuantity: (state, action) => {
+            const productId = action.payload;
+            state.data.forEach((el) => {
+                if (el.variantId === productId && el.quantity > 1) {
+                    el.quantity -= 1;
+                }
+            });
+
+            localStorage.setItem('cart', JSON.stringify([...state.data]));
+        },
     }
 });
 
