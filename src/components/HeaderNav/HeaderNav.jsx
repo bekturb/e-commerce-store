@@ -27,6 +27,12 @@ const HeaderNav = () => {
     const filteredCategories = categories ? categories.filter(category => categoriesToExclude.includes(category.name)).sort((a,b) => categoriesToExclude.indexOf(a.name) - categoriesToExclude.indexOf(b.name)
     ) : [];
 
+    const totalPrice = cartProducts?.reduce((asc, rec) => {
+        return asc + (rec.price * rec.quantity)
+    }, 0);
+
+    const roundedTotalPrice = totalPrice?.toFixed(2);
+
     function openMenu() {
         dispatch(menuActions.showMenu());
     }
@@ -162,34 +168,34 @@ const HeaderNav = () => {
                                         <span className="package__icon icon-lg">
                                             <i className="ri-heart-line"></i>
                                         </span>
-                                            <span className="fly-item package__fly-item">
                                             {
                                                 wishListData.length > 0 && (
-                                                    <span className="package__number">
-                                                        {wishListData?.length}
+                                                    <span className="fly-item package__fly-item">
+                                                        <span className="package__number">
+                                                            {wishListData?.length}
+                                                        </span>
                                                     </span>
                                                 )
                                             }
-                                        </span>
                                         </a>
                                     </li>
                                     <li className="package__item iscart">
                                         <div className="package__link">
                                             <div className="package__icon icon-lg">
                                                 <i className="ri-shopping-cart-line"></i>
-                                                <span className="fly-item package__fly-item">
                                             {
                                                 cartProducts?.length > 0 && (
-                                                    <span className="package__number">
-                                                        {cartProducts?.length}
+                                                    <span className="fly-item package__fly-item">
+                                                        <span className="package__number">
+                                                            {cartProducts?.length}
+                                                        </span>
                                                     </span>
                                                 )
                                             }
-                                        </span>
                                             </div>
                                             <span className="package__text">
                                             <span className="package__total">Total</span>
-                                            <span className="package__total-number">$1.622</span>
+                                            <span className="package__total-number">${roundedTotalPrice}</span>
                                         </span>
                                         </div>
                                         <HoverMiniCart/>

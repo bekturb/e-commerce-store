@@ -24,7 +24,7 @@ const RelatedProducts = ({title, product}) => {
                                         <span className="secTop__title">{title}</span>
                                     </h2>
                                     <div className="secTop__second-links">
-                                        <Link to={`/category/${relatedCat.slug}`} className="view-all">View all <i className="ri-arrow-right-line"></i></Link>
+                                        <Link to={`/category/${relatedCat?.slug}`} className="view-all">View all <i className="ri-arrow-right-line"></i></Link>
                                     </div>
                                 </div>
                             )
