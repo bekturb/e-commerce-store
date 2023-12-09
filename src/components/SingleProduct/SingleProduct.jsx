@@ -36,8 +36,6 @@ const SingleProduct = ({product}) => {
     const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
     const {data: cartProducts} = useSelector(state => state.cart);
 
-    console.log(cartProducts, "cart")
-
     const dispatch = useDispatch();
 
     const handleSelectColor = (variantId) => {
@@ -74,14 +72,19 @@ const SingleProduct = ({product}) => {
     }
 
     const addProductToCart = (pro, variant, qty) => {
-
         const cartItem = {
             productId: pro._id,
+            name: pro.name,
             variantId: variant._id,
-            variantColor: variant.color,
+            color: variant.color,
+            size: variant.size || null,
+            price: variant.discountPrice || variant.originalPrice,
+            images: variant.images,
+            proQty: variant.quantity,
+            sold: variant.sold || 0,
             quantity: qty || 1,
         };
-        dispatch(cartProductsActions.setCartProducts(cartItem))
+        dispatch(cartProductsActions.setCartProducts(cartItem));
     };
 
     useEffect(() => {
@@ -95,10 +98,10 @@ const SingleProduct = ({product}) => {
     }, [wishListData, product._id]);
 
     useEffect(() => {
-        const productId = product._id
-        const productExists = cartProducts.some(product => product.productId === productId);
+        const productId = selectedVariant._id
+        const productExists = cartProducts.some(product => product.variantId === productId);
         setIsProductInCart(productExists);
-    }, [cartProducts, product?._id]);
+    }, [cartProducts, selectedVariant?._id]);
 
     useEffect(() => {
         if (product && product.variants && product.variants.length > 0) {

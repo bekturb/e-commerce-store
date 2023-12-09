@@ -9,7 +9,7 @@ const RelatedProducts = ({title, product}) => {
     const {data: products, loading: productsLoad, error:productsErr} = useSelector(state => state.products);
     const {data: allCategories} = useSelector(state => state.allCategories);
     const sortedProducts = products ? [...products].filter(prod => prod.category === product?.category).slice(0, 8) : [];
-    const relatedCat = allCategories.find(cat => cat._id === product.category)
+    const relatedCat = allCategories?.find(cat => cat._id === product.category)
 
     return (
         <div id="features" className="features">
