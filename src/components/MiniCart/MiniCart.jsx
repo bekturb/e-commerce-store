@@ -1,22 +1,17 @@
 import React, {useEffect, useRef} from 'react';
-import product1 from "../../assets/products/home1.jpg";
-import product2 from "../../assets/products/home2.jpg";
-import product3 from "../../assets/products/home3.jpg";
-import product4 from "../../assets/products/home4.jpg";
-import product5 from "../../assets/products/home5.jpg";
 import {useDispatch, useSelector} from "react-redux";
 import {cartActions} from "../../features/miniCartSlice";
-import "./mini-cart.scss";
 import categoryProducts from "../CategoryProducts/CategoryProducts";
 import {Link} from "react-router-dom";
 import {cartProductsActions} from "../../features/cartSlice";
+import "./mini-cart.scss";
 
 const MiniCart = ({cartProducts, roundedTotalPrice}) => {
     const showRef = useRef(null);
     const dispatch = useDispatch();
     const {showCart} = useSelector(state => state.showCart);
     const handleDelete = (proId) => {
-        dispatch(cartProductsActions.deleteCartProduct(proId))
+        dispatch(cartProductsActions.deleteCartProduct(proId));
     }
 
     const handleOutsideClick = (e) => {

@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 const HoverMiniCart = ({cartProducts, roundedTotalPrice}) => {
 
     const dispatch = useDispatch();
+
     const handleDelete = (proId) => {
        dispatch(cartProductsActions.deleteCartProduct(proId))
     }
