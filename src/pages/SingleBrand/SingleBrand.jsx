@@ -3,40 +3,83 @@ import SecTop from "../../components/SecTop/SecTop";
 import Loader from "../../components/Loader/Loader";
 import NotFound from "../../components/NotFound/NotFound";
 import ProductsCart from "../../components/ProductsCart/ProductsCart";
-import {Link, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchSingleBrand} from "../../features/getSingleBrand";
 import Popup from "../../components/Popup/Popup";
 import Search from "../../components/Search/Search";
 import {sortData} from "../../customData/sortData";
+import useFilteredCategoryProducts from "../../customHooks/useFilteredCategoryProducts";
+import useBrandCounts from "../../customHooks/useBrandCounts";
+import useProductsColor from "../../customHooks/UseProductsColor";
+import useGetProductsSeller from "../../customHooks/useGetProductsSeller";
+import FiltersMobile from "../../components/FiltersMobile/FiltersMobile";
+import ProductFilter from "../../components/ProductFilterCom/ProductFilter";
+import Pagination from "../../components/Pagination/Pagination";
 
 const SingleBrand = () => {
 
-    const [showMobileSort, setShowMobileSort] = useState(false);
-    const [sortedItem, setSortedItem] = useState("Popularity");
     const [showMobileFilter, setShowMobileFilter] = useState(false);
-    const [productBrand, setProductBrand] = useState([]);
-    const [productColor, setProductColor] = useState([]);
-    const [productShop, setProductShop] = useState([]);
-
-    const [pageItem, setPageItem] = useState({
-        start: 0,
-        end: 10
-    });
+    const [showMobileSort, setShowMobileSort] = useState(false);
+    const [filteredColors, setFilteredColors] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filteredShops, setFilteredShops] = useState([]);
+    const location = useLocation();
 
     const {brandId} = useParams();
     const dispatch = useDispatch();
 
     const {data: singleBrand, loading: singleBrandLoading, error: singleBrandError} = useSelector(state => state.singleBrand);
-    const {data: products, loading: productsLoading, error: productsError} = useSelector(state => state.products);
+    const {data: products, loading: productsLoad, error: productsErr} = useSelector(state => state.products);
     const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
     const {data: compareProducts} = useSelector(state => state.compareProducts);
+    const {data: shops} = useSelector(state => state.shops);
+    const {productColor, productSort, productMinPrice, productMaxPrice, productShop, perPage} = useSelector(state => state.filterProducts);
 
-    const brandProducts = useMemo(() => {
-        return products?.filter(pro => {
-            return pro.brand === singleBrand._id
-        });
-    },[singleBrand, products]);
+    const [pageItem, setPageItem] = useState({
+        start: 0,
+        end: perPage
+    });
+
+    const categoryProducts = useFilteredCategoryProducts({
+        filteredProducts,
+        productColor,
+        productShop,
+        productSort,
+        productMinPrice,
+        productMaxPrice
+    });
+
+    const uniqueColors = useProductsColor(filteredProducts);
+    const productsShop = useGetProductsSeller(filteredProducts, shops);
+
+    const handleSearchColors = (query) => {
+        const filteringColors = uniqueColors.filter((color) =>
+            color.color.toLowerCase().includes(query.toLowerCase())
+        )
+        setFilteredColors(filteringColors);
+    };
+
+    const handleSearchShops = (query) => {
+        const filteringShops = productsShop.filter((shop) =>
+            shop.name.toLowerCase().includes(query.toLowerCase())
+        )
+        setFilteredShops(filteringShops);
+    };
+
+    useEffect(() => {
+        setFilteredColors(uniqueColors);
+        setFilteredShops(productsShop);
+    }, [uniqueColors, productsShop]);
+
+    useEffect(() => {
+        if (products?.length > 0) {
+            const catProducts = products?.filter(pro => {
+                return pro.brand === singleBrand._id
+            });
+            setFilteredProducts(catProducts)
+        }
+    }, [singleBrand, products]);
 
     useEffect(() => {
         dispatch(fetchSingleBrand(brandId))
@@ -55,8 +98,18 @@ const SingleBrand = () => {
                     </div>
                 ) : singleBrand ? (
                     <>
-                        <Popup show={showMobileSort} setShow={setShowMobileSort} setSortedItem={setSortedItem}
-                               sortedItem={sortedItem}/>
+                        <FiltersMobile
+                            categoryProducts={categoryProducts}
+                            setShowMobileFilter={setShowMobileFilter}
+                            showMobileFilter={showMobileFilter}
+                            filteredColors={filteredColors}
+                            filteredBrands={filteredProducts}
+                            filteredShops={filteredShops}
+                            uniqueColors={uniqueColors}
+                            productsShop={productsShop}
+                            handleSearchColors={handleSearchColors}
+                            handleSearchShops={handleSearchShops}/>
+                        <Popup show={showMobileSort} setShow={setShowMobileSort}/>
                         <div className="subcat">
                             <div className="container">
                                 <div className="subcat__wrapper">
@@ -73,24 +126,39 @@ const SingleBrand = () => {
                                                 </ul>
                                             </div>
                                             <SecTop title={singleBrand?.name}/>
+                                            {
+                                                categoryProducts?.length > 0 && (
+                                                    <ProductFilter
+                                                        setShowMobileFilter={setShowMobileFilter}
+                                                        setShowMobileSort={setShowMobileSort}
+                                                        uniqueColors={uniqueColors}
+                                                        productsShop={productsShop}
+                                                        filteredBrands={[]}
+                                                        filteredColors={filteredColors}
+                                                        handleSearchColors={handleSearchColors}
+                                                        filteredShops={filteredShops}
+                                                        handleSearchShops={handleSearchShops}
+                                                    />
+                                                )
+                                            }
                                         </div>
                                         <div className="subcat__body">
                                             <div className="products pro flexwrap">
                                                 {
-                                                    productsLoading ? (
+                                                    productsLoad ? (
                                                         <div className="trending__loader">
                                                             <Loader/>
                                                         </div>
                                                     ) : (
-                                                        productsError ? (
+                                                        productsErr ? (
                                                             <div className="trending__loader">
-                                                                <NotFound error={productsError}/>
+                                                                <NotFound error={productsErr}/>
                                                             </div>
                                                         ) : (
                                                             <>
                                                                 {
-                                                                    brandProducts?.length > 0 ? (
-                                                                        brandProducts?.slice(pageItem.start, pageItem.end).map(product => (
+                                                                    categoryProducts?.length > 0 ? (
+                                                                        categoryProducts?.slice(pageItem.start, pageItem.end).map(product => (
                                                                             <ProductsCart key={product?._id} product={product} wishListData={wishListData} wishListLoading={wishListLoading} compareProducts={compareProducts}/>
                                                                         ))
                                                                     ) : (
@@ -105,6 +173,16 @@ const SingleBrand = () => {
                                                 }
                                             </div>
                                         </div>
+                                        {
+                                            categoryProducts?.length > 1 && (
+                                                <div className="subcat__foot">
+                                                    <Pagination
+                                                        posts={categoryProducts}
+                                                        setPageItem={setPageItem}
+                                                    />
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                 </div>
                             </div>

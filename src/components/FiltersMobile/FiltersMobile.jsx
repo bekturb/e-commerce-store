@@ -17,7 +17,6 @@ const FiltersMobile = ({
                            handleSearchBrands,
                            handleSearchColors,
                            handleSearchShops,
-                           shops
                        }) => {
 
     const [showAllBrands, setShowAllBrands] = useState(false);
@@ -327,7 +326,7 @@ const FiltersMobile = ({
                     <div className="filters-mobile__footer">
                         <div className="filters-mobile__btn-wrap">
                             <button onClick={handleSubmitAll} className="filters-mobile__btn-main">
-                                Show {categoryProducts.length} products
+                                Show {categoryProducts?.length} products
                             </button>
                         </div>
                     </div>

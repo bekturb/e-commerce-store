@@ -102,7 +102,7 @@ const SubSubCategory = ({
                 handleSearchBrands={handleSearchBrands}
                 handleSearchColors={handleSearchColors}
                 handleSearchShops={handleSearchShops}
-                shops={shops}/>
+            />
             <Popup show={showMobileSort} setShow={setShowMobileSort}/>
             <div className={showMobileFilter || showMobileSort ? "overlay show" : "overlay"}></div>
             <div className="subcat">

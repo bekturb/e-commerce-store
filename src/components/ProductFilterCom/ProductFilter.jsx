@@ -20,8 +20,8 @@ const ProductFilter = ({
                            handleSearchShops
                        }) => {
 
-    const {productBrand, productColor, productShop, productSort, productMinPrice, productMaxPrice, currentPage, perPage} = useSelector(state => state.filterProducts);
-    const {handleOpenDrop, open} = useOpenDrop();
+    const {productBrand, productColor, productShop, productSort} = useSelector(state => state.filterProducts);
+    const {open} = useOpenDrop();
     const sumOfLengths = productBrand?.length + productColor?.length + productShop?.length;
 
     return (
@@ -50,7 +50,7 @@ const ProductFilter = ({
             </div>
             <div className="dropdown__items">
                 {
-                    brandCounts.length > 0 && (
+                    brandCounts?.length > 0 && (
                         <FilterByBrand
                             brandCounts={brandCounts}
                             productBrand={productBrand}
@@ -60,7 +60,7 @@ const ProductFilter = ({
                     )
                 }
                 {
-                    uniqueColors.length > 0 && (
+                    uniqueColors?.length > 0 && (
                         <FilterByColors
                             uniqueColors={uniqueColors}
                             productColor={productColor}
@@ -70,7 +70,7 @@ const ProductFilter = ({
                     )
                 }
                 {
-                    productsShop.length > 0 && (
+                    productsShop?.length > 0 && (
                         <FilterByShop
                             productShop={productShop}
                             productsShop={productsShop}
