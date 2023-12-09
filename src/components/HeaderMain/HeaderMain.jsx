@@ -4,8 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchProducts} from "../../features/productsSlice";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
-import "./header-main.scss"
 import SearchProducts from "../SearchProducts/SearchProducts";
+import "./header-main.scss"
 
 const HeaderMain = () => {
     const [showCat, setShowCat] = useState(false);

@@ -163,9 +163,13 @@ const HeaderNav = () => {
                                             <i className="ri-heart-line"></i>
                                         </span>
                                             <span className="fly-item package__fly-item">
-                                            <span className="package__number">
-                                                {wishListData?.length}
-                                            </span>
+                                            {
+                                                wishListData.length > 0 && (
+                                                    <span className="package__number">
+                                                        {wishListData?.length}
+                                                    </span>
+                                                )
+                                            }
                                         </span>
                                         </a>
                                     </li>
@@ -174,9 +178,13 @@ const HeaderNav = () => {
                                             <div className="package__icon icon-lg">
                                                 <i className="ri-shopping-cart-line"></i>
                                                 <span className="fly-item package__fly-item">
-                                            <span className="package__number">
-                                                {cartProducts?.length}
-                                            </span>
+                                            {
+                                                cartProducts?.length > 0 && (
+                                                    <span className="package__number">
+                                                        {cartProducts?.length}
+                                                    </span>
+                                                )
+                                            }
                                         </span>
                                             </div>
                                             <span className="package__text">
