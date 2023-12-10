@@ -22,6 +22,7 @@ import {categoryReducer} from "../features/singleCategorySlice";
 import {shopsReducer} from "../features/shopsSlice";
 import {accountReducer} from "../features/accountSlice";
 import {wishListReducer} from "../features/wishList";
+import {couponReducer} from "../features/couponSlice";
 
 const store = configureStore({
     reducer: {
@@ -48,6 +49,7 @@ const store = configureStore({
         allCategories: allCategoriesReducer,
         wishlist: wishListReducer,
         shops: shopsReducer,
+        coupons: couponReducer,
     }
 })
 
