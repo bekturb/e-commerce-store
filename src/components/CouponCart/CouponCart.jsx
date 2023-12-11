@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 const CouponCart = ({cartProducts}) => {
     const [couponName, setCouponName] = useState("");
+    const [handleError, setHandleError] = useState("");
     const [discountPrice, setDiscountPrice] = useState(0);
     const [shippingInfo, setShippingInfo] = useState({name: "Standard", value: 0});
 
@@ -29,31 +30,35 @@ const CouponCart = ({cartProducts}) => {
     }
 
     const handleGetCouponValue = async () => {
-        try {
-            const res = await dispatch(getCouponValue(couponName));
-            const shopId = res.payload?.shopId;
-            const couponValue = res.payload?.value;
+        if (!couponName) {
+            setHandleError("Required field")
+        } else {
+            try {
+                const res = await dispatch(getCouponValue(couponName));
+                const shopId = res.payload?.shopId;
+                const couponValue = res.payload?.value;
 
-            if (res.payload !== null) {
-                const isCouponValid = cartProducts && cartProducts.filter((item) => item.shopId === shopId);
+                if (res.payload !== null) {
+                    const isCouponValid = cartProducts && cartProducts.filter((item) => item.shopId === shopId);
 
-                if (isCouponValid.length === 0) {
-                    toast.error("Coupon code is not valid for this shop!");
-                    setCouponName("");
-                } else {
-                    const eligiblePrice = isCouponValid.reduce((acc, rec) => acc + rec.price * rec.quantity, 0);
-                    const discountPrice = (eligiblePrice * couponValue) / 100;
-                    setDiscountPrice(discountPrice);
+                    if (isCouponValid.length === 0) {
+                        toast.error("Coupon code is not valid for this shop!");
+                        setCouponName("");
+                    } else {
+                        const eligiblePrice = isCouponValid.reduce((acc, rec) => acc + rec.price * rec.quantity, 0);
+                        const discountPrice = (eligiblePrice * couponValue) / 100;
+                        setDiscountPrice(discountPrice);
+                        setCouponName("");
+                    }
+                }
+
+                if (res.payload === null) {
+                    toast.error("Coupon code doesn't exist!");
                     setCouponName("");
                 }
+            } catch (err) {
+                toast.error("An error occurred while processing the coupon code. Please try again.");
             }
-
-            if (res.payload === null) {
-                toast.error("Coupon code doesn't exist!");
-                setCouponName("");
-            }
-        } catch (err) {
-            toast.error("An error occurred while processing the coupon code. Please try again.");
         }
     };
 
@@ -73,6 +78,8 @@ const CouponCart = ({cartProducts}) => {
                         />
                         {couponErr &&
                             <span className="error">*{couponErr}</span>}
+                        {handleError &&
+                            <span className="error">{handleError}</span>}
                     </div>
                     <button
                         onClick={handleGetCouponValue}
