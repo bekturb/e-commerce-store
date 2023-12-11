@@ -5,17 +5,17 @@ import {Navigation, Thumbs, FreeMode} from "swiper";
 import {SRLWrapper} from "simple-react-lightbox"
 import ReviewDetail from "../ReviewDetail/ReviewDetail";
 import {addToWishList} from "../../features/wishList";
-import toast from "react-hot-toast";
 import {useDispatch, useSelector} from "react-redux";
+import {cartProductsActions} from "../../features/cartSlice";
+import useCalculateSaleTime from "../../customHooks/useCalculateSaleTime";
+import RemainingSaleTime from "../RemainingSaleTime/RemainingSaleTime";
+import SingleProductStockBar from "../SingleProductStockBar/SingleProductStockBar";
+import toast from "react-hot-toast";
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import "./single-product.scss";
-import {cartProductsActions} from "../../features/cartSlice";
-import useCalculateSaleTime from "../../customHooks/useCalculateSaleTime";
-import RemainingSaleTime from "../RemainingSaleTime/RemainingSaleTime";
-import SingleProductStockBar from "../SingleProductStockBar/SingleProductStockBar";
 
 const formatNumber = (number) => {
     if (number >= 1000) {
@@ -75,6 +75,7 @@ const SingleProduct = ({product}) => {
         const cartItem = {
             productId: pro._id,
             name: pro.name,
+            shopId: pro.shopId,
             variantId: variant._id,
             color: variant.color,
             size: variant.size || null,

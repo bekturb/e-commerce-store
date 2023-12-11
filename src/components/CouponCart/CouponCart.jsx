@@ -1,25 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {getCouponValue} from "../../features/couponSlice";
+import toast from "react-hot-toast";
 
 const CouponCart = ({cartProducts}) => {
     const [couponName, setCouponName] = useState("");
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [subTotalPrice, setSubTotalPrice] = useState(0);
-    const [discountPrice, setdiscountPrice] = useState(0);
+    const [discountPrice, setDiscountPrice] = useState(0);
     const [shippingInfo, setShippingInfo] = useState({name: "Standard", value: 0});
 
-    const {data: couponData, loading: couponLoad, error: couponErr} = useSelector(state => state.coupons);
+
+    const {data: couponCodeData, loading: couponLoad, error: couponErr} = useSelector(state => state.coupons);
     const dispatch = useDispatch();
+
+    let subtotal = cartProducts.reduce((acc, rec) => acc + rec.price * rec.quantity, 0);
 
     const handleChangeCoupon = (e) => {
         e.preventDefault();
         const couponName = e.target.value;
         setCouponName(couponName)
-    }
-
-    const handleGetCouponValue = () => {
-        dispatch(getCouponValue(couponName))
     }
 
     const handleChangeShipping = (e, name) => {
@@ -30,25 +28,37 @@ const CouponCart = ({cartProducts}) => {
         }))
     }
 
-    useEffect(() => {
-        if (cartProducts.length > 0) {
-            const subtotal = cartProducts.reduce((acc, rec) => {
-                return acc + rec.price * rec.quantity;
-            }, 0);
+    const handleGetCouponValue = async () => {
+        try {
+            const res = await dispatch(getCouponValue(couponName));
+            const shopId = res.payload?.shopId;
+            const couponValue = res.payload?.value;
 
-            const couponDiscount = couponData?.value ? couponData.value : 0;
+            if (res.payload !== null) {
+                const isCouponValid = cartProducts && cartProducts.filter((item) => item.shopId === shopId);
 
-            const shippingCost = shippingInfo?.value ? shippingInfo?.value : 0;
+                if (isCouponValid.length === 0) {
+                    toast.error("Coupon code is not valid for this shop!");
+                    setCouponName("");
+                } else {
+                    const eligiblePrice = isCouponValid.reduce((acc, rec) => acc + rec.price * rec.quantity, 0);
+                    const discountPrice = (eligiblePrice * couponValue) / 100;
+                    setDiscountPrice(discountPrice);
+                    setCouponName("");
+                }
+            }
 
-            const totalPriceWithDiscountAndShipping = subtotal - couponDiscount + shippingCost;
-
-            const roundedTotalPrice = totalPriceWithDiscountAndShipping.toFixed(2);
-            const roundedSubTotalPrice = subtotal.toFixed(2);
-            setTotalPrice(roundedTotalPrice);
-            setSubTotalPrice(roundedSubTotalPrice);
-            setdiscountPrice(couponDiscount)
+            if (res.payload === null) {
+                toast.error("Coupon code doesn't exist!");
+                setCouponName("");
+            }
+        } catch (err) {
+            toast.error("An error occurred while processing the coupon code. Please try again.");
         }
-    }, [cartProducts, couponData, shippingInfo]);
+    };
+
+    const discountPercentage = couponCodeData ? discountPrice : "";
+    const totalPrice = couponCodeData ? (subtotal + shippingInfo.value - discountPercentage).toFixed(2) : (subtotal + shippingInfo.value).toFixed(2);
 
     return (
         <div className="cart__summary summary styled">
@@ -58,6 +68,7 @@ const CouponCart = ({cartProducts}) => {
                         <input type="text"
                                placeholder="Enter coupon"
                                className="coupon__input"
+                               value={couponName}
                                onChange={handleChangeCoupon}
                         />
                         {couponErr &&
@@ -113,7 +124,7 @@ const CouponCart = ({cartProducts}) => {
                         <tbody className="cart-total__tbody">
                         <tr className="cart-total__item">
                             <th className="cart-total__title">Subtotal</th>
-                            <td className="cart-total__subtitle">${subTotalPrice || 0}</td>
+                            <td className="cart-total__subtitle">${subtotal.toFixed(2) || 0}</td>
                         </tr>
                         <tr className="cart-total__item">
                             <th className="cart-total__title">Discount</th>

@@ -14,7 +14,7 @@ export const getCouponValue = createAsyncThunk(
 );
 
 const initialState = {
-    data: {},
+    data: null,
     loading: false,
     error: null,
 };
@@ -26,7 +26,7 @@ const couponSlice = createSlice({
         builder
             .addCase(getCouponValue.pending, (state) => {
                 state.loading = true;
-                state.data = {};
+                state.data = null;
                 state.error = null;
             })
             .addCase(getCouponValue.fulfilled, (state, action) => {
@@ -36,7 +36,7 @@ const couponSlice = createSlice({
             })
             .addCase(getCouponValue.rejected, (state, action) => {
                 state.loading = false;
-                state.data = {};
+                state.data = null;
                 state.error = action.payload;
             });
     },
