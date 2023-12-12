@@ -5,15 +5,24 @@ import toast from "react-hot-toast";
 
 const CouponCart = ({cartProducts}) => {
     const [couponName, setCouponName] = useState("");
-    const [handleError, setHandleError] = useState("");
     const [discountPrice, setDiscountPrice] = useState(0);
     const [shippingInfo, setShippingInfo] = useState({name: "Standard", value: 0});
-
 
     const {data: couponCodeData, loading: couponLoad, error: couponErr} = useSelector(state => state.coupons);
     const dispatch = useDispatch();
 
     let subtotal = cartProducts.reduce((acc, rec) => acc + rec.price * rec.quantity, 0);
+
+    const handlePaymentSubmit = () => {
+        const cartData = {
+            cart: cartProducts,
+            totalPrice,
+            subTotalPrice: subtotal,
+            discountPrice,
+            shipping: shippingInfo.value,
+
+        }
+    }
 
     const handleChangeCoupon = (e) => {
         e.preventDefault();
@@ -30,35 +39,31 @@ const CouponCart = ({cartProducts}) => {
     }
 
     const handleGetCouponValue = async () => {
-        if (!couponName) {
-            setHandleError("Required field")
-        } else {
-            try {
-                const res = await dispatch(getCouponValue(couponName));
-                const shopId = res.payload?.shopId;
-                const couponValue = res.payload?.value;
+        try {
+            const res = await dispatch(getCouponValue(couponName));
+            const shopId = res.payload?.shopId;
+            const couponValue = res.payload?.value;
 
-                if (res.payload !== null) {
-                    const isCouponValid = cartProducts && cartProducts.filter((item) => item.shopId === shopId);
+            if (res.payload !== null) {
+                const isCouponValid = cartProducts && cartProducts.filter((item) => item.shopId === shopId);
 
-                    if (isCouponValid.length === 0) {
-                        toast.error("Coupon code is not valid for this shop!");
-                        setCouponName("");
-                    } else {
-                        const eligiblePrice = isCouponValid.reduce((acc, rec) => acc + rec.price * rec.quantity, 0);
-                        const discountPrice = (eligiblePrice * couponValue) / 100;
-                        setDiscountPrice(discountPrice);
-                        setCouponName("");
-                    }
-                }
-
-                if (res.payload === null) {
-                    toast.error("Coupon code doesn't exist!");
+                if (isCouponValid.length === 0) {
+                    toast.error("Coupon code is not valid for this shop!");
+                    setCouponName("");
+                } else {
+                    const eligiblePrice = isCouponValid.reduce((acc, rec) => acc + rec.price * rec.quantity, 0);
+                    const discountPrice = (eligiblePrice * couponValue) / 100;
+                    setDiscountPrice(discountPrice);
                     setCouponName("");
                 }
-            } catch (err) {
-                toast.error("An error occurred while processing the coupon code. Please try again.");
             }
+
+            if (res.payload === null) {
+                toast.error("Coupon code doesn't exist!");
+                setCouponName("");
+            }
+        } catch (err) {
+            toast.error("An error occurred while processing the coupon code. Please try again.");
         }
     };
 
@@ -78,13 +83,11 @@ const CouponCart = ({cartProducts}) => {
                         />
                         {couponErr &&
                             <span className="error">*{couponErr}</span>}
-                        {handleError &&
-                            <span className="error">{handleError}</span>}
                     </div>
                     <button
                         onClick={handleGetCouponValue}
                         className="coupon__btn"
-                        disabled={couponLoad}
+                        disabled={couponLoad || !couponName}
                     >
                         Apply
                     </button>
@@ -147,7 +150,7 @@ const CouponCart = ({cartProducts}) => {
                         </tr>
                         </tbody>
                     </table>
-                    <a href="/checkout" className="secondary-button cart-total__btn">Checkout</a>
+                    <button className="secondary-button cart-total__btn">Checkout</button>
                 </div>
             </div>
         </div>

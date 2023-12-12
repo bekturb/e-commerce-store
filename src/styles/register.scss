@@ -21,6 +21,10 @@
     backdrop-filter: blur(7.1px);
     border: 4px solid #f9fafb;
     flex-shrink: 0;
+
+    &-background {
+      background: var(--light-bg-color);
+    }
   }
 
   &__head {

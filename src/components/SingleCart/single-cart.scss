@@ -307,10 +307,12 @@
 
   &__btn {
     width: var(--percent100) !important;
+    padding: 1.2em 2em!important;
     display: block;
     text-align: center;
     margin-top: 2em;
     font-size: 1.25em;
+    border: none!important;
   }
 }
 
