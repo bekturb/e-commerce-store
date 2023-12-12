@@ -1,33 +1,42 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 const CartData = () => {
-    return (
-        <div>
+    const [orderData, setOrderData] = useState([])
 
+    const subTotal = orderData?.subTotalPrice?.toFixed(2);
+
+    useEffect(() => {
+        const orderData = JSON.parse(localStorage.getItem("latestOrder"));
+        setOrderData(orderData);
+    },[])
+
+    return (
+        <div className="cart__summary summary styled">
+            <div className="summary__item">
+                <div className="cart-total">
+                    <table className="cart-total__table">
+                        <tbody className="cart-total__tbody">
+                        <tr className="cart-total__item">
+                            <th className="cart-total__title">Subtotal</th>
+                            <td className="cart-total__subtitle">${subTotal}</td>
+                        </tr>
+                        <tr className="cart-total__item">
+                            <th className="cart-total__title">Discount</th>
+                            <td className="cart-total__subtitle">${orderData?.discountPrice}</td>
+                        </tr>
+                        <tr className="cart-total__item">
+                            <th className="cart-total__title">Shipping <span className="mini-text">({orderData?.shippingName})</span></th>
+                            <td className="cart-total__subtitle">${orderData?.shipping}</td>
+                        </tr>
+                        <tr className="cart-total__item">
+                            <th className="cart-total__title">TOTAL</th>
+                            <td className="cart-total__subtitle-grand"><strong>${orderData?.totalPrice}</strong></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        // <div className="cart-total">
-        //     <table className="cart-total__table">
-        //         <tbody className="cart-total__tbody">
-        //         <tr className="cart-total__item">
-        //             <th className="cart-total__title">Subtotal</th>
-        //             <td className="cart-total__subtitle">${subtotal.toFixed(2) || 0}</td>
-        //         </tr>
-        //         <tr className="cart-total__item">
-        //             <th className="cart-total__title">Discount</th>
-        //             <td className="cart-total__subtitle">${discountPrice || 0}</td>
-        //         </tr>
-        //         <tr className="cart-total__item">
-        //             <th className="cart-total__title">Shipping <span className="mini-text">({shippingInfo.name})</span></th>
-        //             <td className="cart-total__subtitle">${shippingInfo.value}</td>
-        //         </tr>
-        //         <tr className="cart-total__item">
-        //             <th className="cart-total__title">TOTAL</th>
-        //             <td className="cart-total__subtitle-grand"><strong>${totalPrice}</strong></td>
-        //         </tr>
-        //         </tbody>
-        //     </table>
-        //     <a href="/checkout" className="secondary-button cart-total__btn">Checkout</a>
-        // </div>
     );
 };
 

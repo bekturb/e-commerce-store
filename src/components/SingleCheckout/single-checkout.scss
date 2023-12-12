@@ -1,3 +1,7 @@
 .single-checkout {
   padding-bottom: 20px;
+
+  &__wrapper {
+    justify-content: space-around;
+  }
 }

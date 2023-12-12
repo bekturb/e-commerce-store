@@ -2,6 +2,7 @@ import React, { useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {getCouponValue} from "../../features/couponSlice";
 import toast from "react-hot-toast";
+import {useNavigate} from "react-router-dom";
 
 const CouponCart = ({cartProducts}) => {
     const [couponName, setCouponName] = useState("");
@@ -9,19 +10,25 @@ const CouponCart = ({cartProducts}) => {
     const [shippingInfo, setShippingInfo] = useState({name: "Standard", value: 0});
 
     const {data: couponCodeData, loading: couponLoad, error: couponErr} = useSelector(state => state.coupons);
+    const {data: user} = useSelector(state => state.authMe);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     let subtotal = cartProducts.reduce((acc, rec) => acc + rec.price * rec.quantity, 0);
 
     const handlePaymentSubmit = () => {
-        const cartData = {
+        const orderData = {
             cart: cartProducts,
             totalPrice,
             subTotalPrice: subtotal,
             discountPrice,
             shipping: shippingInfo.value,
-
+            shippingName: shippingInfo.name,
+            user
         }
+
+        localStorage.setItem("latestOrder",  JSON.stringify(orderData));
+        navigate("/checkout")
     }
 
     const handleChangeCoupon = (e) => {
@@ -150,7 +157,7 @@ const CouponCart = ({cartProducts}) => {
                         </tr>
                         </tbody>
                     </table>
-                    <button className="secondary-button cart-total__btn">Checkout</button>
+                    <button onClick={handlePaymentSubmit} className="secondary-button cart-total__btn">Checkout</button>
                 </div>
             </div>
         </div>

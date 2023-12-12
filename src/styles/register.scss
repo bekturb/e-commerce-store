@@ -23,7 +23,8 @@
     flex-shrink: 0;
 
     &-background {
-      background: var(--light-bg-color);
+      margin-top: 0!important;
+      background: var(--border-color);
     }
   }
 

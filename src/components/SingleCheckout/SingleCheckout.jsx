@@ -1,5 +1,6 @@
 import React from 'react';
 import "./single-checkout.scss"
+import CartData from "../CartData/CartData";
 // import {Link} from "react-router-dom";
 // import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 // import {faSpinner} from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +10,7 @@ const SingleCheckout = () => {
     return (
         <div className="single-checkout">
             <div className="container">
-                <div className="single-checkout__wrapper">
+                <div className="single-checkout__wrapper flexwrap">
                     <div className="register__glass register__glass-background">
                         <div className="register__head">
                             <h4 className='register__title'>Shipping Address</h4>
@@ -126,7 +127,7 @@ const SingleCheckout = () => {
                             </div>
                         </form>
                     </div>
-
+                    <CartData/>
                 </div>
             </div>
         </div>
