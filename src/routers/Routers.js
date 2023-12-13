@@ -5,11 +5,11 @@ import Otp from "../pages/Otp";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import SinglePage from "../pages/SinglePage";
-import OfferPage from "../pages/OfferPage";
 import CategoryPage from "../pages/CategoryPage";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
 import SingleBrand from "../pages/SingleBrand/SingleBrand";
+import Payment from "../pages/Payment";
 
 const Routers = () => {
     return (
@@ -17,6 +17,7 @@ const Routers = () => {
             <Route path="/" element={<Home/>}/>
             <Route path="/cart-page" element={<Cart/>}/>
             <Route path="/checkout" element={<Checkout/>}/>
+            <Route path="/payment" element={<Payment/>}/>
             <Route path="/:id/otp" element={<Otp/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
