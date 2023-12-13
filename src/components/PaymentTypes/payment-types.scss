@@ -1,0 +1,14 @@
+.cart-payment {
+  margin-top: 20px;
+
+  &__form-fields {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between!important;
+  }
+
+  &__form-field {
+    width: 48%;
+  }
+}

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Helmet from "../../layout/Helmet";
-import "../../styles/payment.scss";
 import CartData from "../../components/CartData/CartData";
+import "../../styles/payment.scss";
+import PaymentByCart from "../../components/PaymentTypes/PaymentByCart";
 
 const Payment = () => {
+    const [paymentType, setPaymentType] = useState(1);
+
     return (
         <Helmet title="Payment-page">
             <div className="payment">
@@ -27,6 +30,11 @@ const Payment = () => {
                                         </label>
                                     </div>
                                 </div>
+                                {
+                                    paymentType === 1 && (
+                                        <PaymentByCart />
+                                    )
+                                }
                             </div>
                             <div className="variety payment__variety">
                                 <div className="variety__head">
