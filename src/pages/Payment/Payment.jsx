@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import Helmet from "../../layout/Helmet";
 import CartData from "../../components/CartData/CartData";
-import "../../styles/payment.scss";
 import PaymentByCart from "../../components/PaymentTypes/PaymentByCart";
+import PaymentByPaypal from "../../components/PaymentTypes/PaymentByPaypal";
+import "../../styles/payment.scss";
 
 const Payment = () => {
     const [paymentType, setPaymentType] = useState(1);
@@ -20,7 +21,9 @@ const Payment = () => {
                                             name="filter"
                                             className="radio-with-text__input"
                                             type="radio"
+                                            checked={paymentType === 1}
                                             id="cart"
+                                            onChange={() => setPaymentType(1)}
                                         />
                                         <label htmlFor="cart" className="radio-with-text__label">
                                             <span className="radio-with-text__decor"></span>
@@ -43,9 +46,11 @@ const Payment = () => {
                                             name="filter"
                                             className="radio-with-text__input"
                                             type="radio"
-                                            id="email"
+                                            checked={paymentType === 2}
+                                            id="paypal"
+                                            onChange={() => setPaymentType(2)}
                                         />
-                                        <label htmlFor="email" className="radio-with-text__label">
+                                        <label htmlFor="paypal" className="radio-with-text__label">
                                             <span className="radio-with-text__decor"></span>
                                             <span className="radio-with-text__text">
                                                 Pay by Email
@@ -53,6 +58,11 @@ const Payment = () => {
                                         </label>
                                     </div>
                                 </div>
+                                {
+                                    paymentType === 2 && (
+                                        <PaymentByPaypal />
+                                    )
+                                }
                             </div>
                             <div className="variety payment__variety">
                                 <div className="variety__head">
@@ -61,7 +71,9 @@ const Payment = () => {
                                             name="filter"
                                             className="radio-with-text__input"
                                             type="radio"
+                                            checked={paymentType === 3}
                                             id="cash"
+                                            onChange={() => setPaymentType(3)}
                                         />
                                         <label htmlFor="cash" className="radio-with-text__label">
                                             <span className="radio-with-text__decor"></span>
@@ -72,9 +84,13 @@ const Payment = () => {
                                     </div>
                                 </div>
                             </div>
-                            <button className="primary-button payment__btn">
-                                Pay $1024
-                            </button>
+                            {
+                                paymentType === 3 && (
+                                    <button className="primary-button payment__btn">
+                                        Pay $1024
+                                    </button>
+                                )
+                            }
                         </div>
                         <CartData />
                     </div>

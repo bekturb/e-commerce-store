@@ -52,6 +52,9 @@ const PaymentByCart = () => {
                                 />
                             </label>
                         </p>
+                        <button className="primary-button cart-payment__btn">
+                            Pay $1024
+                        </button>
                     </div>
                 </form>
             </div>

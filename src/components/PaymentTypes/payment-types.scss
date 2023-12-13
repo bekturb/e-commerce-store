@@ -1,5 +1,5 @@
 .cart-payment {
-  margin-top: 20px;
+  margin-top: 10px;
 
   &__form-fields {
     display: flex;
@@ -10,5 +10,32 @@
 
   &__form-field {
     width: 48%;
+  }
+
+  &__btn {
+    margin-top: 10px;
+    border: none;
+    padding: 1em 5em!important;
+  }
+}
+
+.paypal {
+  margin-top: 10px;
+
+  &__form-fields {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between!important;
+  }
+
+  &__form-field {
+    width: 100%;
+  }
+
+  &__btn {
+    margin-top: 10px;
+    border: none;
+    padding: 1em 5em!important;
   }
 }
