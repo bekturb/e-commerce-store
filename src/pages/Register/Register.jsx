@@ -6,7 +6,7 @@ import Helmet from "../../layout/Helmet";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import axios from "../../utils/axios-utils";
-import toast, {Toaster} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import Profile from "../../assets/profile.png";
 import "../../styles/register.scss";
 

@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import {SRLWrapper} from "simple-react-lightbox";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {FreeMode, Navigation, Thumbs} from "swiper";
 import image1 from "../../assets/products/apparel4.jpg";
 import image2 from "../../assets/products/apparel5.jpg";
 import image3 from "../../assets/products/apparel6.jpg";
-import "./offer-product.scss"
+import "../RemainingSaleTime/offer-product.scss"
 
 const OfferProduct = () => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);

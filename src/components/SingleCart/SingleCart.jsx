@@ -26,33 +26,37 @@ const SingleCart = () => {
                     <div className="single-cart__page">
                         <h1 className="single-cart__title">Shopping Cart</h1>
                     </div>
-                    <div className="products one cart">
-                        <div className="flexwrap">
-                            <form className="cart__form" action="">
-                                <div className="products__item">
-                                    <table className="cart__table">
-                                        <thead className="cart__thead">
-                                            <tr>
-                                                <th className="cart__list-item">Item</th>
-                                                <th className="cart__list-item">Price</th>
-                                                <th className="cart__list-item">Qty</th>
-                                                <th className="cart__list-item">Subtotal</th>
-                                                <th className="cart__list-item"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {
-                                            cartProducts?.map(pro => (
-                                                <CartProduct key={pro.variantId} pro={pro}/>
-                                            ))
-                                        }
-                                        </tbody>
-                                    </table>
+                    {
+                        cartProducts?.length > 0 ?(
+                            <div className="products one cart">
+                                <div className="flexwrap">
+                                    <form className="cart__form" action="">
+                                        <div className="products__item">
+                                            <table className="cart__table">
+                                                <thead className="cart__thead">
+                                                <tr>
+                                                    <th className="cart__list-item">Item</th>
+                                                    <th className="cart__list-item">Price</th>
+                                                    <th className="cart__list-item">Qty</th>
+                                                    <th className="cart__list-item">Subtotal</th>
+                                                    <th className="cart__list-item"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {
+                                                    cartProducts?.map(pro => (
+                                                        <CartProduct key={pro.variantId} pro={pro}/>
+                                                    ))
+                                                }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </form>
+                                    <CouponCart cartProducts={cartProducts}/>
                                 </div>
-                            </form>
-                            <CouponCart cartProducts={cartProducts}/>
-                        </div>
-                    </div>
+                            </div>
+                        ) : <div>Not found</div>
+                    }
                 </div>
             </div>
         </div>

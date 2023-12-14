@@ -1,4 +1,5 @@
 import React from 'react';
+import "./offer-product.scss"
 
 const RemainingSaleTime = ({remainingTime}) => {
     return (
