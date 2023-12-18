@@ -5,6 +5,7 @@ import miniCartReducer from "../features/miniCartSlice";
 import filterReducer from "../features/productFilterSlice";
 import cartReducer from "../features/cartSlice";
 import {registerReducer} from "../features/registerSlice";
+import {stripeReducer} from "../features/stripeApiSlice";
 import {allReviewsReducer} from "../features/getAllReviewSlice";
 import {otpReducer} from "../features/otpSlice";
 import {authReducer} from "../features/authSlice";
@@ -43,6 +44,7 @@ const store = configureStore({
         singleBrand: brandReducer,
         offers: offerReducer,
         products: productsReducer,
+        stripe: stripeReducer,
         product: productReducer,
         accounts: accountReducer,
         category: categoryReducer,

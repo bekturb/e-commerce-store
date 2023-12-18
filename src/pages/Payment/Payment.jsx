@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Helmet from "../../layout/Helmet";
 import CartData from "../../components/CartData/CartData";
 import PaymentByCart from "../../components/PaymentTypes/PaymentByCart";
@@ -7,6 +7,12 @@ import "../../styles/payment.scss";
 
 const Payment = () => {
     const [paymentType, setPaymentType] = useState(1);
+    const [orderData, setOrderData] = useState([]);
+
+    useEffect(() => {
+        const orderData = JSON.parse(localStorage.getItem("latestOrder"));
+        setOrderData(orderData);
+    },[])
 
     return (
         <Helmet title="Payment-page">
@@ -35,7 +41,7 @@ const Payment = () => {
                                 </div>
                                 {
                                     paymentType === 1 && (
-                                        <PaymentByCart />
+                                        <PaymentByCart orderData={orderData} />
                                     )
                                 }
                             </div>
@@ -60,7 +66,7 @@ const Payment = () => {
                                 </div>
                                 {
                                     paymentType === 2 && (
-                                        <PaymentByPaypal />
+                                        <PaymentByPaypal orderData={orderData} />
                                     )
                                 }
                             </div>
@@ -87,7 +93,7 @@ const Payment = () => {
                             {
                                 paymentType === 3 && (
                                     <button className="primary-button payment__btn">
-                                        Pay $1024
+                                        Pay ${orderData.totalPrice}
                                     </button>
                                 )
                             }

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import CartData from "../CartData/CartData";
 import {useSelector} from "react-redux";
-import "./single-checkout.scss"
 import {useNavigate} from "react-router-dom";
+import "./single-checkout.scss"
 
 const SingleCheckout = () => {
 

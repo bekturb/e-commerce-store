@@ -1,7 +1,7 @@
 import React from 'react';
 import "./PaymentByCart"
 
-const PaymentByPaypal = () => {
+const PaymentByPaypal = ({orderData}) => {
     return (
         <div className="paypal">
             <div className="paypal__wrapper">
@@ -19,7 +19,7 @@ const PaymentByPaypal = () => {
                             </label>
                         </p>
                         <button className="primary-button paypal__btn">
-                            Pay $1024
+                            Pay ${orderData.totalPrice}
                         </button>
                     </div>
                 </form>
