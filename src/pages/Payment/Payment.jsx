@@ -4,6 +4,8 @@ import CartData from "../../components/CartData/CartData";
 import PaymentByCart from "../../components/PaymentTypes/PaymentByCart";
 import PaymentByPaypal from "../../components/PaymentTypes/PaymentByPaypal";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import CashPayment from "../../components/PaymentTypes/CashPayment";
 import "../../styles/payment.scss";
 
 const Payment = () => {
@@ -106,9 +108,10 @@ const Payment = () => {
                             </div>
                             {
                                 paymentType === 3 && (
-                                    <button className="primary-button payment__btn">
-                                        Pay ${orderData.totalPrice}
-                                    </button>
+                                    <CashPayment
+                                        setOpen={setOpen}
+                                        order={order}
+                                    />
                                 )
                             }
                         </div>
