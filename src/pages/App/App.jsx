@@ -4,30 +4,31 @@ import React, {useEffect} from "react";
 import {fetchAuthMe} from "../../features/authMeSlice";
 import '../../styles/App.scss';
 import {Toaster} from "react-hot-toast";
+import {PayPalButtons, PayPalScriptProvider} from "@paypal/react-paypal-js";
 
 function App() {
 
     const dispatch = useDispatch();
 
-    useEffect( () => {
+    useEffect(() => {
         dispatch(fetchAuthMe());
-        },[dispatch]);
+    }, [dispatch]);
 
-  return (
-    <>
-        <Toaster
-            position="top-center"
-            reverseOrder={false}
-            toastOptions={{
-                duration: 2000,
-                style: {
-                    height: "40px"
-                }
-            }}
-        />
-      <Layout />
-    </>
-  )
+    return (
+        <>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                    duration: 2000,
+                    style: {
+                        height: "40px"
+                    }
+                }}
+            />
+            <Layout/>
+        </>
+    )
 }
 
 export default App;

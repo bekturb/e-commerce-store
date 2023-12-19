@@ -3,11 +3,21 @@ import Helmet from "../../layout/Helmet";
 import CartData from "../../components/CartData/CartData";
 import PaymentByCart from "../../components/PaymentTypes/PaymentByCart";
 import PaymentByPaypal from "../../components/PaymentTypes/PaymentByPaypal";
+import {useSelector} from "react-redux";
 import "../../styles/payment.scss";
 
 const Payment = () => {
     const [paymentType, setPaymentType] = useState(1);
     const [orderData, setOrderData] = useState([]);
+    const [open, setOpen] = useState(false);
+    const {data: user} = useSelector(state => state.authMe);
+
+    const order = {
+        cart: orderData?.cart,
+        shippingAddress: orderData?.shippingAddress,
+        user: user && user,
+        totalPrice: orderData?.totalPrice,
+    }
 
     useEffect(() => {
         const orderData = JSON.parse(localStorage.getItem("latestOrder"));
@@ -41,7 +51,7 @@ const Payment = () => {
                                 </div>
                                 {
                                     paymentType === 1 && (
-                                        <PaymentByCart orderData={orderData} />
+                                        <PaymentByCart orderData={orderData} setOpen={setOpen} order={order} />
                                     )
                                 }
                             </div>
@@ -66,7 +76,11 @@ const Payment = () => {
                                 </div>
                                 {
                                     paymentType === 2 && (
-                                        <PaymentByPaypal orderData={orderData} />
+                                        <PaymentByPaypal
+                                            orderData={orderData}
+                                            setOpen={setOpen}
+                                            order={order}
+                                            open={open}/>
                                     )
                                 }
                             </div>

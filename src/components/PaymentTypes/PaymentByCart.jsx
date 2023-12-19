@@ -3,7 +3,6 @@ import {
     CardNumberElement,
     CardCvcElement,
     CardExpiryElement,
-    card,
     useStripe,
     useElements
 } from "@stripe/react-stripe-js"
@@ -13,76 +12,12 @@ import {useNavigate} from "react-router-dom";
 import axios from "../../utils/axios-utils";
 import {toast} from "react-hot-toast";
 
-const PaymentByCart = ({orderData}) => {
-    const [open, setOpen] = useState(false)
+const PaymentByCart = ({orderData, setOpen, order}) => {
     const {data: user} = useSelector(state => state.authMe);
 
     const navigate = useNavigate();
     const stripe = useStripe();
     const elements = useElements();
-
-    const createOrder = (data, actions) => {
-        return actions.order
-            .create({
-                purchase_units: [
-                    {
-                        description: "Sunflower",
-                        amount: {
-                            currency_code: "USD",
-                            value: orderData?.totalPrice
-                        },
-                    },
-                ],
-                application_context: {
-                    shipping_preference: "NO_SHIPPING",
-                },
-            })
-            .then((orderID)  => {
-                return orderID
-            })
-    };
-
-    const order = {
-        cart: orderData?.cart,
-        shippingAddress: orderData?.shippingAddress,
-        user: user && user,
-        totalPrice: orderData?.totalPrice,
-    }
-
-    const onApprove = async (data, actions) => {
-        return actions.order.capture().then(function (details) {
-            const { prayer } = details;
-
-            let paymentInfo = prayer;
-
-            if (paymentInfo !== undefined) {
-                paypalPaymentHandler(paymentInfo)
-            }
-        })
-    };
-
-    const paypalPaymentHandler = async (paymentInfo) => {
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        order.paymentInfo = {
-            id: paymentInfo.payer_id,
-            status: "succeeded",
-            type: "Paypal",
-        }
-
-        await axios
-            .post("/api/orders/create-order", order, config)
-            .then((res) => {
-                setOpen(false);
-                navigate("/order/success");
-                localStorage.setItem("cart", JSON.stringify([]));
-                localStorage.setItem("latestOrder", JSON.stringify([]));
-            });
-    };
 
     const paymentData = {
         amount: Math.round(orderData?.totalPrice * 100),
