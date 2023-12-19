@@ -15,6 +15,7 @@ import {loadStripe} from "@stripe/stripe-js";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchStripeApi} from "../features/stripeApiSlice";
 import ProtectedRoute from "../routes/ProtectedRoute";
+import Success from "../pages/Success/Success";
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -47,6 +48,11 @@ const Routers = () => {
                 <Route path="/checkout" element={
                     <ProtectedRoute>
                         <Checkout/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/order/success" element={
+                    <ProtectedRoute>
+                        <Success/>
                     </ProtectedRoute>
                 }/>
                 <Route path="/:id/otp" element={<Otp/>}/>

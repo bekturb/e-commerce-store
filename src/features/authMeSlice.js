@@ -16,7 +16,7 @@ export const fetchAuthMe = createAsyncThunk(
 const initialState = {
     isAuthenticated: false,
     data: null,
-    loading: false,
+    loading: true,
     error: null,
 };
 
