@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {cartActions} from "../../features/miniCartSlice";
-import categoryProducts from "../CategoryProducts/CategoryProducts";
 import {Link} from "react-router-dom";
 import {cartProductsActions} from "../../features/cartSlice";
 import "./mini-cart.scss";
@@ -10,6 +9,7 @@ const MiniCart = ({cartProducts, roundedTotalPrice}) => {
     const showRef = useRef(null);
     const dispatch = useDispatch();
     const {showCart} = useSelector(state => state.showCart);
+
     const handleDelete = (proId) => {
         dispatch(cartProductsActions.deleteCartProduct(proId));
     }
@@ -40,7 +40,7 @@ const MiniCart = ({cartProducts, roundedTotalPrice}) => {
                                 cartProducts?.length > 0 ? (
                                     <ul className="products mini">
                                         {
-                                            categoryProducts?.map(pro => (
+                                            cartProducts?.map(pro => (
                                                 <li key={pro.variantId} className="products__item mini-cart__item">
                                                     <div className="thumbnail">
                                                         <Link to={`/catalog/${pro.productId}`} className="products__link">

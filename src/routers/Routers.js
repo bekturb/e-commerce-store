@@ -16,6 +16,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchStripeApi} from "../features/stripeApiSlice";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import Success from "../pages/Success/Success";
+import Wishlist from "../pages/Wishlist/Wishlist";
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -53,6 +54,11 @@ const Routers = () => {
                 <Route path="/order/success" element={
                     <ProtectedRoute>
                         <Success/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/wishlist" element={
+                    <ProtectedRoute>
+                        <Wishlist/>
                     </ProtectedRoute>
                 }/>
                 <Route path="/:id/otp" element={<Otp/>}/>

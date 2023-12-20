@@ -88,8 +88,10 @@ const CouponCart = ({cartProducts}) => {
                                value={couponName}
                                onChange={handleChangeCoupon}
                         />
-                        {couponErr &&
-                            <span className="error">*{couponErr}</span>}
+                        {
+                            couponErr &&
+                                <span className="error">*{couponErr}</span>
+                        }
                     </div>
                     <button
                         onClick={handleGetCouponValue}

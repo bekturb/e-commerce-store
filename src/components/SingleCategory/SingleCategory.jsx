@@ -3,7 +3,6 @@ import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategory} from "../../features/singleCategorySlice";
 import {fetchBrands} from "../../features/brandSlice";
-import {fetchAllCategories} from "../../features/allCategories";
 import Subcategory from "../Subcategory/Subcategory";
 import MainCategory from "../MainCategory/MainCategory";
 import Loader from "../Loader/Loader";

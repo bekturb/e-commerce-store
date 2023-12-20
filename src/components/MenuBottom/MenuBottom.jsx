@@ -1,7 +1,7 @@
 import React from 'react';
 import "./menu-bottom.scss"
 import {cartActions} from "../../features/miniCartSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 
 const MenuBottom = ({setShowSearchBottom}) => {
 

@@ -1,16 +1,13 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SecTop from "../../components/SecTop/SecTop";
 import Loader from "../../components/Loader/Loader";
 import NotFound from "../../components/NotFound/NotFound";
 import ProductsCart from "../../components/ProductsCart/ProductsCart";
-import {Link, useLocation, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchSingleBrand} from "../../features/getSingleBrand";
 import Popup from "../../components/Popup/Popup";
-import Search from "../../components/Search/Search";
-import {sortData} from "../../customData/sortData";
 import useFilteredCategoryProducts from "../../customHooks/useFilteredCategoryProducts";
-import useBrandCounts from "../../customHooks/useBrandCounts";
 import useProductsColor from "../../customHooks/UseProductsColor";
 import useGetProductsSeller from "../../customHooks/useGetProductsSeller";
 import FiltersMobile from "../../components/FiltersMobile/FiltersMobile";
@@ -24,7 +21,6 @@ const SingleBrand = () => {
     const [filteredColors, setFilteredColors] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [filteredShops, setFilteredShops] = useState([]);
-    const location = useLocation();
 
     const {brandId} = useParams();
     const dispatch = useDispatch();

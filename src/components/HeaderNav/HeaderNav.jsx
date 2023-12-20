@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import apparel4 from "../../assets/products/apparel4.jpg";
 import {useDispatch, useSelector} from "react-redux";
 import {menuActions} from "../../features/menuSlice";
 import {Link} from "react-router-dom";
@@ -10,10 +9,10 @@ import MiniCart from "../MiniCart/MiniCart";
 import HoverMiniCart from "../HoverMiniCart/HoverMiniCart";
 import HeaderNavSkeleton from "../Skeletons/HeaderNavSkeleton/HeaderNavSkeleton";
 import NotFound from "../NotFound/NotFound";
-import "./header-nav.scss";
 import MegaProductCart from "../MegaProductCart/MegaProductCart";
 import {cartProductsActions} from "../../features/cartSlice";
 import {fetchAllCategories} from "../../features/allCategories";
+import "./header-nav.scss";
 
 const HeaderNav = () => {
 
@@ -164,7 +163,7 @@ const HeaderNav = () => {
                             <div className="right nav__right">
                                 <ul className="package">
                                     <li className="package__item mobile-hide">
-                                        <a className="package__link" href="">
+                                        <Link to="/wishlist" className="package__link">
                                         <span className="package__icon icon-lg">
                                             <i className="ri-heart-line"></i>
                                         </span>
@@ -177,7 +176,7 @@ const HeaderNav = () => {
                                                     </span>
                                                 )
                                             }
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="package__item iscart">
                                         <div className="package__link">
