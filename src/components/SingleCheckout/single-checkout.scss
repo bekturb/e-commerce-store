@@ -3,5 +3,28 @@
 
   &__wrapper {
     justify-content: space-around;
+    flex-direction: column-reverse;
+  }
+
+  &__form-glass {
+    width: 100%!important;
+    border-radius: 0!important;
+    margin-top: 0 !important;
+    background: var(--border-color);
+  }
+}
+
+@media screen and (min-width: 993px) {
+  .single-checkout {
+    padding-bottom: 20px;
+
+    &__wrapper {
+      justify-content: space-around;
+      flex-direction: row;
+    }
+
+    &__form-glass {
+      width: 45%!important;
+    }
   }
 }

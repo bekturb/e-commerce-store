@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between!important;
+    justify-content: space-between !important;
   }
 
   &__form-field {
@@ -15,7 +15,7 @@
   &__btn {
     margin-top: 10px;
     border: none;
-    padding: 1em 5em!important;
+    padding: 1em 5em !important;
   }
 }
 
@@ -26,7 +26,7 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between!important;
+    justify-content: space-between !important;
   }
 
   &__form-field {
@@ -58,16 +58,30 @@
     margin-bottom: 10px;
   }
 
-  &__custom-btn{
+  &__custom-btn {
     width: 90%;
     margin-top: 50px;
   }
 
   &__btn {
-    width: 100%!important;
-    font-size: 15px!important;
+    width: 100% !important;
+    font-size: 15px !important;
     margin-top: 10px;
     border: none;
-    padding: 1em 2em!important;
+    padding: 1em 2em !important;
+  }
+}
+
+@media screen and (max-width: 520px) {
+
+  .cart-payment {
+    &__form-fields {
+      display: block;
+    }
+
+    &__form-field {
+      width: 100%;
+      margin: 20px 0;
+    }
   }
 }

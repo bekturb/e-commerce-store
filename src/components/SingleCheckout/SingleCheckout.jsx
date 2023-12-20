@@ -84,122 +84,130 @@ const SingleCheckout = () => {
     return (
         <div className="single-checkout">
             <div className="container">
-                <div className="single-checkout__wrapper flexwrap">
-                    <div className="register__glass register__glass-background">
-                        <div className="register__head">
-                            <h4 className='register__title'>Shipping Address</h4>
-                        </div>
-                        <form className="form" onSubmit={onSubmit}>
-                            <div className="form__fields">
-                                <p className="form__field">
-                                    <label>
-                                        <input
-                                            className="form__input"
-                                            type="text"
-                                            value={user && `${user.firstName} ${user.lastName}`}
-                                            required
-                                            disabled
-                                            name="fullname"
-                                            placeholder='Full Name'
-                                            onChange={(e) => handleInputChange(e)}
-                                        />
-                                    </label>
-                                </p>
-                                <p className="form__field">
-                                    <label>
-                                        <input
-                                            className="form__input"
-                                            type="text"
-                                            value={user && user.phoneNumber}
-                                            name="number"
-                                            required
-                                            disabled
-                                            placeholder='Phone Number'
-                                            onChange={(e) => handleInputChange(e)}
-                                        />
-                                    </label>
-                                </p>
-                                <p className="form__field">
-                                    <label>
-                                        <input
-                                            className={userInfoErrors.country ? "form__input-color" : "form__input"}
-                                            type="text"
-                                            value={userInfo.country}
-                                            name="country"
-                                            placeholder='Country'
-                                            onChange={(e) => handleInputChange(e)}
-                                        />
-                                    </label>
-                                </p>
-                                <p className="form__field">
-                                    <label>
-                                        <input
-                                            className={userInfoErrors.email ? "form__input-color" : "form__input"}
-                                            type="text"
-                                            value={user && user.email}
-                                            required
-                                            name="email"
-                                            disabled
-                                            placeholder='Email Addess'
-                                            onChange={(e) => handleInputChange(e)}
-                                        />
-                                    </label>
-                                </p>
-                                <p className="form__field">
-                                    <label>
-                                        <input
-                                            className={userInfoErrors.zipCode ? "form__input-color" : "form__input"}
-                                            type="text"
-                                            value={userInfo.zipCode}
-                                            name="zipCode"
-                                            placeholder='Zip Code'
-                                            onChange={(e) => handleInputChange(e)}
-                                        />
-                                    </label>
-                                </p>
-                                <p className="form__field">
-                                    <label>
-                                        <input
-                                            className={userInfoErrors.city ? "form__input-color" : "form__input"}
-                                            type="text"
-                                            value={userInfo.city}
-                                            name="city"
-                                            placeholder='City'
-                                            onChange={(e) => handleInputChange(e)}
-                                        />
-                                    </label>
-                                </p>
-                                <p className="form__field">
-                                    <label>
-                                        <input
-                                            className={userInfoErrors.address1 ? "form__input-color" : "form__input"}
-                                            type="text"
-                                            value={userInfo.address1}
-                                            name="address1"
-                                            placeholder='Address 1'
-                                            onChange={(e) => handleInputChange(e)}
-                                        />
-                                    </label>
-                                </p>
-                                <p className="form__field">
-                                    <label>
-                                        <input
-                                            className={userInfoErrors.address2 ? "form__input-color" : "form__input"}
-                                            type="text"
-                                            value={userInfo.address2}
-                                            name="address2"
-                                            placeholder='Address 2'
-                                            onChange={(e) => handleInputChange(e)}
-                                        />
-                                    </label>
-                                </p>
-                                <button className="form__button" type='submit'>
-                                   Go to Payment
-                                </button>
-                            </div>
-                        </form>
+                <div className="single-checkout__into">
+                    <div className="secTop secTop-position flexitem">
+                        <h2 className="secTop__inner">
+                            <span className="secTop__circle circle"></span>
+                            <span className="secTop__title">Shopping</span>
+                        </h2>
                     </div>
-                    <CartData/>
+                    <div className="single-checkout__wrapper flexwrap">
+                        <div className="register__glass single-checkout__form-glass">
+                            <div className="register__head">
+                                <h4 className='register__title'>Shipping Address</h4>
+                            </div>
+                            <form className="form" onSubmit={onSubmit}>
+                                <div className="form__fields">
+                                    <p className="form__field">
+                                        <label>
+                                            <input
+                                                className="form__input"
+                                                type="text"
+                                                value={user && `${user.firstName} ${user.lastName}`}
+                                                required
+                                                disabled
+                                                name="fullname"
+                                                placeholder='Full Name'
+                                                onChange={(e) => handleInputChange(e)}
+                                            />
+                                        </label>
+                                    </p>
+                                    <p className="form__field">
+                                        <label>
+                                            <input
+                                                className="form__input"
+                                                type="text"
+                                                value={user && user.phoneNumber}
+                                                name="number"
+                                                required
+                                                disabled
+                                                placeholder='Phone Number'
+                                                onChange={(e) => handleInputChange(e)}
+                                            />
+                                        </label>
+                                    </p>
+                                    <p className="form__field">
+                                        <label>
+                                            <input
+                                                className={userInfoErrors.country ? "form__input-color" : "form__input"}
+                                                type="text"
+                                                value={userInfo.country}
+                                                name="country"
+                                                placeholder='Country'
+                                                onChange={(e) => handleInputChange(e)}
+                                            />
+                                        </label>
+                                    </p>
+                                    <p className="form__field">
+                                        <label>
+                                            <input
+                                                className={userInfoErrors.email ? "form__input-color" : "form__input"}
+                                                type="text"
+                                                value={user && user.email}
+                                                required
+                                                name="email"
+                                                disabled
+                                                placeholder='Email Addess'
+                                                onChange={(e) => handleInputChange(e)}
+                                            />
+                                        </label>
+                                    </p>
+                                    <p className="form__field">
+                                        <label>
+                                            <input
+                                                className={userInfoErrors.zipCode ? "form__input-color" : "form__input"}
+                                                type="text"
+                                                value={userInfo.zipCode}
+                                                name="zipCode"
+                                                placeholder='Zip Code'
+                                                onChange={(e) => handleInputChange(e)}
+                                            />
+                                        </label>
+                                    </p>
+                                    <p className="form__field">
+                                        <label>
+                                            <input
+                                                className={userInfoErrors.city ? "form__input-color" : "form__input"}
+                                                type="text"
+                                                value={userInfo.city}
+                                                name="city"
+                                                placeholder='City'
+                                                onChange={(e) => handleInputChange(e)}
+                                            />
+                                        </label>
+                                    </p>
+                                    <p className="form__field">
+                                        <label>
+                                            <input
+                                                className={userInfoErrors.address1 ? "form__input-color" : "form__input"}
+                                                type="text"
+                                                value={userInfo.address1}
+                                                name="address1"
+                                                placeholder='Address 1'
+                                                onChange={(e) => handleInputChange(e)}
+                                            />
+                                        </label>
+                                    </p>
+                                    <p className="form__field">
+                                        <label>
+                                            <input
+                                                className={userInfoErrors.address2 ? "form__input-color" : "form__input"}
+                                                type="text"
+                                                value={userInfo.address2}
+                                                name="address2"
+                                                placeholder='Address 2'
+                                                onChange={(e) => handleInputChange(e)}
+                                            />
+                                        </label>
+                                    </p>
+                                    <button className="form__button" type='submit'>
+                                        Go to Payment
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <CartData/>
+                    </div>
                 </div>
             </div>
         </div>

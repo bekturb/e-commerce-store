@@ -26,6 +26,10 @@
     width: var(--percent100);
   }
 
+  &__table {
+    width: var(--percent100);
+  }
+
   &__list-item {
     vertical-align: middle;
     background-color: var(--light-bg-color);
@@ -81,7 +85,7 @@
 
   &__summary {
     width: var(--percent100);
-    margin: 2.5em 0 4em;
+    margin: 2.5em 0 1em;
   }
 
   &__shipping-rate {
@@ -266,7 +270,7 @@
   &__flat {
     position: absolute;
     top: 0;
-    left: 40px;
+    left: 25px;
     line-height: 3;
   }
 }

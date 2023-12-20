@@ -21,11 +21,6 @@
     backdrop-filter: blur(7.1px);
     border: 4px solid #f9fafb;
     flex-shrink: 0;
-
-    &-background {
-      margin-top: 0!important;
-      background: var(--border-color);
-    }
   }
 
   &__head {
