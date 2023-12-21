@@ -10,6 +10,9 @@ const FiltersMobile = ({
                            showMobileFilter,
                            filteredColors,
                            filteredBrands,
+                           categoryCounts,
+                           handleSearchCategories,
+                           filteredCategories,
                            filteredShops,
                            brandCounts,
                            uniqueColors,
@@ -20,12 +23,13 @@ const FiltersMobile = ({
                        }) => {
 
     const [showAllBrands, setShowAllBrands] = useState(false);
+    const [showAllCategories, setShowAllCategories] = useState(false);
     const [showAllColors, setShowAllColors] = useState(false);
     const [showAllShops, setShowAllShops] = useState(false);
 
     const dispatch = useDispatch();
 
-    const {productBrand, productColor, productMinPrice, productMaxPrice, productShop} = useSelector(state => state.filterProducts);
+    const {productBrand, productColor, productMinPrice, productMaxPrice, productShop, productCategory} = useSelector(state => state.filterProducts);
 
     const handleChangeMinPrice = (val) => {
         dispatch(filterProductsActions.setProductMinPrice(val))
@@ -73,6 +77,87 @@ const FiltersMobile = ({
                                 </div>
                             </div>
                         </div>
+                        {
+                            categoryCounts?.length > 1 && (
+                                <div className="filters-mobile__item">
+                                    <div className="filters-mobile__item-head">
+                                        <h3 className="filters-mobile__item-title">Categories</h3>
+                                        <button className="filters-mobile__reset-btn">Reset</button>
+                                        {
+                                            categoryCounts?.length > 7 && (
+                                                <button onClick={() => setShowAllCategories(true)}
+                                                        className="filters-mobile__btn-cat">All
+                                                </button>
+                                            )
+                                        }
+                                    </div>
+                                    <div className="filter-fill">
+                                        <div className="down">
+                                            {
+                                                showAllCategories && (
+                                                    <Search onSearch={handleSearchCategories}/>
+                                                )
+                                            }
+                                            {
+                                                showAllCategories ? (
+                                                    <ul className="down__list">
+                                                        {
+                                                            showAllCategories && (
+                                                                filteredCategories.map(cat => (
+                                                                    <li key={cat.id} className="down__item">
+                                                                        <div className="checkbox-with-text">
+                                                                            <input
+                                                                                onChange={() => dispatch(filterProductsActions.setProductCategory(cat.id))}
+                                                                                name={cat.name}
+                                                                                checked={productCategory.includes(cat.id)}
+                                                                                className="checkbox-with-text__input"
+                                                                                type="checkbox"
+                                                                                value={cat.id}
+                                                                                id={cat.id}
+                                                                            />
+                                                                            <label htmlFor={cat.id}
+                                                                                   className="checkbox-with-text__label">
+                                                                            <span
+                                                                                className="checkbox-with-text__decor"></span>
+                                                                                <span className="checkbox-with-text__text">
+                                                                                {cat.name}
+                                                                                    <span
+                                                                                        className="checkbox-with-text__count">{cat.count}</span>
+                                                                                 </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </li>
+                                                                ))
+                                                            )
+                                                        }
+                                                    </ul>
+                                                ) : (
+                                                    <ul className="filter-fill__slide">
+                                                        {
+                                                            filteredCategories?.slice(0, 5).map(cat => (
+                                                                <li key={cat.id} className="filter-fill__slide-item">
+                                                                    <button
+                                                                        onClick={() => dispatch(filterProductsActions.setProductCategory(cat.id))}
+                                                                        className={`filter-fill__slide-btn ${
+                                                                            productCategory.includes(cat.id) ? 'selected' : ''}`}
+                                                                        value={cat.id}
+                                                                    >
+                                                                        {cat.name}
+                                                                        <span className="filter-fill__slide-count">
+                                                                            {cat.count}
+                                                                        </span>
+                                                                    </button>
+                                                                </li>
+                                                            ))
+                                                        }
+                                                    </ul>
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        }
                         {
                             brandCounts?.length > 0 && (
                                 <div className="filters-mobile__item">

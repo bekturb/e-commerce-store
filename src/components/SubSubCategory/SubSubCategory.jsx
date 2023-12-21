@@ -14,6 +14,7 @@ import Popup from "../Popup/Popup";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import ProductFilter from "../ProductFilterCom/ProductFilter";
+import UseGetDefinitelyCategories from "../../customHooks/useGetDefinitelyCategories";
 import "./subsubcategory.scss";
 
 const SubSubCategory = ({
@@ -25,14 +26,16 @@ const SubSubCategory = ({
     const [showMobileSort, setShowMobileSort] = useState(false);
     const [filteredColors, setFilteredColors] = useState([]);
     const [filteredBrands, setFilteredBrands] = useState([]);
+    const [filteredCategories, setFilteredCategories] = useState([]);
     const [filteredShops, setFilteredShops] = useState([]);
     const location = useLocation();
 
     const {data: brands} = useSelector(state => state.brands);
+    const {data: allCategories} = useSelector(state => state.allCategories);
     const {data: products, loading: productsLoad, error: productsErr} = useSelector(state => state.products);
     const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
     const {data: compareProducts} = useSelector(state => state.compareProducts);
-    const {productBrand, productColor, productSort, productMinPrice, productMaxPrice, productShop, perPage} = useSelector(state => state.filterProducts);
+    const {productCategory, productBrand, productColor, productSort, productMinPrice, productMaxPrice, productShop, perPage} = useSelector(state => state.filterProducts);
 
     const [pageItem, setPageItem] = useState({
         start: 0,
@@ -41,6 +44,7 @@ const SubSubCategory = ({
 
     const categoryProducts = useFilteredCategoryProducts({
         filteredProducts,
+        productCategory,
         productBrand,
         productColor,
         productShop,
@@ -50,14 +54,23 @@ const SubSubCategory = ({
     });
 
     const brandCounts = useBrandCounts(filteredProducts, brands);
+    const categoryCounts = UseGetDefinitelyCategories(filteredProducts, allCategories);
     const uniqueColors = useProductsColor(filteredProducts);
     const productsShop = useGetProductsSeller(filteredProducts, shops);
+
 
     const handleSearchColors = (query) => {
         const filteringColors = uniqueColors.filter((color) =>
             color.color.toLowerCase().includes(query.toLowerCase())
         )
         setFilteredColors(filteringColors);
+    };
+
+    const handleSearchCategories = (query) => {
+        const filteringCategories = categoryCounts.filter((cat) =>
+            cat.name.toLowerCase().includes(query.toLowerCase())
+        )
+        setFilteredCategories(filteringCategories);
     };
 
     const handleSearchBrands = (query) => {
@@ -78,7 +91,8 @@ const SubSubCategory = ({
         setFilteredColors(uniqueColors);
         setFilteredBrands(brandCounts);
         setFilteredShops(productsShop);
-    }, [uniqueColors, brandCounts, productsShop])
+        setFilteredCategories(categoryCounts)
+    }, [uniqueColors, brandCounts, productsShop, categoryCounts])
 
     useEffect(() => {
         if (products?.length > 0) {
@@ -99,6 +113,9 @@ const SubSubCategory = ({
                 brandCounts={brandCounts}
                 uniqueColors={uniqueColors}
                 productsShop={productsShop}
+                filteredCategories={filteredCategories}
+                categoryCounts={categoryCounts}
+                handleSearchCategories={handleSearchCategories}
                 handleSearchBrands={handleSearchBrands}
                 handleSearchColors={handleSearchColors}
                 handleSearchShops={handleSearchShops}
@@ -118,9 +135,12 @@ const SubSubCategory = ({
                                             setShowMobileFilter={setShowMobileFilter}
                                             setShowMobileSort={setShowMobileSort}
                                             brandCounts={brandCounts}
+                                            categoryCounts={categoryCounts}
                                             uniqueColors={uniqueColors}
                                             productsShop={productsShop}
+                                            handleSearchCategories={handleSearchCategories}
                                             handleSearchBrands={handleSearchBrands}
+                                            filteredCategories={filteredCategories}
                                             filteredBrands={filteredBrands}
                                             filteredColors={filteredColors}
                                             handleSearchColors={handleSearchColors}

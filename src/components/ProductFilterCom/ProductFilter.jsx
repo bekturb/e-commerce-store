@@ -5,22 +5,26 @@ import FilterByShop from "../FilterItems/FilterByShop";
 import {useSelector} from "react-redux";
 import SortByAdvantages from "../FilterItems/SortByAdvantages";
 import useOpenDrop from "../../customHooks/useOpenDrop";
+import FilterByCategories from "../FilterItems/FilterByCategories";
 
 const ProductFilter = ({
                            setShowMobileFilter,
                            setShowMobileSort,
                            brandCounts,
+                           categoryCounts,
                            uniqueColors,
                            productsShop,
                            filteredBrands,
+                           filteredCategories,
                            handleSearchBrands,
+                           handleSearchCategories,
                            filteredColors,
                            handleSearchColors,
                            filteredShops,
                            handleSearchShops
                        }) => {
 
-    const {productBrand, productColor, productShop, productSort} = useSelector(state => state.filterProducts);
+    const {productBrand, productColor, productShop, productSort, productCategory} = useSelector(state => state.filterProducts);
     const {open} = useOpenDrop();
     const sumOfLengths = productBrand?.length + productColor?.length + productShop?.length;
 
@@ -50,7 +54,17 @@ const ProductFilter = ({
             </div>
             <div className="dropdown__items">
                 {
-                    brandCounts?.length > 0 && (
+                    categoryCounts?.length > 1 && (
+                        <FilterByCategories
+                            categoryCounts={categoryCounts}
+                            productCategory={productCategory}
+                            filteredCategories={filteredCategories}
+                            handleSearchCategories={handleSearchCategories}
+                        />
+                    )
+                }
+                {
+                    brandCounts?.length > 1 && (
                         <FilterByBrand
                             brandCounts={brandCounts}
                             productBrand={productBrand}
@@ -60,7 +74,7 @@ const ProductFilter = ({
                     )
                 }
                 {
-                    uniqueColors?.length > 0 && (
+                    uniqueColors?.length > 1 && (
                         <FilterByColors
                             uniqueColors={uniqueColors}
                             productColor={productColor}
@@ -70,7 +84,7 @@ const ProductFilter = ({
                     )
                 }
                 {
-                    productsShop?.length > 0 && (
+                    productsShop?.length > 1 && (
                         <FilterByShop
                             productShop={productShop}
                             productsShop={productsShop}
