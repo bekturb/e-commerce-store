@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import ProductsComp from "../ProductsComp/ProductsComp";
+import {Link} from "react-router-dom";
 import "./features.scss";
 
 const Features = ({title}) => {
@@ -23,7 +24,7 @@ const Features = ({title}) => {
                                         <span className="secTop__title">{title}</span>
                                     </h2>
                                     <div className="secTop__second-links">
-                                        <a className="view-all" href="#">View all <i className="ri-arrow-right-line"></i></a>
+                                        <Link to="/catalog/featured-products" className="view-all">View all <i className="ri-arrow-right-line"></i></Link>
                                     </div>
                                 </div>
                             )

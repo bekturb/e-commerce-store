@@ -159,7 +159,7 @@ const FiltersMobile = ({
                             )
                         }
                         {
-                            brandCounts?.length > 0 && (
+                            brandCounts?.length > 1 && (
                                 <div className="filters-mobile__item">
                                     <div className="filters-mobile__item-head">
                                         <h3 className="filters-mobile__item-title">Brand</h3>
@@ -240,7 +240,7 @@ const FiltersMobile = ({
                             )
                         }
                         {
-                            uniqueColors?.length > 0 && (
+                            uniqueColors?.length > 1 && (
                                 <div className="filters-mobile__item">
                                     <div className="filters-mobile__item-head">
                                         <h3 className="filters-mobile__item-title">Color</h3>
@@ -327,7 +327,7 @@ const FiltersMobile = ({
                             )
                         }
                         {
-                            productsShop?.length > 0 && (
+                            productsShop?.length > 1 && (
                                 <div className="filters-mobile__item">
                                     <div className="filters-mobile__item-head">
                                         <h3 className="filters-mobile__item-title">Shop</h3>

@@ -88,12 +88,10 @@ const SingleCategory = () => {
                 ) : category?.parentId && !hasSubCategory ? (
                     <SubSubCategory
                         category={category}
-                        shops={shops}
                     />
                 ) : !category?.parentId && !hasSubCategory ? (
                     <SubSubCategory
                         category={category}
-                        shops={shops}
                     />
                 ) : null
             }

@@ -26,7 +26,7 @@ const ProductFilter = ({
 
     const {productBrand, productColor, productShop, productSort, productCategory} = useSelector(state => state.filterProducts);
     const {open} = useOpenDrop();
-    const sumOfLengths = productBrand?.length + productColor?.length + productShop?.length;
+    const sumOfLengths = productBrand?.length + productColor?.length + productShop?.length + productCategory.length;
 
     return (
         <div className="dropdown flexitem">

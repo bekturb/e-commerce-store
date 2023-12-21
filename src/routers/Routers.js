@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Route, Routes} from "react-router-dom";
 import Register from "../pages/Register";
 import Otp from "../pages/Otp";
@@ -17,12 +17,11 @@ import {fetchStripeApi} from "../features/stripeApiSlice";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import Success from "../pages/Success/Success";
 import Wishlist from "../pages/Wishlist/Wishlist";
+import FeaturedProducts from "../pages/FeaturedProducts/FeaturedProducts";
 
 const Routers = () => {
     const dispatch = useDispatch();
-
     const {data: stripeData} = useSelector(state => state.stripe);
-    const [clientSecret, setClientSecret] = useState("")
 
     useEffect(() => {
         dispatch(fetchStripeApi());
@@ -69,6 +68,7 @@ const Routers = () => {
                 <Route path="/category/:mainCategorySlug/:subCategorySlug/:slug" element={<CategoryPage/>}/>
                 <Route path="/catalog/:productId" element={<SinglePage/>}/>
                 <Route path="/brand/:brandId" element={<SingleBrand/>}/>
+                <Route path="/catalog/featured-products" element={<FeaturedProducts/>}/>
             </Routes>
         </>
     )
