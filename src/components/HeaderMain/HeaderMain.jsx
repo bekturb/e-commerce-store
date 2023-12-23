@@ -4,13 +4,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchProducts} from "../../features/productsSlice";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
-import SearchProducts from "../SearchProducts/SearchProducts";
+import HeaderSearch from "../HeaderSearch/HeaderSearch";
 import "./header-main.scss"
 
 const HeaderMain = () => {
     const [showCat, setShowCat] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [searchData, setSearchData] = useState(null);
     const {pathname} = useLocation();
     const dispatch = useDispatch();
 
@@ -19,22 +17,6 @@ const HeaderMain = () => {
 
     const [categoriesToExclude] = useState(["Shop", "Women", "Men"]);
     const filteredCategories = categories ? categories.filter(category => !categoriesToExclude.includes(category.name)) : [];
-
-    const handleSearchChange = (e) => {
-        const term = e.target.value
-        setSearchTerm(term)
-
-        if (term === "") {
-            setSearchData(null)
-        }else {
-            const filteredProducts =
-                products &&
-                products.filter((product) =>
-                    product.name.toLowerCase().includes(term.toLowerCase())
-                );
-            setSearchData(filteredProducts);
-        }
-    };
 
     function chunkArray(array, chunkSize) {
         const chunks = [];
@@ -161,35 +143,7 @@ const HeaderMain = () => {
                         </div>
                     </div>
                     <div className="right categories__right">
-                        <div className="search">
-                            <div className="search__form">
-                                <span className="search__icon icon-lg "><i className="ri-search-line"></i></span>
-                                <input
-                                    onChange={handleSearchChange}
-                                    className="search__input"
-                                    type="search"
-                                    value={searchTerm}
-                                    placeholder="Search for products"
-                                />
-                                <button className="search__btn" type="submit">Search</button>
-                            </div>
-                            {
-                                searchData && searchData.length !== 0 ? (
-                                    <div className="panel">
-                                        <ul className="panel__products">
-                                            {
-                                                searchData &&
-                                                    searchData.map((i) => {
-                                                        return (
-                                                            <SearchProducts key={i._id} i={i}/>
-                                                        )
-                                                    })
-                                            }
-                                        </ul>
-                                    </div>
-                                ) : null
-                            }
-                        </div>
+                        <HeaderSearch/>
                     </div>
                 </div>
             </div>

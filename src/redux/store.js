@@ -1,5 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit";
 import menuReducer from "../features/menuSlice";
+import searchReducer from "../features/searchProductsSlice";
 import compareProductsReducer from "../features/compareProducts";
 import miniCartReducer from "../features/miniCartSlice";
 import filterReducer from "../features/productFilterSlice";
@@ -28,6 +29,7 @@ import {couponReducer} from "../features/couponSlice";
 const store = configureStore({
     reducer: {
         showMenu: menuReducer,
+        searchProducts: searchReducer,
         filterProducts: filterReducer,
         compareProducts: compareProductsReducer,
         showCart: miniCartReducer,

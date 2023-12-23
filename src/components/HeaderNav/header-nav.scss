@@ -145,6 +145,7 @@
 
   &__item {
     display: block;
+    cursor: pointer;
 
     &.iscart {
       &:hover .iscart-mini {
