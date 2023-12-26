@@ -289,13 +289,23 @@
 
   &__brand {
     margin: 10px 0;
+    max-width: 200px;
+    display: flex;
+    align-items: center;
   }
 
   &__brand-title {
-    min-width: 100px;
+    min-width: 200px;
     display: inline-flex;
     font-weight: var(--fw7);
     text-transform: uppercase;
+  }
+
+  &__brand-name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
   }
 
   &__desc {

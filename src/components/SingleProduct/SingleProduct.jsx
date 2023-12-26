@@ -16,6 +16,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import "./single-product.scss";
+import CopyLinkButton from "../../utils/copyLinkButton";
 
 const formatNumber = (number) => {
     if (number >= 1000) {
@@ -353,7 +354,17 @@ const SingleProduct = ({product}) => {
                                                                     <span
                                                                         className="description__brand-title">Brands</span>
                                                                     <span
-                                                                        className="description__brand-name">{product?.brand?.name}</span>
+                                                                        className="description__brand-name">{product?.brand?.name}
+                                                                    </span>
+                                                                </li>
+                                                                <li className="description__brand">
+                                                                    <span className="description__brand-title">
+                                                                        Vendor code
+                                                                    </span>
+                                                                    <span className="description__brand-name">
+                                                                        {product?.vendorCode}
+                                                                        <CopyLinkButton linkToCopy={product?.vendorCode} />
+                                                                    </span>
                                                                 </li>
                                                                 {
                                                                     product?.anotherNewField ? (

@@ -233,6 +233,16 @@ input[disabled] {
   font-size: 0.8em;
 }
 
+.copy-icon {
+  font-size: 20px;
+  transition: ease .1s;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}
+
 @media screen and (min-width: 993px) {
   .container {
     padding: 0 2rem;

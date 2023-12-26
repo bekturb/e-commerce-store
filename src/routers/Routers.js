@@ -70,7 +70,7 @@ const Routers = () => {
                 <Route path="/catalog/:productId" element={<SinglePage/>}/>
                 <Route path="/brand/:brandId" element={<SingleBrand/>}/>
                 <Route path="/catalog/featured-products" element={<FeaturedProducts/>}/>
-                <Route path="/catalog/0/search/:searchProduct" element={<SearchResult/>}/>
+                <Route path="/catalog/search/:searchProduct" element={<SearchResult/>}/>
             </Routes>
         </>
     )

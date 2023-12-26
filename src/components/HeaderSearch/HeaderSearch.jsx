@@ -8,7 +8,7 @@ const HeaderSearch = () => {
 
     const handleSearchChange = () => {
         if (searchTerm?.trim() !== "") {
-            navigate(`/catalog/0/search/${searchTerm}`);
+            navigate(`/catalog/search/${searchTerm}`);
         }
     };
 
