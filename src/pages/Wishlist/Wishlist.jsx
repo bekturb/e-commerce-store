@@ -21,7 +21,7 @@ const Wishlist = () => {
                         <NotFound error={wishlistError}/>
                     </div>
                 ) : wishListData?.length > 0 ? (
-                    <DefiniteProductsCart filteredProducts={wishListData} pageName="Wishlist"/>
+                    <DefiniteProductsCart filteredProducts={wishListData} pageName="Wishlist" locationPosition={true}/>
                 ) : <div>
                     No data
                 </div>

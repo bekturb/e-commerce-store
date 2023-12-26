@@ -22,7 +22,7 @@ const FeaturedProducts = () => {
                         <NotFound error={productsErr}/>
                     </div>
                 ) : sortedProducts?.length > 0 ? (
-                    <DefiniteProductsCart filteredProducts={sortedProducts} pageName="Featured-Products"/>
+                    <DefiniteProductsCart filteredProducts={sortedProducts} pageName="Featured-Products" locationPosition={true}/>
                 ) : <div>
                     No data
                 </div>

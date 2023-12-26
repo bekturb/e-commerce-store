@@ -16,7 +16,7 @@ const SubSubCategory = ({category}) => {
     }, [products, category]);
 
     return (
-        <DefiniteProductsCart filteredProducts={filteredProducts} pageName={category?.name}/>
+        <DefiniteProductsCart filteredProducts={filteredProducts} pageName={category?.name} locationPosition={true}/>
     );
 };
 

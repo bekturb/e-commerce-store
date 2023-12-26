@@ -1,11 +1,11 @@
 import {configureStore} from "@reduxjs/toolkit";
 import menuReducer from "../features/menuSlice";
-import searchReducer from "../features/searchProductsSlice";
 import compareProductsReducer from "../features/compareProducts";
 import miniCartReducer from "../features/miniCartSlice";
 import filterReducer from "../features/productFilterSlice";
 import cartReducer from "../features/cartSlice";
 import {registerReducer} from "../features/registerSlice";
+import {searchProductsReducer} from "../features/searchProductsSlice";
 import {stripeReducer} from "../features/stripeApiSlice";
 import {allReviewsReducer} from "../features/getAllReviewSlice";
 import {otpReducer} from "../features/otpSlice";
@@ -29,12 +29,12 @@ import {couponReducer} from "../features/couponSlice";
 const store = configureStore({
     reducer: {
         showMenu: menuReducer,
-        searchProducts: searchReducer,
         filterProducts: filterReducer,
         compareProducts: compareProductsReducer,
         showCart: miniCartReducer,
         cart: cartReducer,
         register: registerReducer,
+        searchProducts: searchProductsReducer,
         allReviewsReducer,
         otp: otpReducer,
         auth: authReducer,

@@ -18,6 +18,7 @@ import ProtectedRoute from "../routes/ProtectedRoute";
 import Success from "../pages/Success/Success";
 import Wishlist from "../pages/Wishlist/Wishlist";
 import FeaturedProducts from "../pages/FeaturedProducts/FeaturedProducts";
+import SearchResult from "../pages/SearchResult/SearchResult";
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -55,7 +56,7 @@ const Routers = () => {
                         <Success/>
                     </ProtectedRoute>
                 }/>
-                <Route path="/wishlist" element={
+                <Route path="/catalog/Wishlist" element={
                     <ProtectedRoute>
                         <Wishlist/>
                     </ProtectedRoute>
@@ -69,6 +70,7 @@ const Routers = () => {
                 <Route path="/catalog/:productId" element={<SinglePage/>}/>
                 <Route path="/brand/:brandId" element={<SingleBrand/>}/>
                 <Route path="/catalog/featured-products" element={<FeaturedProducts/>}/>
+                <Route path="/catalog/0/search/:searchProduct" element={<SearchResult/>}/>
             </Routes>
         </>
     )

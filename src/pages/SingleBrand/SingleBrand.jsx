@@ -42,7 +42,7 @@ const SingleBrand = () => {
                         <NotFound error={singleBrandError}/>
                     </div>
                 ) : singleBrand ? (
-                    <DefiniteProductsCart filteredProducts={filteredProducts} pageName={singleBrand?.name}/>
+                    <DefiniteProductsCart filteredProducts={filteredProducts} pageName={singleBrand?.name} locationPosition={true}/>
                 ) : null
             }
         </Helmet>

@@ -21,7 +21,7 @@ const HeaderTop = () => {
                                 <Link className="top__link" to="/catalog/featured-products">Featured Products</Link>
                             </li>
                             <li className="top__item">
-                                <Link className="top__link" to="/wishlist">Wishlist</Link>
+                                <Link className="top__link" to="/catalog/Wishlist">Wishlist</Link>
                             </li>
                         </ul>
                     </div>

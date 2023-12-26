@@ -1,20 +1,14 @@
 import React, {useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {searchActions} from "../../features/searchProductsSlice";
 
 const HeaderSearch = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const {query} = useSelector(state => state.searchProducts);
 
     const handleSearchChange = () => {
         if (searchTerm?.trim() !== "") {
-            dispatch(searchActions.saveSearchQuery(searchTerm));
-            navigate("/search-results");
+            navigate(`/catalog/0/search/${searchTerm}`);
         }
     };
 

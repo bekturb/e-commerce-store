@@ -163,7 +163,7 @@ const HeaderNav = () => {
                             <div className="right nav__right">
                                 <ul className="package">
                                     <li className="package__item mobile-hide">
-                                        <Link to="/wishlist" className="package__link">
+                                        <Link to="/catalog/Wishlist" className="package__link">
                                         <span className="package__icon icon-lg">
                                             <i className="ri-heart-line"></i>
                                         </span>

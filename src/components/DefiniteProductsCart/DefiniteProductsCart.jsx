@@ -16,7 +16,7 @@ import NotFound from "../NotFound/NotFound";
 import ProductsCart from "../ProductsCart/ProductsCart";
 import Pagination from "../Pagination/Pagination";
 
-const DefiniteProductsCart = ({filteredProducts, pageName}) => {
+const DefiniteProductsCart = ({filteredProducts, pageName, locationPosition}) => {
     const [showMobileFilter, setShowMobileFilter] = useState(false);
     const [showMobileSort, setShowMobileSort] = useState(false);
     const [filteredColors, setFilteredColors] = useState([]);
@@ -115,7 +115,11 @@ const DefiniteProductsCart = ({filteredProducts, pageName}) => {
                     <div className="subcat__wrapper">
                         <div className="subcat__column">
                             <div className="subcat__head">
-                                <Breadcrumb location={location}/>
+                                {
+                                    locationPosition && (
+                                        <Breadcrumb location={location}/>
+                                    )
+                                }
                                 <SecTop title={pageName}/>
                                 {
                                     categoryProducts.length > 0 && (
