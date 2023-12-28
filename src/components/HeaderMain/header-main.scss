@@ -148,6 +148,10 @@
     }
   }
 
+  &__input-box{
+    position: relative;
+  }
+
   &__input {
     line-height: 3.25em;
     padding: 0 7em 0 4.5em;
@@ -157,6 +161,61 @@
     border-radius: 7px;
     font-size: 0.9em;
     font-weight: var(--fw3);
+  }
+
+  &__photo {
+    position: absolute;
+    color: var(--dark-color);
+    height: var(--percent100);
+    font-size: 1.3em;
+    top: 8px;
+    bottom: 0;
+    right: 120px;
+    transition: ease-in .1s;
+    cursor: pointer;
+    &:hover {
+      color: var(--primary-color);
+    }
+  }
+
+  &__images-box{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__image-content {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    top: 2px;
+    left: 60px;
+    width: 205px;
+    height: 90%;
+    background: var(--border-color);
+    border-radius: 5px;
+  }
+
+  &__image{
+    width: 40px;
+    height: 100%;
+    margin-left: 5px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  &__image-text {
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  &__close-icon{
+    margin-left: 15px;
   }
 
   &__icon {
