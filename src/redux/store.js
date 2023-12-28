@@ -4,6 +4,7 @@ import compareProductsReducer from "../features/compareProducts";
 import miniCartReducer from "../features/miniCartSlice";
 import filterReducer from "../features/productFilterSlice";
 import cartReducer from "../features/cartSlice";
+import searchByImageReducer from "../features/searchByImageSlice";
 import {registerReducer} from "../features/registerSlice";
 import {searchProductsReducer} from "../features/searchProductsSlice";
 import {stripeReducer} from "../features/stripeApiSlice";
@@ -33,6 +34,7 @@ const store = configureStore({
         compareProducts: compareProductsReducer,
         showCart: miniCartReducer,
         cart: cartReducer,
+        searchByImageReducer,
         register: registerReducer,
         searchProducts: searchProductsReducer,
         allReviewsReducer,

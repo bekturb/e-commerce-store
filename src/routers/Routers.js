@@ -19,6 +19,7 @@ import Success from "../pages/Success/Success";
 import Wishlist from "../pages/Wishlist/Wishlist";
 import FeaturedProducts from "../pages/FeaturedProducts/FeaturedProducts";
 import SearchResult from "../pages/SearchResult/SearchResult";
+import SearchByImageResult from "../pages/SearchByImageResult/SearchByImageResult";
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -71,6 +72,7 @@ const Routers = () => {
                 <Route path="/brand/:brandId" element={<SingleBrand/>}/>
                 <Route path="/catalog/featured-products" element={<FeaturedProducts/>}/>
                 <Route path="/catalog/search/:searchProduct" element={<SearchResult/>}/>
+                <Route path="/catalog/search-by-image/:image" element={<SearchByImageResult/>}/>
             </Routes>
         </>
     )

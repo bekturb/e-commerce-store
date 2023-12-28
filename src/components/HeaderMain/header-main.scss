@@ -161,6 +161,11 @@
     border-radius: 7px;
     font-size: 0.9em;
     font-weight: var(--fw3);
+    z-index: 1111;
+  }
+
+  &__input-photo{
+    display: none;
   }
 
   &__photo {
@@ -170,7 +175,7 @@
     font-size: 1.3em;
     top: 8px;
     bottom: 0;
-    right: 120px;
+    right: 130px;
     transition: ease-in .1s;
     cursor: pointer;
     &:hover {
@@ -216,6 +221,7 @@
 
   &__close-icon{
     margin-left: 15px;
+    cursor: pointer;
   }
 
   &__icon {

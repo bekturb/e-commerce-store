@@ -14,6 +14,21 @@ export const fetchSearchProducts = createAsyncThunk(
     }
 );
 
+export const fetchSearchProductsByImage = createAsyncThunk(
+    "get/searchProductsByImage",
+    async (image, { rejectWithValue }) => {
+
+        console.log(image, 'sjsjsj')
+
+        try {
+            const { data } = await axios.post(`/api/products/search/search-by-image`, image);
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response);
+        }
+    }
+);
+
 const initialState = {
     data: {},
     loading: false,
@@ -36,6 +51,21 @@ const searchProductsSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchSearchProducts.rejected, (state, action) => {
+                state.loading = false;
+                state.data = {};
+                state.error = action.payload;
+            })
+            .addCase(fetchSearchProductsByImage.pending, (state) => {
+                state.loading = true;
+                state.data = {};
+                state.error = null;
+            })
+            .addCase(fetchSearchProductsByImage.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = {...action.payload};
+                state.error = null;
+            })
+            .addCase(fetchSearchProductsByImage.rejected, (state, action) => {
                 state.loading = false;
                 state.data = {};
                 state.error = action.payload;
