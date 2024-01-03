@@ -17,6 +17,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import "./single-product.scss";
 import CopyLinkButton from "../../utils/copyLinkButton";
+import ShareByNetworks from "../ShareByNetworks/ShareByNetworks";
 
 const formatNumber = (number) => {
     if (number >= 1000) {
@@ -32,7 +33,8 @@ const SingleProduct = ({product}) => {
     const [cartProductQty, setCartProductQty] = useState(1);
     const [isProductInCart, setIsProductInCart] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
-    const  remainingTime  = useCalculateSaleTime(product)
+    const [showShare, setShowShare] = useState(false)
+    const  remainingTime  = useCalculateSaleTime(product);
 
     const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
     const {data: cartProducts} = useSelector(state => state.cart);
@@ -113,6 +115,7 @@ const SingleProduct = ({product}) => {
 
     return (
         <>
+            <div className={showShare ? "overlay show" : "overlay"}></div>
             <div className="single-product">
                 <div className="container">
                     <div className="single-product__wrapper">
@@ -332,12 +335,15 @@ const SingleProduct = ({product}) => {
                                                                 </button>
                                                             </li>
                                                             <li className="wish-share__link-list">
-                                                                <a className="wish-share__link" href="">
+                                                                <button onClick={() => setShowShare(true)} className="wish-share__link">
                                                                         <span className="icon-lg">
                                                                             <i className="ri-share-line"></i>
                                                                         </span>
                                                                     <span>Share</span>
-                                                                </a>
+                                                                </button>
+                                                                {
+                                                                    showShare && <ShareByNetworks setShowShare={setShowShare}/>
+                                                                }
                                                             </li>
                                                         </ul>
                                                     </div>

@@ -97,13 +97,6 @@ const AsideNavigation = ({categoryId, toggleSidebar}) => {
                         </li>
                     ))
                 }
-                {/*<li className="navigations__item">*/}
-                {/*    <a className="navigations__link" href="#">Sports*/}
-                {/*        <div className="fly-item navigations__fly-item">*/}
-                {/*            <span className="fly-item__span">New!</span>*/}
-                {/*        </div>*/}
-                {/*    </a>*/}
-                {/*</li>*/}
             </ul>
         </nav>
     );

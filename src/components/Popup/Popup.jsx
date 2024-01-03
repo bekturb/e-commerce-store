@@ -1,12 +1,14 @@
 import React from 'react';
 import {sortData} from "../../customData/sortData";
 import "./popup.scss"
+import {filterProductsActions} from "../../features/productFilterSlice";
+import {useDispatch, useSelector} from "react-redux";
 
-const Popup = ({show, setShow, setSortedItem, sortedItem}) => {
+const Popup = ({show, setShow}) => {
 
-    const handleListItem = (value) => {
-        setSortedItem(value)
-    }
+    const {productSort} = useSelector(state => state.filterProducts);
+
+    const dispatch = useDispatch();
 
     return (
         <div className={`popup popup-sorting ${show && " slideUp"}`}>
@@ -15,7 +17,7 @@ const Popup = ({show, setShow, setSortedItem, sortedItem}) => {
                     <ul className="popup-sorting__list">
                         {
                             sortData.map((el,idx) => (
-                                <li key={idx} onClick={() => handleListItem(el.name)} className={`popup-sorting__item ${sortedItem === el.name && "popup-sorting__item-bg"}`}>
+                                <li key={idx} onClick={() => dispatch(filterProductsActions.setProductSort(el.name))} className={`popup-sorting__item ${productSort === el.name && "popup-sorting__item-bg"}`}>
                                     {el.name}
                                 </li>
                             ))

@@ -9,8 +9,6 @@ const HeaderSearch = () => {
 
     const {searchImage} = useSelector(state => state.searchByImageReducer)
 
-    console.log(searchImage, "ss")
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
 

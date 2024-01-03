@@ -1,0 +1,40 @@
+.share {
+  position: fixed;
+  top: 40%;
+  left: 30%;
+  padding: 20px 40px;
+  background: var(--secondary-color);
+  border-radius: 10px;
+  z-index: 22222;
+  &__box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__close {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 20px;
+    color: var(--white-color);
+    cursor: pointer;
+    transition: ease-in .1s;
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .share {
+    width: 100%;
+    bottom: 0;
+    top: auto;
+    left: 0;
+
+    &__social {
+      margin: 0 auto;
+    }
+  }
+}

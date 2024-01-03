@@ -7,7 +7,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchSingleProduct} from "../../features/getProduct";
 import Loader from "../../components/Loader/Loader";
 import NotFound from "../../components/NotFound/NotFound";
-import "../../styles/single-page.scss";
 
 const SinglePage = () => {
 

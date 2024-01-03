@@ -13,12 +13,12 @@ const FooterInfo = () => {
                             </a>
                         </div>
                         <div className="footer-info__socials">
-                            <ul className="flexitem">
-                                <li className="footer-info__item"><a className="footer-info__link" href=""><i className="ri-twitter-line"></i></a></li>
-                                <li className="footer-info__item"><a className="footer-info__link" href=""><i className="ri-facebook-line"></i></a></li>
-                                <li className="footer-info__item"><a className="footer-info__link" href=""><i className="ri-instagram-line"></i></a></li>
-                                <li className="footer-info__item"><a className="footer-info__link" href=""><i className="ri-linkedin-line"></i></a></li>
-                                <li className="footer-info__item"><a className="footer-info__link" href=""><i className="ri-youtube-line"></i></a></li>
+                            <ul className="social flexitem">
+                                <li className="social__item"><a className="social__link" href=""><i className="ri-twitter-line"></i></a></li>
+                                <li className="social__item"><a className="social__link" href=""><i className="ri-facebook-line"></i></a></li>
+                                <li className="social__item"><a className="social__link" href=""><i className="ri-instagram-line"></i></a></li>
+                                <li className="social__item"><a className="social__link" href=""><i className="ri-linkedin-line"></i></a></li>
+                                <li className="social__item"><a className="social__link" href=""><i className="ri-youtube-line"></i></a></li>
                             </ul>
                         </div>
                     </div>
