@@ -18,8 +18,6 @@ export const fetchSearchProductsByImage = createAsyncThunk(
     "get/searchProductsByImage",
     async (image, { rejectWithValue }) => {
 
-        console.log(image, 'sjsjsj')
-
         try {
             const { data } = await axios.post(`/api/products/search/search-by-image`, image);
             return data;
