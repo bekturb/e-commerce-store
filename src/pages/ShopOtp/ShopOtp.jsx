@@ -1,23 +1,22 @@
 import React, {useState} from 'react';
-import Helmet from "../../layout/Helmet";
-import {Navigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import {Navigate, useParams} from "react-router-dom";
+import {toast} from "react-hot-toast";
+import {resendShopOtp} from "../../features/resendOtpSlice";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
-import {Toaster, toast} from "react-hot-toast";
-import {fetchAuthMe} from "../../features/authMeSlice";
-import {resendOtpNumber} from "../../features/resendOtpSlice";
-import {verifyEmail} from "../../features/otpSlice";
+import Helmet from "../../layout/Helmet";
+import {verifyShopEmail} from "../../features/shopOtpSlice";
+import {fetchMyShop} from "../../features/myShopSlice";
 
-const Otp = () => {
-
+const ShopOtp = () => {
     const [formData, setFormData] = useState({
         otp: ""
     });
     const [formErrors, setFormErrors] = useState({});
 
-    const {loading, error} = useSelector((state) => state.otp);
-    const {isAuthenticated} = useSelector(state => state.authMe);
+    const {loading, error} = useSelector((state) => state.shopOtp);
+    const {isAuthenticated} = useSelector(state => state.myShop);
     const {id: userId} = useParams();
 
     const dispatch = useDispatch();
@@ -32,12 +31,12 @@ const Otp = () => {
         const errors = validateForm(formData);
         setFormErrors(errors);
         if (Object.keys(errors).length === 0) {
-            const otp = await dispatch(verifyEmail({...formData, userId}))
+            const otp = await dispatch(verifyShopEmail({...formData, userId}))
             if (otp?.payload?.token) {
                 toast.success("You verified your email successfully");
                 setTimeout(() => {
-                    window.localStorage.setItem("token", otp?.payload?.token)
-                    dispatch(fetchAuthMe());
+                    window.localStorage.setItem("seller-token", otp?.payload?.token)
+                    dispatch(fetchMyShop());
                 }, 1000)
             }
         }
@@ -54,7 +53,7 @@ const Otp = () => {
     };
 
     const resendOtp = async () => {
-        const resendData = await dispatch(resendOtpNumber({userId}));
+        const resendData = await dispatch(resendShopOtp({userId}));
 
         console.log(resendData)
     }
@@ -71,20 +70,8 @@ const Otp = () => {
         toast.loading("Please wait, Verifying...");
 
     }
-
     return (
-        <Helmet title="OTP">
-            <Toaster
-                position="top-center"
-                reverseOrder={false}
-                toastOptions={{
-                    duration: 2000,
-                    style: {
-                        height: "40px"
-                    }
-                }}
-            />
-
+        <Helmet title="SHOP-OTP">
             <div className="register">
                 <div className="container">
                     <div className="register__wrapper">
@@ -143,4 +130,4 @@ const Otp = () => {
     );
 };
 
-export default Otp;
+export default ShopOtp;

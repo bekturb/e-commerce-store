@@ -1,11 +1,23 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "../utils/axios-utils";
 
 export const resendOtpNumber = createAsyncThunk(
     "auth/resendOtp",
-    async (params, { rejectWithValue }) => {
+    async (params, {rejectWithValue}) => {
         try {
-            const { data } = await axios.get(`/api/users/${params.userId}/resend-otp`);
+            const {data} = await axios.get(`/api/users/${params.userId}/resend-otp`);
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const resendShopOtp = createAsyncThunk(
+    "auth/resendShopOtp",
+    async (params, {rejectWithValue}) => {
+        try {
+            const {data} = await axios.get(`/api/shops/${params.userId}/resend-otp`);
             return data;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -38,7 +50,22 @@ const resendOtpSlice = createSlice({
                 state.loading = false;
                 state.data = null;
                 state.error = action.payload;
-            });
+            })
+            .addCase(resendShopOtp.pending, (state) => {
+                state.loading = true;
+                state.data = null;
+                state.error = null;
+            })
+            .addCase(resendShopOtp.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload;
+                state.error = null;
+            })
+            .addCase(resendShopOtp.rejected, (state, action) => {
+                state.loading = false;
+                state.data = null;
+                state.error = action.payload;
+            })
     },
 });
 export const resendOtpReducer = resendOtpSlice.reducer;

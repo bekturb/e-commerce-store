@@ -7,6 +7,7 @@ import "./header-top.scss";
 const HeaderTop = () => {
 
     const {data, isAuthenticated} = useSelector(state => state.authMe);
+    const {data: sellerData, isAuthenticated: isSeller} = useSelector(state => state.myShop);
 
     return (
         <div className="top">
@@ -50,9 +51,17 @@ const HeaderTop = () => {
                                     </div>
                                 </li>
                             }
-                            <li className="top__item">
-                                <Link className="top__link" to="/">Become Seller</Link>
-                            </li>
+                            {
+                                isSeller === true ? (
+                                        <li className="top__item">
+                                            <Link className="top__link" to="/shop/dashboard">You're Seller</Link>
+                                        </li>
+                                ) : (
+                                    <li className="top__item">
+                                        <Link className="top__link" to="/shop/login">Become Seller</Link>
+                                    </li>
+                                )
+                            }
                             <li className="currency top__item">
                                 <Link className="top__link" to="/">
                                     USD

@@ -1,21 +1,22 @@
 import React, {useState} from 'react';
-import Helmet from "../../layout/Helmet";
-import toast from "react-hot-toast";
-import {Link, Navigate, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchAuth} from "../../features/authSlice";
+import {Link, Navigate, useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
-import {fetchAuthMe} from "../../features/authMeSlice";
+import Helmet from "../../layout/Helmet";
+import {fetchAuthShop} from "../../features/authShopSlice";
+import {fetchMyShop} from "../../features/myShopSlice";
 
-const Login = () => {
+const ShopLogin = () => {
     const [formData, setFormData] = useState({
-        email: "+996220643466",
+        email: "bektursun0599@icloud.com",
         password: "Bekakyrgyz@100599",
     });
+
     const [formErrors, setFormErrors] = useState({});
-    const {loading, error,} = useSelector(state => state.auth);
-    const {isAuthenticated} = useSelector(state => state.authMe);
+    const {loading, error,} = useSelector(state => state.authShop);
+    const {isAuthenticated} = useSelector(state => state.myShop);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -30,15 +31,15 @@ const Login = () => {
         const errors = validateForm(formData);
         setFormErrors(errors);
         if (Object.keys(errors).length === 0) {
-            const data = await dispatch(fetchAuth(formData));
+            const data = await dispatch(fetchAuthShop(formData));
             if (data.payload.hasOwnProperty("token")) {
                 toast.success("You verified your email successfully");
                 setTimeout(() => {
-                    window.localStorage.setItem("token", data?.payload?.token);
-                    dispatch(fetchAuthMe());
+                    window.localStorage.setItem("seller-token", data?.payload?.token);
+                    dispatch(fetchMyShop());
                 }, 1000)
-            } else if(data?.payload?.hasOwnProperty("user")) {
-                return navigate(`/${data?.payload?.user?._id}/otp`);
+            } else if(data?.payload?.hasOwnProperty("shop")) {
+                return navigate(`/${data?.payload?.shop?._id}/shop-otp`);
             }
         }
     };
@@ -137,8 +138,8 @@ const Login = () => {
                                 </div>
 
                                 <div className="form__exist">
-                                    <span className='form__question'>Not a Member? <Link className='form__link'
-                                                                                         to="/register">Register Now</Link></span>
+                                    <span className='form__question'>Not a Member?
+                                        <Link className='form__link' to="/shop/register">Register Now</Link></span>
                                 </div>
                             </form>
                         </div>
@@ -149,4 +150,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default ShopLogin;

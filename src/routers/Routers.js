@@ -20,6 +20,10 @@ import Wishlist from "../pages/Wishlist/Wishlist";
 import FeaturedProducts from "../pages/FeaturedProducts/FeaturedProducts";
 import SearchResult from "../pages/SearchResult/SearchResult";
 import SearchByImageResult from "../pages/SearchByImageResult/SearchByImageResult";
+import BannerProducts from "../pages/bannerProducts/BannerProducts";
+import ShopRegister from "../pages/ShopRegister/ShopRegister";
+import ShopOtp from "../pages/ShopOtp";
+import ShopLogin from "../pages/ShopLogin";
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -63,11 +67,15 @@ const Routers = () => {
                     </ProtectedRoute>
                 }/>
                 <Route path="/:id/otp" element={<Otp/>}/>
+                <Route path="/:id/shop-otp" element={<ShopOtp/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
+                <Route path="/shop/register" element={<ShopRegister/>}/>
+                <Route path="/shop/login" element={<ShopLogin/>}/>
                 <Route path="/category/:slug" element={<CategoryPage/>}/>
                 <Route path="/category/:mainCategorySlug/:slug" element={<CategoryPage/>}/>
                 <Route path="/category/:mainCategorySlug/:subCategorySlug/:slug" element={<CategoryPage/>}/>
+                <Route path="/bannerClicked" element={<BannerProducts/>}/>
                 <Route path="/catalog/:productId" element={<SinglePage/>}/>
                 <Route path="/brand/:brandId" element={<SingleBrand/>}/>
                 <Route path="/catalog/featured-products" element={<FeaturedProducts/>}/>

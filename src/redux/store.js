@@ -6,12 +6,16 @@ import filterReducer from "../features/productFilterSlice";
 import cartReducer from "../features/cartSlice";
 import searchByImageReducer from "../features/searchByImageSlice";
 import {registerReducer} from "../features/registerSlice";
+import {shopRegisterReducer} from "../features/shopRegisterSlice";
 import {searchProductsReducer} from "../features/searchProductsSlice";
 import {stripeReducer} from "../features/stripeApiSlice";
 import {allReviewsReducer} from "../features/getAllReviewSlice";
 import {otpReducer} from "../features/otpSlice";
+import {shopOtpReducer} from "../features/shopOtpSlice";
 import {authReducer} from "../features/authSlice";
+import {authShopReducer} from "../features/authShopSlice";
 import {authMeReducer} from "../features/authMeSlice";
+import {myShopReducer} from "../features/myShopSlice";
 import {categoriesReducer} from "../features/categoriesSlice";
 import {pagesReducer} from "../features/pageSlice";
 import {resendOtpReducer} from "../features/resendOtpSlice";
@@ -36,11 +40,15 @@ const store = configureStore({
         cart: cartReducer,
         searchByImageReducer,
         register: registerReducer,
+        shopRegister: shopRegisterReducer,
         searchProducts: searchProductsReducer,
+        myShop: myShopReducer,
         allReviewsReducer,
         otp: otpReducer,
+        shopOtp: shopOtpReducer,
         auth: authReducer,
         authMe: authMeReducer,
+        authShop: authShopReducer,
         categories: categoriesReducer,
         pages: pagesReducer,
         resendOtp: resendOtpReducer,
