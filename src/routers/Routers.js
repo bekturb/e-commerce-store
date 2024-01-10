@@ -24,6 +24,8 @@ import BannerProducts from "../pages/bannerProducts/BannerProducts";
 import ShopRegister from "../pages/ShopRegister/ShopRegister";
 import ShopOtp from "../pages/ShopOtp";
 import ShopLogin from "../pages/ShopLogin";
+import ProtectedSellerRoute from "../routes/ProtectedSellerRoute";
+import ShopDashboard from "../pages/ShopDashboard";
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -35,37 +37,9 @@ const Routers = () => {
 
     return (
         <>
-            {
-                stripeData?.stripeApiKey && (
-                    <Elements stripe={loadStripe(stripeData?.stripeApiKey)}>
-                        <Routes>
-                            <Route path="/payment" element={
-                                <ProtectedRoute>
-                                    <Payment/>
-                                </ProtectedRoute>
-                            }/>
-                        </Routes>
-                    </Elements>
-                )
-            }
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/cart-page" element={<Cart/>}/>
-                <Route path="/checkout" element={
-                    <ProtectedRoute>
-                        <Checkout/>
-                    </ProtectedRoute>
-                }/>
-                <Route path="/order/success" element={
-                    <ProtectedRoute>
-                        <Success/>
-                    </ProtectedRoute>
-                }/>
-                <Route path="/catalog/Wishlist" element={
-                    <ProtectedRoute>
-                        <Wishlist/>
-                    </ProtectedRoute>
-                }/>
                 <Route path="/:id/otp" element={<Otp/>}/>
                 <Route path="/:id/shop-otp" element={<ShopOtp/>}/>
                 <Route path="/login" element={<Login/>}/>
@@ -81,7 +55,40 @@ const Routers = () => {
                 <Route path="/catalog/featured-products" element={<FeaturedProducts/>}/>
                 <Route path="/catalog/search/:searchProduct" element={<SearchResult/>}/>
                 <Route path="/catalog/search-by-image/:image" element={<SearchByImageResult/>}/>
+                <Route path="/checkout" element={
+                    <ProtectedRoute>
+                        <Checkout/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/order/success" element={
+                    <ProtectedRoute>
+                        <Success/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/catalog/Wishlist" element={
+                    <ProtectedRoute>
+                        <Wishlist/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/shop/dashboard" element={
+                    <ProtectedSellerRoute>
+                        <ShopDashboard/>
+                    </ProtectedSellerRoute>
+                }/>
             </Routes>
+            {
+                stripeData?.stripeApiKey && (
+                    <Elements stripe={loadStripe(stripeData?.stripeApiKey)}>
+                        <Routes>
+                            <Route path="/payment" element={
+                                <ProtectedRoute>
+                                    <Payment/>
+                                </ProtectedRoute>
+                            }/>
+                        </Routes>
+                    </Elements>
+                )
+            }
         </>
     )
 };

@@ -7,7 +7,7 @@ import "./header-top.scss";
 const HeaderTop = () => {
 
     const {data, isAuthenticated} = useSelector(state => state.authMe);
-    const {data: sellerData, isAuthenticated: isSeller} = useSelector(state => state.myShop);
+    const {isAuthenticated: isSeller} = useSelector(state => state.myShop);
 
     return (
         <div className="top">

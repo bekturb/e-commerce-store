@@ -1,0 +1,12 @@
+.header-dashboard {
+  width: 100%;
+  &__wrapper{
+    padding: 20px 0;
+  }
+
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
