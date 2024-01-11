@@ -1,18 +1,20 @@
 import React from 'react';
-import Helmet from "../../layout/Helmet";
 import HeaderDashboard from "../../components/Dashboard/HeaderDashboard";
 import SellerSidebar from "../../components/Seller/SellerSidebar/SellerSidebar";
-import "./shop-dashboard.scss"
+import Helmet from "../../layout/Helmet";
+import SellerAllProducts from "../../components/Seller/SellerProducts/SellerAllProducts";
 
-const ShopDashboard = () => {
+const ShopAllProducts = () => {
     return (
         <Helmet title="Seller-Dashboard">
             <HeaderDashboard/>
             <div className="dashboard">
                 <div className="dashboard__wrapper">
-                    <SellerSidebar  active={1}/>
-                    <div>
-                        Home
+                    <div className="dashboard__sidebar">
+                        <SellerSidebar active={2}/>
+                    </div>
+                    <div className="dashboard__container">
+                        <SellerAllProducts/>
                     </div>
                 </div>
             </div>
@@ -20,4 +22,4 @@ const ShopDashboard = () => {
     );
 };
 
-export default ShopDashboard;
+export default ShopAllProducts;

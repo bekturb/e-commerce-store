@@ -17,7 +17,18 @@ const Layout = () => {
         window.scrollTo(0, 0);
     }, [pathname]);
 
-    const routesWithoutHeaderFooter = ['/login', '/register', '/:id/otp', '/shop/register', '/shop/login', '/:id/shop-otp', '/shop/dashboard'];
+    const routesWithoutHeaderFooter = [
+        '/login',
+        '/register',
+        '/:id/otp',
+        '/shop/register',
+        '/shop/login',
+        '/:id/shop-otp',
+        '/shop/dashboard',
+        '/shop/all-products',
+        "/shop/all-orders",
+
+    ];
     const shouldRenderHeaderFooter = !routesWithoutHeaderFooter.includes(pathname);
 
     return (

@@ -20,12 +20,13 @@ import Wishlist from "../pages/Wishlist/Wishlist";
 import FeaturedProducts from "../pages/FeaturedProducts/FeaturedProducts";
 import SearchResult from "../pages/SearchResult/SearchResult";
 import SearchByImageResult from "../pages/SearchByImageResult/SearchByImageResult";
-import BannerProducts from "../pages/bannerProducts/BannerProducts";
+import BannerProducts from "../pages/BannerProducts/BannerProducts";
 import ShopRegister from "../pages/ShopRegister/ShopRegister";
 import ShopOtp from "../pages/ShopOtp";
 import ShopLogin from "../pages/ShopLogin";
 import ProtectedSellerRoute from "../routes/ProtectedSellerRoute";
 import ShopDashboard from "../pages/ShopDashboard";
+import ShopAllProducts from "../pages/ShopAllProducts";
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -73,6 +74,11 @@ const Routers = () => {
                 <Route path="/shop/dashboard" element={
                     <ProtectedSellerRoute>
                         <ShopDashboard/>
+                    </ProtectedSellerRoute>
+                }/>
+                <Route path="/shop/all-products" element={
+                    <ProtectedSellerRoute>
+                        <ShopAllProducts/>
                     </ProtectedSellerRoute>
                 }/>
             </Routes>
