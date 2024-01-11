@@ -363,6 +363,10 @@
 
     &__form {
       width: 66%;
+
+      &--full {
+        width: 100%;
+      }
     }
 
     &__summary {

@@ -9,12 +9,14 @@ const ShopAllProducts = () => {
         <Helmet title="Seller-Dashboard">
             <HeaderDashboard/>
             <div className="dashboard">
-                <div className="dashboard__wrapper">
-                    <div className="dashboard__sidebar">
-                        <SellerSidebar active={2}/>
-                    </div>
-                    <div className="dashboard__container">
-                        <SellerAllProducts/>
+                <div className="dashboard__container">
+                    <div className="dashboard__wrapper">
+                        <div className="dashboard__sidebar">
+                            <SellerSidebar active={2}/>
+                        </div>
+                        <div className="dashboard__products">
+                            <SellerAllProducts/>
+                        </div>
                     </div>
                 </div>
             </div>
