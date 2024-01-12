@@ -39,8 +39,8 @@ const Layout = () => {
                 <Routers />
             </main>
             {shouldRenderHeaderFooter && <Footer />}
-            <MenuBottom setShowSearchBottom={setShowSearchBottom} />
-            <SearchBottom showSearchBottom={showSearchBottom} setShowSearchBottom={setShowSearchBottom} />
+            {shouldRenderHeaderFooter && <SearchBottom showSearchBottom={showSearchBottom} setShowSearchBottom={setShowSearchBottom} />}
+            {shouldRenderHeaderFooter && <MenuBottom setShowSearchBottom={setShowSearchBottom} />}
             <Overlay />
         </>
     );

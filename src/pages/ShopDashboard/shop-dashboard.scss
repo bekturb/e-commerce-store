@@ -15,11 +15,45 @@
   }
 
   &__sidebar {
-    width: 24%;
+    margin-top: 20px;
+    width: 360px;
   }
 
   &__products {
+    width: 73%;
+    margin-top: 20px;
     padding: 0 20px;
-    width: 76%;
   }
 }
+
+
+@media screen and (max-width: 1200px){
+  .dashboard {
+
+    &__products {
+      width: 70%;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px){
+  .dashboard {
+
+    &__products {
+      width: 65%;
+    }
+  }
+}
+
+@media screen and (max-width: 990px){
+  .dashboard {
+    &__sidebar {
+      width: 0;
+    }
+
+    &__products {
+      width: 100%;
+    }
+  }
+}
+

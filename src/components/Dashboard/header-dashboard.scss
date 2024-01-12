@@ -1,5 +1,6 @@
 .header-dashboard {
   width: 100%;
+  background: var(--light-bg-color);
   &__wrapper{
     padding: 20px 0;
   }
@@ -8,5 +9,28 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  &__circle {
+    top: -15px!important;
+    left: -5px!important;
+    z-index: 1!important;
+
+    &::before {
+      opacity: .4!important;
+    }
+  }
+}
+
+@media screen and (max-width: 768px){
+  .header-dashboard {
+
+    &__wrapper{
+      padding: 0;
+    }
+
+    &__logo {
+      display: none;
+    }
   }
 }

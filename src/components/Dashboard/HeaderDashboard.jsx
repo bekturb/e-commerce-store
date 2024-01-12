@@ -3,18 +3,19 @@ import {Link} from "react-router-dom";
 import Avatar from "../../assets/profile.png";
 import "./header-dashboard.scss"
 
-const HeaderDashboard = () => {
+const HeaderDashboard = ({setOpenSidebar}) => {
     return (
         <div className="header-dashboard">
             <div className="container">
                 <div className="header-dashboard__wrapper">
                     <div className="nav header-dashboard__nav">
-                        <div className="nav__left">
-                            <div className="logo">
-                                <Link to="/" className="logo__link">
-                                    <span className="logo__circle"></span>.Store
-                                </Link>
-                            </div>
+                        <span className="trigger nav__trigger" onClick={() => setOpenSidebar(true)}><span
+                            className="trigger__icon icon-lg ri-menu-2-line"></span>
+                        </span>
+                        <div className="logo header-dashboard__logo">
+                            <Link className="logo__link" to="/">
+                                <span className="logo__circle header-dashboard__circle"></span>.Store
+                            </Link>
                         </div>
                         <div className="nav__right">
                             <ul className="package">
