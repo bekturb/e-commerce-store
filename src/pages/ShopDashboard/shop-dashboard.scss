@@ -48,7 +48,8 @@
 @media screen and (max-width: 990px){
   .dashboard {
     &__sidebar {
-      width: 0;
+      position: fixed;
+      z-index: 1000;
     }
 
     &__products {

@@ -2,8 +2,12 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import Avatar from "../../assets/profile.png";
 import "./header-dashboard.scss"
+import {useSelector} from "react-redux";
 
 const HeaderDashboard = ({setOpenSidebar}) => {
+
+    const {data: myShopData} = useSelector(state => state.myShop);
+
     return (
         <div className="header-dashboard">
             <div className="container">
@@ -69,7 +73,13 @@ const HeaderDashboard = ({setOpenSidebar}) => {
                                 </li>
                                 <li className="package__item iscart">
                                     <div className="account">
-                                        <img className="account__image" src={Avatar} alt=""/>
+                                        {
+                                            myShopData?.avatar ? (
+                                                <img className="account__image" src={myShopData.avatar} alt=""/>
+                                            ) : (
+                                                <img className="account__image" src={Avatar} alt=""/>
+                                            )
+                                        }
                                     </div>
                                 </li>
                             </ul>

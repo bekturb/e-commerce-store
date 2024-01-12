@@ -2,8 +2,11 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import Avatar from "../../../assets/profile.png";
 import "./seller-sidebar.scss";
+import {useSelector} from "react-redux";
 
 const SellerSidebar = ({active, openSidebar, setOpenSidebar}) => {
+
+    const {data: myShopData} = useSelector(state => state.myShop);
 
     return (
         <div className="sidebar">
@@ -92,8 +95,14 @@ const SellerSidebar = ({active, openSidebar, setOpenSidebar}) => {
                         </div>
                     </div>
                     <div className="account">
-                        <img className="account__image" src={Avatar} alt=""/>
-                        <h3 className="account__title">Baimamatov Bektursun</h3>
+                        {
+                            myShopData?.avatar ? (
+                                <img className="account__image" src={myShopData?.avatar} alt=""/>
+                            ) : (
+                                <img className="account__image" src={Avatar} alt=""/>
+                            )
+                        }
+                        <h3 className="account__title">{myShopData?.name}</h3>
                     </div>
                 </div>
             </aside>
