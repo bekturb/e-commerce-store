@@ -1,26 +1,25 @@
 import React, {useState} from 'react';
-import Helmet from "../../layout/Helmet";
 import HeaderDashboard from "../../components/Dashboard/HeaderDashboard";
 import SellerSidebar from "../../components/Seller/SellerSidebar/SellerSidebar";
 import SecTop from "../../components/SecTop/SecTop";
-import "./shop-dashboard.scss"
+import Helmet from "../../layout/Helmet";
+import AddProduct from "../../components/Seller/AddProduct/AddProduct";
 
-const ShopDashboard = () => {
-
+const AddSellerProducts = () => {
     const [openSidebar, setOpenSidebar] = useState(false);
 
     return (
-        <Helmet title="Seller-Dashboard">
+        <Helmet title="Add-Product">
             <HeaderDashboard setOpenSidebar={setOpenSidebar}/>
             <div className="dashboard">
                 <div className="dashboard__container">
                     <div className="dashboard__wrapper">
                         <div className="dashboard__sidebar">
-                            <SellerSidebar active={1} openSidebar={openSidebar} setOpenSidebar={setOpenSidebar}/>
+                            <SellerSidebar active={2} openSidebar={openSidebar} setOpenSidebar={setOpenSidebar}/>
                         </div>
                         <div className="dashboard__products">
-                            <SecTop title="Dashboard"/>
-                            Hello
+                            <SecTop title="Add Product"/>
+                            <AddProduct/>
                         </div>
                     </div>
                 </div>
@@ -29,4 +28,4 @@ const ShopDashboard = () => {
     );
 };
 
-export default ShopDashboard;
+export default AddSellerProducts;

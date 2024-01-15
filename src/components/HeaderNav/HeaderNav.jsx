@@ -64,9 +64,9 @@ const HeaderNav = () => {
                 filteredCategories?.length > 0 && (
                     <div className="container">
                         <div className="nav__inner">
-                            <a onClick={openMenu} className="trigger nav__trigger" href="#"><span
+                            <span onClick={openMenu} className="trigger nav__trigger"><span
                                 className="trigger__icon icon-lg ri-menu-2-line"></span>
-                            </a>
+                            </span>
                             <div className="nav__left">
                                 <div className="logo">
                                     <Link to="/" className="logo__link">

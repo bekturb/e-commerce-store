@@ -1,18 +1,18 @@
-import React from 'react';
-import {Link} from "react-router-dom";
-import Pro from "../../../assets/products/apparel1.jpg"
-import "./seller-products.scss"
-import {useSelector} from "react-redux";
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import SellerProductsCart from "../SellerProductsCart/SellerProductsCart";
+import Loader from "../../Loader/Loader";
+import NotFound from "../../NotFound/NotFound";
+import {fetchProducts} from "../../../features/productsSlice";
+import Pagination from "../../Pagination/Pagination";
+import "./seller-products.scss"
 
-const SellerAllProducts = () => {
+const SellerAllProducts = ({pageItem, filteredProducts}) => {
 
-    const {data: myShopData} = useSelector(state => state.myShop);
-    const {data: products, loading: productsLoad, error:productsErr} = useSelector(state => state.products);
-    const sortedProducts = products ? [...products].filter(el => el.shopId === myShopData?._id) : [];
+    const {loading: productsLoad, error: productsErr} = useSelector(state => state.products);
 
     return (
-        <div className="product-table">
+        <div className="product-table products-table--height">
             <table className="product-table__table">
                 <thead className="product-table__thead">
                 <tr>
@@ -26,11 +26,28 @@ const SellerAllProducts = () => {
                 </tr>
                 </thead>
                 <tbody className="tbody">
-                {
-                    sortedProducts?.map(pro => (
-                        <SellerProductsCart key={pro._id} pro={pro}/>
-                    ))
-                }
+                {productsLoad ? (
+                    <tr>
+                        <td colSpan="7" className="loader-box">
+                            <Loader/>
+                        </td>
+                    </tr>
+                ) : productsErr ? (
+                    <tr>
+                        <td colSpan="7" className="loader-box">
+                            <NotFound error={productsErr}/>
+                        </td>
+                    </tr>
+                ) :
+                    filteredProducts?.length > 0 ? (
+                            filteredProducts?.slice(pageItem.start, pageItem.end).map(pro => (
+                                <SellerProductsCart key={pro._id} pro={pro}/>
+                            ))
+                        ) : (
+                    <tr>
+                        <td colSpan="7">No data</td>
+                    </tr>
+                )}
                 </tbody>
             </table>
         </div>

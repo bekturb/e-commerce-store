@@ -27,7 +27,7 @@ const Layout = () => {
         '/shop/dashboard',
         '/shop/all-products',
         "/shop/all-orders",
-
+        "/shop/add-product",
     ];
     const shouldRenderHeaderFooter = !routesWithoutHeaderFooter.includes(pathname);
 

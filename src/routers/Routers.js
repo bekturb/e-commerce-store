@@ -27,6 +27,7 @@ import ShopLogin from "../pages/ShopLogin";
 import ProtectedSellerRoute from "../routes/ProtectedSellerRoute";
 import ShopDashboard from "../pages/ShopDashboard";
 import ShopAllProducts from "../pages/ShopAllProducts";
+import AddSellerProducts from "../pages/AddSellerProducts";
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -79,6 +80,11 @@ const Routers = () => {
                 <Route path="/shop/all-products" element={
                     <ProtectedSellerRoute>
                         <ShopAllProducts/>
+                    </ProtectedSellerRoute>
+                }/>
+                <Route path="/shop/add-product" element={
+                    <ProtectedSellerRoute>
+                        <AddSellerProducts/>
                     </ProtectedSellerRoute>
                 }/>
             </Routes>
