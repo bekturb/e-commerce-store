@@ -1,10 +1,11 @@
 .add-product {
   width: 100%;
+  height: 100vh;
 
   &__inner {
     background: var(--light-bg-color);
     padding: 50px 50px;
-    min-height: 500px;
+    height: 100%;
   }
 
   &__main-title {
@@ -19,6 +20,7 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    margin-bottom: 20px;
   }
 
   &__input {
@@ -27,6 +29,10 @@
     max-width: 100%!important;
     background: var(--white-color)!important;
     border: 1px solid var(--light-text-color);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, .08)!important;
+    text-indent: 10px;
+    border-radius: 5px;
+    outline: none;
   }
 
   &__title {
@@ -36,24 +42,70 @@
   }
 }
 
-input {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 14px;
-  line-height: 20px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 272px;
-  padding: 5px 30px 7px 12px;
-  border-radius: 8px;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, .08);
+.unique-dropdown{
   position: relative;
-  height: 100%;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  text-indent: 15px;
+  width: 70%;
+
+  &__button {
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    max-width: 100%;
+    background: var(--white-color);
+    border: 1px solid var(--light-text-color);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, .08);
+    text-indent: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    color: var(--light-text-color);
+    cursor: pointer;
+    transition: .1s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:hover {
+      border: .1px solid var(--dark-color);
+    }
+  }
+
+  &__icon {
+    font-size: 20px;
+  }
+
+  &__body {
+    position: absolute;
+    width: 700px;
+    display: flex;
+    gap: 10px;
+    z-index: 1111;
+  }
+
+  &__list {
+    padding: 10px 10px;
+    width: 42%;
+    max-height: 200px;
+    overflow-x: hidden;
+    white-space: nowrap;
+    background: var(--white-color);
+    margin-top: 5px;
+    border-radius: 5px;
+  }
+
+  &__list-item {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    font-size: 17px;
+    font-weight: 400;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--border-color);
+    }
+
+    &--active {
+      background: var(--border-color);
+    }
+  }
 }
