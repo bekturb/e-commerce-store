@@ -29,7 +29,6 @@ const MainCategory = ({
 
     const {data: categories, loading: catsLoading, error: catsErr} = useSelector(state => state.categories);
     const {loading: productsLoad, error: productsErr} = useSelector(state => state.products);
-    const {data: brands, loading: brandLoading, error: brandErr} = useSelector(state => state.brands);
     const {productBrand, productColor, productSort, productMinPrice, productMaxPrice, currentPage, perPage} = useSelector(state => state.filterProducts);
 
     const categoryProducts = useFilteredCategoryProducts({
@@ -42,9 +41,9 @@ const MainCategory = ({
         productMaxPrice
     });
 
-    const brandCounts = useBrandCounts(filteredProducts, brands);
+    const brandCounts = useBrandCounts(filteredProducts);
     const uniqueColors = useProductsColor(filteredProducts);
-
+    
     const handleChangeMinPrice = (value) => {
         dispatch(filterProductsActions.setProductMinPrice(value))
     }
@@ -96,14 +95,14 @@ const MainCategory = ({
                         <div className="single-category__holder">
                             <div className="row single-category__sidebar">
                                 <div ref={showRef} className="single-category__filter filter">
-                                    {catsLoading || productsLoad || brandLoading ? (
+                                    {catsLoading || productsLoad ? (
                                         <div className="filter__active">
                                             <Loader/>
                                         </div>
                                     ) : (
                                         <>
                                             {
-                                                catsErr || productsErr || brandErr ? (
+                                                catsErr || productsErr ? (
                                                     <div className="filter__active">
                                                         <NotFound/>
                                                     </div>
@@ -120,20 +119,20 @@ const MainCategory = ({
                                                                 <div className="filter__block">
                                                                     <h4 className="filter__title">Brands</h4>
                                                                     <ul className="filter__list">
-                                                                        {brandCounts?.map(brand => (
-                                                                            <li key={brand.id} className="filter__item">
+                                                                        {brandCounts?.map((brand, idx) => (
+                                                                            <li key={idx} className="filter__item">
                                                                                 <div className="filter__box">
                                                                                     <input
                                                                                         name={brand.name}
-                                                                                        checked={productBrand[brand.id]}
-                                                                                        onChange={() => dispatch(filterProductsActions.setProductBrand(brand.id))}
+                                                                                        checked={productBrand[brand.name]}
+                                                                                        onChange={() => dispatch(filterProductsActions.setProductBrand(brand.name))}
                                                                                         className="filter__input"
                                                                                         type="checkbox"
-                                                                                        value={brand.id}
-                                                                                        id={brand.id}
+                                                                                        value={brand.name}
+                                                                                        id={brand.name}
                                                                                     />
                                                                                     <label className="filter__label"
-                                                                                           htmlFor={brand.id}>
+                                                                                           htmlFor={brand.name}>
                                                                                         <span
                                                                                             className="filter__checked"></span>
                                                                                         <span

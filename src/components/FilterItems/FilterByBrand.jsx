@@ -18,18 +18,20 @@ const FilterByBrand = ({brandCounts, productBrand, filteredBrands, handleSearchB
                     onClick={() => handleOpenDrop("brands")}>
                 <span className="dropdown__select">Brands</span>
                 {
-                    open === "brands" ? <span className="dropdown__icon">
-                                                                <i className="ri-arrow-down-s-line"></i>
-                                                            </span> : <span className="dropdown__icon">
-                                                                <i className="ri-arrow-up-s-line"></i>
-                                                            </span>
+                    open === "brands" ?
+                        <span className="dropdown__icon">
+                            <i className="ri-arrow-down-s-line"></i>
+                        </span> :
+                        <span className="dropdown__icon">
+                            <i className="ri-arrow-up-s-line"></i>
+                        </span>
                 }
             </button>
             {
                 productBrand.length > 0 && (
                     <span className="dropdown__count">
-                                                                {productBrand.length}
-                                                            </span>
+                        {productBrand.length}
+                    </span>
                 )
             }
             <div
@@ -42,28 +44,24 @@ const FilterByBrand = ({brandCounts, productBrand, filteredBrands, handleSearchB
                     }
                     <ul className="down__list">
                         {
-                            filteredBrands.slice(0, 7).map(brand => (
-                                <li key={brand.id} className="down__item">
+                            filteredBrands.slice(0, 7).map((brand, idx) => (
+                                <li key={idx} className="down__item">
                                     <div className="checkbox-with-text">
                                         <input
-                                            onChange={() => dispatch(filterProductsActions.setProductBrand(brand.id))}
+                                            onChange={() => dispatch(filterProductsActions.setProductBrand(brand.name))}
                                             name={brand.name}
-                                            checked={productBrand.includes(brand.id)}
+                                            checked={productBrand.includes(brand.name)}
                                             className="checkbox-with-text__input"
                                             type="checkbox"
-                                            value={brand.id}
-                                            id={brand.id}
+                                            value={brand.name}
+                                            id={brand.name}
                                         />
-                                        <label htmlFor={brand.id}
-                                               className="checkbox-with-text__label">
-                                                                            <span
-                                                                                className="checkbox-with-text__decor"></span>
-                                            <span
-                                                className="checkbox-with-text__text">
-                                                                                {brand.name}
-                                                <span
-                                                    className="checkbox-with-text__count">{brand.count}</span>
-                                                                                 </span>
+                                        <label htmlFor={brand.name} className="checkbox-with-text__label">
+                                            <span className="checkbox-with-text__decor"></span>
+                                            <span className="checkbox-with-text__text">
+                                                {brand.name}
+                                                <span className="checkbox-with-text__count">{brand.count}</span>
+                                            </span>
                                         </label>
                                     </div>
                                 </li>
@@ -71,29 +69,26 @@ const FilterByBrand = ({brandCounts, productBrand, filteredBrands, handleSearchB
                         }
                         {
                             showOtherBrands && (
-                                filteredBrands.slice(7).map(brand => (
-                                    <li key={brand.id} className="down__item">
+                                filteredBrands.slice(7).map((brand, idx) => (
+                                    <li key={idx} className="down__item">
                                         <div className="checkbox-with-text">
                                             <input
-                                                onChange={() => dispatch(filterProductsActions.setProductBrand(brand.id))}
+                                                onChange={() => dispatch(filterProductsActions.setProductBrand(brand.name))}
                                                 name={brand.name}
-                                                checked={productBrand.includes(brand.id)}
+                                                checked={productBrand.includes(brand.name)}
                                                 className="checkbox-with-text__input"
                                                 type="checkbox"
-                                                value={brand.id}
-                                                id={brand.id}
+                                                value={brand.name}
+                                                id={brand.name}
                                             />
-                                            <label htmlFor={brand.id}
-                                                   className="checkbox-with-text__label">
-                                                                            <span
-                                                                                className="checkbox-with-text__decor">
-                                                                            </span>
-                                                <span
-                                                    className="checkbox-with-text__text">
-                                                                                {brand.name}
-                                                    <span
-                                                        className="checkbox-with-text__count">{brand.count}</span>
-                                                                                 </span>
+                                            <label htmlFor={brand.name} className="checkbox-with-text__label">
+                                                <span className="checkbox-with-text__decor"></span>
+                                                <span className="checkbox-with-text__text">
+                                                    {brand.name}
+                                                    <span className="checkbox-with-text__count">
+                                                        {brand.count}
+                                                    </span>
+                                                </span>
                                             </label>
                                         </div>
                                     </li>

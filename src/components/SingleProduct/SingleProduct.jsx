@@ -10,14 +10,14 @@ import {cartProductsActions} from "../../features/cartSlice";
 import useCalculateSaleTime from "../../customHooks/useCalculateSaleTime";
 import RemainingSaleTime from "../RemainingSaleTime/RemainingSaleTime";
 import SingleProductStockBar from "../SingleProductStockBar/SingleProductStockBar";
+import CopyLinkButton from "../../utils/copyLinkButton";
+import ShareByNetworks from "../ShareByNetworks/ShareByNetworks";
 import toast from "react-hot-toast";
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import "./single-product.scss";
-import CopyLinkButton from "../../utils/copyLinkButton";
-import ShareByNetworks from "../ShareByNetworks/ShareByNetworks";
 
 const formatNumber = (number) => {
     if (number >= 1000) {
@@ -358,9 +358,9 @@ const SingleProduct = ({product}) => {
                                                             <ul className={expand === "info" ? "content description__content description__content-display" : "content description__content"}>
                                                                 <li className="description__brand">
                                                                     <span
-                                                                        className="description__brand-title">Brands</span>
+                                                                        className="description__brand-title">Brand</span>
                                                                     <span
-                                                                        className="description__brand-name">{product?.brand?.name}
+                                                                        className="description__brand-name">{product?.brand}
                                                                     </span>
                                                                 </li>
                                                                 <li className="description__brand">

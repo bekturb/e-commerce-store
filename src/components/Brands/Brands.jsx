@@ -32,7 +32,7 @@ const Brands = () => {
                             ) : filteredBrands.length > 0 ? (
                                 filteredBrands.map(brand => (
                                     <div key={brand._id} className="brands__item">
-                                        <Link to={`/brand/${brand._id}`} className="brands__link">
+                                        <Link to={`/brand/${brand.name}`} className="brands__link">
                                             <img className="brands__image" src={brand.brandImage} alt=""/>
                                         </Link>
                                     </div>

@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategory} from "../../features/singleCategorySlice";
-import {fetchBrands} from "../../features/brandSlice";
 import Subcategory from "../Subcategory/Subcategory";
 import MainCategory from "../MainCategory/MainCategory";
 import Loader from "../Loader/Loader";
@@ -24,7 +23,6 @@ const SingleCategory = () => {
 
     useEffect(() => {
         dispatch(fetchCategory(categorySlug));
-        dispatch(fetchBrands());
         dispatch(getAllShops());
     }, [categorySlug]);
 

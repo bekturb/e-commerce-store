@@ -53,7 +53,7 @@ const Routers = () => {
                 <Route path="/category/:mainCategorySlug/:subCategorySlug/:slug" element={<CategoryPage/>}/>
                 <Route path="/bannerClicked" element={<BannerProducts/>}/>
                 <Route path="/catalog/:productId" element={<SinglePage/>}/>
-                <Route path="/brand/:brandId" element={<SingleBrand/>}/>
+                <Route path="/brand/:brandName" element={<SingleBrand/>}/>
                 <Route path="/catalog/featured-products" element={<FeaturedProducts/>}/>
                 <Route path="/catalog/search/:searchProduct" element={<SearchResult/>}/>
                 <Route path="/catalog/search-by-image/:image" element={<SearchByImageResult/>}/>

@@ -25,7 +25,6 @@ const DefiniteProductsCart = ({filteredProducts, pageName, locationPosition}) =>
     const [filteredShops, setFilteredShops] = useState([]);
     const location = useLocation();
 
-    const {data: brands} = useSelector(state => state.brands);
     const {data: allCategories} = useSelector(state => state.allCategories);
     const {loading: productsLoad, error: productsErr} = useSelector(state => state.products);
     const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
@@ -49,7 +48,7 @@ const DefiniteProductsCart = ({filteredProducts, pageName, locationPosition}) =>
         productMaxPrice
     });
 
-    const brandCounts = useBrandCounts(filteredProducts, brands);
+    const brandCounts = useBrandCounts(filteredProducts);
     const categoryCounts = UseGetDefinitelyCategories(filteredProducts, allCategories);
     const uniqueColors = useProductsColor(filteredProducts);
     const productsShop = useGetProductsSeller(filteredProducts, shops);
