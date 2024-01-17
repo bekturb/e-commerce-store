@@ -20,7 +20,7 @@ const SingleBrand = () => {
             });
             setFilteredProducts(catProducts)
         }
-    }, [products]);
+    }, [products, brandName]);
 
     return (
         <Helmet title="Single-brand">

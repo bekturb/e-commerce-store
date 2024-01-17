@@ -4,7 +4,7 @@ function useBrandCounts(filteredProducts) {
     const [brandCounts, setBrandCounts] = useState([]);
 
     useEffect(() => {
-        if (filteredProducts) {
+        if (filteredProducts.length > 0) {
             const brandCounts = {};
 
             filteredProducts.forEach((product) => {
