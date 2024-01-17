@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
+import { Link } from 'react-scroll';
 import EachReview from "../EachReview/EachReview";
 import ReviewsForm from "../ReviewsForm/ReviewsForm";
 import {useDispatch, useSelector} from "react-redux";
@@ -39,9 +40,16 @@ const ReviewDetail = ({expand, product}) => {
                            </span>
                             <span className="reviews__sum">{product?.numOfReviews} Reviews</span>
                         </div>
-                        <a href="#reviews-form" className="reviews__btn secondary-button">
+                        <Link
+                            to="reviews-form"
+                            className="reviews__btn secondary-button"
+                            spy={true}
+                            smooth={true}
+                            offset={1}
+                            duration={500}
+                        >
                             Write review
-                        </a>
+                        </Link>
                     </div>
                     {getReviewsLoading ? (
                         <div className="trending__loader">
@@ -61,10 +69,10 @@ const ReviewDetail = ({expand, product}) => {
                                     }
                                 </ul>
                                 <div className="reviews__second-links">
-                                    <a href=""
-                                       className="view-all reviews__view-all">View
-                                        all Reviews <i
-                                            className="ri-arrow-right-line"></i></a>
+                                    <Link className="view-all reviews__view-all" to={`/all-reviews`}>View
+                                            all Reviews
+                                        <i className="ri-arrow-right-line"></i>
+                                    </Link>
                                 </div>
                             </div>
                     ) : null}

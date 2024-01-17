@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategories} from "../../../features/categoriesSlice";
-import "./add-product.scss"
 import {fetchProducts} from "../../../features/productsSlice";
+import "./add-product.scss"
 
 const AddProduct = () => {
 

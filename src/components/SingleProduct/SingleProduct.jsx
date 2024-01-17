@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from "react-router-dom";
+import { Link } from 'react-scroll';
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Thumbs, FreeMode} from "swiper";
 import {SRLWrapper} from "simple-react-lightbox"
@@ -221,16 +221,37 @@ const SingleProduct = ({product}) => {
                                             <div className="one__content content">
                                                 <div className="content__rating one__rating">
                                                     <div className="content__stars one__stars"></div>
-                                                    <a className="one__num-review mini-text"
-                                                       href="">{product?.numOfReviews}</a>
-                                                    <a href="" className="one__add-review mini-text">Add Your Review</a>
+                                                    <Link
+                                                        to="reviews-form"
+                                                        className="one__num-review mini-text"
+                                                        spy={true}
+                                                        smooth={true}
+                                                        offset={700}
+                                                        duration={500}
+                                                    >
+                                                        {product?.numOfReviews}
+                                                    </Link>
+                                                    <Link
+                                                        to="reviews-form"
+                                                        className="one__add-review mini-text"
+                                                        spy={true}
+                                                        smooth={true}
+                                                        offset={700}
+                                                        duration={500}
+                                                    >
+                                                        Add Your Review
+                                                    </Link>
                                                 </div>
-                                                <div className="one__stock-squ stock-squ">
-                                                    <span className="stock-squ__available">In Stock </span>
-                                                    <span className="stock-squ__squ mini-text">
-                                                        {product?.stock}
-                                                    </span>
-                                                </div>
+                                                {
+                                                    product?.stock && (
+                                                        <div className="one__stock-squ stock-squ">
+                                                            <span className="stock-squ__available">In Stock </span>
+                                                            <span className="stock-squ__squ mini-text">
+                                                                {product?.stock}
+                                                            </span>
+                                                        </div>
+                                                    )
+                                                }
                                                 <div className="price one__price">
                                                     {
                                                         selectedVariant?.discountPrice ? (
