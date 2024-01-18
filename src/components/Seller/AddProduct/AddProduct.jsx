@@ -9,8 +9,9 @@ const AddProduct = () => {
     const [name, setName] = useState("");
     const [categoryId, setCategoryId] = useState("");
     const [selectedBrand, setSelectedBrand] = useState("");
-    const [selectedTags, setSelectedTags] = useState([]);
     const [stock, setStock] = useState("");
+    const [description, setDescription] = useState("");
+    const [selectedTags, setSelectedTags] = useState([]);
 
     const [open, setOpen] = useState("");
     const [brands, setBrands] = useState([]);
@@ -32,7 +33,6 @@ const AddProduct = () => {
     }, [dispatch]);
 
     const filterCategory = (children, name, categoryId) => {
-
         setCategory(name)
         setSubSubCategories([])
         setSubCategory("")
@@ -105,7 +105,7 @@ const AddProduct = () => {
         <div className="add-product">
             <div className="add-product__inner">
                 <h1 className="add-product__main-title">Feature</h1>
-                <div className="form add-product__form">
+                <form className="form add-product__form">
                     <div className="add-product__form-item">
                         <p className="add-product__title">Name</p>
                         <input
@@ -117,16 +117,17 @@ const AddProduct = () => {
                     </div>
                     <div className="add-product__form-item">
                         <p className="add-product__title">Description</p>
-                        <textarea cols={300}
+                        <textarea
                             className="input add-product__input add-product__input--area"
-                            style={{height: "200px"}}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
                     </div>
                     <div className="add-product__form-item">
                         <p className="add-product__title">Main Category</p>
                         <div className="unique-dropdown">
                             <div className="unique-dropdown__cap">
-                                <button className="unique-dropdown__button" onClick={open === "category" ? () => setOpen("") : () => setOpen("category")}>
+                                <button className="unique-dropdown__button" type="button" onClick={open === "category" ? () => setOpen("") : () => setOpen("category")}>
                                     {
                                         category ? category : "Select Main Category"
                                     }
@@ -163,7 +164,7 @@ const AddProduct = () => {
                                 <p className="add-product__title">Category</p>
                                 <div className="unique-dropdown">
                                     <div className="unique-dropdown__cap">
-                                        <button className="unique-dropdown__button" onClick={open === "subCategory" ? () => setOpen("") : () => setOpen("subCategory")}>
+                                        <button className="unique-dropdown__button" type="button" onClick={open === "subCategory" ? () => setOpen("") : () => setOpen("subCategory")}>
                                             {
                                                 subCategory && subSubCategory ? subSubCategory : subCategory ? subCategory : "Select Category"
                                             }
@@ -275,7 +276,25 @@ const AddProduct = () => {
                             />
                         </div>
                     </div>
-                </div>
+                    <div className="variant add-product__variant">
+                        <div className="variant__inner">
+                            <div className="variant__tabs">
+                                <div className="variant__tab">
+                                    <span className="variant__tab-title">Product (1)</span>
+                                    <span className="variant__tab-icon">
+                                        <i className="ri-close-line"></i>
+                                    </span>
+                                </div>
+                                <div className="variant__tab">
+                                    <span className="variant__tab-title">Add Another Product</span>
+                                    <span className="variant__tab-icon">
+                                        <i className="ri-add-line"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     );

@@ -3,7 +3,7 @@
 
   &__inner {
     background: var(--light-bg-color);
-    padding: 50px 50px;
+    padding: 30px 50px;
     height: 100%;
   }
 
@@ -35,7 +35,7 @@
     color: var(--light-text-color);
 
     &--area {
-      height: 400px;
+      height: 200px;
     }
   }
 
@@ -192,5 +192,60 @@
     outline: none;
     font-size: 16px;
     color: var(--light-text-color);
+  }
+}
+
+.variant {
+  width: 100%;
+  height: 500px;
+  background: var(--white-color);
+
+  &__inner {
+    padding: 20px 20px;
+  }
+
+  &__tabs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+  }
+
+  &__tab {
+    display: flex;
+    align-items: center;
+    grid-column-gap: 20px;
+    padding: 10px 30px!important;
+    font-size: var(--font-small);
+    border: none;
+    outline: none;
+    background: var(--light-text-color);
+    border-radius: 40px;
+    color: var(--white-color);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--secondary-dark-color);
+      color: var(--white-color);
+    }
+  }
+
+  &__tab-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    background: var(--white-color);
+    color: var(--light-text-color);
+    border-radius: 50%;
+    transition: .2s;
+
+    &:hover {
+      background: var(--light-text-color);
+      color: var(--white-color);
+    }
   }
 }
