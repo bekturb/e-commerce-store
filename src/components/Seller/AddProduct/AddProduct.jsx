@@ -6,13 +6,16 @@ import "./add-product.scss"
 
 const AddProduct = () => {
 
-    const [open, setOpen] = useState("");
-    const [categoryId, setCategoryId] = useState('');
+    const [name, setName] = useState("");
+    const [categoryId, setCategoryId] = useState("");
     const [selectedBrand, setSelectedBrand] = useState("");
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [stock, setStock] = useState("");
 
+    const [open, setOpen] = useState("");
     const [brands, setBrands] = useState([]);
-    const [category, setCategory] = useState('');
-    const [subCategory, setSubCategory] = useState('');
+    const [category, setCategory] = useState("");
+    const [subCategory, setSubCategory] = useState("");
     const [subSubCategory, setSubSubCategory] = useState("");
     const [subCategories, setSubCategories] = useState([]);
     const [subSubCategories, setSubSubCategories] = useState([]);
@@ -87,6 +90,17 @@ const AddProduct = () => {
         setBrands([])
     }
 
+    const handleAddTags = (event) => {
+        if (event.target.value !== "") {
+            setSelectedTags([...selectedTags, event.target.value]);
+            event.target.value = ""
+        }
+    }
+
+    const removeTags = (indexToRemove) => {
+        setSelectedTags(selectedTags.filter((_, index) => index !== indexToRemove));
+    }
+
     return (
         <div className="add-product">
             <div className="add-product__inner">
@@ -97,6 +111,15 @@ const AddProduct = () => {
                         <input
                             className="input add-product__input"
                             type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </div>
+                    <div className="add-product__form-item">
+                        <p className="add-product__title">Description</p>
+                        <textarea cols={300}
+                            className="input add-product__input add-product__input--area"
+                            style={{height: "200px"}}
                         />
                     </div>
                     <div className="add-product__form-item">
@@ -214,35 +237,44 @@ const AddProduct = () => {
                             }
                         </div>
                     </div>
-                    {/*<div className="add-product__form-item">*/}
-                    {/*    <p className="add-product__title">Brand</p>*/}
-                    {/*    <div className="unique-dropdown">*/}
-                    {/*        <div className="unique-dropdown__cap">*/}
-                    {/*            <button className="unique-dropdown__button" onClick={open === "brand" ? () => setOpen("") : () => setOpen("brand")}>*/}
-                    {/*                Select Category*/}
-                    {/*                {*/}
-                    {/*                    open === "brand" ?*/}
-                    {/*                        <span className="unique-dropdown__icon">*/}
-                    {/*                            <i className="ri-arrow-up-s-line"></i>*/}
-                    {/*                        </span> :*/}
-                    {/*                        <span className="unique-dropdown__icon">*/}
-                    {/*                            <i className="ri-arrow-down-s-line"></i>*/}
-                    {/*                        </span>*/}
-                    {/*                }*/}
-                    {/*            </button>*/}
-                    {/*        </div>*/}
-                    {/*        {*/}
-                    {/*            open === "brand" &&*/}
-                    {/*            <div className="unique-dropdown__body">*/}
-                    {/*                <ul className="unique-dropdown__list">*/}
-                    {/*                    <li className="unique-dropdown__list-item unique-dropdown__list-item--active">Women</li>*/}
-                    {/*                    <li className="unique-dropdown__list-item">Women</li>*/}
-                    {/*                    <li className="unique-dropdown__list-item">Women</li>*/}
-                    {/*                </ul>*/}
-                    {/*            </div>*/}
-                    {/*        }*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                    <div className="add-product__form-item">
+                        <p className="add-product__title">Stock</p>
+                        <input
+                            className="input add-product__input"
+                            type="text"
+                            value={stock}
+                            onChange={(e) => setStock(e.target.value)}
+                        />
+                    </div>
+                    <div className="add-product__form-item">
+                        <p className="add-product__title">Tags</p>
+                        <div className="tags-field">
+                            {
+                                selectedTags?.length > 0 && (
+                                    <ul className="tags-field__list">
+                                        {
+                                            selectedTags.map((tag, index) => (
+                                                <li className="tags-field__list-item" key={index}>
+                                                    <span className="tags-field__item-name">
+                                                        {tag}
+                                                    </span>
+                                                    <span onClick={() => removeTags(index)} className="tags-field__item-icon">
+                                                        <i className="ri-close-line"></i>
+                                                    </span>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                )
+                            }
+                            <input
+                                className="tags-field__input"
+                                type="text"
+                                placeholder="Press enter to add tags"
+                                onKeyUp={(e) => (e.key === "Enter" ? handleAddTags(e) : null) }
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

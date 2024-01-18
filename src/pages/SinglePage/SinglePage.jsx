@@ -17,7 +17,7 @@ const SinglePage = () => {
 
     useEffect(() => {
         dispatch(fetchSingleProduct(productId))
-    }, [productId]);
+    }, [productId, dispatch]);
 
     return (
         <Helmet title="Single-Page">

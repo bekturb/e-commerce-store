@@ -226,7 +226,7 @@ const SingleProduct = ({product}) => {
                                                         className="one__num-review mini-text"
                                                         spy={true}
                                                         smooth={true}
-                                                        offset={700}
+                                                        offset={100}
                                                         duration={500}
                                                     >
                                                         {product?.numOfReviews}
@@ -236,8 +236,8 @@ const SingleProduct = ({product}) => {
                                                         className="one__add-review mini-text"
                                                         spy={true}
                                                         smooth={true}
-                                                        offset={700}
-                                                        duration={500}
+                                                        offset={20}
+                                                        duration={20}
                                                     >
                                                         Add Your Review
                                                     </Link>

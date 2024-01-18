@@ -5,6 +5,7 @@ import AsideTopNav from "../../components/AsideComponents/AsideTopNav/AsideTopNa
 import AsideDepartments from "../../components/AsideComponents/AsideDepartments/AsideDepartments";
 import "../../styles/aside.scss"
 import {menuActions} from "../../features/menuSlice";
+import {Link} from "react-scroll";
 
 const Aside = () => {
 
@@ -24,9 +25,9 @@ const Aside = () => {
             <div className="off__canvas canvas">
                 <div className="canvas__head">
                     <div className="logo canvas__logo">
-                        <a className="logo__link" href="">
+                        <Link className="logo__link" to="/">
                             <span className="logo__circle canvas__circle"></span>.Store
-                        </a>
+                        </Link>
                     </div>
                     <div onClick={closeMenu} className="close canvas__close" ><i className="ri-close-line"></i></div>
                 </div>

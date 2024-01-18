@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {toast} from "react-hot-toast";
 
 const CopyLinkButton = ({ linkToCopy }) => {
-    const [isCopied, setIsCopied] = useState(false);
 
     const handleCopyClick = async () => {
         try {
             await navigator.clipboard.writeText(linkToCopy);
-            setIsCopied(true);
             toast.success("Copied successfully");
         } catch (err) {
             toast.error('Unable to copy text: ', err);
