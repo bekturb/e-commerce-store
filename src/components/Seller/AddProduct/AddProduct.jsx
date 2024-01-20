@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategories} from "../../../features/categoriesSlice";
 import {fetchProducts} from "../../../features/productsSlice";
-import "./add-product.scss"
+import AddProductVariants from "../AddProductVariants/AddProductVariants";
+import "./add-product.scss";
 
 const AddProduct = () => {
 
@@ -12,6 +13,7 @@ const AddProduct = () => {
     const [stock, setStock] = useState("");
     const [description, setDescription] = useState("");
     const [selectedTags, setSelectedTags] = useState([]);
+    const [variants, setVariants] = useState([{ color: '', image: '' }]);
 
     const [open, setOpen] = useState("");
     const [brands, setBrands] = useState([]);
@@ -106,25 +108,25 @@ const AddProduct = () => {
             <div className="add-product__inner">
                 <h1 className="add-product__main-title">Feature</h1>
                 <form className="form add-product__form">
-                    <div className="add-product__form-item">
-                        <p className="add-product__title">Name</p>
+                    <div className="form-item add-product__form-item">
+                        <p className="form-item__title">Name</p>
                         <input
-                            className="input add-product__input"
+                            className="input form-item__input"
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
                     </div>
-                    <div className="add-product__form-item">
-                        <p className="add-product__title">Description</p>
+                    <div className="form-item add-product__form-item">
+                        <p className="form-item__title">Description</p>
                         <textarea
-                            className="input add-product__input add-product__input--area"
+                            className="input form-item__input form-item__input--area"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </div>
-                    <div className="add-product__form-item">
-                        <p className="add-product__title">Main Category</p>
+                    <div className="form-item add-product__form-item">
+                        <p className="form-item__title">Main Category</p>
                         <div className="unique-dropdown">
                             <div className="unique-dropdown__cap">
                                 <button className="unique-dropdown__button" type="button" onClick={open === "category" ? () => setOpen("") : () => setOpen("category")}>
@@ -160,8 +162,8 @@ const AddProduct = () => {
                     </div>
                     {
                         subCategories.length > 0 && (
-                            <div className="add-product__form-item">
-                                <p className="add-product__title">Category</p>
+                            <div className="form-item add-product__form-item">
+                                <p className="form-item__title">Category</p>
                                 <div className="unique-dropdown">
                                     <div className="unique-dropdown__cap">
                                         <button className="unique-dropdown__button" type="button" onClick={open === "subCategory" ? () => setOpen("") : () => setOpen("subCategory")}>
@@ -210,8 +212,8 @@ const AddProduct = () => {
                             </div>
                         )
                     }
-                    <div className="add-product__form-item">
-                        <p className="add-product__title">Brand</p>
+                    <div className="form-item add-product__form-item">
+                        <p className="form-item__title">Brand</p>
                         <div className="unique-dropdown">
                             <div className="unique-dropdown__cap">
                                 <input
@@ -238,17 +240,17 @@ const AddProduct = () => {
                             }
                         </div>
                     </div>
-                    <div className="add-product__form-item">
-                        <p className="add-product__title">Stock</p>
+                    <div className="form-item add-product__form-item">
+                        <p className="form-item__title">Stock</p>
                         <input
-                            className="input add-product__input"
+                            className="input form-item__input"
                             type="text"
                             value={stock}
                             onChange={(e) => setStock(e.target.value)}
                         />
                     </div>
-                    <div className="add-product__form-item">
-                        <p className="add-product__title">Tags</p>
+                    <div className="form-item add-product__form-item">
+                        <p className="form-item__title">Tags</p>
                         <div className="tags-field">
                             {
                                 selectedTags?.length > 0 && (
@@ -276,24 +278,7 @@ const AddProduct = () => {
                             />
                         </div>
                     </div>
-                    <div className="variant add-product__variant">
-                        <div className="variant__inner">
-                            <div className="variant__tabs">
-                                <div className="variant__tab">
-                                    <span className="variant__tab-title">Product (1)</span>
-                                    <span className="variant__tab-icon">
-                                        <i className="ri-close-line"></i>
-                                    </span>
-                                </div>
-                                <div className="variant__tab">
-                                    <span className="variant__tab-title">Add Another Product</span>
-                                    <span className="variant__tab-icon">
-                                        <i className="ri-add-line"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <AddProductVariants variants={variants} setVariants={setVariants}/>
                 </form>
             </div>
         </div>

@@ -1,0 +1,68 @@
+.variant {
+  width: 100%;
+  height: 500px;
+  background: var(--white-color);
+
+  &__inner {
+    padding: 20px 20px;
+  }
+
+  &__tabs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+  }
+
+  &__tab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    grid-column-gap: 20px;
+    padding: 10px 30px!important;
+    font-size: var(--font-small);
+    border: 1px solid var(--light-text-color);
+    outline: none;
+    background: transparent;
+    border-radius: 10px;
+    color: var(--light-text-color);
+    cursor: pointer;
+
+    &--active {
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    &:hover {
+      border: 1px solid var(--secondary-dark-color);
+    }
+  }
+
+  &__tab-icon {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    background: var(--primary-color);
+    color: var(--white-color);
+    border-radius: 50%;
+    transition: .2s;
+
+    &:hover {
+      background: var(--light-text-color);
+      color: var(--white-color);
+    }
+  }
+
+  &__form-item {
+    margin-top: 20px;
+    display: block!important;
+    width: 100%;
+  }
+}

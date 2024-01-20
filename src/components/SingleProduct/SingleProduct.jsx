@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Link } from 'react-scroll';
+import {Link} from "react-router-dom";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Thumbs, FreeMode} from "swiper";
 import {SRLWrapper} from "simple-react-lightbox"
@@ -80,7 +80,7 @@ const SingleProduct = ({product}) => {
             name: pro.name,
             shopId: pro.shopId,
             variantId: variant._id,
-            color: variant.color,
+            color: variant.color.name,
             size: variant.size || null,
             price: variant.discountPrice || variant.originalPrice,
             images: variant.images,
@@ -224,20 +224,12 @@ const SingleProduct = ({product}) => {
                                                     <Link
                                                         to="reviews-form"
                                                         className="one__num-review mini-text"
-                                                        spy={true}
-                                                        smooth={true}
-                                                        offset={100}
-                                                        duration={500}
                                                     >
                                                         {product?.numOfReviews}
                                                     </Link>
                                                     <Link
                                                         to="reviews-form"
                                                         className="one__add-review mini-text"
-                                                        spy={true}
-                                                        smooth={true}
-                                                        offset={20}
-                                                        duration={20}
                                                     >
                                                         Add Your Review
                                                     </Link>
@@ -288,11 +280,11 @@ const SingleProduct = ({product}) => {
                                                         <form className="colors__form" action="">
                                                             {
                                                                 product?.variants?.map(variant => (
-                                                                    <p key={variant._id} className="colors__variant">
+                                                                    <p key={variant?._id} className="colors__variant">
                                                                         <input
                                                                             onChange={() => handleSelectColor(variant?._id)}
                                                                             className="colors__input"
-                                                                            checked={variant?.color === selectedVariant?.color}
+                                                                            checked={variant?.color?._id === selectedVariant?.color?._id}
                                                                             type="radio"
                                                                             name="color"
                                                                             id={variant?._id}
@@ -300,7 +292,7 @@ const SingleProduct = ({product}) => {
                                                                         <label
                                                                             htmlFor={variant?._id}
                                                                             className="colors__circle circle"
-                                                                            style={{'--color': `${variant?.color}`}}
+                                                                            style={{'--color': `${variant?.color?.hex}`}}
                                                                         >
                                                                         </label>
                                                                     </p>
