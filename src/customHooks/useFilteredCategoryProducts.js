@@ -20,7 +20,7 @@ function useFilteredCategoryProducts({
                 if (
                     (!productBrand || productBrand.length === 0 || productBrand.includes(product.brand)) &&
                     (!productCategory || productCategory.length === 0 || productCategory.includes(product.category)) &&
-                    (!productColor || productColor.length === 0 || product.variants.some((variant) => productColor.includes(variant.color))) &&
+                    (!productColor || productColor.length === 0 || product.variants.some((variant) => productColor.includes(variant.color.name))) &&
                     (!productShop || productShop.length === 0 || productShop.includes(product.shopId)) &&
                     (!productMinPrice || productMinPrice.length === 0 || !productMaxPrice || productMaxPrice.length === 0 || product.variants.some((variant) => variant.originalPrice >= productMinPrice && variant.originalPrice <= productMaxPrice))
                 ) {

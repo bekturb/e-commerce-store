@@ -20,6 +20,7 @@ import {categoriesReducer} from "../features/categoriesSlice";
 import {pagesReducer} from "../features/pageSlice";
 import {resendOtpReducer} from "../features/resendOtpSlice";
 import {brandsReducer} from "../features/brandSlice";
+import {colorsReducer} from "../features/allColors";
 import {brandReducer} from "../features/getSingleBrand";
 import {allCategoriesReducer} from "../features/allCategories";
 import {offerReducer} from "../features/offerSlice";
@@ -53,6 +54,7 @@ const store = configureStore({
         pages: pagesReducer,
         resendOtp: resendOtpReducer,
         brands: brandsReducer,
+        colors: colorsReducer,
         singleBrand: brandReducer,
         offers: offerReducer,
         products: productsReducer,

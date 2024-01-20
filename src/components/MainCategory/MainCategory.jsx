@@ -43,7 +43,7 @@ const MainCategory = ({
 
     const brandCounts = useBrandCounts(filteredProducts);
     const uniqueColors = useProductsColor(filteredProducts);
-    
+
     const handleChangeMinPrice = (value) => {
         dispatch(filterProductsActions.setProductMinPrice(value))
     }
@@ -157,16 +157,16 @@ const MainCategory = ({
                                                                             uniqueColors?.map((color, idx) => (
                                                                                 <li key={idx} className="filter__item">
                                                                                     <input
-                                                                                        onChange={() => dispatch(filterProductsActions.setProductColor(color.color))}
+                                                                                        onChange={() => dispatch(filterProductsActions.setProductColor(color.name))}
                                                                                         className="filter__input colors__input"
                                                                                         type="checkbox"
-                                                                                        name={color.color}
-                                                                                        value={color.color}
-                                                                                        id={color.color}
+                                                                                        name={color.name}
+                                                                                        value={color.name}
+                                                                                        id={color.name}
                                                                                     />
                                                                                     <label className="colors__circle circle"
-                                                                                           style={{'--color': `${color.color}`}}
-                                                                                           htmlFor={color.color}>
+                                                                                           style={{'--color': `${color.hex}`}}
+                                                                                           htmlFor={color.name}>
                                                                                     </label>
                                                                                 </li>
                                                                             ))

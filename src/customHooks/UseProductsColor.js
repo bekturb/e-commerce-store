@@ -7,22 +7,28 @@ const UseProductsColor = (filteredProducts) => {
     useEffect(() => {
         const uniqueColorsObj = {};
 
-        if (filteredProducts) {
+        if (filteredProducts?.length > 0) {
             filteredProducts.forEach((product) => {
                 product.variants.forEach((variant) => {
-                    const color = variant.color;
-                    if (uniqueColorsObj[color]) {
-                        uniqueColorsObj[color]++;
+                    const color = variant.color.name;
+                    const hex = variant.color.hex;
+                    if (!uniqueColorsObj[color]) {
+                        uniqueColorsObj[color] = {
+                            name: color,
+                            hex,
+                            count: 1
+                        };
                     } else {
-                        uniqueColorsObj[color] = 1;
+                        uniqueColorsObj[color].count += 1;
                     }
                 });
             });
         }
 
         const uniqueColorsArray = Object.keys(uniqueColorsObj).map((color) => ({
-            color,
-            count: uniqueColorsObj[color],
+            name: uniqueColorsObj[color].name,
+            hex: uniqueColorsObj[color].hex,
+            count: uniqueColorsObj[color].count
         }));
 
         setUniqueColors(uniqueColorsArray);
