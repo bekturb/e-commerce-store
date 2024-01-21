@@ -1,6 +1,5 @@
 .variant {
   width: 100%;
-  height: 500px;
   background: var(--white-color);
 
   &__inner {
@@ -88,4 +87,25 @@
       background-color: var(--color)!important;
       opacity: 1 !important;
     }
+}
+
+.image-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 130px;
+  border: 1px solid var(--light-text-color);
+
+  &__image-input {
+    display: none;
+  }
+
+  &__image-icon {
+    font-size: 20px;
+  }
+
+  &__label {
+    cursor: pointer;
+  }
 }

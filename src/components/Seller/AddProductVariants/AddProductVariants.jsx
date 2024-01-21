@@ -22,7 +22,7 @@ const AddProductVariants = ({variants, setVariants}) => {
     };
 
     const handleAddVariant = () => {
-        setVariants([...variants, {color: '', image: ''}]);
+        setVariants([...variants, { color: '', originalPrice: '', quantity: '', image: ''}]);
     };
 
     const handleRemoveVariant = (indexToRemove) => {
@@ -70,7 +70,7 @@ const AddProductVariants = ({variants, setVariants}) => {
                 </div>
                 <div className="variant__form">
                     <div className="form-item variant__form-item">
-                        <p className="form-item__title">Color</p>
+                        <p className="form-item__title form-item__title--margin">Color</p>
                         <div className="unique-dropdown variant__unique-dropdown">
                             <div className="unique-dropdown__cap">
                                 <button className="unique-dropdown__button" type="button"
@@ -134,7 +134,7 @@ const AddProductVariants = ({variants, setVariants}) => {
                         </div>
                     </div>
                     <div className="form-item variant__form-item">
-                        <p className="form-item__title">Price</p>
+                        <p className="form-item__title form-item__title--margin">Price</p>
                         <input
                             className="input form-item__input"
                             type="text"
@@ -143,13 +143,32 @@ const AddProductVariants = ({variants, setVariants}) => {
                         />
                     </div>
                     <div className="form-item variant__form-item">
-                        <p className="form-item__title">Quantity</p>
+                        <p className="form-item__title form-item__title--margin">Quantity</p>
                         <input
                             className="input form-item__input"
                             type="number"
                             value={quantity}
                             onChange={(e) => setQuantity(e.target.value)}
                         />
+                    </div>
+                    <div className="form-item variant__form-item">
+                        <p className="form-item__title form-item__title--margin">Images</p>
+                        <div className="image-upload form-item__image-upload">
+                            <label htmlFor="username" className="image-upload__label">
+                            <span className="image-upload__image-icon">
+                                <i className="ri-upload-cloud-line"></i>
+                                    Upload
+                            </span>
+                            </label>
+                            <input
+                                className="image-upload__image-input"
+                                id="username"
+                                name="username"
+                                type="file"
+                                // value={quantity}
+                                // onChange={(e) => setQuantity(e.target.value)}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

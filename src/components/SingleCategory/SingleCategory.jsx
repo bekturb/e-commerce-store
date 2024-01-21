@@ -2,12 +2,12 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCategory} from "../../features/singleCategorySlice";
+import {getAllShops} from "../../features/shopsSlice";
 import Subcategory from "../Subcategory/Subcategory";
 import MainCategory from "../MainCategory/MainCategory";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import SubSubCategory from "../SubSubCategory/SubSubCategory";
-import {getAllShops} from "../../features/shopsSlice";
 import "./single-category.scss";
 
 const SingleCategory = () => {
