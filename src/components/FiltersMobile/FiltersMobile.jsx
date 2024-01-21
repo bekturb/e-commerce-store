@@ -26,7 +26,6 @@ const FiltersMobile = ({
     const [showAllCategories, setShowAllCategories] = useState(false);
     const [showAllColors, setShowAllColors] = useState(false);
     const [showAllShops, setShowAllShops] = useState(false);
-
     const dispatch = useDispatch();
 
     const {productBrand, productColor, productMinPrice, productMaxPrice, productShop, productCategory} = useSelector(state => state.filterProducts);
@@ -184,19 +183,19 @@ const FiltersMobile = ({
                                                     <ul className="down__list">
                                                         {
                                                             showAllBrands && (
-                                                                filteredBrands.map(brand => (
-                                                                    <li key={brand.id} className="down__item">
+                                                                filteredBrands.map((brand, idx) => (
+                                                                    <li key={idx} className="down__item">
                                                                         <div className="checkbox-with-text">
                                                                             <input
-                                                                                onChange={() => dispatch(filterProductsActions.setProductBrand(brand.id))}
+                                                                                onChange={() => dispatch(filterProductsActions.setProductBrand(brand.name))}
                                                                                 name={brand.name}
-                                                                                checked={productBrand.includes(brand.id)}
+                                                                                checked={productBrand.includes(brand.name)}
                                                                                 className="checkbox-with-text__input"
                                                                                 type="checkbox"
-                                                                                value={brand.id}
-                                                                                id={brand.id}
+                                                                                value={brand.name}
+                                                                                id={brand.name}
                                                                             />
-                                                                            <label htmlFor={brand.id}
+                                                                            <label htmlFor={brand.name}
                                                                                    className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
@@ -215,13 +214,13 @@ const FiltersMobile = ({
                                                 ) : (
                                                     <ul className="filter-fill__slide">
                                                         {
-                                                            filteredBrands?.slice(0, 5).map(brand => (
-                                                                <li key={brand.id} className="filter-fill__slide-item">
+                                                            filteredBrands?.slice(0, 5).map((brand, idx) => (
+                                                                <li key={idx} className="filter-fill__slide-item">
                                                                     <button
-                                                                        onClick={() => dispatch(filterProductsActions.setProductBrand(brand.id))}
+                                                                        onClick={() => dispatch(filterProductsActions.setProductBrand(brand.name))}
                                                                         className={`filter-fill__slide-btn ${
-                                                                            productBrand.includes(brand.id) ? 'selected' : ''}`}
-                                                                        value={brand.id}
+                                                                            productBrand.includes(brand.name) ? 'selected' : ''}`}
+                                                                        value={brand.name}
                                                                     >
                                                                         {brand.name}
                                                                         <span className="filter-fill__slide-count">
@@ -269,26 +268,26 @@ const FiltersMobile = ({
                                                                     <li key={idx} className="down__item">
                                                                         <div className="checkbox-with-text">
                                                                             <input
-                                                                                onChange={() => dispatch(filterProductsActions.setProductColor(color.color))}
-                                                                                name={color.color}
-                                                                                checked={productColor.includes(color.color)}
+                                                                                onChange={() => dispatch(filterProductsActions.setProductColor(color.name))}
+                                                                                name={color.name}
+                                                                                checked={productColor.includes(color.name)}
                                                                                 className="checkbox-with-text__input"
                                                                                 type="checkbox"
-                                                                                value={color.color}
-                                                                                id={color.color}
+                                                                                value={color.name}
+                                                                                id={color.name}
                                                                             />
-                                                                            <label htmlFor={color.color}
+                                                                            <label htmlFor={color.name}
                                                                                    className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
                                                                                 <span className="checkbox-with-text__text">
                                                                             <span
                                                                                 className="checkbox-with-text__circle circle"
-                                                                                style={{'--color': `${color.color}`}}
+                                                                                style={{'--color': `${color.hex}`}}
                                                                             >
 
                                                                             </span>
-                                                                                    {color.color}
+                                                                                    {color.name}
                                                                                     <span
                                                                                         className="checkbox-with-text__count">{color.count}</span>
                                                                                  </span>
@@ -305,12 +304,12 @@ const FiltersMobile = ({
                                                             filteredColors?.slice(0, 5).map((color, idx) => (
                                                                 <li key={idx} className="filter-fill__slide-item">
                                                                     <button
-                                                                        onClick={() => dispatch(filterProductsActions.setProductColor(color.color))}
+                                                                        onClick={() => dispatch(filterProductsActions.setProductColor(color.name))}
                                                                         className={`filter-fill__slide-btn ${
-                                                                            productColor.includes(color.color) ? 'selected' : ''}`}
-                                                                        value={color.color}
+                                                                            productColor.includes(color.name) ? 'selected' : ''}`}
+                                                                        value={color.name}
                                                                     >
-                                                                        {color.color}
+                                                                        {color.name}
                                                                         <span className="filter-fill__slide-count">
                                                                             {color.count}
                                                                         </span>

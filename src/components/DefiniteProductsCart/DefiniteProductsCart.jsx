@@ -55,7 +55,7 @@ const DefiniteProductsCart = ({filteredProducts, pageName, locationPosition}) =>
 
     const handleSearchColors = (query) => {
         const filteringColors = uniqueColors.filter((color) =>
-            color.color.toLowerCase().includes(query.toLowerCase())
+            color.name.toLowerCase().includes(query.toLowerCase())
         )
         setFilteredColors(filteringColors);
     };

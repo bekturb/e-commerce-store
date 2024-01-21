@@ -9,7 +9,6 @@ import NotFound from "../NotFound/NotFound";
 import SubSubCategory from "../SubSubCategory/SubSubCategory";
 import {getAllShops} from "../../features/shopsSlice";
 import "./single-category.scss";
-import {fetchColors} from "../../features/allColors";
 
 const SingleCategory = () => {
     const [hasSubCategory, setHasSubCategory] = useState(false);

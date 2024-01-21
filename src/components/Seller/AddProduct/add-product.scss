@@ -115,9 +115,16 @@
     background: var(--white-color);
     margin-top: 5px;
     border-radius: 5px;
+
+    &--other-bg {
+      background: var(--border-color)!important;
+    }
   }
 
   &__list-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
     margin-bottom: 10px;
     padding: 5px 10px;
     font-size: 17px;
@@ -126,11 +133,13 @@
     cursor: pointer;
 
     &:hover {
-      background: var(--border-color);
+      background: var(--light-text-color);
+      color: var(--white-color);
     }
 
     &--active {
-      background: var(--border-color);
+      background: var(--light-bg-color);
+      color: var(--white-color);
     }
   }
 }

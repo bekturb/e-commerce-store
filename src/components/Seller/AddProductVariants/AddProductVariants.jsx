@@ -1,7 +1,19 @@
-import React from 'react';
-import "./add-product-variant.scss"
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {fetchColors} from "../../../features/allColors";
+import "./add-product-variant.scss";
 
 const AddProductVariants = ({variants, setVariants}) => {
+
+    const [open, setOpen] = useState("");
+    const [selectedColor, setSelectedColor] = useState("");
+    const [originalPrice, setOriginalPrice] = useState("");
+    const [quantity, setQuantity] = useState(0);
+
+    const [colorId, setColorId] = useState("");
+    const {data: colors, loading: colorsLoader, error: colorsError} = useSelector(state => state.colors);
+
+    const dispatch = useDispatch()
 
     const handleChange = (index, key, value) => {
         const updatedVariants = [...variants];
@@ -18,6 +30,16 @@ const AddProductVariants = ({variants, setVariants}) => {
             prevVariants.filter((_, index) => index !== indexToRemove)
         );
     };
+
+    const handleChangeColor = (name, id) => {
+        setSelectedColor(name);
+        setColorId(id);
+        setOpen("");
+    }
+
+    useEffect(() => {
+        dispatch(fetchColors())
+    }, [])
 
     return (
         <div className="variant">
@@ -49,9 +71,84 @@ const AddProductVariants = ({variants, setVariants}) => {
                 <div className="variant__form">
                     <div className="form-item variant__form-item">
                         <p className="form-item__title">Color</p>
+                        <div className="unique-dropdown variant__unique-dropdown">
+                            <div className="unique-dropdown__cap">
+                                <button className="unique-dropdown__button" type="button"
+                                        onClick={open === "color" ? () => setOpen("") : () => setOpen("color")}>
+                                    {
+                                        selectedColor ? selectedColor : "Select Color"
+                                    }
+                                    {
+                                        open === "color" ?
+                                            <span className="unique-dropdown__icon">
+                                                <i className="ri-arrow-up-s-line"></i>
+                                            </span> :
+                                            <span className="unique-dropdown__icon">
+                                                <i className="ri-arrow-down-s-line"></i>
+                                            </span>
+                                    }
+                                </button>
+                            </div>
+                            {
+                                open === "color" &&
+                                <div className="unique-dropdown__body">
+                                    <ul className="unique-dropdown__list unique-dropdown__list--other-bg">
+                                        {colorsLoader ? (
+                                            <li>
+                                                Loading...
+                                            </li>
+                                        ) : colorsError ? (
+                                            <li>
+                                                <div className="loader-box">
+                                                    {colorsError}
+                                                </div>
+                                            </li>
+                                        ) : (
+                                            <>
+                                                {colors && colors.length > 0 ? (
+                                                    colors.map((color) => (
+                                                        <li
+                                                            className={
+                                                                color.name === selectedColor
+                                                                    ? "unique-dropdown__list-item unique-dropdown__list-item--active"
+                                                                    : "unique-dropdown__list-item"
+                                                            }
+                                                            key={color._id}
+                                                            onClick={() => handleChangeColor(color.name, color._id)}
+                                                        >
+                                                            <span className="unique-color circle"
+                                                                  style={{"--color": `${color.hex}`}}></span>
+                                                            {color.name}
+                                                        </li>
+                                                    ))
+                                                ) : (
+                                                    <li>
+                                                        <div>No data</div>
+                                                    </li>
+                                                )}
+                                            </>
+                                        )}
+                                    </ul>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div className="form-item variant__form-item">
+                        <p className="form-item__title">Price</p>
                         <input
-                            className="form-item__input"
+                            className="input form-item__input"
                             type="text"
+                            value={originalPrice}
+                            onChange={(e) => setOriginalPrice(e.target.value)}
+                        />
+                    </div>
+                    <div className="form-item variant__form-item">
+                        <p className="form-item__title">Quantity</p>
+                        <input
+                            className="input form-item__input"
+                            type="number"
+                            value={quantity}
+                            onChange={(e) => setQuantity(e.target.value)}
                         />
                     </div>
                 </div>

@@ -46,15 +46,15 @@ const FilterByColors = ({uniqueColors, productColor, filteredColors, handleSearc
                                 <li key={idx} className="down__item">
                                     <div className="checkbox-with-text">
                                         <input
-                                            onChange={() => dispatch(filterProductsActions.setProductColor(color.color))}
-                                            name={color.color}
-                                            checked={productColor.includes(color.color)}
+                                            onChange={() => dispatch(filterProductsActions.setProductColor(color.name))}
+                                            name={color.name}
+                                            checked={productColor.includes(color.name)}
                                             className="checkbox-with-text__input"
                                             type="checkbox"
-                                            value={color.color}
-                                            id={color.color}
+                                            value={color.name}
+                                            id={color.name}
                                         />
-                                        <label htmlFor={color.color}
+                                        <label htmlFor={color.name}
                                                className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
@@ -62,11 +62,11 @@ const FilterByColors = ({uniqueColors, productColor, filteredColors, handleSearc
                                                 className="checkbox-with-text__text">
                                                                             <span
                                                                                 className="checkbox-with-text__circle circle"
-                                                                                style={{'--color': `${color.color}`}}
+                                                                                style={{'--color': `${color.hex}`}}
                                                                             >
 
                                                                             </span>
-                                                {color.color}
+                                                {color.name}
                                                 <span
                                                     className="checkbox-with-text__count">{color.count}</span>
                                                                                  </span>
@@ -81,15 +81,15 @@ const FilterByColors = ({uniqueColors, productColor, filteredColors, handleSearc
                                     <li key={idx} className="down__item">
                                         <div className="checkbox-with-text">
                                             <input
-                                                onChange={() => dispatch(filterProductsActions.setProductColor(color.color))}
-                                                name={color.color}
-                                                checked={productColor.includes(color.color)}
+                                                onChange={() => dispatch(filterProductsActions.setProductColor(color.name))}
+                                                name={color.name}
+                                                checked={productColor.includes(color.name)}
                                                 className="checkbox-with-text__input"
                                                 type="checkbox"
-                                                value={color.color}
-                                                id={color.color}
+                                                value={color.name}
+                                                id={color.name}
                                             />
-                                            <label htmlFor={color.color}
+                                            <label htmlFor={color.name}
                                                    className="checkbox-with-text__label">
                                                                             <span
                                                                                 className="checkbox-with-text__decor"></span>
@@ -97,11 +97,11 @@ const FilterByColors = ({uniqueColors, productColor, filteredColors, handleSearc
                                                     className="checkbox-with-text__text">
                                                                             <span
                                                                                 className="checkbox-with-text__circle circle"
-                                                                                style={{'--color': `${color.color}`}}
+                                                                                style={{'--color': `${color.hex}`}}
                                                                             >
 
                                                                             </span>
-                                                    {color.color}
+                                                    {color.name}
                                                     <span
                                                         className="checkbox-with-text__count">{color.count}</span>
                                                                                  </span>
