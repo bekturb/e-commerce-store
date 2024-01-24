@@ -113,16 +113,13 @@
   &__list {
     padding: 10px 10px;
     width: 42%;
-    max-height: 200px;
+    max-height: 300px;
     overflow-x: hidden;
     white-space: nowrap;
-    background: var(--white-color);
+    background: var(--light-text-color);
     margin-top: 5px;
     border-radius: 5px;
-
-    &--other-bg {
-      background: var(--border-color)!important;
-    }
+    color: var(--white-color);
   }
 
   &__list-item {
@@ -137,13 +134,13 @@
     cursor: pointer;
 
     &:hover {
-      background: var(--light-text-color);
-      color: var(--white-color);
+      background: var(--light-bg-color);
+      color: var(--dark-color);
     }
 
     &--active {
       background: var(--light-bg-color);
-      color: var(--white-color);
+      color: var(--dark-color);
     }
   }
 }

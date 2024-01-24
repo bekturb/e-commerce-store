@@ -53,13 +53,9 @@ const AddProduct = () => {
 
     const filterSubCategory = (children, name, categoryId) => {
 
-        setSubCategory(name)
-        setSubSubCategory("")
-
         if (children?.length > 0) {
             setSubSubCategories(children)
             setCategoryId("")
-            setOpen("")
         }else {
             setCategoryId(categoryId)
             setSubSubCategories(children)
@@ -68,7 +64,7 @@ const AddProduct = () => {
     }
 
     const filterSubSubCategory = (name, categoryId) => {
-        setSubSubCategory(name)
+        setSubCategory(name)
         setCategoryId(categoryId)
         setOpen("")
     }
@@ -168,7 +164,7 @@ const AddProduct = () => {
                                     <div className="unique-dropdown__cap">
                                         <button className="unique-dropdown__button" type="button" onClick={open === "subCategory" ? () => setOpen("") : () => setOpen("subCategory")}>
                                             {
-                                                subCategory && subSubCategory ? subSubCategory : subCategory ? subCategory : "Select Category"
+                                                subCategory ? subCategory : "Select Category"
                                             }
                                             {
                                                 open === "subCategory" ?

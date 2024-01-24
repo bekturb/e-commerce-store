@@ -2,18 +2,23 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchColors} from "../../../features/allColors";
 import "./add-product-variant.scss";
+import {toast} from "react-hot-toast";
 
 const AddProductVariants = ({variants, setVariants}) => {
 
     const [open, setOpen] = useState("");
-    const [selectedColor, setSelectedColor] = useState("");
-    const [originalPrice, setOriginalPrice] = useState("");
-    const [quantity, setQuantity] = useState(0);
+    // const [originalPrice, setOriginalPrice] = useState(variants[variants.length - 1].originalPrice);
+    // const [quantity, setQuantity] = useState(variants[variants.length - 1].quantity);
+    // const [images, setImages] = useState(variants[variants.length - 1].images);
 
-    const [colorId, setColorId] = useState("");
     const {data: colors, loading: colorsLoader, error: colorsError} = useSelector(state => state.colors);
+    const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
+    const isLastVariantFilled = () => {
+        const lastVariant = variants[variants.length - 1];
+        // return lastVariant && lastVariant.color && lastVariant.originalPrice && lastVariant.quantity && lastVariant.images.length < 3;
+        return lastVariant && lastVariant.color && lastVariant.originalPrice && lastVariant.quantity;
+    };
 
     const handleChange = (index, key, value) => {
         const updatedVariants = [...variants];
@@ -22,7 +27,11 @@ const AddProductVariants = ({variants, setVariants}) => {
     };
 
     const handleAddVariant = () => {
-        setVariants([...variants, { color: '', originalPrice: '', quantity: '', image: ''}]);
+        if (!isLastVariantFilled()) {
+            toast.error('Please fill in all fields in the previous variant.');
+            return;
+        }
+        setVariants([...variants, { color: '', originalPrice: '', quantity: 0, images: [] }]);
     };
 
     const handleRemoveVariant = (indexToRemove) => {
@@ -31,11 +40,22 @@ const AddProductVariants = ({variants, setVariants}) => {
         );
     };
 
-    const handleChangeColor = (name, id) => {
-        setSelectedColor(name);
-        setColorId(id);
-        setOpen("");
-    }
+    const handleChangeColor = (color) => {
+        const updatedVariants = [...variants];
+        updatedVariants[variants.length - 1].color = color._id;
+        setVariants(updatedVariants);
+    };
+
+    const handleChangeVariantProperty = (key, value) => {
+        const updatedVariants = [...variants];
+        updatedVariants[variants.length - 1][key] = value;
+        setVariants(updatedVariants);
+    };
+
+    const findColorName = (colorId) => {
+        const foundColor = colors.find((color) => color._id === colorId);
+        return foundColor ? foundColor.name : 'Select Color';
+    };
 
     useEffect(() => {
         dispatch(fetchColors())
@@ -75,9 +95,13 @@ const AddProductVariants = ({variants, setVariants}) => {
                             <div className="unique-dropdown__cap">
                                 <button className="unique-dropdown__button" type="button"
                                         onClick={open === "color" ? () => setOpen("") : () => setOpen("color")}>
-                                    {
-                                        selectedColor ? selectedColor : "Select Color"
-                                    }
+                                    {variants[variants.length - 1].color ? (
+                                        <>
+                                            {findColorName(variants[variants.length - 1].color)}
+                                        </>
+                                    ) : (
+                                        'Select Color'
+                                    )}
                                     {
                                         open === "color" ?
                                             <span className="unique-dropdown__icon">
@@ -109,12 +133,12 @@ const AddProductVariants = ({variants, setVariants}) => {
                                                     colors.map((color) => (
                                                         <li
                                                             className={
-                                                                color.name === selectedColor
+                                                                color.name === findColorName(variants[variants.length - 1].color)
                                                                     ? "unique-dropdown__list-item unique-dropdown__list-item--active"
                                                                     : "unique-dropdown__list-item"
                                                             }
                                                             key={color._id}
-                                                            onClick={() => handleChangeColor(color.name, color._id)}
+                                                            onClick={() => handleChangeColor(color)}
                                                         >
                                                             <span className="unique-color circle"
                                                                   style={{"--color": `${color.hex}`}}></span>
@@ -138,8 +162,8 @@ const AddProductVariants = ({variants, setVariants}) => {
                         <input
                             className="input form-item__input"
                             type="text"
-                            value={originalPrice}
-                            onChange={(e) => setOriginalPrice(e.target.value)}
+                            value={variants[variants.length -1].originalPrice}
+                            onChange={(e) => handleChangeVariantProperty("originalPrice", e.target.value)}
                         />
                     </div>
                     <div className="form-item variant__form-item">
@@ -147,29 +171,29 @@ const AddProductVariants = ({variants, setVariants}) => {
                         <input
                             className="input form-item__input"
                             type="number"
-                            value={quantity}
-                            onChange={(e) => setQuantity(e.target.value)}
+                            value={variants[variants.length -1].quantity}
+                            onChange={(e) => handleChangeVariantProperty("quantity", e.target.value)}
                         />
                     </div>
-                    <div className="form-item variant__form-item">
-                        <p className="form-item__title form-item__title--margin">Images</p>
-                        <div className="image-upload form-item__image-upload">
-                            <label htmlFor="username" className="image-upload__label">
-                            <span className="image-upload__image-icon">
-                                <i className="ri-upload-cloud-line"></i>
-                                    Upload
-                            </span>
-                            </label>
-                            <input
-                                className="image-upload__image-input"
-                                id="username"
-                                name="username"
-                                type="file"
-                                // value={quantity}
-                                // onChange={(e) => setQuantity(e.target.value)}
-                            />
-                        </div>
-                    </div>
+                    {/*<div className="form-item variant__form-item">*/}
+                    {/*    <p className="form-item__title form-item__title--margin">Images</p>*/}
+                    {/*    <div className="image-upload form-item__image-upload">*/}
+                    {/*        <label htmlFor="username" className="image-upload__label">*/}
+                    {/*        <span className="image-upload__image-icon">*/}
+                    {/*            <i className="ri-upload-cloud-line"></i>*/}
+                    {/*                Upload*/}
+                    {/*        </span>*/}
+                    {/*        </label>*/}
+                    {/*        <input*/}
+                    {/*            className="image-upload__image-input"*/}
+                    {/*            id="username"*/}
+                    {/*            name="username"*/}
+                    {/*            type="file"*/}
+                    {/*            // value={quantity}*/}
+                    {/*            // onChange={(e) => setQuantity(e.target.value)}*/}
+                    {/*        />*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </div>
