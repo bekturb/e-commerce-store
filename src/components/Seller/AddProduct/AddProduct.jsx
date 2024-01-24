@@ -13,7 +13,7 @@ const AddProduct = () => {
     const [stock, setStock] = useState("");
     const [description, setDescription] = useState("");
     const [selectedTags, setSelectedTags] = useState([]);
-    const [variants, setVariants] = useState([{ color: '', originalPrice: '', quantity: '', image: ''}]);
+    const [variants, setVariants] = useState([{ color: '', originalPrice: 0, quantity: 0, images: []}]);
 
     const [open, setOpen] = useState("");
     const [brands, setBrands] = useState([]);

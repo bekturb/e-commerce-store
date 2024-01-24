@@ -1,23 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchColors} from "../../../features/allColors";
-import "./add-product-variant.scss";
 import {toast} from "react-hot-toast";
+import axios from "../../../utils/seller-axios-utils"
+import "./add-product-variant.scss";
 
 const AddProductVariants = ({variants, setVariants}) => {
 
     const [open, setOpen] = useState("");
-    // const [originalPrice, setOriginalPrice] = useState(variants[variants.length - 1].originalPrice);
-    // const [quantity, setQuantity] = useState(variants[variants.length - 1].quantity);
-    // const [images, setImages] = useState(variants[variants.length - 1].images);
+    const [imagesLoading, setImagesLoading] = useState(false);
 
     const {data: colors, loading: colorsLoader, error: colorsError} = useSelector(state => state.colors);
     const dispatch = useDispatch();
 
+    console.log(variants, "variants")
+
     const isLastVariantFilled = () => {
         const lastVariant = variants[variants.length - 1];
-        // return lastVariant && lastVariant.color && lastVariant.originalPrice && lastVariant.quantity && lastVariant.images.length < 3;
-        return lastVariant && lastVariant.color && lastVariant.originalPrice && lastVariant.quantity;
+        return lastVariant && lastVariant.color && lastVariant.originalPrice && lastVariant.quantity && lastVariant.images.length < 3;
     };
 
     const handleChange = (index, key, value) => {
@@ -31,7 +31,7 @@ const AddProductVariants = ({variants, setVariants}) => {
             toast.error('Please fill in all fields in the previous variant.');
             return;
         }
-        setVariants([...variants, { color: '', originalPrice: '', quantity: 0, images: [] }]);
+        setVariants([...variants, { color: '', originalPrice: 0, quantity: 0, images: [] }]);
     };
 
     const handleRemoveVariant = (indexToRemove) => {
@@ -44,6 +44,7 @@ const AddProductVariants = ({variants, setVariants}) => {
         const updatedVariants = [...variants];
         updatedVariants[variants.length - 1].color = color._id;
         setVariants(updatedVariants);
+        setOpen("")
     };
 
     const handleChangeVariantProperty = (key, value) => {
@@ -52,8 +53,27 @@ const AddProductVariants = ({variants, setVariants}) => {
         setVariants(updatedVariants);
     };
 
+    const handleCahngeImage = (event) => {
+        const {files} = event.target;
+        if (files.length > 0){
+            setImagesLoading(true)
+            const data = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                data.append("images", files[i]);
+            }
+            return axios({url: '/api/upload/images', method: 'POST', data: data})
+                .then(response => {
+                    const {data} = response;
+                    const updatedVariants = [...variants];
+                    updatedVariants[variants.length - 1].images = data;
+                    setVariants(updatedVariants);
+                    setImagesLoading(false)
+                });
+        }
+    };
+
     const findColorName = (colorId) => {
-        const foundColor = colors.find((color) => color._id === colorId);
+        const foundColor = colors?.find((color) => color._id === colorId);
         return foundColor ? foundColor.name : 'Select Color';
     };
 
@@ -175,25 +195,34 @@ const AddProductVariants = ({variants, setVariants}) => {
                             onChange={(e) => handleChangeVariantProperty("quantity", e.target.value)}
                         />
                     </div>
-                    {/*<div className="form-item variant__form-item">*/}
-                    {/*    <p className="form-item__title form-item__title--margin">Images</p>*/}
-                    {/*    <div className="image-upload form-item__image-upload">*/}
-                    {/*        <label htmlFor="username" className="image-upload__label">*/}
-                    {/*        <span className="image-upload__image-icon">*/}
-                    {/*            <i className="ri-upload-cloud-line"></i>*/}
-                    {/*                Upload*/}
-                    {/*        </span>*/}
-                    {/*        </label>*/}
-                    {/*        <input*/}
-                    {/*            className="image-upload__image-input"*/}
-                    {/*            id="username"*/}
-                    {/*            name="username"*/}
-                    {/*            type="file"*/}
-                    {/*            // value={quantity}*/}
-                    {/*            // onChange={(e) => setQuantity(e.target.value)}*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                    <div className="form-item variant__form-item">
+                        <p className="form-item__title form-item__title--margin">Images</p>
+                        <div className="uploaded-image">
+                            {
+                                variants[variants.length - 1]?.images?.map((image, index) => (
+                                    <div className="uploaded-image__item">
+                                        <img className="uploaded-image__item-img" src={image.url} alt=""/>
+                                        <span className="uploaded-image__icon"><i className="ri-star-line"></i></span>
+                                    </div>
+                                ))
+                            }
+                            <div className="image-upload form-item__image-upload">
+                                <label htmlFor="username" className="image-upload__label">
+                                    <span className="image-upload__image-icon">
+                                        <i className="ri-upload-cloud-line"></i>
+                                        Upload
+                                    </span>
+                                </label>
+                                <input
+                                    className="image-upload__image-input"
+                                    id="username"
+                                    name="username"
+                                    type="file"
+                                    onChange={(e) => handleCahngeImage(e)}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
