@@ -28,18 +28,23 @@ const AddProductVariants = ({variants, setVariants}) => {
         const incompleteVariants = variants.filter((variant) => !isVariantFilled(variant));
 
         if (incompleteVariants.length > 0) {
-            const incompleteVariantNumbers = incompleteVariants.map((variant) => variants.indexOf(variant) + 1);
-            setErrorVariantsNumber(incompleteVariantNumbers)
-            toast.error("Please fill in all fields for variants");
+            const incompleteVariantNumbers = incompleteVariants.map((variant) => variants.indexOf(variant));
+            setErrorVariantsNumber(incompleteVariantNumbers);
+            toast.error('Please fill in all fields for variants');
             return;
         }
 
+        setErrorVariantsNumber([]);
         setVariants([...variants, { color: '', originalPrice: 0, quantity: 0, images: [] }]);
+        setVariantIndex(variants.length);
     };
 
     const handleRemoveVariant = (indexToRemove) => {
         setVariants((prevVariants) => {
-            return prevVariants.filter((_, index) => index !== indexToRemove);
+            const updatedVariants = prevVariants.filter((_, index) => index !== indexToRemove);
+            const newIndex = variantIndex >= indexToRemove ? Math.max(0, variantIndex - 1) : variantIndex;
+            setVariantIndex(newIndex);
+            return updatedVariants;
         });
     };
 
@@ -115,16 +120,20 @@ const AddProductVariants = ({variants, setVariants}) => {
                             <div
                                 className={index === variantIndex ? "variant__tab variant__tab--active" : "variant__tab"}
                                 key={index}
-                                onClick={() => handleOpenVariant(index)}
                             >
                                 {
-                                    !errorVariantsNumber.includes(index) && (
+                                    errorVariantsNumber.includes(index) ? (
                                         <span className="variant__tab-error">
                                              <i className="ri-error-warning-fill"></i>
                                         </span>
-                                    )
+                                    ) : null
                                 }
-                                <span className="variant__tab-title">{`Product (${index + 1})`}</span>
+                                <div
+                                    className="variant__tab-title"
+                                    onClick={() => handleOpenVariant(index)}
+                                >
+                                    {`Product (${index + 1})`}
+                                </div>
                                 {
                                     index > 0 && (
                                         <span className="variant__tab-icon" onClick={() => handleRemoveVariant(index)}>
