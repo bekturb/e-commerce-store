@@ -6,18 +6,16 @@ import axios from "../../../utils/seller-axios-utils"
 import "./add-product-variant.scss";
 
 const AddProductVariants = ({variants, setVariants}) => {
-
-    const [open, setOpen] = useState("");
     const [imagesLoading, setImagesLoading] = useState(false);
-
+    const [variantIndex, setVariantIndex] = useState(0);
+    const [errorVariantsNumber, setErrorVariantsNumber] = useState([]);
+    const [open, setOpen] = useState("");
     const {data: colors, loading: colorsLoader, error: colorsError} = useSelector(state => state.colors);
+
     const dispatch = useDispatch();
 
-    console.log(variants, "variants")
-
-    const isLastVariantFilled = () => {
-        const lastVariant = variants[variants.length - 1];
-        return lastVariant && lastVariant.color && lastVariant.originalPrice && lastVariant.quantity && lastVariant.images.length < 3;
+    const isVariantFilled = (variant) => {
+        return variant && variant.color && variant.originalPrice && variant.quantity;
     };
 
     const handleChange = (index, key, value) => {
@@ -27,33 +25,46 @@ const AddProductVariants = ({variants, setVariants}) => {
     };
 
     const handleAddVariant = () => {
-        if (!isLastVariantFilled()) {
-            toast.error('Please fill in all fields in the previous variant.');
+        const incompleteVariants = variants.filter((variant) => !isVariantFilled(variant));
+
+        if (incompleteVariants.length > 0) {
+            const incompleteVariantNumbers = incompleteVariants.map((variant) => variants.indexOf(variant) + 1);
+            setErrorVariantsNumber(incompleteVariantNumbers)
+            toast.error("Please fill in all fields for variants");
             return;
         }
+
         setVariants([...variants, { color: '', originalPrice: 0, quantity: 0, images: [] }]);
     };
 
     const handleRemoveVariant = (indexToRemove) => {
-        setVariants((prevVariants) =>
-            prevVariants.filter((_, index) => index !== indexToRemove)
-        );
+        setVariants((prevVariants) => {
+            return prevVariants.filter((_, index) => index !== indexToRemove);
+        });
     };
 
-    const handleChangeColor = (color) => {
+    const handleOpenVariant = (index) => {
+        setVariantIndex(index)
+    }
+
+    const handleChangeColor = (colorId) => {
         const updatedVariants = [...variants];
-        updatedVariants[variants.length - 1].color = color._id;
-        setVariants(updatedVariants);
-        setOpen("")
+
+        if (variantIndex >= 0 && variantIndex < updatedVariants.length) {
+            updatedVariants[variantIndex].color = colorId;
+            setVariants(updatedVariants);
+        }
+
+        setOpen("");
     };
 
     const handleChangeVariantProperty = (key, value) => {
         const updatedVariants = [...variants];
-        updatedVariants[variants.length - 1][key] = value;
+        updatedVariants[variantIndex][key] = value;
         setVariants(updatedVariants);
     };
 
-    const handleCahngeImage = (event) => {
+    const handleChangeImage = (event) => {
         const {files} = event.target;
         if (files.length > 0){
             setImagesLoading(true)
@@ -63,22 +74,36 @@ const AddProductVariants = ({variants, setVariants}) => {
             }
             return axios({url: '/api/upload/images', method: 'POST', data: data})
                 .then(response => {
-                    const {data} = response;
+                    const imageDataArray = response.data;
                     const updatedVariants = [...variants];
-                    updatedVariants[variants.length - 1].images = data;
+                    updatedVariants[variantIndex].images = [...updatedVariants[variantIndex].images, ...imageDataArray];
                     setVariants(updatedVariants);
                     setImagesLoading(false)
                 });
         }
     };
 
+    // const selectMainPhoto = (id) => {
+    //     const mainImage = variants.design.find(img => img.public_id === id);
+    //     const addedPhotosWithoutSelected = formData.design.filter(img => img.public_id !== id);
+    //     const newAddedPhotos = [mainImage, ...addedPhotosWithoutSelected];
+    //     setFormData((prevState) => ({
+    //         ...prevState,
+    //         design: [...newAddedPhotos]
+    //     }));
+    // }
+
     const findColorName = (colorId) => {
-        const foundColor = colors?.find((color) => color._id === colorId);
-        return foundColor ? foundColor.name : 'Select Color';
+        const foundColor = colors?.find((color) => color?._id === colorId);
+        return foundColor ? foundColor?.name : 'Select Color';
     };
 
     useEffect(() => {
         dispatch(fetchColors())
+    }, [dispatch])
+
+    useEffect(() => {
+        setVariantIndex(variants?.length - 1)
     }, [])
 
     return (
@@ -88,8 +113,17 @@ const AddProductVariants = ({variants, setVariants}) => {
                     {
                         variants.map((variant, index) => (
                             <div
-                                className={index === variants.length - 1 ? "variant__tab variant__tab--active" : "variant__tab"}
-                                key={index}>
+                                className={index === variantIndex ? "variant__tab variant__tab--active" : "variant__tab"}
+                                key={index}
+                                onClick={() => handleOpenVariant(index)}
+                            >
+                                {
+                                    !errorVariantsNumber.includes(index) && (
+                                        <span className="variant__tab-error">
+                                             <i className="ri-error-warning-fill"></i>
+                                        </span>
+                                    )
+                                }
                                 <span className="variant__tab-title">{`Product (${index + 1})`}</span>
                                 {
                                     index > 0 && (
@@ -115,9 +149,9 @@ const AddProductVariants = ({variants, setVariants}) => {
                             <div className="unique-dropdown__cap">
                                 <button className="unique-dropdown__button" type="button"
                                         onClick={open === "color" ? () => setOpen("") : () => setOpen("color")}>
-                                    {variants[variants.length - 1].color ? (
+                                    {variants[variantIndex]?.color ? (
                                         <>
-                                            {findColorName(variants[variants.length - 1].color)}
+                                            {findColorName(variants[variantIndex]?.color)}
                                         </>
                                     ) : (
                                         'Select Color'
@@ -149,16 +183,16 @@ const AddProductVariants = ({variants, setVariants}) => {
                                             </li>
                                         ) : (
                                             <>
-                                                {colors && colors.length > 0 ? (
+                                                {colors && colors?.length > 0 ? (
                                                     colors.map((color) => (
                                                         <li
                                                             className={
-                                                                color.name === findColorName(variants[variants.length - 1].color)
+                                                                color.name === findColorName(variants[variantIndex]?.color)
                                                                     ? "unique-dropdown__list-item unique-dropdown__list-item--active"
                                                                     : "unique-dropdown__list-item"
                                                             }
                                                             key={color._id}
-                                                            onClick={() => handleChangeColor(color)}
+                                                            onClick={() => handleChangeColor(color._id)}
                                                         >
                                                             <span className="unique-color circle"
                                                                   style={{"--color": `${color.hex}`}}></span>
@@ -182,7 +216,7 @@ const AddProductVariants = ({variants, setVariants}) => {
                         <input
                             className="input form-item__input"
                             type="text"
-                            value={variants[variants.length -1].originalPrice}
+                            value={variants[variantIndex]?.originalPrice}
                             onChange={(e) => handleChangeVariantProperty("originalPrice", e.target.value)}
                         />
                     </div>
@@ -191,7 +225,7 @@ const AddProductVariants = ({variants, setVariants}) => {
                         <input
                             className="input form-item__input"
                             type="number"
-                            value={variants[variants.length -1].quantity}
+                            value={variants[variantIndex]?.quantity}
                             onChange={(e) => handleChangeVariantProperty("quantity", e.target.value)}
                         />
                     </div>
@@ -199,27 +233,36 @@ const AddProductVariants = ({variants, setVariants}) => {
                         <p className="form-item__title form-item__title--margin">Images</p>
                         <div className="uploaded-image">
                             {
-                                variants[variants.length - 1]?.images?.map((image, index) => (
-                                    <div className="uploaded-image__item">
+                                variants[variantIndex]?.images?.map((image) => (
+                                    <div key={image.asset_id} className="uploaded-image__item">
                                         <img className="uploaded-image__item-img" src={image.url} alt=""/>
                                         <span className="uploaded-image__icon"><i className="ri-star-line"></i></span>
                                     </div>
                                 ))
                             }
                             <div className="image-upload form-item__image-upload">
-                                <label htmlFor="username" className="image-upload__label">
-                                    <span className="image-upload__image-icon">
-                                        <i className="ri-upload-cloud-line"></i>
-                                        Upload
-                                    </span>
-                                </label>
-                                <input
-                                    className="image-upload__image-input"
-                                    id="username"
-                                    name="username"
-                                    type="file"
-                                    onChange={(e) => handleCahngeImage(e)}
-                                />
+                                {
+                                    imagesLoading ? (
+                                        <div>
+                                            Loading....
+                                        </div>
+                                    ) : <>
+                                        <label htmlFor="userimage" className="image-upload__label">
+                                                        <span className="image-upload__image-icon">
+                                                            <i className="ri-upload-cloud-line"></i>
+                                                            Upload
+                                                        </span>
+                                        </label>
+                                        <input
+                                            className="image-upload__image-input"
+                                            multiple
+                                            id="userimage"
+                                            name="userimage"
+                                            type="file"
+                                            onChange={(e) => handleChangeImage(e)}
+                                        />
+                                    </>
+                                }
                             </div>
                         </div>
                     </div>
