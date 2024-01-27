@@ -25,6 +25,7 @@ import {brandReducer} from "../features/getSingleBrand";
 import {allCategoriesReducer} from "../features/allCategories";
 import {offerReducer} from "../features/offerSlice";
 import {productsReducer} from "../features/productsSlice";
+import {productCreatingReducer} from "../features/createProductSlice";
 import {productReducer} from "../features/getProduct";
 import {categoryReducer} from "../features/singleCategorySlice";
 import {shopsReducer} from "../features/shopsSlice";
@@ -60,6 +61,7 @@ const store = configureStore({
         products: productsReducer,
         stripe: stripeReducer,
         product: productReducer,
+        productCreating: productCreatingReducer,
         accounts: accountReducer,
         category: categoryReducer,
         allCategories: allCategoriesReducer,

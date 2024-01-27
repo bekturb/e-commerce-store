@@ -5,24 +5,13 @@ import {toast} from "react-hot-toast";
 import axios from "../../../utils/seller-axios-utils"
 import "./add-product-variant.scss";
 
-const AddProductVariants = ({variants, setVariants}) => {
+const AddProductVariants = ({variants, setVariants, errorVariantsNumber, setErrorVariantsNumber, isVariantFilled}) => {
     const [imagesLoading, setImagesLoading] = useState(false);
     const [variantIndex, setVariantIndex] = useState(0);
-    const [errorVariantsNumber, setErrorVariantsNumber] = useState([]);
     const [open, setOpen] = useState("");
     const {data: colors, loading: colorsLoader, error: colorsError} = useSelector(state => state.colors);
 
     const dispatch = useDispatch();
-
-    const isVariantFilled = (variant) => {
-        return variant && variant.color && variant.originalPrice && variant.quantity;
-    };
-
-    const handleChange = (index, key, value) => {
-        const updatedVariants = [...variants];
-        updatedVariants[index][key] = value;
-        setVariants(updatedVariants);
-    };
 
     const handleAddVariant = () => {
         const incompleteVariants = variants.filter((variant) => !isVariantFilled(variant));
@@ -88,15 +77,14 @@ const AddProductVariants = ({variants, setVariants}) => {
         }
     };
 
-    // const selectMainPhoto = (id) => {
-    //     const mainImage = variants.design.find(img => img.public_id === id);
-    //     const addedPhotosWithoutSelected = formData.design.filter(img => img.public_id !== id);
-    //     const newAddedPhotos = [mainImage, ...addedPhotosWithoutSelected];
-    //     setFormData((prevState) => ({
-    //         ...prevState,
-    //         design: [...newAddedPhotos]
-    //     }));
-    // }
+    const selectMainPhoto = (id) => {
+        const mainImage = variants[variantIndex]?.images.find(img => img.public_id === id);
+        const addedPhotosWithoutSelected = variants[variantIndex]?.images.filter(img => img.public_id !== id);
+        const newAddedPhotos = [mainImage, ...addedPhotosWithoutSelected];
+        const updatedVariants = [...variants];
+        updatedVariants[variantIndex].images = [...newAddedPhotos];
+        setVariants(updatedVariants);
+    }
 
     const findColorName = (colorId) => {
         const foundColor = colors?.find((color) => color?._id === colorId);
@@ -245,7 +233,12 @@ const AddProductVariants = ({variants, setVariants}) => {
                                 variants[variantIndex]?.images?.map((image) => (
                                     <div key={image.asset_id} className="uploaded-image__item">
                                         <img className="uploaded-image__item-img" src={image.url} alt=""/>
-                                        <span className="uploaded-image__icon"><i className="ri-star-line"></i></span>
+                                        <span
+                                            className="uploaded-image__icon"
+                                            onClick={() => selectMainPhoto(image.public_id)}
+                                        >
+                                            <i className="ri-star-line"></i>
+                                        </span>
                                     </div>
                                 ))
                             }
