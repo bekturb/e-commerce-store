@@ -5,9 +5,9 @@ import {fetchProducts} from "../../../features/productsSlice";
 import AddProductVariants from "../AddProductVariants/AddProductVariants";
 import {useNavigate} from "react-router-dom";
 import {fetchProductData} from "../../../features/createProductSlice";
-import "./add-product.scss";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
+import "./add-product.scss";
 import {toast} from "react-hot-toast";
 
 const AddProduct = () => {
@@ -32,7 +32,7 @@ const AddProduct = () => {
 
     const {data: categories} = useSelector(state => state.categories);
     const {data: products} = useSelector(state => state.products);
-    const {loading: createdProductsLoading,  error: createdProductsErr} = useSelector(state => state.productCreating);
+    const {data:createdProductsData, loading: createdProductsLoading,  error: createdProductsErr} = useSelector(state => state.productCreating);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -130,7 +130,12 @@ const AddProduct = () => {
         const errors = validateForm(formData);
         setFormErrors(errors);
         if (Object.keys(errors).length === 0) {
-            const data = await dispatch(fetchProductData(formData))
+            try {
+                await dispatch(fetchProductData(formData))
+                navigate("/shop/all-products")
+            } catch (error) {
+                toast.error('Error adding product:', error);
+            }
         }
     };
 
@@ -157,14 +162,17 @@ const AddProduct = () => {
         return errors
     };
 
-    if (createdProductsErr) {
-        toast.error( "error")
-    }
-
     return (
         <div className="add-product">
             <div className="add-product__inner">
                 <h1 className="add-product__main-title">Feature</h1>
+                {
+                    createdProductsErr && (
+                        <div className="error-block">
+                            <p className="error-block__error">{createdProductsErr}</p>
+                        </div>
+                    )
+                }
                 <form className="form add-product__form" onSubmit={onSubmit}>
                     <div className="form-item add-product__form-item">
                         <p className="form-item__title">Name</p>

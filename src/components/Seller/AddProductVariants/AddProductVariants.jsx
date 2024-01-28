@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchColors} from "../../../features/allColors";
 import {toast} from "react-hot-toast";
-import axios from "../../../utils/seller-axios-utils"
+import axios from "../../../utils/seller-axios-utils";
 import "./add-product-variant.scss";
 
 const AddProductVariants = ({variants, setVariants, errorVariantsNumber, setErrorVariantsNumber, isVariantFilled}) => {
@@ -74,6 +74,33 @@ const AddProductVariants = ({variants, setVariants, errorVariantsNumber, setErro
                     setVariants(updatedVariants);
                     setImagesLoading(false)
                 });
+        }
+    };
+
+    const deletePhoto = async (id) => {
+        try {
+            setImagesLoading(true);
+
+            const response = await axios.delete(`/api/upload/single-image/${id}`);
+
+            if (response.status === 200) {
+                const updatedVariants = variants.map((variant, index) => {
+                    if (index === variantIndex) {
+                        const updatedImages = variant.images.filter(img => img.public_id !== id);
+                        return { ...variant, images: updatedImages };
+                    }
+                    return variant;
+                });
+
+                setVariants(updatedVariants);
+            } else {
+                toast.error(`Unexpected status: ${response.status}`);
+            }
+
+            setImagesLoading(false);
+        } catch (error) {
+            toast.error("Error deleting photo:", error);
+            setImagesLoading(false);
         }
     };
 
@@ -212,7 +239,7 @@ const AddProductVariants = ({variants, setVariants, errorVariantsNumber, setErro
                         <p className="form-item__title form-item__title--margin">Price</p>
                         <input
                             className="input form-item__input"
-                            type="text"
+                            type="number"
                             value={variants[variantIndex]?.originalPrice}
                             onChange={(e) => handleChangeVariantProperty("originalPrice", e.target.value)}
                         />
@@ -230,14 +257,20 @@ const AddProductVariants = ({variants, setVariants, errorVariantsNumber, setErro
                         <p className="form-item__title form-item__title--margin">Images</p>
                         <div className="uploaded-image">
                             {
-                                variants[variantIndex]?.images?.map((image) => (
+                                variants[variantIndex]?.images?.map((image, index) => (
                                     <div key={image.asset_id} className="uploaded-image__item">
-                                        <img className="uploaded-image__item-img" src={image.url} alt=""/>
                                         <span
-                                            className="uploaded-image__icon"
+                                            className={index === 0 ? "uploaded-image__icon uploaded-image__icon-color" : "uploaded-image__icon"}
                                             onClick={() => selectMainPhoto(image.public_id)}
                                         >
                                             <i className="ri-star-line"></i>
+                                        </span>
+                                        <img className="uploaded-image__item-img" src={image.url} alt=""/>
+                                        <span
+                                            className="uploaded-image__trash"
+                                            onClick={() => deletePhoto(image.public_id)}
+                                        >
+                                            <i className="ri-delete-bin-7-line"></i>
                                         </span>
                                     </div>
                                 ))

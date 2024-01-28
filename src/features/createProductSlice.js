@@ -4,9 +4,9 @@ import axios from "../utils/seller-axios-utils";
 export const fetchProductData = createAsyncThunk(
     "auth/fetchProductData",
     async (params, { rejectWithValue }) => {
-        console.log(params, "para")
         try {
             const { data } = await axios.post("/api/products", params);
+            console.log(data, "data")
             return data;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -15,7 +15,7 @@ export const fetchProductData = createAsyncThunk(
 );
 
 const initialState = {
-    data: null,
+    data: [],
     loading: false,
     error: null,
 };
@@ -27,17 +27,17 @@ const createProductSlice = createSlice({
         builder
             .addCase(fetchProductData.pending, (state) => {
                 state.loading = true;
-                state.data = null;
+                state.data = [];
                 state.error = null;
             })
             .addCase(fetchProductData.fulfilled, (state, action) => {
-                state.loadingfetchProductData = false;
+                state.loading = false;
                 state.data = action.payload;
                 state.error = null;
             })
             .addCase(fetchProductData.rejected, (state, action) => {
                 state.loading = false;
-                state.data = null;
+                state.data = [];
                 state.error = action.payload;
             });
     },

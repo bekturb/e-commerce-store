@@ -156,5 +156,17 @@
     top: 0;
     left: 5px;
     font-size: 18px;
+    z-index: 1;
+
+    &-color {
+      color: #f1c40e;
+    }
+  }
+
+  &__trash {
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+    font-size: 18px;
   }
 }

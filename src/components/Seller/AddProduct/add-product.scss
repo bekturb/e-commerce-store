@@ -227,3 +227,14 @@
     color: var(--light-text-color);
   }
 }
+
+.error-block {
+  padding: 30px 30px;
+  background: rgba(236, 164, 164, 0.68);
+  color: red;
+  margin-bottom: 20px;
+
+  &__error {
+    line-height: 20px;
+  }
+}
