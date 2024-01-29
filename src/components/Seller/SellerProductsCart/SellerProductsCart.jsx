@@ -1,8 +1,33 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import CopyLinkButton from "../../../utils/copyLinkButton";
+import {toast} from "react-hot-toast";
+import {useDispatch} from "react-redux";
+import {deleteProductData} from "../../../features/productsSlice";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 
 const SellerProductsCart = ({pro}) => {
+    const [deleteLoading, setDeleteLoading] = useState(false)
+
+    const dispatch = useDispatch();
+
+    const handleDeleteProduct = async (id) => {
+        try {
+            setDeleteLoading(true)
+            await dispatch(deleteProductData(id)).then((res) => {
+                if (res?.error){
+                    return
+                }
+                toast.success("Product deleted successfully!")
+            })
+            setDeleteLoading(false)
+        } catch (error) {
+            toast.error('Error deleting product:', error);
+            setDeleteLoading(false)
+        }
+    }
+
     return (
         <tr className="product-table__contents">
             <td className="flexitem product-table__content-item">
@@ -37,14 +62,18 @@ const SellerProductsCart = ({pro}) => {
                 {pro.totalSold}
             </td>
             <td className="product-table__content-item">
-                                    <span className="item-remove">
-                                        <i className="ri-pencil-line"></i>
-                                    </span>
+               <Link to={`/shop/upload-product/${pro._id}`}>
+                   <span className="item-remove">
+                        <i className="ri-pencil-line"></i>
+                    </span>
+               </Link>
             </td>
             <td className="product-table__content-item">
-                                    <span className="item-remove">
-                                        <i className="ri-delete-bin-4-line"></i>
-                                    </span>
+              <span className="item-remove" onClick={() => handleDeleteProduct(pro._id)}>
+                  {deleteLoading ?
+                      <FontAwesomeIcon icon={faSpinner} spinPulse/>
+                      : <i className="ri-delete-bin-4-line"></i>}
+              </span>
             </td>
         </tr>
     );

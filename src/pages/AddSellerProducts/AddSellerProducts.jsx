@@ -1,9 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import HeaderDashboard from "../../components/Dashboard/HeaderDashboard";
 import SellerSidebar from "../../components/Seller/SellerSidebar/SellerSidebar";
 import SecTop from "../../components/SecTop/SecTop";
 import Helmet from "../../layout/Helmet";
 import AddProduct from "../../components/Seller/AddProduct/AddProduct";
+import {useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchSingleProduct} from "../../features/getProduct";
+import Loader from "../../components/Loader/Loader";
+import NotFound from "../../components/NotFound/NotFound";
+import DefiniteProductsCart from "../../components/DefiniteProductsCart/DefiniteProductsCart";
 
 const AddSellerProducts = () => {
     const [openSidebar, setOpenSidebar] = useState(false);
@@ -19,7 +25,7 @@ const AddSellerProducts = () => {
                         </div>
                         <div className="dashboard__products">
                             <SecTop title="Add Product"/>
-                            <AddProduct/>
+                            <AddProduct productData={null}/>
                         </div>
                     </div>
                 </div>

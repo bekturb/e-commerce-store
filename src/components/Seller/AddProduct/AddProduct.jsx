@@ -4,13 +4,13 @@ import {fetchCategories} from "../../../features/categoriesSlice";
 import {fetchProducts} from "../../../features/productsSlice";
 import AddProductVariants from "../AddProductVariants/AddProductVariants";
 import {useNavigate} from "react-router-dom";
-import {fetchProductData} from "../../../features/createProductSlice";
+import {fetchProductData, updateProductData} from "../../../features/createProductSlice";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import "./add-product.scss";
 import {toast} from "react-hot-toast";
 
-const AddProduct = () => {
+const AddProduct = ({productData}) => {
 
     const [name, setName] = useState("");
     const [categoryId, setCategoryId] = useState("");
@@ -32,17 +32,12 @@ const AddProduct = () => {
 
     const {data: categories} = useSelector(state => state.categories);
     const {data: products} = useSelector(state => state.products);
-    const {data:createdProductsData, loading: createdProductsLoading,  error: createdProductsErr} = useSelector(state => state.productCreating);
+    const {loading: createdProductsLoading,  error: createdProductsErr} = useSelector(state => state.productCreating);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const filteredProducts = products ? [...products].filter(el => el.category === categoryId) : [];
-
-    useEffect(() => {
-        dispatch(fetchCategories());
-        dispatch(fetchProducts());
-    }, [dispatch]);
 
     const isVariantFilled = (variant) => {
         return variant && variant.color && variant.originalPrice && variant.quantity && variant.images.length > 3;
@@ -130,11 +125,24 @@ const AddProduct = () => {
         const errors = validateForm(formData);
         setFormErrors(errors);
         if (Object.keys(errors).length === 0) {
-            try {
-                await dispatch(fetchProductData(formData))
-                navigate("/shop/all-products")
-            } catch (error) {
-                toast.error('Error adding product:', error);
+            if (productData){
+                await dispatch(updateProductData({productId: productData?._id, formData})).then((res) => {
+                    if (res?.error){
+                        toast.error(res?.payload)
+                    }else {
+                        toast.success("Product updated successfully!")
+                        navigate("/shop/all-products")
+                    }
+                })
+            }else {
+                await dispatch(fetchProductData(formData)).then((res) => {
+                    if (res?.error){
+                        toast.error(res?.payload)
+                    }else {
+                        toast.success("Product created successfully!")
+                        navigate("/shop/all-products")
+                    }
+                })
             }
         }
     };
@@ -162,6 +170,24 @@ const AddProduct = () => {
         return errors
     };
 
+    useEffect(() => {
+        dispatch(fetchCategories());
+        dispatch(fetchProducts());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (productData){
+            setName(productData?.name);
+            setCategoryId(productData?.category._id);
+            setCategory(productData?.category?.name);
+            setSelectedBrand(productData?.brand);
+            setStock(productData?.stock);
+            setDescription(productData?.description);
+            setSelectedTags(productData?.tags);
+            setVariants(productData?.variants);
+        }
+    }, []);
+
     return (
         <div className="add-product">
             <div className="add-product__inner">
@@ -173,7 +199,7 @@ const AddProduct = () => {
                         </div>
                     )
                 }
-                <form className="form add-product__form" onSubmit={onSubmit}>
+                <form className="form add-product__form">
                     <div className="form-item add-product__form-item">
                         <p className="form-item__title">Name</p>
                         <div className="form-item__input-block">
@@ -395,7 +421,7 @@ const AddProduct = () => {
                         setErrorVariantsNumber={setErrorVariantsNumber}
                         isVariantFilled={isVariantFilled}
                     />
-                    <button className="secondary-button add-product__button">
+                    <button className="secondary-button add-product__button" type="button" onClick={onSubmit}>
                         {createdProductsLoading ? <FontAwesomeIcon icon={faSpinner} spinPulse/> : "Add Product"}
                     </button>
                 </form>

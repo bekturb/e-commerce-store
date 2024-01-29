@@ -1,10 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import React from 'react';
+import {useSelector} from "react-redux";
 import SellerProductsCart from "../SellerProductsCart/SellerProductsCart";
 import Loader from "../../Loader/Loader";
 import NotFound from "../../NotFound/NotFound";
-import {fetchProducts} from "../../../features/productsSlice";
-import Pagination from "../../Pagination/Pagination";
 import "./seller-products.scss"
 
 const SellerAllProducts = ({pageItem, filteredProducts}) => {

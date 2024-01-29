@@ -45,7 +45,7 @@ const AddProductVariants = ({variants, setVariants, errorVariantsNumber, setErro
         const updatedVariants = [...variants];
 
         if (variantIndex >= 0 && variantIndex < updatedVariants.length) {
-            updatedVariants[variantIndex].color = colorId;
+            updatedVariants[variantIndex] = { ...updatedVariants[variantIndex], color: colorId };
             setVariants(updatedVariants);
         }
 
@@ -53,15 +53,20 @@ const AddProductVariants = ({variants, setVariants, errorVariantsNumber, setErro
     };
 
     const handleChangeVariantProperty = (key, value) => {
-        const updatedVariants = [...variants];
-        updatedVariants[variantIndex][key] = value;
+        const updatedVariants = variants.map((variant, index) => {
+            if (index === variantIndex) {
+                return { ...variant, [key]: value };
+            }
+            return variant;
+        });
+
         setVariants(updatedVariants);
     };
 
     const handleChangeImage = (event) => {
-        const {files} = event.target;
-        if (files.length > 0){
-            setImagesLoading(true)
+        const { files } = event.target;
+        if (files.length > 0) {
+            setImagesLoading(true);
             const data = new FormData();
             for (let i = 0; i < files.length; i++) {
                 data.append("images", files[i]);
@@ -69,10 +74,14 @@ const AddProductVariants = ({variants, setVariants, errorVariantsNumber, setErro
             return axios({url: '/api/upload/images', method: 'POST', data: data})
                 .then(response => {
                     const imageDataArray = response.data;
-                    const updatedVariants = [...variants];
-                    updatedVariants[variantIndex].images = [...updatedVariants[variantIndex].images, ...imageDataArray];
+                    const updatedVariants = variants.map((variant, index) => {
+                        if (index === variantIndex) {
+                            return { ...variant, images: [...variant.images, ...imageDataArray] };
+                        }
+                        return variant;
+                    });
                     setVariants(updatedVariants);
-                    setImagesLoading(false)
+                    setImagesLoading(false);
                 });
         }
     };
@@ -108,8 +117,14 @@ const AddProductVariants = ({variants, setVariants, errorVariantsNumber, setErro
         const mainImage = variants[variantIndex]?.images.find(img => img.public_id === id);
         const addedPhotosWithoutSelected = variants[variantIndex]?.images.filter(img => img.public_id !== id);
         const newAddedPhotos = [mainImage, ...addedPhotosWithoutSelected];
-        const updatedVariants = [...variants];
-        updatedVariants[variantIndex].images = [...newAddedPhotos];
+
+        const updatedVariants = variants.map((variant, index) => {
+            if (index === variantIndex) {
+                return { ...variant, images: newAddedPhotos };
+            }
+            return variant;
+        });
+
         setVariants(updatedVariants);
     }
 
@@ -121,10 +136,6 @@ const AddProductVariants = ({variants, setVariants, errorVariantsNumber, setErro
     useEffect(() => {
         dispatch(fetchColors())
     }, [dispatch])
-
-    useEffect(() => {
-        setVariantIndex(variants?.length - 1)
-    }, [])
 
     return (
         <div className="variant">
@@ -258,7 +269,7 @@ const AddProductVariants = ({variants, setVariants, errorVariantsNumber, setErro
                         <div className="uploaded-image">
                             {
                                 variants[variantIndex]?.images?.map((image, index) => (
-                                    <div key={image.asset_id} className="uploaded-image__item">
+                                    <div key={image.public_id} className="uploaded-image__item">
                                         <span
                                             className={index === 0 ? "uploaded-image__icon uploaded-image__icon-color" : "uploaded-image__icon"}
                                             onClick={() => selectMainPhoto(image.public_id)}

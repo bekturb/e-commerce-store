@@ -1,12 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../utils/seller-axios-utils";
+import {toast} from "react-hot-toast";
 
 export const fetchProductData = createAsyncThunk(
     "auth/fetchProductData",
     async (params, { rejectWithValue }) => {
         try {
             const { data } = await axios.post("/api/products", params);
-            console.log(data, "data")
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const updateProductData = createAsyncThunk(
+    "uploadProductData",
+    async (params, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.put(`/api/products/update/${params.productId}`, params.formData);
             return data;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -39,6 +51,23 @@ const createProductSlice = createSlice({
                 state.loading = false;
                 state.data = [];
                 state.error = action.payload;
+                toast.error(action.payload)
+            })
+            .addCase(updateProductData.pending, (state) => {
+                state.loading = true;
+                state.data = [];
+                state.error = null;
+            })
+            .addCase(updateProductData.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload;
+                state.error = null;
+            })
+            .addCase(updateProductData.rejected, (state, action) => {
+                state.loading = false;
+                state.data = [];
+                state.error = action.payload;
+                toast.error(action.payload)
             });
     },
 });

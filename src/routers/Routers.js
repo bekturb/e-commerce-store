@@ -28,6 +28,7 @@ import ProtectedSellerRoute from "../routes/ProtectedSellerRoute";
 import ShopDashboard from "../pages/ShopDashboard";
 import ShopAllProducts from "../pages/ShopAllProducts";
 import AddSellerProducts from "../pages/AddSellerProducts";
+import UpdateSellerProduct from "../pages/UpdateSellerProduct";
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -85,6 +86,11 @@ const Routers = () => {
                 <Route path="/shop/add-product" element={
                     <ProtectedSellerRoute>
                         <AddSellerProducts/>
+                    </ProtectedSellerRoute>
+                }/>
+                <Route path="/shop/upload-product/:productId" element={
+                    <ProtectedSellerRoute>
+                        <UpdateSellerProduct/>
                     </ProtectedSellerRoute>
                 }/>
             </Routes>

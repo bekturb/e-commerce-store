@@ -28,8 +28,12 @@ const Layout = () => {
         '/shop/all-products',
         "/shop/all-orders",
         "/shop/add-product",
+        "/shop/upload-product"
     ];
-    const shouldRenderHeaderFooter = !routesWithoutHeaderFooter.includes(pathname);
+
+    const shouldRenderHeaderFooter = !routesWithoutHeaderFooter.some((route) =>
+        pathname.includes(route)
+    );
 
     return (
         <>
