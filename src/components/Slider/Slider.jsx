@@ -21,21 +21,18 @@ const Slider = () => {
 
 
     return (
-        <div className="slider">
+        loading ? (
+            <div className="container">
+                <div className="loader-box">
+                    <Loader/>
+                </div>
+            </div>
+            ) :
+            <div className="slider">
             <div className="container">
                 <div className="slider__wrapper">
                     {
-                        loading ? (
-                            <div className="mySlider">
-                                <div className="mySlider__wrapper">
-                                    <div className="slider__slide">
-                                        <div className="slider__item">
-                                            <Loader/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : error ? (
+                        error ? (
                             <div className="mySlider">
                                 <div className="mySlider__wrapper">
                                     <div className="slider__slide">

@@ -1,6 +1,5 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import ProductsComp from "../ProductsComp/ProductsComp";
 import {Link} from "react-router-dom";
@@ -30,11 +29,7 @@ const Features = ({title}) => {
                             )
                         }
                         {
-                            productsLoad ? (
-                                <div className="trending__loader">
-                                    <Loader />
-                                </div>
-                            ) : productsErr ? (
+                            productsLoad ? null : productsErr ? (
                                 <div className="trending__loader">
                                     <NotFound error={productsErr} />
                                 </div>

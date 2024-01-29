@@ -3,14 +3,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {menuActions} from "../../features/menuSlice";
 import {Link} from "react-router-dom";
 import {fetchCategories} from "../../features/categoriesSlice";
-import {getPersonalWishlist} from "../../features/wishList";
 import {compareProductsActions} from "../../features/compareProducts";
 import MiniCart from "../MiniCart/MiniCart";
 import HoverMiniCart from "../HoverMiniCart/HoverMiniCart";
 import HeaderNavSkeleton from "../Skeletons/HeaderNavSkeleton/HeaderNavSkeleton";
 import NotFound from "../NotFound/NotFound";
 import MegaProductCart from "../MegaProductCart/MegaProductCart";
-import {cartProductsActions} from "../../features/cartSlice";
 import {fetchAllCategories} from "../../features/allCategories";
 import "./header-nav.scss";
 
@@ -38,10 +36,8 @@ const HeaderNav = () => {
 
     useEffect(() => {
         dispatch(fetchCategories());
-        dispatch(getPersonalWishlist());
         dispatch(fetchAllCategories());
         dispatch(compareProductsActions.getCompareProducts());
-        dispatch(cartProductsActions.getCartProducts())
     }, [dispatch]);
 
     return (

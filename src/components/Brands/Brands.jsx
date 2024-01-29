@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchBrands} from "../../features/brandSlice";
-import BrandsSkeleton from "../Skeletons/BrandsSkeleton/BrandsSkeleton";
 import NotFound from "../NotFound/NotFound";
 import "./brands.scss";
 import {Link} from "react-router-dom";
@@ -25,9 +24,7 @@ const Brands = () => {
                 <div className="container">
                     <div className="brands__wrapper flexitem">
                         {
-                            loading ? (
-                                <BrandsSkeleton cards={6} />
-                            ) : error ? (
+                            loading ? null : error ? (
                                 <NotFound error={error}/>
                             ) : filteredBrands.length > 0 ? (
                                 filteredBrands.map(brand => (

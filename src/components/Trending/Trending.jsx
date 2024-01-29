@@ -33,11 +33,7 @@ const Trending = () => {
                     }
                     <div className="trending__column">
                         {
-                            productsLoad ? (
-                                <div className="trending__loader">
-                                    <Loader />
-                                </div>
-                            ) : productsErr ? (
+                            productsLoad ? null : productsErr ? (
                                 <div className="trending__loader">
                                     <NotFound error={productsErr} />
                                 </div>
