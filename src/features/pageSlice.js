@@ -20,7 +20,7 @@ const initialState = {
 };
 
 const pageSlice = createSlice({
-    name: "pages",
+    name: "banners",
     initialState,
     extraReducers: (builder) => {
         builder

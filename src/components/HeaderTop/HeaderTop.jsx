@@ -6,6 +6,7 @@ import {getPersonalWishlist} from "../../features/wishList";
 import {cartProductsActions} from "../../features/cartSlice";
 import ListTitleSkeleton from "../Skeletons/ListTitleSkeleton/ListTitleSkeleton";
 import {fetchProducts} from "../../features/productsSlice";
+import {fetchPages} from "../../features/pageSlice";
 import Skeleton from "react-loading-skeleton";
 import "./header-top.scss";
 
@@ -15,7 +16,6 @@ const HeaderTop = () => {
     const {loading: productsLoading} = useSelector(state => state.products);
     const {isAuthenticated: isSeller, loading: myShopLoading} = useSelector(state => state.myShop);
     const { loading: wishListLoading} = useSelector(state => state.wishlist);
-    const {data: cartProducts} = useSelector(state => state.cart);
 
     const dispatch = useDispatch();
 
@@ -23,6 +23,7 @@ const HeaderTop = () => {
         dispatch(fetchProducts())
         dispatch(getPersonalWishlist());
         dispatch(cartProductsActions.getCartProducts())
+        dispatch(fetchPages())
     }, [dispatch]);
 
     return (
@@ -32,19 +33,20 @@ const HeaderTop = () => {
                     <div className="top__left">
                         <ul className="top__links">
                             {
-                                cartProducts && (
-                                    <li className="top__item">
-                                        <Link className="top__link" to="/cart-page">Cart</Link>
-                                    </li>
-                                )
-                            }
-                            {
                                 productsLoading ? (
-                                    <ListTitleSkeleton/>
+                                    <>
+                                        <ListTitleSkeleton/>
+                                        <ListTitleSkeleton/>
+                                    </>
                                 ) : (
-                                    <li className="top__item">
-                                        <Link className="top__link" to="/catalog/featured-products">Featured Products</Link>
-                                    </li>
+                                    <>
+                                        <li className="top__item">
+                                            <Link className="top__link" to="/cart-page">Cart</Link>
+                                        </li>
+                                        <li className="top__item">
+                                            <Link className="top__link" to="/catalog/featured-products">Featured Products</Link>
+                                        </li>
+                                    </>
                                 )
                             }
 
@@ -106,25 +108,31 @@ const HeaderTop = () => {
                                     )
                                 )
                             }
-                            <li className="currency top__item">
-                                <Link className="top__link" to="/">
-                                    USD
-                                    <span className="top__icon icon-sm">
+                            {
+                                productsLoading ? (
+                                    <ListTitleSkeleton/>
+                                ) : (
+                                    <li className="currency top__item">
+                                        <Link className="top__link" to="/">
+                                            USD
+                                            <span className="top__icon icon-sm">
                                                 <i className="ri-arrow-down-s-line"></i>
                                             </span>
-                                </Link>
-                                <ul className="currency__list">
-                                    <li className="currency__item">
-                                        <Link to="/" className="currency__link current">USD</Link>
+                                        </Link>
+                                        <ul className="currency__list">
+                                            <li className="currency__item">
+                                                <Link to="/" className="currency__link current">USD</Link>
+                                            </li>
+                                            <li className="currency__item">
+                                                <Link to="/" className="currency__link">KGZ</Link>
+                                            </li>
+                                            <li className="currency__item">
+                                                <Link to="/" className="currency__link">EUR</Link>
+                                            </li>
+                                        </ul>
                                     </li>
-                                    <li className="currency__item">
-                                        <Link to="/" className="currency__link">KGZ</Link>
-                                    </li>
-                                    <li className="currency__item">
-                                        <Link to="/" className="currency__link">EUR</Link>
-                                    </li>
-                                </ul>
-                            </li>
+                                )
+                            }
                         </ul>
                     </div>
                 </div>

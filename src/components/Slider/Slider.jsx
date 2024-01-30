@@ -3,29 +3,21 @@ import {Link} from "react-router-dom";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Pagination, Autoplay} from "swiper";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchPages} from "../../features/pageSlice";
-import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import "./slider.scss"
 import "swiper/css";
 import "swiper/css/pagination";
+import Skeleton from "react-loading-skeleton";
 
 const Slider = () => {
 
     const dispatch = useDispatch();
     const {data: pages, loading, error} = useSelector(state => state.pages);
 
-    useEffect(() => {
-        dispatch(fetchPages())
-    }, []);
-
-
     return (
         loading ? (
             <div className="container">
-                <div className="loader-box">
-                    <Loader/>
-                </div>
+                <Skeleton width={`${100}%`} height={400}/>
             </div>
             ) :
             <div className="slider">
