@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Link} from "react-router-dom";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Pagination, Autoplay} from "swiper";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import NotFound from "../NotFound/NotFound";
 import "./slider.scss"
 import "swiper/css";
@@ -11,7 +11,6 @@ import Skeleton from "react-loading-skeleton";
 
 const Slider = () => {
 
-    const dispatch = useDispatch();
     const {data: pages, loading, error} = useSelector(state => state.pages);
 
     return (

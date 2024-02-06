@@ -68,13 +68,13 @@ const HeaderTop = () => {
                         <ul className="top__links">
                             {
                                 authLoading ? (
-                                    Array.from({ length: 3 }).map((_, index) => (
+                                    Array.from({ length: 3 }).map(() => (
                                         <li className="top__item">
                                             <Skeleton width={50} height={15} style={{ margin: "10px"}}/>
                                         </li>
                                     ))
                                 ) : (
-                                    isAuthenticated === false &&
+                                    isAuthenticated === false ?
                                     <>
                                         <li className="top__item">
                                             <Link className="top__link" to="/register">Sign Up</Link>
@@ -82,15 +82,16 @@ const HeaderTop = () => {
                                         <li className="top__item">
                                             <Link className="top__link" to="/login">Sign In</Link>
                                         </li>
-                                        <li className="top__item">
-                                            <div className="account top__account">
-                                                {
-                                                    data?.profilePicture ? <img className="account__image" src={data?.profilePicture} alt=""/> :
-                                                        <img className="account__image" src={Avatar} alt=""/>
-                                                }
-                                            </div>
-                                        </li>
-                                    </>
+                                    </> : <>
+                                            <li className="top__item">
+                                                <div className="account top__account">
+                                                    {
+                                                        data?.profilePicture ? <img className="account__image" src={data?.profilePicture} alt=""/> :
+                                                            <img className="account__image" src={Avatar} alt=""/>
+                                                    }
+                                                </div>
+                                            </li>
+                                        </>
                                 )
                             }
                             {
