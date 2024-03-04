@@ -5,11 +5,10 @@ import Helmet from "../../layout/Helmet";
 import SellerAllProducts from "../../components/Seller/SellerProducts/SellerAllProducts";
 import SecTop from "../../components/SecTop/SecTop";
 import SortByAdvantages from "../../components/FilterItems/SortByAdvantages";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Pagination from "../../components/Pagination/Pagination";
 import {Link} from "react-router-dom";
 import {fetchProducts} from "../../features/productsSlice";
-import {getShopOrder} from "../../features/getShopOrderSlice";
 
 const ShopAllProducts = () => {
 
@@ -18,6 +17,8 @@ const ShopAllProducts = () => {
     const {data: myShopData} = useSelector(state => state.myShop);
     const {data: products} = useSelector(state => state.products);
     const {productSort, perPage} = useSelector(state => state.filterProducts);
+
+    const dispatch = useDispatch()
 
     const [pageItem, setPageItem] = useState({
         start: 0,
