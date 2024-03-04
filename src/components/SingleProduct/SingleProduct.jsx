@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Thumbs, FreeMode} from "swiper";
-import {SRLWrapper} from "simple-react-lightbox"
 import ReviewDetail from "../ReviewDetail/ReviewDetail";
 import {addToWishList} from "../../features/wishList";
 import {useDispatch, useSelector} from "react-redux";
@@ -149,7 +148,6 @@ const SingleProduct = ({product}) => {
                                             {
                                                 selectedVariant && (
                                                     <div className="one__big-image big-image">
-                                                        <SRLWrapper>
                                                             <Swiper
                                                                 loop={true}
                                                                 autoHeight={true}
@@ -176,7 +174,6 @@ const SingleProduct = ({product}) => {
                                                                     ))
                                                                 }
                                                             </Swiper>
-                                                        </SRLWrapper>
                                                     </div>
                                                 )
                                             }
