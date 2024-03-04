@@ -26,6 +26,24 @@
     padding: 10px 20px;
   }
 
+  &__left {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--light-bg-color);
+  }
+
+  &__analytics {
+    padding: 30px 20px;
+  }
+
+  &__analytics-blocks{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
   &__search {
     position: relative;
   }

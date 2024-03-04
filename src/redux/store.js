@@ -32,6 +32,7 @@ import {shopsReducer} from "../features/shopsSlice";
 import {accountReducer} from "../features/accountSlice";
 import {wishListReducer} from "../features/wishList";
 import {couponReducer} from "../features/couponSlice";
+import {shopOrderReducer} from "../features/getShopOrderSlice";
 
 const store = configureStore({
     reducer: {
@@ -68,6 +69,7 @@ const store = configureStore({
         wishlist: wishListReducer,
         shops: shopsReducer,
         coupons: couponReducer,
+        shopOrder: shopOrderReducer
     }
 })
 

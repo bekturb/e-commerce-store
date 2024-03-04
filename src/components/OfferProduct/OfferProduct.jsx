@@ -16,7 +16,6 @@ const OfferProduct = () => {
             <div className="single-product">
                 <div className="container">
                     <div className="single-product__wrapper">
-                        {/*<Breadcrumb/>*/}
                         <div className="column">
                             <div className="products one">
                                 <div className="flexwrap">

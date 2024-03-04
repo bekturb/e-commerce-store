@@ -1,0 +1,34 @@
+.mini-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  padding: 0 10px;
+  height: 80px;
+  background: var(--white-color);
+
+  &__title {
+    margin-bottom: 10px;
+    font-weight: 400;
+    font-family: Roboto, sans-serif;
+    font-size: 24px;
+    line-height: 28.13px;
+    color: #4F5256;
+  }
+
+  &__subtitle {
+    color: #A2A2A2;
+  }
+}
+
+@media screen and (max-width: 1400px){
+  .mini-block {
+    width: 47%;
+  }
+}
+
+@media screen and (max-width: 1400px){
+  .mini-block {
+    width: 100%;
+  }
+}
