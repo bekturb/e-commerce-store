@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {Link} from "react-router-dom";
-import {Swiper, SwiperSlide} from "swiper/react";
-import {Navigation, Thumbs, FreeMode} from "swiper";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Thumbs, FreeMode } from "swiper";
 import ReviewDetail from "../ReviewDetail/ReviewDetail";
-import {addToWishList} from "../../features/wishList";
-import {useDispatch, useSelector} from "react-redux";
-import {cartProductsActions} from "../../features/cartSlice";
+import { addToWishList } from "../../features/wishList";
+import { useDispatch, useSelector } from "react-redux";
+import { cartProductsActions } from "../../features/cartSlice";
 import useCalculateSaleTime from "../../customHooks/useCalculateSaleTime";
 import RemainingSaleTime from "../RemainingSaleTime/RemainingSaleTime";
 import SingleProductStockBar from "../SingleProductStockBar/SingleProductStockBar";
@@ -25,7 +26,7 @@ const formatNumber = (number) => {
     return number;
 };
 
-const SingleProduct = ({product}) => {
+const SingleProduct = ({ product }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [expand, setExpand] = useState("info");
     const [selectedVariant, setSelectedVariant] = useState({});
@@ -33,12 +34,14 @@ const SingleProduct = ({product}) => {
     const [isProductInCart, setIsProductInCart] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const [showShare, setShowShare] = useState(false)
-    const  remainingTime  = useCalculateSaleTime(product);
+    const remainingTime = useCalculateSaleTime(product);
 
-    const {data: wishListData, loading: wishListLoading} = useSelector(state => state.wishlist);
-    const {data: cartProducts} = useSelector(state => state.cart);
+    const { data: wishListData, loading: wishListLoading } = useSelector(state => state.wishlist);
+    const { data: cartProducts } = useSelector(state => state.cart);
+    const { isAuthenticated } = useSelector(state => state.authMe);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleSelectColor = (variantId) => {
         const productVariant = product?.variants?.find(various => various._id === variantId);
@@ -46,19 +49,27 @@ const SingleProduct = ({product}) => {
     }
 
     const handleAddToWishlist = (productId) => {
-        setIsClicked(true);
-        dispatch(addToWishList({productId}))
-            .then(() => {
-                toast.success("Product added to cart!")
-            })
+        if (!isAuthenticated) {
+            navigate("/login");
+        } else {
+            setIsClicked(true);
+            dispatch(addToWishList({ productId }))
+                .then(() => {
+                    toast.success("Product added to cart!")
+                })
+        }
     };
 
     const handleDeleteToWishlist = (productId) => {
-        setIsClicked(false);
-        dispatch(addToWishList({productId}))
-            .then(() => {
-                toast.success("Product deleted from cart!")
-            });
+        if (!isAuthenticated) {
+            navigate("/login");
+        } else {
+            setIsClicked(false);
+            dispatch(addToWishList({ productId }))
+                .then(() => {
+                    toast.success("Product deleted from cart!")
+                });
+        }
     };
 
     const addQtyOfProduct = (qty) => {
@@ -68,7 +79,7 @@ const SingleProduct = ({product}) => {
     }
 
     const minusQtyOfProduct = (qty) => {
-        if (cartProductQty > 1){
+        if (cartProductQty > 1) {
             setCartProductQty(cartProductQty - qty)
         }
     }
@@ -93,9 +104,9 @@ const SingleProduct = ({product}) => {
     useEffect(() => {
         const id = product._id
         const isProductInWishlist = wishListData.findIndex(data => data._id === id);
-        if (isProductInWishlist === -1){
+        if (isProductInWishlist === -1) {
             setIsClicked(false)
-        }else {
+        } else {
             setIsClicked(true)
         }
     }, [wishListData, product._id]);
@@ -125,7 +136,7 @@ const SingleProduct = ({product}) => {
                                 </li>
                                 <li className="breadcrumb__item">
                                     <Link to={`/catalog/${product._id}`}
-                                          className="breadcrumb__link">{product?.name}</Link>
+                                        className="breadcrumb__link">{product?.name}</Link>
                                 </li>
                             </ul>
                         </div>
@@ -139,7 +150,7 @@ const SingleProduct = ({product}) => {
                                                     <div className="one__price">
                                                         <span className="one__discount">
                                                             {product?.salePercentage}%
-                                                            <br/>
+                                                            <br />
                                                             OFF
                                                         </span>
                                                     </div>
@@ -148,32 +159,32 @@ const SingleProduct = ({product}) => {
                                             {
                                                 selectedVariant && (
                                                     <div className="one__big-image big-image">
-                                                            <Swiper
-                                                                loop={true}
-                                                                autoHeight={true}
-                                                                spaceBetween={10}
-                                                                navigation={true}
-                                                                thumbs={{swiper: thumbsSwiper}}
-                                                                modules={[FreeMode, Navigation, Thumbs]}
-                                                                className="mySwiper2"
-                                                            >
-                                                                {
-                                                                    selectedVariant?.images?.map(image => (
-                                                                        <SwiperSlide key={image._id}>
-                                                                            <div className="big-image__wrapper">
-                                                                                <div className="big-image__show">
-                                                                                    <Link to={image.url}
-                                                                                          className="big-image__link">
-                                                                                        <img className="big-image__img img"
-                                                                                             src={image.url}
-                                                                                             alt=""/>
-                                                                                    </Link>
-                                                                                </div>
+                                                        <Swiper
+                                                            loop={true}
+                                                            autoHeight={true}
+                                                            spaceBetween={10}
+                                                            navigation={true}
+                                                            thumbs={{ swiper: thumbsSwiper }}
+                                                            modules={[FreeMode, Navigation, Thumbs]}
+                                                            className="mySwiper2"
+                                                        >
+                                                            {
+                                                                selectedVariant?.images?.map(image => (
+                                                                    <SwiperSlide key={image._id}>
+                                                                        <div className="big-image__wrapper">
+                                                                            <div className="big-image__show">
+                                                                                <Link to={image.url}
+                                                                                    className="big-image__link">
+                                                                                    <img className="big-image__img img"
+                                                                                        src={image.url}
+                                                                                        alt="" />
+                                                                                </Link>
                                                                             </div>
-                                                                        </SwiperSlide>
-                                                                    ))
-                                                                }
-                                                            </Swiper>
+                                                                        </div>
+                                                                    </SwiperSlide>
+                                                                ))
+                                                            }
+                                                        </Swiper>
                                                     </div>
                                                 )
                                             }
@@ -199,8 +210,8 @@ const SingleProduct = ({product}) => {
                                                                 <SwiperSlide key={image._id}>
                                                                     <li className="small-image__show">
                                                                         <img className="small-image__img img"
-                                                                             src={image.url}
-                                                                             alt=""/>
+                                                                            src={image.url}
+                                                                            alt="" />
                                                                     </li>
                                                                 </SwiperSlide>
                                                             ))
@@ -263,12 +274,12 @@ const SingleProduct = ({product}) => {
                                                 </div>
                                                 {
                                                     product?.salePercentage && product?.salePercentage > 0 && (
-                                                        <SingleProductStockBar totalQuantity={selectedVariant.quantity} totalSold={selectedVariant.sold}/>
+                                                        <SingleProductStockBar totalQuantity={selectedVariant.quantity} totalSold={selectedVariant.sold} />
                                                     )
                                                 }
                                                 {
                                                     remainingTime && (
-                                                        <RemainingSaleTime remainingTime={remainingTime}/>
+                                                        <RemainingSaleTime remainingTime={remainingTime} />
                                                     )
                                                 }
                                                 <div className="colors">
@@ -289,7 +300,7 @@ const SingleProduct = ({product}) => {
                                                                         <label
                                                                             htmlFor={variant?._id}
                                                                             className="colors__circle circle"
-                                                                            style={{'--color': `${variant?.color?.hex}`}}
+                                                                            style={{ '--color': `${variant?.color?.hex}` }}
                                                                         >
                                                                         </label>
                                                                     </p>
@@ -301,7 +312,7 @@ const SingleProduct = ({product}) => {
                                                 <div className="actions">
                                                     <div className="actions__qty-control flexitem">
                                                         <button onClick={() => minusQtyOfProduct(1)} className="actions__minus circle">-</button>
-                                                        <input className="actions__input" type="text" value={cartProductQty}/>
+                                                        <input className="actions__input" type="text" value={cartProductQty} />
                                                         <button onClick={() => addQtyOfProduct(1)} className="actions__plus circle">+</button>
                                                     </div>
                                                     <div className="actions__button-cart">
@@ -346,13 +357,13 @@ const SingleProduct = ({product}) => {
                                                             </li>
                                                             <li className="wish-share__link-list">
                                                                 <button onClick={() => setShowShare(true)} className="wish-share__link">
-                                                                        <span className="icon-lg">
-                                                                            <i className="ri-share-line"></i>
-                                                                        </span>
+                                                                    <span className="icon-lg">
+                                                                        <i className="ri-share-line"></i>
+                                                                    </span>
                                                                     <span>Share</span>
                                                                 </button>
                                                                 {
-                                                                    showShare && <ShareByNetworks setShowShare={setShowShare}/>
+                                                                    showShare && <ShareByNetworks setShowShare={setShowShare} />
                                                                 }
                                                             </li>
                                                         </ul>
@@ -386,8 +397,8 @@ const SingleProduct = ({product}) => {
                                                                     product?.anotherNewField ? (
                                                                         Object.keys(product?.anotherNewField).map(key => (
                                                                             <li key={key} className="description__brand">
-                                                                                    <span
-                                                                                        className="description__brand-title">{key}</span>
+                                                                                <span
+                                                                                    className="description__brand-title">{key}</span>
                                                                                 <span
                                                                                     className="description__brand-name">{product?.anotherNewField[key]}</span>
                                                                             </li>

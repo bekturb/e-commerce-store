@@ -136,8 +136,7 @@ const HeaderMain = () => {
                                                                                                     className="child__category">
                                                                                                     <Link
                                                                                                         to={`/category/${category?.slug}/${subcategory?.slug}`}
-                                                                                                        className="child__link"
-                                                                                                        href="#">
+                                                                                                        className="child__link">
                                                                                                         {subcategory.name}
                                                                                                     </Link>
                                                                                                 </li>

@@ -62,9 +62,6 @@ const HeaderTop = () => {
                         </ul>
                     </div>
                     <div className="top__right">
-                        {
-
-                        }
                         <ul className="top__links">
                             {
                                 authLoading ? (
@@ -74,7 +71,7 @@ const HeaderTop = () => {
                                         </li>
                                     ))
                                 ) : (
-                                    isAuthenticated === false ?
+                                    !isAuthenticated ?
                                     <>
                                         <li className="top__item">
                                             <Link className="top__link" to="/register">Sign Up</Link>
@@ -98,13 +95,13 @@ const HeaderTop = () => {
                                 myShopLoading ? (
                                     <ListTitleSkeleton/>
                                 ) : (
-                                    isSeller === true ? (
+                                    !isSeller ? (
                                         <li className="top__item">
-                                            <Link className="top__link" to="/shop/dashboard">You're Seller</Link>
+                                            <Link className="top__link" to="/shop/login">Become Seller</Link>
                                         </li>
                                     ) : (
                                         <li className="top__item">
-                                            <Link className="top__link" to="/shop/login">Become Seller</Link>
+                                            <Link className="top__link" to="/shop/dashboard">You're Seller</Link>
                                         </li>
                                     )
                                 )

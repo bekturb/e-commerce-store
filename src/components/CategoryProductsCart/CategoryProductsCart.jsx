@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import Ratings from "../Ratings/Ratings";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addToWishList} from "../../features/wishList";
 import toast from "react-hot-toast";
 import {Link} from "react-router-dom";
@@ -10,22 +11,32 @@ const CategoryProductsCart = ({product, wishListLoading, wishListData, comparePr
 
     const [isClicked, setIsClicked] = useState(false);
     const [isCompared, setIsCompared] = useState(false);
+    const { isAuthenticated } = useSelector(state => state.authMe);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleAddToWishlist = (productId) => {
-        setIsClicked(true);
-        dispatch(addToWishList({productId}))
-            .then(() => {
-                toast.success("Product added to cart!");
-            })
+        if(!isAuthenticated){
+            navigate("/login");
+        }else {
+            setIsClicked(true);
+            dispatch(addToWishList({productId}))
+                .then(() => {
+                    toast.success("Product added to cart!");
+                })
+        }
     };
 
     const handleDeleteToWishlist = (productId) => {
-        setIsClicked(false);
-        dispatch(addToWishList({productId}))
-            .then(() => {
-                toast.success("Product deleted from cart!")
-            });
+        if(!isAuthenticated){
+            navigate("/login");
+        }else {
+            setIsClicked(false);
+            dispatch(addToWishList({productId}))
+                .then(() => {
+                    toast.success("Product deleted from cart!")
+                });
+        }
     };
 
     const toggleCompareProduct = (product) => {

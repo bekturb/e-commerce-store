@@ -1,31 +1,43 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Ratings from "../Ratings/Ratings";
-import {useDispatch} from "react-redux";
-import {addToWishList} from "../../features/wishList";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishList } from "../../features/wishList";
 import toast from "react-hot-toast";
-import {compareProductsActions} from "../../features/compareProducts";
-import {Link} from "react-router-dom";
+import { compareProductsActions } from "../../features/compareProducts";
+import { Link } from "react-router-dom";
 
-const MiniProductCart = ({miniProduct, wishListLoading, wishListData, compareProducts}) => {
+const MiniProductCart = ({ miniProduct, wishListLoading, wishListData, compareProducts }) => {
 
     const [isClicked, setIsClicked] = useState(false);
     const [isCompared, setIsCompared] = useState(false);
     const dispatch = useDispatch();
 
+    const { isAuthenticated } = useSelector(state => state.authMe);
+    const navigate = useNavigate();
+
     const handleAddToWishlist = (productId) => {
-        setIsClicked(true);
-        dispatch(addToWishList({productId}))
-            .then(() => {
-                toast.success("Product added to cart!")
-            })
+        if (!isAuthenticated) {
+            navigate("/login");
+        } else {
+            setIsClicked(true);
+            dispatch(addToWishList({ productId }))
+                .then(() => {
+                    toast.success("Product added to cart!")
+                })
+        }
     };
 
     const handleDeleteToWishlist = (productId) => {
-        setIsClicked(false);
-        dispatch(addToWishList({productId}))
-            .then(() => {
-                toast.success("Product deleted from cart!")
-            });
+        if (!isAuthenticated) {
+            navigate("/login");
+        } else {
+            setIsClicked(false);
+            dispatch(addToWishList({ productId }))
+                .then(() => {
+                    toast.success("Product deleted from cart!")
+                });
+        }
     };
 
     const toggleCompareProduct = (product) => {
@@ -35,9 +47,9 @@ const MiniProductCart = ({miniProduct, wishListLoading, wishListData, comparePro
     useEffect(() => {
         const productId = miniProduct._id
         const isProductInWishlist = wishListData.findIndex(data => data._id === productId);
-        if (isProductInWishlist === -1){
+        if (isProductInWishlist === -1) {
             setIsClicked(false)
-        }else {
+        } else {
             setIsClicked(true)
         }
     }, [wishListData, miniProduct._id]);
@@ -45,9 +57,9 @@ const MiniProductCart = ({miniProduct, wishListLoading, wishListData, comparePro
     useEffect(() => {
         const productId = miniProduct._id
         const isProductCompared = compareProducts?.findIndex(data => data._id === productId);
-        if (isProductCompared === -1){
+        if (isProductCompared === -1) {
             setIsCompared(false)
-        }else {
+        } else {
             setIsCompared(true)
         }
     }, [compareProducts, miniProduct._id]);
@@ -57,8 +69,8 @@ const MiniProductCart = ({miniProduct, wishListLoading, wishListData, comparePro
                 <div className="thumbnail">
                     <Link to={`/catalog/${miniProduct._id}`} className="products__link">
                         <img className="products__image"
-                             src={miniProduct.variants[0].images[0].url}
-                             alt=""/>
+                            src={miniProduct.variants[0].images[0].url}
+                            alt="" />
                     </Link>
                 </div>
                 <div className="products__hover-able">
@@ -70,19 +82,19 @@ const MiniProductCart = ({miniProduct, wishListLoading, wishListData, comparePro
                                 disabled={wishListLoading}
                             >
                                 <span className={isClicked ? "products__icons color" : "products__icons"}>
-                                   <i className={isClicked ? "ri-heart-fill" : "ri-heart-line"}></i>
+                                    <i className={isClicked ? "ri-heart-fill" : "ri-heart-line"}></i>
                                 </span>
                             </button>
                         </li>
                         <li className="products__hover-item">
                             <button onClick={() => toggleCompareProduct(miniProduct)} className="products__hover-link">
-                               <span className="products__icons" aria-disabled={wishListLoading}>
-                                           { isCompared ?
-                                               <i className="ri-eye-fill"></i>
-                                               :
-                                               <i className="ri-eye-line"></i>
-                                           }
-                               </span>
+                                <span className="products__icons" aria-disabled={wishListLoading}>
+                                    {isCompared ?
+                                        <i className="ri-eye-fill"></i>
+                                        :
+                                        <i className="ri-eye-line"></i>
+                                    }
+                                </span>
                             </button>
                         </li>
                         <li className="products__hover-item">
@@ -93,9 +105,9 @@ const MiniProductCart = ({miniProduct, wishListLoading, wishListData, comparePro
                     </ul>
                 </div>
                 <div className="products__discount circle">
-                                            <span className="products__percentage">
-                                                {miniProduct?.salePercentage}%
-                                            </span>
+                    <span className="products__percentage">
+                        {miniProduct?.salePercentage}%
+                    </span>
                 </div>
             </div>
             <div className="products__content content">
@@ -104,19 +116,19 @@ const MiniProductCart = ({miniProduct, wishListLoading, wishListData, comparePro
                 </h3>
                 <div className="content__rating">
                     <div className="content__stars">
-                        <Ratings rating={miniProduct.totalRating}/>
+                        <Ratings rating={miniProduct.totalRating} />
                     </div>
                     <span className="content__text mini-text">
-                                                ({miniProduct?.reviews.length})
-                                            </span>
+                        ({miniProduct?.reviews.length})
+                    </span>
                 </div>
                 <div className="content__price price">
-                                            <span className="price__current">
-                                                ${miniProduct?.variants[0].discountPrice}
-                                            </span>
+                    <span className="price__current">
+                        ${miniProduct?.variants[0].discountPrice}
+                    </span>
                     <span className="price__old mini-text">
-                                                ${miniProduct?.variants[0].originalPrice}
-                                            </span>
+                        ${miniProduct?.variants[0].originalPrice}
+                    </span>
                 </div>
                 <div className="content__info info mini-text">
                     <p className="info__sold">{miniProduct?.totalSold} sold</p>

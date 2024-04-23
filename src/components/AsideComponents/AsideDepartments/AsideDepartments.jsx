@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
-import {useSelector} from "react-redux";
+import React, { useState } from 'react';
+import { useSelector } from "react-redux";
 import "./aside-departments.scss"
+import { Link } from 'react-router-dom';
 
-const AsideDepartments = ({categoryId, toggleSidebar}) => {
+const AsideDepartments = ({ categoryId, toggleSidebar }) => {
 
-    const {data} = useSelector(state => state.categories);
+    const { data } = useSelector(state => state.categories);
 
     const [categoriesToExclude] = useState(["Shop", "Women", "Men"]);
     const filteredCategories = data ? data.filter(category => !categoriesToExclude.includes(category.name)) : [];
@@ -36,21 +37,21 @@ const AsideDepartments = ({categoryId, toggleSidebar}) => {
                         {
                             filteredCategories.map(category => (
                                 <li key={category._id} onClick={() => toggleSidebar(category._id)} className={categoryId === category._id ? "menu__item child expand" : "menu__item child"}>
-                                    <div className="menu__link">
-                                                <span className="menu__icon  icon-lg">
-                                                    <i className={category.icon}></i>
-                                                </span>
+                                    <Link className="menu__link" to={`/category/${category.slug}`}>
+                                        <span className="menu__icon  icon-lg">
+                                            <i className={category.icon}></i>
+                                        </span>
                                         {category.name}
                                         {
                                             category.children.length > 0 &&
                                             <span className="menu__icon icon-sm">
-                                                    <i className="ri-arrow-right-s-line"></i>
-                                                </span>
+                                                <i className="ri-arrow-right-s-line"></i>
+                                            </span>
                                         }
-                                    </div>
+                                    </Link>
                                     {
                                         category.children.length > 0 && (
-                                            category.children.filter(subcategory => subcategory.children.length > 0).length > 0  ? (
+                                            category.children.filter(subcategory => subcategory.children.length > 0).length > 0 ? (
                                                 <div className="kit child__kit">
                                                     <div className="kit__wrapper">
                                                         {
@@ -58,9 +59,11 @@ const AsideDepartments = ({categoryId, toggleSidebar}) => {
                                                                 <div key={rowIndex} className="kit__inner flexcol">
                                                                     {
                                                                         rowSubcategories.map(subcategory => (
-                                                                            <div  key={subcategory._id} className="kit__row">
+                                                                            <div key={subcategory._id} className="kit__row">
                                                                                 <h4 className="kit__main-title">
-                                                                                    <a className="kit__main-link" href="">{subcategory.name}</a>
+                                                                                    <Link className="kit__main-link" to={`/category/${category?.slug}/${subcategory?.slug}`}>
+                                                                                        {subcategory.name}
+                                                                                    </Link>
                                                                                 </h4>
                                                                                 {
                                                                                     subcategory.children.length > 0 && (
@@ -68,7 +71,9 @@ const AsideDepartments = ({categoryId, toggleSidebar}) => {
                                                                                             {
                                                                                                 subcategory.children.map(subsubcategory => (
                                                                                                     <li key={subsubcategory._id} className="kit__category">
-                                                                                                        <a className="kit__link" href="#">{subsubcategory.name}</a>
+                                                                                                        <Link className="kit__link" to={`/category/${category?.slug}/${subcategory?.slug}/${subsubcategory?.slug}`}>
+                                                                                                            {subsubcategory.name}
+                                                                                                        </Link>
                                                                                                     </li>
                                                                                                 ))
                                                                                             }
@@ -89,7 +94,9 @@ const AsideDepartments = ({categoryId, toggleSidebar}) => {
                                                         {
                                                             category.children.map(subcategory => (
                                                                 <li key={subcategory._id} className="child__category">
-                                                                    <a className="child__link" href="#">{subcategory.name}</a>
+                                                                    <Link className="child__link" to={`/category/${category?.slug}/${subcategory?.slug}`}>
+                                                                        {subcategory.name}
+                                                                    </Link>
                                                                 </li>
                                                             ))
                                                         }

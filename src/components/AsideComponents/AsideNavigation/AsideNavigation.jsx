@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import apparel4 from "../../../assets/products/apparel4.jpg";
 import "./aside-navigation.scss"
-import {useSelector} from "react-redux";
-import {Link} from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-const AsideNavigation = ({categoryId, toggleSidebar}) => {
+const AsideNavigation = ({ categoryId, toggleSidebar }) => {
 
-    const {data: categories} = useSelector(state => state.categories);
+    const { data: categories } = useSelector(state => state.categories);
 
     const [categoriesToExclude] = useState(["Shop", "Women", "Men", "Sports"]);
-    const filteredCategories = categories ? categories.filter(category => categoriesToExclude.includes(category.name)).sort((a,b) => categoriesToExclude.indexOf(a.name) - categoriesToExclude.indexOf(b.name)
+    const filteredCategories = categories ? categories.filter(category => categoriesToExclude.includes(category.name)).sort((a, b) => categoriesToExclude.indexOf(a.name) - categoriesToExclude.indexOf(b.name)
     ) : [];
 
     return (
@@ -21,12 +21,12 @@ const AsideNavigation = ({categoryId, toggleSidebar}) => {
                 {
                     filteredCategories.map(category => (
                         <li key={category._id} onClick={() => toggleSidebar(category._id)} className={categoryId === category._id ? "navigations__item child expand" : "navigations__item child"}>
-                            <Link to={`/${category.slug}`} className="navigations__link">{category.name}
+                            <Link to={`/category/${category.slug}`} className="navigations__link">{category.name}
                                 {
                                     category.children.length > 0 &&
                                     <span className="navigations__icon icon-sm">
-                                                <i className="ri-arrow-down-s-line"></i>
-                                            </span>
+                                        <i className="ri-arrow-down-s-line"></i>
+                                    </span>
                                 }
                             </Link>
                             {
@@ -38,14 +38,18 @@ const AsideNavigation = ({categoryId, toggleSidebar}) => {
                                                     subcategory.name === "Top Brands" ?
                                                         <div key={subcategory._id} className="mega__col">
                                                             <div className="mega__row">
-                                                                <h4 className="mega__title">{subcategory.name}</h4>
+                                                                <Link to={`/category/${category?.slug}/${subcategory?.slug}`}>
+                                                                    <h4 className="mega__title">{subcategory.name}</h4>
+                                                                </Link>
                                                                 {
                                                                     subcategory.children.length > 0 && (
                                                                         <ul className="mega__list mega__list-brands">
                                                                             {
                                                                                 subcategory.children.map(subSubcategory => (
                                                                                     <li key={subSubcategory._id} className="mega__item mega__item-width">
-                                                                                        <a className="mega__link" href="">{subSubcategory.name}</a>
+                                                                                        <Link className="mega__link" to={`/category/${category?.slug}/${subcategory?.slug}/${subSubcategory?.slug}`}>
+                                                                                            {subSubcategory.name}
+                                                                                        </Link>
                                                                                     </li>
                                                                                 ))
                                                                             }
@@ -55,40 +59,30 @@ const AsideNavigation = ({categoryId, toggleSidebar}) => {
                                                                 <a className="mega__view-all" href="">View all brands <i className="ri-arrow-right-line"></i></a>
                                                             </div>
                                                         </div> :
-                                                    <div key={subcategory._id} className="mega__col">
-                                                        <div className="mega__row">
-                                                            <h4 key={subcategory._id} className="mega__title">{subcategory.name}</h4>
-                                                            {
-                                                                subcategory.children.length > 0 && (
-                                                                    <ul className="mega__list">
-                                                                        {
-                                                                            subcategory.children.map(subSubcategory => (
-                                                                                <li key={subSubcategory._id} className="mega__item">
-                                                                                    <a className="mega__link" href="">{subSubcategory.name}</a>
-                                                                                </li>
-                                                                            ))
-                                                                        }
-                                                                    </ul>
-                                                                )
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                                <div className="products mega__products">
-                                                    <div className="products__row">
-                                                        <div className="products__media">
-                                                            <div className="products__thumbnail">
-                                                                <a className="products__image-cover" href="">
-                                                                    <img className="products__img" src={apparel4} alt="apparel4"/>
-                                                                </a>
+                                                        <div key={subcategory._id} className="mega__col">
+                                                            <div className="mega__row">
+                                                                <Link to={`/category/${category?.slug}/${subcategory?.slug}`}>
+                                                                    <h4 key={subcategory._id} className="mega__title">{subcategory.name}</h4>
+                                                                </Link>
+                                                                {
+                                                                    subcategory.children.length > 0 && (
+                                                                        <ul className="mega__list">
+                                                                            {
+                                                                                subcategory.children.map(subSubcategory => (
+                                                                                    <li key={subSubcategory._id} className="mega__item">
+                                                                                        <Link to={`/category/${category?.slug}/${subcategory?.slug}/${subSubcategory?.slug}`}
+                                                                                            className="mega__link">
+                                                                                            {subSubcategory.name}
+                                                                                        </Link>
+                                                                                    </li>
+                                                                                ))
+                                                                            }
+                                                                        </ul>
+                                                                    )
+                                                                }
                                                             </div>
                                                         </div>
-                                                        <div className="products__text-content">
-                                                            <h4 className="products__pop">Most Wanted!</h4>
-                                                            <a className="primary-button products__button" href="">Order Now</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                ))}
                                             </div>
                                         </div>
                                     </div>

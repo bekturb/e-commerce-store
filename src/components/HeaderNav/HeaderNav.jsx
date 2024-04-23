@@ -1,27 +1,27 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {menuActions} from "../../features/menuSlice";
-import {Link} from "react-router-dom";
-import {fetchCategories} from "../../features/categoriesSlice";
-import {compareProductsActions} from "../../features/compareProducts";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { menuActions } from "../../features/menuSlice";
+import { Link } from "react-router-dom";
+import { fetchCategories } from "../../features/categoriesSlice";
+import { compareProductsActions } from "../../features/compareProducts";
 import MiniCart from "../MiniCart/MiniCart";
 import HoverMiniCart from "../HoverMiniCart/HoverMiniCart";
 import HeaderNavSkeleton from "../Skeletons/HeaderNavSkeleton/HeaderNavSkeleton";
 import NotFound from "../NotFound/NotFound";
 import MegaProductCart from "../MegaProductCart/MegaProductCart";
-import {fetchAllCategories} from "../../features/allCategories";
+import { fetchAllCategories } from "../../features/allCategories";
 import "./header-nav.scss";
 
 const HeaderNav = () => {
 
     const dispatch = useDispatch();
-    const {data: categories, loading: catLoading, error: catErr} = useSelector(state => state.categories);
-    const {data: wishListData} = useSelector(state => state.wishlist);
-    const {data: compareProducts} = useSelector(state => state.compareProducts);
-    const {data: cartProducts} = useSelector(state => state.cart);
+    const { data: categories, loading: catLoading, error: catErr } = useSelector(state => state.categories);
+    const { data: wishListData } = useSelector(state => state.wishlist);
+    const { data: compareProducts } = useSelector(state => state.compareProducts);
+    const { data: cartProducts } = useSelector(state => state.cart);
 
     const [categoriesToExclude] = useState(["Shop", "Women", "Men", "Sports"]);
-    const filteredCategories = categories ? categories.filter(category => categoriesToExclude.includes(category.name)).sort((a,b) => categoriesToExclude.indexOf(a.name) - categoriesToExclude.indexOf(b.name)
+    const filteredCategories = categories ? categories.filter(category => categoriesToExclude.includes(category.name)).sort((a, b) => categoriesToExclude.indexOf(a.name) - categoriesToExclude.indexOf(b.name)
     ) : [];
 
     const totalPrice = cartProducts?.reduce((asc, rec) => {
@@ -44,14 +44,14 @@ const HeaderNav = () => {
         <div className="nav">
             {
                 catLoading && (
-                    <HeaderNavSkeleton/>
+                    <HeaderNavSkeleton />
                 )
             }
             {
                 catErr && (
                     <div className="container">
                         <div className="nav__inner">
-                            <NotFound error={catErr}/>
+                            <NotFound error={catErr} />
                         </div>
                     </div>
                 )
@@ -81,8 +81,8 @@ const HeaderNav = () => {
                                                         {
                                                             category.children.length > 0 &&
                                                             <span className="navigations__icon icon-sm">
-                                                <i className="ri-arrow-down-s-line"></i>
-                                            </span>
+                                                                <i className="ri-arrow-down-s-line"></i>
+                                                            </span>
                                                         }
                                                     </Link>
                                                     {
@@ -106,16 +106,17 @@ const HeaderNav = () => {
                                                                                                                 className="mega__item mega__item-width">
                                                                                                                 <Link to={`/category/${category?.slug}/${subcategory?.slug}/${subSubcategory?.slug}`} className="mega__link">
                                                                                                                     {subSubcategory.name}
-                                                                                                            </Link>
+                                                                                                                </Link>
                                                                                                             </li>
                                                                                                         ))
                                                                                                     }
                                                                                                 </ul>
                                                                                             )
                                                                                         }
-                                                                                        <a className="view-all" href="">View all
-                                                                                            brands <i
-                                                                                                className="ri-arrow-right-line"></i></a>
+                                                                                        <a className="view-all" href="">
+                                                                                            View all brands 
+                                                                                            <i className="ri-arrow-right-line"></i>
+                                                                                        </a>
                                                                                     </div>
                                                                                 </div> :
                                                                                 <div key={subcategory._id} className="mega__col">
@@ -131,7 +132,7 @@ const HeaderNav = () => {
                                                                                                             <li key={subSubcategory._id}
                                                                                                                 className="mega__item">
                                                                                                                 <Link to={`/category/${category?.slug}/${subcategory?.slug}/${subSubcategory?.slug}`}
-                                                                                                                      className="mega__link">
+                                                                                                                    className="mega__link">
                                                                                                                     {subSubcategory.name}
                                                                                                                 </Link>
                                                                                                             </li>
@@ -144,7 +145,7 @@ const HeaderNav = () => {
                                                                                 </div>
                                                                         ))
                                                                         }
-                                                                        <MegaProductCart category={category.slug}/>
+                                                                        <MegaProductCart category={category.slug} />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -160,9 +161,9 @@ const HeaderNav = () => {
                                 <ul className="package">
                                     <li className="package__item mobile-hide">
                                         <Link to="/catalog/Wishlist" className="package__link">
-                                        <span className="package__icon icon-lg">
-                                            <i className="ri-heart-line"></i>
-                                        </span>
+                                            <span className="package__icon icon-lg">
+                                                <i className="ri-heart-line"></i>
+                                            </span>
                                             {
                                                 wishListData.length > 0 && (
                                                     <span className="fly-item package__fly-item">
@@ -178,23 +179,23 @@ const HeaderNav = () => {
                                         <div className="package__link">
                                             <div className="package__icon icon-lg">
                                                 <i className="ri-shopping-cart-line"></i>
-                                            {
-                                                cartProducts?.length > 0 && (
-                                                    <span className="fly-item package__fly-item">
-                                                        <span className="package__number">
-                                                            {cartProducts?.length}
+                                                {
+                                                    cartProducts?.length > 0 && (
+                                                        <span className="fly-item package__fly-item">
+                                                            <span className="package__number">
+                                                                {cartProducts?.length}
+                                                            </span>
                                                         </span>
-                                                    </span>
-                                                )
-                                            }
+                                                    )
+                                                }
                                             </div>
                                             <span className="package__text">
-                                            <span className="package__total">Total</span>
-                                            <span className="package__total-number">${roundedTotalPrice}</span>
-                                        </span>
+                                                <span className="package__total">Total</span>
+                                                <span className="package__total-number">${roundedTotalPrice}</span>
+                                            </span>
                                         </div>
-                                        <HoverMiniCart cartProducts={cartProducts} roundedTotalPrice={roundedTotalPrice}/>
-                                        <MiniCart cartProducts={cartProducts} roundedTotalPrice={roundedTotalPrice}/>
+                                        <HoverMiniCart cartProducts={cartProducts} roundedTotalPrice={roundedTotalPrice} />
+                                        <MiniCart cartProducts={cartProducts} roundedTotalPrice={roundedTotalPrice} />
                                     </li>
                                 </ul>
                             </div>
