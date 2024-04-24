@@ -16,7 +16,7 @@ const Brands = () => {
 
     useEffect(() => {
         dispatch(fetchBrands())
-    }, [dispatch])
+    }, [dispatch]);
 
     return (
         <>

@@ -1,29 +1,22 @@
-import React, {useCallback, useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-scroll';
 import EachReview from "../EachReview/EachReview";
 import ReviewsForm from "../ReviewsForm/ReviewsForm";
-import {useDispatch, useSelector} from "react-redux";
-import {getReviews} from "../../features/getAllReviewSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getReviews } from "../../features/getAllReviewSlice";
 import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 
-const ReviewDetail = ({expand, product}) => {
+const ReviewDetail = ({ expand, product, productId }) => {
 
     const dispatch = useDispatch();
-    const {data: reviews, getReviewsLoading, getReviewsError} = useSelector(state => state.allReviewsReducer);
-
-    const fetchReviews = useCallback(async () => {
-        const productId = product._id
-        try {
-            dispatch(getReviews(productId));
-        }catch (err) {
-            alert(err)
-        }
-    },[dispatch, product._id])
+    const { data: reviews, getReviewsLoading, getReviewsError } = useSelector(state => state.allReviewsReducer);
 
     useEffect(() => {
-        fetchReviews();
-    }, [fetchReviews]);
+        dispatch(getReviews(productId))
+    }, [])
+
+    // console.log(reviews, "rev");
 
     return (
         <div
@@ -35,9 +28,9 @@ const ReviewDetail = ({expand, product}) => {
                 <div className="reviews__block">
                     <div className="reviews__head">
                         <div className="flexitem">
-                           <span className="reviews__rate">
-                               {product?.totalRating}
-                           </span>
+                            <span className="reviews__rate">
+                                {product?.totalRating}
+                            </span>
                             <span className="reviews__sum">{product?.numOfReviews} Reviews</span>
                         </div>
                         <Link
@@ -57,26 +50,26 @@ const ReviewDetail = ({expand, product}) => {
                         </div>
                     ) : getReviewsError ? (
                         <div className="trending__loader">
-                            <NotFound error={getReviewsError}/>
+                            <NotFound error={getReviewsError} />
                         </div>
                     ) : reviews?.length > 0 ? (
-                            <div className="reviews__body">
-                                <ul className="reviews__info">
-                                    {
-                                        reviews?.map((review, idx) => (
-                                            <EachReview key={idx} review={review}/>
-                                        ))
-                                    }
-                                </ul>
-                                <div className="reviews__second-links">
-                                    <Link className="view-all reviews__view-all" to={`/all-reviews`}>View
-                                            all Reviews
-                                        <i className="ri-arrow-right-line"></i>
-                                    </Link>
-                                </div>
+                        <div className="reviews__body">
+                            <ul className="reviews__info">
+                                {
+                                    reviews?.map((review, idx) => (
+                                        <EachReview key={idx} review={review} />
+                                    ))
+                                }
+                            </ul>
+                            <div className="reviews__second-links">
+                                <Link className="view-all reviews__view-all" to={`/all-reviews`}>View
+                                    all Reviews
+                                    <i className="ri-arrow-right-line"></i>
+                                </Link>
                             </div>
+                        </div>
                     ) : null}
-                    <ReviewsForm product={product}/>
+                    <ReviewsForm product={product} />
                 </div>
             </div>
         </div>

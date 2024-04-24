@@ -17,7 +17,7 @@ const SinglePage = () => {
 
     useEffect(() => {
         dispatch(fetchSingleProduct(productId))
-    }, [productId, dispatch]);
+    }, [productId]);
 
     return (
         <Helmet title="Single-Page">
@@ -31,7 +31,7 @@ const SinglePage = () => {
                 </div>
             ) : productData ? (
                 <>
-                    <SingleProduct product={productData}/>
+                    <SingleProduct product={productData} productId={productId}/>
                     <RelatedProducts title="Related Products" product={productData} />
                 </>
             ) : null}

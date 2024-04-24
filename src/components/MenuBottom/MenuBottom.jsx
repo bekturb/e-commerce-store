@@ -1,13 +1,15 @@
 import React from 'react';
+import { cartActions } from "../../features/miniCartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
 import "./menu-bottom.scss"
-import {cartActions} from "../../features/miniCartSlice";
-import {useDispatch} from "react-redux";
 
-const MenuBottom = ({setShowSearchBottom}) => {
+const MenuBottom = ({ setShowSearchBottom }) => {
 
+    const { data: cartProducts } = useSelector(state => state.cart);
     const dispatch = useDispatch();
 
-    function openCart () {
+    function openCart() {
         setTimeout(() => {
             dispatch(cartActions.showCart())
         }, 250);
@@ -21,22 +23,22 @@ const MenuBottom = ({setShowSearchBottom}) => {
                     <nav className="menu-bottom__nav">
                         <ul className="menu-bottom__list flexitem">
                             <li className="menu-bottom__item">
-                                <a href="" className="menu-bottom__link">
+                                <Link to={"/trending"} className="menu-bottom__link">
                                     <i className="ri-bar-chart-line"></i>
                                     <span className="menu-bottom__span">Trending</span>
-                                </a>
+                                </Link>
                             </li>
                             <li className="menu-bottom__item">
-                                <a href="" className="menu-bottom__link">
+                                <Link to={"/trending"} className="menu-bottom__link">
                                     <i className="ri-user-6-line"></i>
                                     <span className="menu-bottom__span">Account</span>
-                                </a>
+                                </Link>
                             </li>
                             <li className="menu-bottom__item">
-                                <a href="" className="menu-bottom__link">
-                                    <i className="ri-heart-line"></i>
+                                <Link to={"/trending"} className="menu-bottom__link">
+                                    <i className="ri-user-6-line"></i>
                                     <span className="menu-bottom__span">Wishlist</span>
-                                </a>
+                                </Link>
                             </li>
                             <li className="menu-bottom__item">
                                 <div className="menu-bottom__link" onClick={() => setShowSearchBottom(true)}>
@@ -48,11 +50,15 @@ const MenuBottom = ({setShowSearchBottom}) => {
                                 <div onClick={openCart} className="menu-bottom__link">
                                     <i className="ri-shopping-cart-line"></i>
                                     <span className="menu-bottom__span">Cart</span>
-                                    <div className="fly-item menu-bottom__fly-item">
-                                         <span className="fly-item__number">
-                                                0
-                                            </span>
-                                    </div>
+                                    {
+                                        cartProducts?.length > 0 && (
+                                            <div className="fly-item menu-bottom__fly-item">
+                                                <span className="fly-item__number">
+                                                    {cartProducts?.length}
+                                                </span>
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             </li>
                         </ul>

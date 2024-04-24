@@ -1,7 +1,15 @@
 import React from 'react';
+import useCalculateSaleTime from "../../customHooks/useCalculateSaleTime";
 import "./offer-product.scss"
 
-const RemainingSaleTime = ({remainingTime}) => {
+const RemainingSaleTime = ({product}) => {
+
+    const remainingTime = useCalculateSaleTime(product);
+
+    if(!remainingTime) {
+        return null
+    }
+
     return (
         <div className="offer one__offer">
             <p className="offer__end">Offer ends at</p>

@@ -7,7 +7,6 @@ import ReviewDetail from "../ReviewDetail/ReviewDetail";
 import { addToWishList } from "../../features/wishList";
 import { useDispatch, useSelector } from "react-redux";
 import { cartProductsActions } from "../../features/cartSlice";
-import useCalculateSaleTime from "../../customHooks/useCalculateSaleTime";
 import RemainingSaleTime from "../RemainingSaleTime/RemainingSaleTime";
 import SingleProductStockBar from "../SingleProductStockBar/SingleProductStockBar";
 import CopyLinkButton from "../../utils/copyLinkButton";
@@ -26,7 +25,7 @@ const formatNumber = (number) => {
     return number;
 };
 
-const SingleProduct = ({ product }) => {
+const SingleProduct = ({ product, productId }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [expand, setExpand] = useState("info");
     const [selectedVariant, setSelectedVariant] = useState({});
@@ -34,7 +33,6 @@ const SingleProduct = ({ product }) => {
     const [isProductInCart, setIsProductInCart] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const [showShare, setShowShare] = useState(false)
-    const remainingTime = useCalculateSaleTime(product);
 
     const { data: wishListData, loading: wishListLoading } = useSelector(state => state.wishlist);
     const { data: cartProducts } = useSelector(state => state.cart);
@@ -102,20 +100,15 @@ const SingleProduct = ({ product }) => {
     };
 
     useEffect(() => {
-        const id = product._id
-        const isProductInWishlist = wishListData.findIndex(data => data._id === id);
-        if (isProductInWishlist === -1) {
-            setIsClicked(false)
-        } else {
-            setIsClicked(true)
-        }
-    }, [wishListData, product._id]);
+        const isProductInWishlist = wishListData.some(data => data._id === productId);
+        setIsClicked(isProductInWishlist);
+    }, [productId, wishListData.length]);
 
     useEffect(() => {
-        const productId = selectedVariant._id
-        const productExists = cartProducts.some(product => product.variantId === productId);
+        const proId = selectedVariant._id
+        const productExists = cartProducts.some(product => product.variantId === proId);
         setIsProductInCart(productExists);
-    }, [cartProducts, selectedVariant?._id]);
+    }, [cartProducts.length]);
 
     useEffect(() => {
         if (product && product.variants && product.variants.length > 0) {
@@ -277,11 +270,7 @@ const SingleProduct = ({ product }) => {
                                                         <SingleProductStockBar totalQuantity={selectedVariant.quantity} totalSold={selectedVariant.sold} />
                                                     )
                                                 }
-                                                {
-                                                    remainingTime && (
-                                                        <RemainingSaleTime remainingTime={remainingTime} />
-                                                    )
-                                                }
+                                                <RemainingSaleTime product={product} />
                                                 <div className="colors">
                                                     <p className="colors__title">Color</p>
                                                     <div className="colors__variants">
@@ -431,6 +420,7 @@ const SingleProduct = ({ product }) => {
                                                             <ReviewDetail
                                                                 expand={expand}
                                                                 product={product}
+                                                                productId={productId}
                                                             />
                                                         </li>
                                                     </ul>
