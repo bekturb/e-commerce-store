@@ -14,9 +14,7 @@ const ReviewDetail = ({ expand, product, productId }) => {
 
     useEffect(() => {
         dispatch(getReviews(productId))
-    }, [])
-
-    // console.log(reviews, "rev");
+    }, [productId])
 
     return (
         <div
@@ -69,7 +67,7 @@ const ReviewDetail = ({ expand, product, productId }) => {
                             </div>
                         </div>
                     ) : null}
-                    <ReviewsForm product={product} />
+                    <ReviewsForm productId={productId} />
                 </div>
             </div>
         </div>

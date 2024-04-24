@@ -53,7 +53,7 @@ const SingleProduct = ({ product, productId }) => {
             setIsClicked(true);
             dispatch(addToWishList({ productId }))
                 .then(() => {
-                    toast.success("Product added to cart!")
+                    toast.success("Product added to wishlist!")
                 })
         }
     };
@@ -65,7 +65,7 @@ const SingleProduct = ({ product, productId }) => {
             setIsClicked(false);
             dispatch(addToWishList({ productId }))
                 .then(() => {
-                    toast.success("Product deleted from cart!")
+                    toast.success("Product deleted from wishlist!")
                 });
         }
     };

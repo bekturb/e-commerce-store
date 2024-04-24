@@ -1,22 +1,34 @@
-import React, {useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {postReviewData} from "../../features/getAllReviewSlice";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSpinner} from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { postReviewData } from "../../features/getAllReviewSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom';
 
-const ReviewsForm = ({product}) => {
+const ReviewsForm = ({ productId }) => {
     const [star, setStar] = useState(0);
     const [title, setTitle] = useState("");
     const [comment, setComment] = useState("");
 
     const dispatch = useDispatch();
 
-    const {postReviewLoading, postReviewError} = useSelector(state => state.allReviewsReducer);
+    const { postReviewLoading, postReviewError } = useSelector(state => state.allReviewsReducer);
+    const { isAuthenticated } = useSelector(state => state.authMe);
+    const navigate = useNavigate();
 
     const submitReview = (e) => {
         e.preventDefault();
-        const productId = product._id
-        dispatch(postReviewData({star, title, comment, productId}));
+        if (!isAuthenticated) {
+            navigate("/login");
+            setStar(0)
+            setTitle("")
+            setComment("")
+        } else {
+            dispatch(postReviewData({ star, title, comment, productId }));
+            setStar(0)
+            setTitle("")
+            setComment("")
+        }
     };
 
     return (
@@ -37,8 +49,8 @@ const ReviewsForm = ({product}) => {
                         value={5}
                     />
                     <label htmlFor="star5"
-                           className="rate-this__label"><i
-                        className="ri-star-fill"></i></label>
+                        className="rate-this__label"><i
+                            className="ri-star-fill"></i></label>
 
                     <input
                         onChange={(e) => setStar(e.target.value)}
@@ -49,8 +61,8 @@ const ReviewsForm = ({product}) => {
                         value={4}
                     />
                     <label htmlFor="star4"
-                           className="rate-this__label"><i
-                        className="ri-star-fill"></i></label>
+                        className="rate-this__label"><i
+                            className="ri-star-fill"></i></label>
 
                     <input
                         onChange={(e) => setStar(e.target.value)}
@@ -61,8 +73,8 @@ const ReviewsForm = ({product}) => {
                         value={3}
                     />
                     <label htmlFor="star3"
-                           className="rate-this__label"><i
-                        className="ri-star-fill"></i></label>
+                        className="rate-this__label"><i
+                            className="ri-star-fill"></i></label>
 
                     <input
                         onChange={(e) => setStar(e.target.value)}
@@ -73,8 +85,8 @@ const ReviewsForm = ({product}) => {
                         value={2}
                     />
                     <label htmlFor="star2"
-                           className="rate-this__label"><i
-                        className="ri-star-fill"></i></label>
+                        className="rate-this__label"><i
+                            className="ri-star-fill"></i></label>
 
                     <input
                         onChange={(e) => setStar(e.target.value)}
@@ -85,13 +97,13 @@ const ReviewsForm = ({product}) => {
                         value={1}
                     />
                     <label htmlFor="star1"
-                           className="rate-this__label">
+                        className="rate-this__label">
                         <i className="ri-star-fill"></i>
                     </label>
                 </div>
             </div>
             <form onSubmit={submitReview}
-                  className="reviews-form__form">
+                className="reviews-form__form">
                 <p className="reviews-form__item">
                     <label
                         htmlFor="title"
@@ -117,7 +129,7 @@ const ReviewsForm = ({product}) => {
                         name="comment"
                         value={comment}
                     />
-                    { postReviewError &&
+                    {postReviewError &&
                         <span className="error reviews-form__error">*{postReviewError.message}</span>}
                 </p>
                 <p className="reviews-form__item">
@@ -126,7 +138,7 @@ const ReviewsForm = ({product}) => {
                         className="primary-button reviews-form__btn"
                         disabled={postReviewLoading}
                     >
-                        {postReviewLoading ? <FontAwesomeIcon icon={faSpinner} spinPulse/> : "Submit Review"}
+                        {postReviewLoading ? <FontAwesomeIcon icon={faSpinner} spinPulse /> : "Submit Review"}
                     </button>
                 </p>
             </form>
