@@ -11,19 +11,17 @@ import AnalyticsMiniBlock from "../../components/AnalyticsMiniBlock/AnalyticsMin
 import AnalyticsBigBlock from "../../components/AnalyticsBigBlock/AnalyticsBigBlock";
 import {useDispatch, useSelector} from "react-redux";
 import {getShopOrder} from "../../features/getShopOrderSlice";
-import {fetchProducts} from "../../features/productsSlice";
+import { fetchShopProducts } from '../../features/getShopProductsSlice';
 import "./shop-dashboard.scss";
 
 const ShopDashboard = () => {
 
     const [openSidebar, setOpenSidebar] = useState(false);
     const {data: myShopData} = useSelector(state => state.myShop);
-    const {data: products, loading: productsLoading, error: productsError} = useSelector(state => state.products);
+    const {data: products, loading: productsLoading, error: productsError} = useSelector(state => state.shopProducts);
     const {data: shopOrder, loading: shopOrderLoading, error: shopOrderError} = useSelector(state => state.shopOrder);
 
     const dispatch = useDispatch()
-
-    const myProduct = products && myShopData ? [...products].filter(el => el.shopId === myShopData._id) : [];
 
     function filterProductsByLastWeek(products) {
         const oneWeekAgo = new Date();
@@ -36,9 +34,10 @@ const ShopDashboard = () => {
     }
 
     const filteredProducts = products && filterProductsByLastWeek([...products]);
+    const totalTransaction = myShopData && myShopData.transactions.reduce((acc, rec) => acc + rec.amount, 0);
 
     useEffect(() => {
-        dispatch(fetchProducts())
+        dispatch(fetchShopProducts(myShopData._id))
         dispatch(getShopOrder(myShopData._id))
     }, [])
 
@@ -56,10 +55,10 @@ const ShopDashboard = () => {
                             <div className="dashboard__left">
                                 <div className="dashboard__analytics">
                                     <div className="dashboard__analytics-blocks">
-                                        <AnalyticsMiniBlock title={myProduct.length} subtitle="Products" line={Line1}/>
-                                        <AnalyticsMiniBlock title={shopOrder?.length} subtitle="Orders" line={Line2}/>
-                                        <AnalyticsMiniBlock title="350" subtitle="New visitors" line={Line3}/>
-                                        <AnalyticsMiniBlock title="350" subtitle="New visitors" line={Line4}/>
+                                        <AnalyticsMiniBlock title={products.length} subtitle="Products" line={Line1} currency={false}/>
+                                        <AnalyticsMiniBlock title={shopOrder?.length} subtitle="Orders" line={Line2} currency={false}/>
+                                        <AnalyticsMiniBlock title={totalTransaction} subtitle="Total Transaction" line={Line3} currency={true}/>
+                                        <AnalyticsMiniBlock title={myShopData?.availableBalance} subtitle="My balance" line={Line4} currency={true}/>
                                     </div>
                                     <div className="dasboard__big-blocks">
                                         <AnalyticsBigBlock/>
