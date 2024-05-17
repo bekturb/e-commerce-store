@@ -12,14 +12,14 @@ import {registerShop} from "../../features/shopRegisterSlice";
 const ShopRegister = () => {
 
     const [formData, setFormData] = useState({
-        avatar: "bekaddd",
-        name: "Bektursun",
-        email: "+996220643466",
-        password: "Bekakyrgyz@100599",
-        confirmPassword: "Bekakyrgyz@100599",
-        address: "Kyrgyzstan",
-        zipCode: "12345667",
-        phoneNumber: 996220643466
+        avatar: "",
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        address: "",
+        zipCode: "",
+        phoneNumber: ""
     });
     const [formErrors, setFormErrors] = useState({});
     const [imageLoading, setImageLoading] = useState(false);

@@ -10,7 +10,7 @@ import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import axios from "../../utils/axios-utils";
 import {toast} from "react-hot-toast";
-import "./payment-types.scss"
+import "./payment-types.scss";
 
 const PaymentByCart = ({orderData, setOpen, order}) => {
     const {data: user} = useSelector(state => state.authMe);

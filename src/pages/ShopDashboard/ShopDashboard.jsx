@@ -17,7 +17,7 @@ import "./shop-dashboard.scss";
 const ShopDashboard = () => {
 
     const [openSidebar, setOpenSidebar] = useState(false);
-    const {data: myShopData} = useSelector(state => state.myShop);
+    const {data: myShopData, loading: myShopLoading, error: myShopError} = useSelector(state => state.myShop);
     const {data: products, loading: productsLoading, error: productsError} = useSelector(state => state.shopProducts);
     const {data: shopOrder, loading: shopOrderLoading, error: shopOrderError} = useSelector(state => state.shopOrder);
 
@@ -55,10 +55,10 @@ const ShopDashboard = () => {
                             <div className="dashboard__left">
                                 <div className="dashboard__analytics">
                                     <div className="dashboard__analytics-blocks">
-                                        <AnalyticsMiniBlock title={products.length} subtitle="Products" line={Line1} currency={false}/>
-                                        <AnalyticsMiniBlock title={shopOrder?.length} subtitle="Orders" line={Line2} currency={false}/>
-                                        <AnalyticsMiniBlock title={totalTransaction} subtitle="Total Transaction" line={Line3} currency={true}/>
-                                        <AnalyticsMiniBlock title={myShopData?.availableBalance} subtitle="My balance" line={Line4} currency={true}/>
+                                        <AnalyticsMiniBlock title={products.length} loading={productsLoading} error={productsError} subtitle="Products" line={Line1} currency={false}/>
+                                        <AnalyticsMiniBlock title={shopOrder?.length} loading={shopOrderLoading} error={shopOrderError} subtitle="Orders" line={Line2} currency={false}/>
+                                        <AnalyticsMiniBlock title={totalTransaction} loading={myShopLoading} error={myShopError} subtitle="Total Transaction" line={Line3} currency={true}/>
+                                        <AnalyticsMiniBlock title={myShopData?.availableBalance} loading={myShopLoading} error={myShopError} subtitle="My balance" line={Line4} currency={true}/>
                                     </div>
                                     <div className="dasboard__big-blocks">
                                         <AnalyticsBigBlock/>

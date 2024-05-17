@@ -50,7 +50,7 @@ const AsideTopNav = () => {
                     <ul className="top__links">
                         {
                             authLoading ? (
-                                Array.from({ length: 3 }).map((idx) => (
+                                Array.from({ length: 3 }).map((id, idx) => (
                                     <li className="top__item" key={idx}>
                                         <Skeleton width={50} height={15} style={{ margin: "10px" }} />
                                     </li>

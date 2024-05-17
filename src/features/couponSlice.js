@@ -8,7 +8,8 @@ export const getCouponValue = createAsyncThunk(
             const { data } = await axios.get(`/api/coupon/get-coupon-value/${couponName}`);
             return data;
         } catch (error) {
-            return rejectWithValue(error.response);
+            console.log(error.response, "response");
+            return rejectWithValue(error.response.data);
         }
     }
 );

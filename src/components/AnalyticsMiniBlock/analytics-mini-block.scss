@@ -1,10 +1,12 @@
 .mini-block {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 30px;
   padding: 0 10px;
   height: 80px;
+  min-width: 200px;
   background: var(--white-color);
 
   &__title {

@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../utils/seller-axios-utils";
+import axios from "../utils/axios-utils";
 
-export const getShopOrder = createAsyncThunk(
-    "get/shopOrder",
-    async ( shopId, { rejectWithValue }) => {
+export const fetchUsers = createAsyncThunk(
+    "auth/fetchUsers",
+    async (_, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/api/orders/get-seller-all-orders/${shopId}`);
+            const { data } = await axios.get("/api/users");
             return data;
         } catch (error) {
             return rejectWithValue(error.response);
@@ -14,31 +14,32 @@ export const getShopOrder = createAsyncThunk(
 );
 
 const initialState = {
-    data: null,
+    data: [],
     loading: false,
     error: null,
 };
 
-const getShopOrderSlice = createSlice({
-    name: "shop-order",
+const userSlice = createSlice({
+    name: "users",
     initialState,
     extraReducers: (builder) => {
         builder
-            .addCase(getShopOrder.pending, (state) => {
+            .addCase(fetchUsers.pending, (state) => {
                 state.loading = true;
                 state.data = null;
                 state.error = null;
             })
-            .addCase(getShopOrder.fulfilled, (state, action) => {
+            .addCase(fetchUsers.fulfilled, (state, action) => {
                 state.loading = false;
                 state.data = action.payload;
                 state.error = null;
             })
-            .addCase(getShopOrder.rejected, (state, action) => {
+            .addCase(fetchUsers.rejected, (state, action) => {
                 state.loading = false;
                 state.data = null;
                 state.error = action.payload;
-            });
+            })
     },
 });
-export const shopOrderReducer = getShopOrderSlice.reducer;
+
+export const usersReducer = userSlice.reducer;
