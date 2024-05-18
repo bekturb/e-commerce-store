@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {
     Chart as ChartJS,
     CategoryScale,
+    ArcElement,
     LinearScale,
     PointElement,
     LineElement,
@@ -13,11 +14,11 @@ import {
 import { Line, Pie, Doughnut, Bar } from 'react-chartjs-2';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllCategories } from '../../features/allCategories';
-import { fetchUsers } from '../../features/users';
 import "./analytic-big-block.scss";
 
 
 ChartJS.register(
+    ArcElement,
     CategoryScale,
     LinearScale,
     PointElement,
@@ -47,8 +48,7 @@ const AnalyticsBigBlock = () => {
     const { data: shopOrder, loading: shopOrderLoading, error: shopOrderError } = useSelector(state => state.shopOrder);
     const { data: products, loading: productsLoading, error: productsError } = useSelector(state => state.shopProducts);
     const { data: allCategories, loading: allCatLoading, error: allCateErr } = useSelector(state => state.allCategories);
-    const { data: userData, loading: userLoad, error: userErr } = useSelector(state => state.users);
-
+    
     let outOfStock = 0;
 
     products?.forEach((item) => {
@@ -59,7 +59,6 @@ const AnalyticsBigBlock = () => {
 
     useEffect(() => {
         dispatch(fetchAllCategories());
-        dispatch(fetchUsers());
     }, [dispatch]);
 
     let totalAmount = shopOrder?.reduce((total, order) => total + order.totalPrice, 0);
@@ -131,13 +130,13 @@ const AnalyticsBigBlock = () => {
         <div className="big-block big-block--position">
             <div className='big-block__chart'>
                 <div className="big-block__header">
-                    <h2 className="big-block__title">Listing Board</h2>
+                    <h2 className="big-block__title">Sales Of Year</h2>
                 </div>
                 <div className="big-block__average">
                     <ul className="avarege-list">
                         <li className="average-list__item">
                             <div className="average-list__dot"></div>
-                            <p className="avarage-list__title">Sale</p>
+                            <p className="avarage-list__title">Sales</p>
                         </li>
                     </ul>
                     <div className="big-block__buttons">
@@ -160,8 +159,38 @@ const AnalyticsBigBlock = () => {
                 </div>
             </div>
             <div className='big-block__chart'>
-                <div className='charts__bar'>
-                    <Bar options={options} data={barState} />
+                <div className="big-block__header">
+                    <h2 className="big-block__title">Listing Board</h2>
+                </div>
+                <div className="big-block__area-chart">
+                    <div className='charts'>
+                        <div className='charts__types'>
+                            <div className='charts__bar'>
+                                <Bar options={options} data={barState} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className='big-block__chart'>
+                <div className="big-block__header">
+                    <h2 className="big-block__title">Order & Stock Board</h2>
+                </div>
+                <div className="big-block__area-chart">
+                    <div className='charts'>
+                        <div className='charts__types'>
+                            <div className='charts__bar'>
+                                <div className='charts__circle'>
+                                    <span className='charts__title'>Order Status</span>
+                                    <Pie data={pieState} />
+                                </div>
+                                <div className='charts__circle'>
+                                    <span className='charts__title'>Stock Status</span>
+                                    <Doughnut data={doughnutState} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

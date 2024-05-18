@@ -91,4 +91,27 @@
 
 .charts {
   width: 100%;
+
+  &__bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &__circle {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-weight: 400;
+    font-family: Roboto, sans-serif;
+    font-size: 20px;
+    line-height: 28.13px;
+    color: #4F5256;
+  }
 }

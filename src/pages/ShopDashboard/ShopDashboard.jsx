@@ -22,18 +22,6 @@ const ShopDashboard = () => {
     const {data: shopOrder, loading: shopOrderLoading, error: shopOrderError} = useSelector(state => state.shopOrder);
 
     const dispatch = useDispatch()
-
-    function filterProductsByLastWeek(products) {
-        const oneWeekAgo = new Date();
-        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
-        return products.filter(product => {
-            const productDate = new Date(product.createdAt);
-            return product.shopId === myShopData._id && productDate >= oneWeekAgo;
-        });
-    }
-
-    const filteredProducts = products && filterProductsByLastWeek([...products]);
     const totalTransaction = myShopData && myShopData.transactions.reduce((acc, rec) => acc + rec.amount, 0);
 
     useEffect(() => {
