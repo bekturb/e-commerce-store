@@ -29,26 +29,13 @@ ChartJS.register(
     Legend
 );
 
-export const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top',
-        },
-        title: {
-            display: true,
-            text: 'Chart.js Bar Chart',
-        },
-    },
-};
-
 const AnalyticsBigBlock = () => {
     const dispatch = useDispatch();
 
     const { data: shopOrder, loading: shopOrderLoading, error: shopOrderError } = useSelector(state => state.shopOrder);
     const { data: products, loading: productsLoading, error: productsError } = useSelector(state => state.shopProducts);
     const { data: allCategories, loading: allCatLoading, error: allCateErr } = useSelector(state => state.allCategories);
-    
+
     let outOfStock = 0;
 
     products?.forEach((item) => {
@@ -60,8 +47,6 @@ const AnalyticsBigBlock = () => {
     useEffect(() => {
         dispatch(fetchAllCategories());
     }, [dispatch]);
-
-    let totalAmount = shopOrder?.reduce((total, order) => total + order.totalPrice, 0);
 
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const date = new Date();
@@ -166,7 +151,7 @@ const AnalyticsBigBlock = () => {
                     <div className='charts'>
                         <div className='charts__types'>
                             <div className='charts__bar'>
-                                <Bar options={options} data={barState} />
+                                <Bar data={barState} />
                             </div>
                         </div>
                     </div>
@@ -177,7 +162,7 @@ const AnalyticsBigBlock = () => {
                     <h2 className="big-block__title">Order & Stock Board</h2>
                 </div>
                 <div className="big-block__area-chart">
-                    <div className='charts'>
+                    <div className='charts charts--position'>
                         <div className='charts__types'>
                             <div className='charts__bar'>
                                 <div className='charts__circle'>

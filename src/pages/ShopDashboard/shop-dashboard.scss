@@ -25,14 +25,13 @@
   }
 
   &__products {
-    width: 100%;
+    width: 77%;
     margin-top: 20px;
     padding: 10px 20px;
   }
 
   &__left {
     width: 100%;
-    min-height: 100%;
     background: var(--light-bg-color);
   }
 
@@ -112,6 +111,9 @@
 
 @media screen and (max-width: 1200px){
   .dashboard {
+    &__products {
+      width: 75%;
+    }
 
     &__sidebar {
     flex: 0 0 27%;
@@ -128,6 +130,15 @@
 
     &__products {
       width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 769px){
+  .dashboard {
+
+    &__products {
+      padding: 0;
     }
   }
 }

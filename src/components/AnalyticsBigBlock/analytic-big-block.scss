@@ -8,7 +8,6 @@
   &__chart {
     padding: 20px 20px;
     margin: 10px 0;
-    min-height: 500px;
     top: 318px;
     left: 309px;
     border-radius: 3px;
@@ -114,4 +113,37 @@
     line-height: 28.13px;
     color: #4F5256;
   }
+}
+
+@media screen and (max-width: 769px){
+  .big-block {
+    &__area-chart {
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  }
+
+  .charts {
+    min-width: 800px;
+
+    &__bar {
+      display: block;
+    }
+
+    &--position {
+      min-width: auto;
+    }
+
+    &__circle {
+      width:  100%;
+
+      &:nth-child(2) {
+        margin-top: 40px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 479px){
+  
 }
