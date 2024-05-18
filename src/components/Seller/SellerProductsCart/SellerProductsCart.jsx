@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import CopyLinkButton from "../../../utils/copyLinkButton";
 import {toast} from "react-hot-toast";
 import {useDispatch} from "react-redux";
-import {deleteProductData} from "../../../features/productsSlice";
+import {deleteProductData} from "../../../features/getShopProductsSlice";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 

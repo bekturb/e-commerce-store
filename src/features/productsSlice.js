@@ -1,25 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../utils/axios-utils";
-import sellerAxios from "../utils/seller-axios-utils";
-import {toast} from "react-hot-toast";
 
 export const fetchProducts = createAsyncThunk(
     "auth/fetchProducts",
     async (_, { rejectWithValue }) => {
         try {
             const { data } = await axios.get("/api/products");
-            return data;
-        } catch (error) {
-            return rejectWithValue(error.response);
-        }
-    }
-);
-
-export const deleteProductData = createAsyncThunk(
-    "deleteProductData",
-    async (id, { rejectWithValue }) => {
-        try {
-            const { data } = await sellerAxios.delete(`/api/products/delete/${id}`);
             return data;
         } catch (error) {
             return rejectWithValue(error.response);
@@ -53,15 +39,6 @@ const productSlice = createSlice({
                 state.data = null;
                 state.error = action.payload;
             })
-            .addCase(deleteProductData.pending, () => {
-                toast.loading("Deleting a product...")
-            })
-            .addCase(deleteProductData.fulfilled, (state, action) => {
-                state.data = state.data.filter(pro => pro._id !== action.payload?._id)
-            })
-            .addCase(deleteProductData.rejected, (state, action) => {
-                toast.error(action.payload?.data)
-            });
     },
 });
 export const productsReducer = productSlice.reducer;

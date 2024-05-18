@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import HeaderDashboard from "../../components/Dashboard/HeaderDashboard";
 import SellerSidebar from "../../components/Seller/SellerSidebar/SellerSidebar";
 import Helmet from "../../layout/Helmet";
 import SellerAllProducts from "../../components/Seller/SellerProducts/SellerAllProducts";
 import SecTop from "../../components/SecTop/SecTop";
 import SortByAdvantages from "../../components/FilterItems/SortByAdvantages";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Pagination from "../../components/Pagination/Pagination";
-import {Link} from "react-router-dom";
-import {fetchProducts} from "../../features/productsSlice";
+import { Link } from "react-router-dom";
+import { fetchShopProducts } from '../../features/getShopProductsSlice';
 
 const ShopAllProducts = () => {
 
     const [openSidebar, setOpenSidebar] = useState(false);
     const [searchValue, setSearchValue] = useState('');
-    const {data: myShopData} = useSelector(state => state.myShop);
-    const {data: products} = useSelector(state => state.products);
-    const {productSort, perPage} = useSelector(state => state.filterProducts);
+    const { data: myShopData } = useSelector(state => state.myShop);
+    const { data: products } = useSelector(state => state.shopProducts);
+    const { productSort, perPage } = useSelector(state => state.filterProducts);
 
     const dispatch = useDispatch()
 
@@ -26,11 +26,7 @@ const ShopAllProducts = () => {
     });
 
     const filteredProducts = products
-        ? [...products].filter(el =>
-            el.shopId === myShopData?._id && (
-                el.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-                +el.vendorCode === +searchValue
-            )).sort((a, b) => {
+        ? [...products].filter(el => el.name.toLowerCase().includes(searchValue.toLowerCase()) || +el.vendorCode === +searchValue).sort((a, b) => {
             if (productSort === 'Product Name') {
                 return a.name.localeCompare(b.name);
             } else if (productSort === 'Descending Price') {
@@ -49,28 +45,28 @@ const ShopAllProducts = () => {
         : [];
 
     useEffect(() => {
-        dispatch(fetchProducts())
+        dispatch(fetchShopProducts(myShopData._id));
     }, [])
 
     return (
         <Helmet title="Seller-Products">
-            <HeaderDashboard setOpenSidebar={setOpenSidebar}/>
+            <HeaderDashboard setOpenSidebar={setOpenSidebar} />
             <div className="dashboard">
                 <div className="dashboard__container">
                     <div className="dashboard__wrapper">
                         <div className="dashboard__sidebar">
-                            <SellerSidebar active={2} openSidebar={openSidebar} setOpenSidebar={setOpenSidebar}/>
+                            <SellerSidebar active={2} openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
                         </div>
                         <div className="dashboard__products">
-                            <SecTop title="All Products"/>
+                            <SecTop title="All Products" />
                             <div className="dropdown flexitem">
                                 <div className="dropdown__items">
-                                    <SortByAdvantages productSort={productSort}/>
+                                    <SortByAdvantages productSort={productSort} />
                                 </div>
                                 <div className="search dashboard__search">
-                                        <span className="icon-sm dashboard__search-icon">
-                                             <i className="ri-search-line"></i>
-                                         </span>
+                                    <span className="icon-sm dashboard__search-icon">
+                                        <i className="ri-search-line"></i>
+                                    </span>
                                     <input
                                         className="dashboard__input"
                                         type="text"
@@ -82,7 +78,7 @@ const ShopAllProducts = () => {
                                     <button className="dashboard__button">Add Product</button>
                                 </Link>
                             </div>
-                            <SellerAllProducts filteredProducts={filteredProducts} pageItem={pageItem}/>
+                            <SellerAllProducts filteredProducts={filteredProducts} pageItem={pageItem} />
                             {
                                 filteredProducts.length > 1 && (
                                     <Pagination
