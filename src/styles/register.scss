@@ -223,3 +223,46 @@
     text-align: center;
   }
 }
+
+@media screen and (max-width: 993px) {
+  .register {
+    
+    &__glass {
+      width: 50%;
+    }
+  }
+}
+
+@media screen and (max-width: 769px) {
+  .register {
+    
+    &__glass {
+      width: 70%;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .register {
+    
+    &__glass {
+      margin-top: 100px;
+      width: 80%;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .register {
+    
+    &__glass {
+      width: 99%;
+    }
+  }
+
+  .form{
+    &__field {
+      width: 95%;
+  }
+  }
+}
