@@ -11,7 +11,7 @@ const SellerSidebar = ({active, openSidebar, setOpenSidebar}) => {
     return (
         <div className="sidebar">
             <aside className={openSidebar ? "off sidebar__off sidebar__off--open" : "off sidebar__off"}>
-                <div className="canvas">
+                <div className="canvas sidebar__canvas">
                     <div className="sidebar-logo">
                         <div className="sidebar-logo__head">
                             <div className="logo sidebar-logo__logo">

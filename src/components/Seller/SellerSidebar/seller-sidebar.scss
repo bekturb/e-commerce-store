@@ -3,6 +3,7 @@
     width: 100%!important;
     min-height: 690px;
     max-height: 750px;
+    overflow-y: auto;
     position: initial!important;
     top: 0!important;
     background: var(--light-bg-color)!important;
@@ -10,6 +11,11 @@
     transform: translateX(0)!important;
     visibility: visible!important;
     transition: transform .4s 0s, visibility 0s 0s!important;
+  }
+
+  &__canvas {
+    min-height: 800px !important;
+    white-space: nowrap;
   }
 }
 
@@ -60,7 +66,6 @@
 
 .sidebar-logo {
   width: var(--percent100);
-  height: var(--percent100);
 
   &__head {
     display: none;
