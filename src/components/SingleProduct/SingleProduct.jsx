@@ -28,7 +28,7 @@ const formatNumber = (number) => {
 const SingleProduct = ({ product, productId }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [expand, setExpand] = useState("info");
-    const [selectedVariant, setSelectedVariant] = useState({});
+    const [selectedVariant, setSelectedVariant] = useState(null);
     const [cartProductQty, setCartProductQty] = useState(1);
     const [isProductInCart, setIsProductInCart] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
@@ -71,7 +71,7 @@ const SingleProduct = ({ product, productId }) => {
     };
 
     const addQtyOfProduct = (qty) => {
-        if (selectedVariant.quantity > cartProductQty) {
+        if (selectedVariant?.quantity > cartProductQty) {
             setCartProductQty(cartProductQty + qty)
         }
     }
@@ -105,10 +105,10 @@ const SingleProduct = ({ product, productId }) => {
     }, [productId, wishListData.length]);
 
     useEffect(() => {
-        const proId = selectedVariant._id
+        const proId = selectedVariant?._id
         const productExists = cartProducts.some(product => product.variantId === proId);
         setIsProductInCart(productExists);
-    }, [cartProducts.length]);
+    }, [selectedVariant, cartProducts.length]);
 
     useEffect(() => {
         if (product && product.variants && product.variants.length > 0) {
@@ -267,7 +267,7 @@ const SingleProduct = ({ product, productId }) => {
                                                 </div>
                                                 {
                                                     product?.salePercentage && product?.salePercentage > 0 && (
-                                                        <SingleProductStockBar totalQuantity={selectedVariant.quantity} totalSold={selectedVariant.sold} />
+                                                        <SingleProductStockBar totalQuantity={selectedVariant?.quantity} totalSold={selectedVariant?.sold} />
                                                     )
                                                 }
                                                 <RemainingSaleTime product={product} />

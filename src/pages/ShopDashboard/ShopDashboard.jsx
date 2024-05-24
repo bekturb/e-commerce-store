@@ -27,7 +27,7 @@ const ShopDashboard = () => {
     useEffect(() => {
         dispatch(fetchShopProducts(myShopData._id))
         dispatch(getShopOrder(myShopData._id))
-    }, [])
+    }, [dispatch, myShopData])
 
     return (
         <Helmet title="Seller-Dashboard">
