@@ -43,6 +43,7 @@ const Pagination = ({posts, setPageItem}) => {
     const [arrOfCurrButtons, setArrOfCurrButtons] = useState([]);
 
     useEffect(() => {
+
         let tempNumberOfButtons = [...arrOfCurrButtons]
 
         let dotsInitial = '...'
@@ -94,6 +95,10 @@ const Pagination = ({posts, setPageItem}) => {
 
         onPageChangeEvent(value - +perPage, value)
     }, [currentPage, perPage, numOfPages]);
+
+    useEffect(() => {
+        dispatch(filterProductsActions.setCurrentPage(1))
+    }, [dispatch])
 
     return (
         <>

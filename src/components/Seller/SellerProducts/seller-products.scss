@@ -11,7 +11,7 @@
     margin-right: 1em;
     object-fit: cover;
     display: block;
-    transition: transform .3s;
+    transition: transform 0.3s;
   }
 
   &__img {
@@ -34,6 +34,15 @@
     background-color: var(--light-bg-color);
   }
 
+  &__content-item {
+    &:not(:first-child) .product-table__content-table {
+      min-width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
   &__content-item,
   &__list-item {
     padding: 2em 1em;
@@ -53,6 +62,13 @@
   &__content-item :where(.content, .qty-control, p) {
     margin: 0;
     padding: 0;
+  }
+
+  &__content-table {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
   }
 
   &__qty-control {
@@ -79,5 +95,32 @@
 
   &__shipping-rate {
     padding: 0 2em 0 1em;
+  }
+}
+
+.status-dot {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  background: #000;
+  border-radius: 50%;
+
+  &__wave {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    opacity: .8;
+    border-radius: inherit;
+    animation: pulseAnimate 4s ease-out infinite;
+    animation-delay: calc(1s * var(--i));
+  }
+}
+
+@keyframes pulseAnimate {
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
   }
 }
