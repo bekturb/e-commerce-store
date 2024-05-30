@@ -14,6 +14,8 @@ const ShopOrders = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
 
   const [productSort, setProductSort] = useState("All Orders");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const { handleOpenDrop, open } = useOpenDrop();
   const { perPage } = useSelector((state) => state.filterProducts);
   const { data: myShopData } = useSelector((state) => state.myShop);
@@ -27,30 +29,30 @@ const ShopOrders = () => {
 
   const dispatch = useDispatch();
 
-  const getFilteredOrders = (sortItem) => {
-    setProductSort(sortItem);
+  const getFilteredOrders = (shopOrder, sortItem, startDate, endDate) => {
+    if (shopOrder?.length > 0) {
+      const filteringOrders = shopOrder.filter((el) => {
+        const statusMatch = sortItem === "All Orders" || el.status === sortItem;
 
-    if (sortItem === "All Orders") {
-      setFilteredOrders(shopOrder);
-    } else {
-      const filteringProducts = shopOrder
-        ? [...shopOrder].filter((el) => {
-            return el.status === sortItem;
-          })
-        : [];
-      setFilteredOrders(filteringProducts);
+        const orderDate = new Date(el.createdAt);
+        const start = startDate ? new Date(startDate) : null;
+        const end = endDate ? new Date(endDate) : null;
+
+        console.log(orderDate, start, end);
+
+        const dateMatch =
+          (!start || orderDate >= start) && (!end || orderDate <= end);
+
+        return statusMatch && dateMatch;
+      });
+
+      setFilteredOrders(filteringOrders);
     }
-  };
-
-  const handleGetDate = () => {
-    console.log("date");
   };
 
   useEffect(() => {
-    if (shopOrder?.length) {
-      setFilteredOrders(shopOrder);
-    }
-  }, [productSort, shopOrder]);
+    getFilteredOrders(shopOrder, productSort, startDate, endDate);
+  }, [startDate, endDate, productSort, shopOrder]);
 
   useEffect(() => {
     dispatch(getShopOrder(myShopData._id));
@@ -72,9 +74,10 @@ const ShopOrders = () => {
             <div className="dashboard__products">
               <SecTop title="All Orders" />
               <div className="dropdown flexitem">
-                <form className="date-wrapper" onSubmit={handleGetDate}>
+                <div className="date-wrapper">
                   <div className="date-picker">
                     <input
+                      onChange={(e) => setStartDate(e.target.value)}
                       className="date-picker__input"
                       type="date"
                     />
@@ -82,11 +85,12 @@ const ShopOrders = () => {
                   <span className="date-picker__title">to</span>
                   <div className="date-picker">
                     <input
+                      onChange={(e) => setEndDate(e.target.value)}
                       className="date-picker__input"
                       type="date"
                     />
                   </div>
-                </form>
+                </div>
                 <div
                   className={
                     open === "filter" ? "dropdown__sort open" : "dropdown__sort"
@@ -118,9 +122,7 @@ const ShopOrders = () => {
                         <li className="down__item">
                           <div className="radio-with-text">
                             <input
-                              onChange={(e) =>
-                                getFilteredOrders(e.target.value)
-                              }
+                              onChange={(e) => setProductSort(e.target.value)}
                               name="filter"
                               checked={productSort === "All Orders"}
                               className="radio-with-text__input"
@@ -142,9 +144,7 @@ const ShopOrders = () => {
                         <li className="down__item">
                           <div className="radio-with-text">
                             <input
-                              onChange={(e) =>
-                                getFilteredOrders(e.target.value)
-                              }
+                              onChange={(e) => setProductSort(e.target.value)}
                               name="filter"
                               checked={productSort === "Delivered"}
                               className="radio-with-text__input"
@@ -166,9 +166,7 @@ const ShopOrders = () => {
                         <li className="down__item">
                           <div className="radio-with-text">
                             <input
-                              onChange={(e) =>
-                                getFilteredOrders(e.target.value)
-                              }
+                              onChange={(e) => setProductSort(e.target.value)}
                               name="filter"
                               checked={productSort === "Processing"}
                               className="radio-with-text__input"
@@ -190,9 +188,7 @@ const ShopOrders = () => {
                         <li className="down__item">
                           <div className="radio-with-text">
                             <input
-                              onChange={(e) =>
-                                getFilteredOrders(e.target.value)
-                              }
+                              onChange={(e) => setProductSort(e.target.value)}
                               name="filter"
                               checked={productSort === "Pending"}
                               className="radio-with-text__input"
