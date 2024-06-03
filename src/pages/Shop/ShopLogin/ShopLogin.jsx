@@ -4,9 +4,9 @@ import {Link, Navigate, useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
-import Helmet from "../../layout/Helmet";
-import {fetchAuthShop} from "../../features/authShopSlice";
-import {fetchMyShop} from "../../features/myShopSlice";
+import Helmet from "../../../layout/Helmet";
+import {fetchAuthShop} from "../../../features/authShopSlice";
+import {fetchMyShop} from "../../../features/myShopSlice";
 
 const ShopLogin = () => {
     const [formData, setFormData] = useState({

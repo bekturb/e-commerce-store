@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useOpenDrop from "../../customHooks/useOpenDrop";
-import { getShopOrder } from "../../features/getShopOrderSlice";
-import Helmet from "../../layout/Helmet";
-import HeaderDashboard from "../../components/Dashboard/HeaderDashboard";
-import SellerSidebar from "../../components/Seller/SellerSidebar/SellerSidebar";
-import SecTop from "../../components/SecTop/SecTop";
-import ShopOrderTable from "../../components/Seller/ShopOrderTable/ShopOrderTable";
-import Pagination from "../../components/Pagination/Pagination";
-import "../../styles/shop-orders.scss";
+import useOpenDrop from "../../../customHooks/useOpenDrop";
+import { getShopOrder } from "../../../features/getShopOrderSlice";
+import Helmet from "../../../layout/Helmet";
+import HeaderDashboard from "../../../components/Dashboard/HeaderDashboard";
+import SellerSidebar from "../../../components/Seller/SellerSidebar/SellerSidebar";
+import SecTop from "../../../components/SecTop/SecTop";
+import ShopOrderTable from "../../../components/Seller/ShopOrderTable/ShopOrderTable";
+import Pagination from "../../../components/Pagination/Pagination";
+import "../../../styles/shop-orders.scss";
 
 const ShopOrders = () => {
   const [openSidebar, setOpenSidebar] = useState(false);

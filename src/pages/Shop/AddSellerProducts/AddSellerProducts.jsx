@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import HeaderDashboard from "../../components/Dashboard/HeaderDashboard";
-import SellerSidebar from "../../components/Seller/SellerSidebar/SellerSidebar";
-import SecTop from "../../components/SecTop/SecTop";
-import Helmet from "../../layout/Helmet";
-import AddProduct from "../../components/Seller/AddProduct/AddProduct";
+import HeaderDashboard from "../../../components/Dashboard/HeaderDashboard";
+import SellerSidebar from "../../../components/Seller/SellerSidebar/SellerSidebar";
+import SecTop from "../../../components/SecTop/SecTop";
+import Helmet from "../../../layout/Helmet";
+import AddProduct from "../../../components/Seller/AddProduct/AddProduct";
 
 const AddSellerProducts = () => {
     const [openSidebar, setOpenSidebar] = useState(false);

@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Navigate, useParams} from "react-router-dom";
 import {toast} from "react-hot-toast";
-import {resendShopOtp} from "../../features/resendOtpSlice";
+import {resendShopOtp} from "../../../features/resendOtpSlice";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
-import Helmet from "../../layout/Helmet";
-import {verifyShopEmail} from "../../features/shopOtpSlice";
-import {fetchMyShop} from "../../features/myShopSlice";
+import Helmet from "../../../layout/Helmet";
+import {verifyShopEmail} from "../../../features/shopOtpSlice";
+import {fetchMyShop} from "../../../features/myShopSlice";
 
 const ShopOtp = () => {
     const [formData, setFormData] = useState({

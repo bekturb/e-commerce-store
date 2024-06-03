@@ -118,6 +118,51 @@
   }
 }
 
+.selected-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid #c0c0c0;
+  border-radius: 4px;
+  margin-right: 12px;
+
+  &--checked {
+    background-color: rgb(68, 68, 215);
+  }
+
+  &__icon {
+    color: white;
+  }
+}
+
+.activities {
+  &__icon {
+    font-size: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  &__item {
+    position: relative;
+  }
+
+  &__item:hover &__info {
+    display: block;
+  }
+
+  &__info {
+    display: none;
+    position: absolute;
+    padding: 2px 10px;
+    background: #534f4f;
+    color: #faf9f9;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+}
+
 @keyframes pulseAnimate {
   100% {
     opacity: 0;

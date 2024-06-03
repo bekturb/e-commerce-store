@@ -21,15 +21,16 @@ import FeaturedProducts from "../pages/FeaturedProducts/FeaturedProducts";
 import SearchResult from "../pages/SearchResult/SearchResult";
 import SearchByImageResult from "../pages/SearchByImageResult/SearchByImageResult";
 import BannerProducts from "../pages/BannerProducts/BannerProducts";
-import ShopRegister from "../pages/ShopRegister/ShopRegister";
-import ShopOtp from "../pages/ShopOtp";
-import ShopLogin from "../pages/ShopLogin";
+import ShopRegister from "../pages/Shop/ShopRegister/ShopRegister";
+import ShopOtp from "../pages/Shop/ShopOtp";
+import ShopLogin from "../pages/Shop/ShopLogin";
 import ProtectedSellerRoute from "../routes/ProtectedSellerRoute";
-import ShopDashboard from "../pages/ShopDashboard";
-import ShopAllProducts from "../pages/ShopAllProducts";
-import AddSellerProducts from "../pages/AddSellerProducts";
-import UpdateSellerProduct from "../pages/UpdateSellerProduct";
-import ShopOrders from '../pages/ShopOrders/ShopOrders';
+import ShopDashboard from "../pages/Shop/ShopDashboard";
+import ShopAllProducts from "../pages/Shop/ShopAllProducts";
+import AddSellerProducts from "../pages/Shop/AddSellerProducts";
+import UpdateSellerProduct from "../pages/Shop/UpdateSellerProduct";
+import ShopOrders from '../pages/Shop/ShopOrders/ShopOrders';
+import WithdrawMoney from '../pages/Shop/WithdrawMoney/WithdrawMoney';
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -97,6 +98,11 @@ const Routers = () => {
                 <Route path="/shop/all-orders" element={
                     <ProtectedSellerRoute>
                         <ShopOrders/>
+                    </ProtectedSellerRoute>
+                }/>
+                <Route path="/shop/withdraw-money" element={
+                    <ProtectedSellerRoute>
+                        <WithdrawMoney/>
                     </ProtectedSellerRoute>
                 }/>
             </Routes>

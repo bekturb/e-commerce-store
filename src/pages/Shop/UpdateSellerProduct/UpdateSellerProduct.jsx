@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import Helmet from "../../layout/Helmet";
-import HeaderDashboard from "../../components/Dashboard/HeaderDashboard";
-import SellerSidebar from "../../components/Seller/SellerSidebar/SellerSidebar";
-import SecTop from "../../components/SecTop/SecTop";
-import AddProduct from "../../components/Seller/AddProduct/AddProduct";
-import Loader from "../../components/Loader/Loader";
-import NotFound from "../../components/NotFound/NotFound";
+import Helmet from "../../../layout/Helmet";
+import HeaderDashboard from "../../../components/Dashboard/HeaderDashboard";
+import SellerSidebar from "../../../components/Seller/SellerSidebar/SellerSidebar";
+import SecTop from "../../../components/SecTop/SecTop";
+import AddProduct from "../../../components/Seller/AddProduct/AddProduct";
+import Loader from "../../../components/Loader/Loader";
+import NotFound from "../../../components/NotFound/NotFound";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getSingleProductToUpdate} from "../../features/getProduct";
+import {getSingleProductToUpdate} from "../../../features/getProduct";
 
 const UpdateSellerProduct = () => {
     const [openSidebar, setOpenSidebar] = useState(false);

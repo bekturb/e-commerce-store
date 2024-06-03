@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import Helmet from "../../layout/Helmet";
-import HeaderDashboard from "../../components/Dashboard/HeaderDashboard";
-import SellerSidebar from "../../components/Seller/SellerSidebar/SellerSidebar";
-import SecTop from "../../components/SecTop/SecTop";
-import Line1 from "../../assets/dashboard-image/line-1.svg";
-import Line2 from "../../assets/dashboard-image/line-2.svg";
-import Line3 from "../../assets/dashboard-image/line-3.svg";
-import Line4 from "../../assets/dashboard-image/line-4.svg";
-import AnalyticsMiniBlock from "../../components/AnalyticsMiniBlock/AnalyticsMiniBlock";
-import AnalyticsBigBlock from "../../components/AnalyticsBigBlock/AnalyticsBigBlock";
+import Helmet from "../../../layout/Helmet";
+import HeaderDashboard from "../../../components/Dashboard/HeaderDashboard";
+import SellerSidebar from "../../../components/Seller/SellerSidebar/SellerSidebar";
+import SecTop from "../../../components/SecTop/SecTop";
+import Line1 from "../../../assets/dashboard-image/line-1.svg";
+import Line2 from "../../../assets/dashboard-image/line-2.svg";
+import Line3 from "../../../assets/dashboard-image/line-3.svg";
+import Line4 from "../../../assets/dashboard-image/line-4.svg";
+import AnalyticsMiniBlock from "../../../components/AnalyticsMiniBlock/AnalyticsMiniBlock";
+import AnalyticsBigBlock from "../../../components/AnalyticsBigBlock/AnalyticsBigBlock";
 import {useDispatch, useSelector} from "react-redux";
-import {getShopOrder} from "../../features/getShopOrderSlice";
-import { fetchShopProducts } from '../../features/getShopProductsSlice';
+import {getShopOrder} from "../../../features/getShopOrderSlice";
+import { fetchShopProducts } from '../../../features/getShopProductsSlice';
 import "./shop-dashboard.scss";
 
 const ShopDashboard = () => {

@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Link, Navigate, useNavigate} from "react-router-dom";
-import axios from "../../utils/axios-utils";
+import axios from "../../../utils/axios-utils";
 import toast from "react-hot-toast";
-import Profile from "../../assets/profile.png";
+import Profile from "../../../assets/profile.png";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
-import Helmet from "../../layout/Helmet";
-import {registerShop} from "../../features/shopRegisterSlice";
+import Helmet from "../../../layout/Helmet";
+import {registerShop} from "../../../features/shopRegisterSlice";
 
 const ShopRegister = () => {
 
