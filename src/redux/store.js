@@ -35,10 +35,12 @@ import {couponReducer} from "../features/couponSlice";
 import {shopOrderReducer} from "../features/getShopOrderSlice";
 import {shopProductsReducer} from "../features/getShopProductsSlice";
 import {usersReducer} from "../features/users";
+import selectedProductReducer from "../features/selectProductsSlice";
 
 const store = configureStore({
     reducer: {
         showMenu: menuReducer,
+        selectedProduct: selectedProductReducer,
         filterProducts: filterReducer,
         compareProducts: compareProductsReducer,
         showCart: miniCartReducer,

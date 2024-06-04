@@ -6,12 +6,12 @@ import {deleteProductData} from "../../../features/getShopProductsSlice";
 import SellerProductsCart from "../SellerProductsCart/SellerProductsCart";
 import Loader from "../../Loader/Loader";
 import NotFound from "../../NotFound/NotFound";
+import { selectedProductsActions } from '../../../features/selectProductsSlice';
 import "./seller-products.scss";
 
 const SellerAllProducts = ({ pageItem, filteredProducts }) => {
 
     const [deleteLoading, setDeleteLoading] = useState(false);
-    const [selectedProducts, setSelectedProducts] = useState([]);
     const { loading: productsLoad, error: productsErr } = useSelector(state => state.shopProducts);
 
     const dispatch = useDispatch();
@@ -32,13 +32,8 @@ const SellerAllProducts = ({ pageItem, filteredProducts }) => {
         }
     }
 
-    const getSelectedProducts = (productId) => {
-        if(selectedProducts.includes(productId)){
-            let deletedProducts = selectedProducts.filter(el => el!== productId);
-            setSelectedProducts(deletedProducts);
-        }else {
-            setSelectedProducts(prev => [...prev, productId])
-        }
+    const getSelectedProducts = (product) => {
+        dispatch(selectedProductsActions.toggleProductSelection(product))
     }
 
     return (
@@ -72,12 +67,11 @@ const SellerAllProducts = ({ pageItem, filteredProducts }) => {
                         filteredProducts?.length > 0 ? (
                             filteredProducts?.slice(pageItem.start, pageItem.end).map(pro => (
                                 <SellerProductsCart
-                                 key={pro._id} 
-                                 pro={pro} 
+                                 key={pro._id}
+                                 pro={pro}
                                  deleteLoading={deleteLoading} 
-                                 handleDeleteProduct={handleDeleteProduct} 
+                                 handleDeleteProduct={handleDeleteProduct}
                                  getSelectedProducts={getSelectedProducts}
-                                 isSelected={selectedProducts.includes(pro._id)}
                                  />
                             ))
                         ) : (

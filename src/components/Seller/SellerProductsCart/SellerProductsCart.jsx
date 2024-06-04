@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CopyLinkButton from "../../../utils/copyLinkButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
 
 const SellerProductsCart = ({
   pro,
   handleDeleteProduct,
   deleteLoading,
   getSelectedProducts,
-  isSelected,
 }) => {
+
+  const {data: selectedProductData} = useSelector(state => state.selectedProduct);
+  const [isSelected, setIsSelected] = useState(false);
+
+  useEffect(() => {
+      const findPro = selectedProductData.findIndex(prod => prod._id === pro._id);
+      setIsSelected(findPro !== -1);
+  }, [selectedProductData?.length]);
+
+  console.log(isSelected, "is");
+
   return (
     <tr className="product-table__contents">
       <td className="flexitem product-table__content-item">
@@ -18,7 +29,7 @@ const SellerProductsCart = ({
           className={
             isSelected ? "selected-btn selected-btn--checked" : "selected-btn"
           }
-          onClick={() => getSelectedProducts(pro._id)}
+          onClick={() => getSelectedProducts(pro)}
         >
           {isSelected ? (
             <span className="selected-btn__icon">

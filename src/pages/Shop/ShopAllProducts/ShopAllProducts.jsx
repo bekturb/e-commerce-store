@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Pagination from "../../../components/Pagination/Pagination";
 import { Link } from "react-router-dom";
 import { fetchShopProducts } from "../../../features/getShopProductsSlice";
+import { selectedProductsActions } from "../../../features/selectProductsSlice";
 
 const ShopAllProducts = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -16,6 +17,9 @@ const ShopAllProducts = () => {
   const { data: myShopData } = useSelector((state) => state.myShop);
   const { data: products } = useSelector((state) => state.shopProducts);
   const { productSort, perPage } = useSelector((state) => state.filterProducts);
+  const { data: selectedProductData } = useSelector(
+    (state) => state.selectedProduct
+  );
 
   const dispatch = useDispatch();
 
@@ -55,6 +59,12 @@ const ShopAllProducts = () => {
         })
     : [];
 
+  const selectAllProducts = (products) => {
+    dispatch(selectedProductsActions.toggleAllProdSelections(products));
+  };
+
+  console.log(selectedProductData, "d'd''d'd");
+
   useEffect(() => {
     dispatch(fetchShopProducts(myShopData._id));
   }, [dispatch, myShopData]);
@@ -77,21 +87,47 @@ const ShopAllProducts = () => {
               <div className="dropdown flexitem">
                 <div className="activities flexitem">
                   <div className="activities__item">
-                    <span className="activities__icon">
-                      <i class="ri-gift-line"></i>
-                    </span>
-                    <div className="activities__info">
+                    {products?.length ? (
+                      <div
+                        className="selected-btn"
+                        onClick={() => selectAllProducts(products)}
+                      >
+                        {selectedProductData?.length ? (
+                          <span className="selected-btn__icon">
+                            <i class="ri-check-line"></i>
+                          </span>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  {selectedProductData?.length ? (
+                    <div className="activities__item">
+                      <span className="activities__icon">
+                        <i class="ri-gift-line"></i>
+                      </span>
+                      <div className="activities__info">
                         <p className="activities__title">Sale</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="activities__item">
-                    <span className="activities__icon">
-                      <i class="ri-delete-bin-line"></i>
-                    </span>
-                    <div className="activities__info">
+                  ) : (
+                    ""
+                  )}
+                  {selectedProductData?.length ? (
+                    <div className="activities__item">
+                      <span className="activities__icon">
+                        <i class="ri-delete-bin-line"></i>
+                      </span>
+                      <div className="activities__info">
                         <p className="activities__title">Delete</p>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="dropdown__wrapper flexitem">
                   <div className="dropdown__items">
