@@ -9,9 +9,8 @@ const selectedProductsSlice = createSlice({
     initialState: selectedProducts,
     reducers: {
         toggleProductSelection: (state, action) => {
-            const productId = action.payload._id;
-            console.log(action.payload._id, "ididid");
-            const index = state.data.findIndex(prod => prod._id === action.payload._id);
+            const productId = action.payload;
+            const index = state.data.findIndex(prod => prod === productId);
             if (index !== -1) {
                 state.data.splice(index, 1);
             } else {
@@ -24,6 +23,9 @@ const selectedProductsSlice = createSlice({
             }else {
                 state.data = action.payload
             }
+        },
+        resetAllProdSelections: (state) => {
+            state.data = []
         }
     }
 });

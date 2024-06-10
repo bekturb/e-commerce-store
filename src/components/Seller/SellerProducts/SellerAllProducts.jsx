@@ -32,8 +32,8 @@ const SellerAllProducts = ({ pageItem, filteredProducts }) => {
         }
     }
 
-    const getSelectedProducts = (product) => {
-        dispatch(selectedProductsActions.toggleProductSelection(product))
+    const getSelectedProducts = (productId) => {
+        dispatch(selectedProductsActions.toggleProductSelection(productId))
     }
 
     return (

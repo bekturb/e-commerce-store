@@ -8,8 +8,10 @@ import SortByAdvantages from "../../../components/FilterItems/SortByAdvantages";
 import { useDispatch, useSelector } from "react-redux";
 import Pagination from "../../../components/Pagination/Pagination";
 import { Link } from "react-router-dom";
-import { fetchShopProducts } from "../../../features/getShopProductsSlice";
+import { deleteMultipleProducts, fetchShopProducts, shopProductsActions } from "../../../features/getShopProductsSlice";
 import { selectedProductsActions } from "../../../features/selectProductsSlice";
+import Dialog from "../../../components/Dialog/Dialog";
+import AddSaleToPro from "../../../components/Seller/AddSaleToPro/AddSaleToPro";
 
 const ShopAllProducts = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -20,6 +22,11 @@ const ShopAllProducts = () => {
   const { data: selectedProductData } = useSelector(
     (state) => state.selectedProduct
   );
+  const [dialog, setDialog] = useState({
+    message: "Text",
+    isLoading: false,
+  })
+  const [saleWindow, setSaleWindow] = useState(false)
 
   const dispatch = useDispatch();
 
@@ -27,6 +34,13 @@ const ShopAllProducts = () => {
     start: 0,
     end: perPage,
   });
+
+  const handleDialog = (message, isLoading) => {
+    setDialog({
+      message,
+    isLoading,
+    })
+  }
 
   const filteredProducts = products
     ? [...products]
@@ -59,11 +73,26 @@ const ShopAllProducts = () => {
         })
     : [];
 
-  const selectAllProducts = (products) => {
-    dispatch(selectedProductsActions.toggleAllProdSelections(products));
-  };
+    const selectAllProducts = (products) => {
+      dispatch(selectedProductsActions.toggleAllProdSelections(products.map(prod => prod._id)));
+    };
 
-  console.log(selectedProductData, "d'd''d'd");
+    const handleDelete = () => {
+      handleDialog("Are you sure you want to delete?", true);
+    }
+
+    const areYouSure = async (confirm) => {
+      if(confirm){
+       await dispatch(deleteMultipleProducts(selectedProductData)).then((data) => {
+        if(data?.payload?.result){
+          dispatch(shopProductsActions.deleteMultiplePro(selectedProductData))
+        }
+       })
+        handleDialog("", false);
+      }else {
+        handleDialog("", false);
+      }
+    }
 
   useEffect(() => {
     dispatch(fetchShopProducts(myShopData._id));
@@ -89,25 +118,23 @@ const ShopAllProducts = () => {
                   <div className="activities__item">
                     {products?.length ? (
                       <div
-                        className="selected-btn"
+                      className={
+                        selectedProductData?.length ? "selected-btn selected-btn--checked" : "selected-btn"
+                      }
                         onClick={() => selectAllProducts(products)}
                       >
                         {selectedProductData?.length ? (
                           <span className="selected-btn__icon">
-                            <i class="ri-check-line"></i>
+                            <i className="ri-check-line"></i>
                           </span>
-                        ) : (
-                          ""
-                        )}
+                        ) : null}
                       </div>
-                    ) : (
-                      ""
-                    )}
+                    ) : null}
                   </div>
                   {selectedProductData?.length ? (
-                    <div className="activities__item">
+                    <div className="activities__item" onClick={() => setSaleWindow(true)}>
                       <span className="activities__icon">
-                        <i class="ri-gift-line"></i>
+                        <i className="ri-gift-line"></i>
                       </span>
                       <div className="activities__info">
                         <p className="activities__title">Sale</p>
@@ -117,9 +144,9 @@ const ShopAllProducts = () => {
                     ""
                   )}
                   {selectedProductData?.length ? (
-                    <div className="activities__item">
+                    <div className="activities__item" onClick={() => handleDelete()}>
                       <span className="activities__icon">
-                        <i class="ri-delete-bin-line"></i>
+                        <i className="ri-delete-bin-line"></i>
                       </span>
                       <div className="activities__info">
                         <p className="activities__title">Delete</p>
@@ -159,6 +186,8 @@ const ShopAllProducts = () => {
                   setPageItem={setPageItem}
                 />
               )}
+              {dialog.isLoading && <Dialog onDialog={areYouSure} message={dialog.message}/>}
+              {saleWindow && <AddSaleToPro setSaleWindow={setSaleWindow} selectedProductData={selectedProductData}/>}
             </div>
           </div>
         </div>

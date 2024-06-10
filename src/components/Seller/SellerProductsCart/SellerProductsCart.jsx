@@ -16,11 +16,9 @@ const SellerProductsCart = ({
   const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {
-      const findPro = selectedProductData.findIndex(prod => prod._id === pro._id);
+      const findPro = selectedProductData.findIndex(prod => prod === pro._id);
       setIsSelected(findPro !== -1);
   }, [selectedProductData?.length]);
-
-  console.log(isSelected, "is");
 
   return (
     <tr className="product-table__contents">
@@ -29,11 +27,11 @@ const SellerProductsCart = ({
           className={
             isSelected ? "selected-btn selected-btn--checked" : "selected-btn"
           }
-          onClick={() => getSelectedProducts(pro)}
+          onClick={() => getSelectedProducts(pro._id)}
         >
           {isSelected ? (
             <span className="selected-btn__icon">
-              <i class="ri-check-line"></i>
+              <i className="ri-check-line"></i>
             </span>
           ) : (
             ""

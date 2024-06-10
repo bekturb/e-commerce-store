@@ -1,0 +1,73 @@
+.add-sale {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+
+  &__wrapper {
+    position: relative;
+    padding: 20px 10px;
+    width: 600px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--white-color);
+    border-radius: 10px;
+  }
+
+  &__form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  &__close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+
+  &__close-icon {
+    font-size: 26px;
+    transition: 0.2s;
+
+    &:hover {
+      color: rgb(0, 47, 255);
+      font-size: 28px;
+    }
+  }
+
+  &__title {
+    margin-top: 60px;
+  }
+
+  &__form-item {
+    width: 100% !important;
+    padding: 0 20px;
+    margin: 10px 0;
+    display: block !important;
+  }
+
+  &__fields {
+    width: 100%;
+  }
+
+  &__input-block {
+    width: 100% !important;
+  }
+
+  &__button {
+    margin-top: 20px;
+    width: 90% !important;
+    border: none;
+  }
+}
