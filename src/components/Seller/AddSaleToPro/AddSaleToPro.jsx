@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedProductsActions } from "../../../features/selectProductsSlice";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSpinner} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { addSaleToProduct } from "../../../features/getShopProductsSlice";
+import toast from "react-hot-toast";
 import "./add-sale.scss";
 
 const AddSaleToPro = ({ setSaleWindow, selectedProductData }) => {
@@ -21,12 +22,29 @@ const AddSaleToPro = ({ setSaleWindow, selectedProductData }) => {
       startDate,
       endDate,
       salePercentage: percentage,
-      productIds: selectedProductData
+      productIds: selectedProductData,
     };
 
-    await dispatch(addSaleToProduct(saleObj));
-    await dispatch(selectedProductsActions.resetAllProdSelections());
-    setSaleWindow(false)
+    const checkedValues = await checkValues(saleObj);
+
+    if (checkedValues === false) {
+      toast.error("Please fill all the fields!");
+    } else {
+      await dispatch(addSaleToProduct(saleObj));
+      await dispatch(selectedProductsActions.resetAllProdSelections());
+      setSaleWindow(false);
+    }
+  };
+
+  const checkValues = (saleValues) => {
+    console.log(saleValues, "sale");
+    if (
+      saleValues.startDate === "" ||
+      saleValues.endDate === "" ||
+      saleValues.salePercentage === ""
+    ) {
+      return false;
+    }
   };
 
   return (
@@ -52,11 +70,6 @@ const AddSaleToPro = ({ setSaleWindow, selectedProductData }) => {
                   onChange={(e) => setStartDate(e.target.value)}
                   placeholder="Write Your Start Date"
                 />
-                {/* {
-                                formErrors?.name && (
-                                    <p className="error form-item__error">*{formErrors.name}</p>
-                                )
-                            } */}
               </div>
             </div>
             <div className="form-item add-sale__form-item">
@@ -68,11 +81,6 @@ const AddSaleToPro = ({ setSaleWindow, selectedProductData }) => {
                   onChange={(e) => setEndDate(e.target.value)}
                   placeholder="Write Your End Date"
                 />
-                {/* {
-                                formErrors?.name && (
-                                    <p className="error form-item__error">*{formErrors.name}</p>
-                                )
-                            } */}
               </div>
             </div>
             <div className="form-item add-sale__form-item">
@@ -84,15 +92,10 @@ const AddSaleToPro = ({ setSaleWindow, selectedProductData }) => {
                   onChange={(e) => setPercentage(e.target.value)}
                   placeholder="Write Your Start Sale Percentage"
                 />
-                {/* {
-                                formErrors?.name && (
-                                    <p className="error form-item__error">*{formErrors.name}</p>
-                                )
-                            } */}
               </div>
             </div>
             <button className="secondary-button add-sale__button" type="submit">
-              {loading ? <FontAwesomeIcon icon={faSpinner} spinPulse/> : "Add"}
+              {loading ? <FontAwesomeIcon icon={faSpinner} spinPulse /> : "Add"}
             </button>
           </form>
         </div>

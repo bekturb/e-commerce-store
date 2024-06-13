@@ -1,40 +1,13 @@
 import React, {useState} from 'react';
-import { useSelector } from "react-redux";
-import {toast} from "react-hot-toast";
-import {useDispatch} from "react-redux";
-import {deleteProductData} from "../../../features/getShopProductsSlice";
+import {useDispatch, useSelector} from "react-redux";
 import SellerProductsCart from "../SellerProductsCart/SellerProductsCart";
 import Loader from "../../Loader/Loader";
 import NotFound from "../../NotFound/NotFound";
-import { selectedProductsActions } from '../../../features/selectProductsSlice';
 import "./seller-products.scss";
 
 const SellerAllProducts = ({ pageItem, filteredProducts }) => {
 
-    const [deleteLoading, setDeleteLoading] = useState(false);
     const { loading: productsLoad, error: productsErr } = useSelector(state => state.shopProducts);
-
-    const dispatch = useDispatch();
-
-    const handleDeleteProduct = async (id) => {
-        try {
-            setDeleteLoading(true)
-            await dispatch(deleteProductData(id)).then((res) => {
-                if (res?.error){
-                    return
-                }
-                toast.success("Product deleted successfully!")
-            })
-            setDeleteLoading(false)
-        } catch (error) {
-            toast.error('Error deleting product:', error);
-            setDeleteLoading(false)
-        }
-    }
-
-    const getSelectedProducts = (productId) => {
-        dispatch(selectedProductsActions.toggleProductSelection(productId))
-    }
 
     return (
         <div className="product-table products-table--height">
@@ -69,9 +42,6 @@ const SellerAllProducts = ({ pageItem, filteredProducts }) => {
                                 <SellerProductsCart
                                  key={pro._id}
                                  pro={pro}
-                                 deleteLoading={deleteLoading} 
-                                 handleDeleteProduct={handleDeleteProduct}
-                                 getSelectedProducts={getSelectedProducts}
                                  />
                             ))
                         ) : (

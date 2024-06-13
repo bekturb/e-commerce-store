@@ -30,6 +30,7 @@ const Layout = () => {
         "/shop/add-product",
         "/shop/upload-product",
         "/shop/withdraw-money",
+        "/shop/discount-codes",
     ];
 
     const shouldRenderHeaderFooter = !routesWithoutHeaderFooter.some((route) =>

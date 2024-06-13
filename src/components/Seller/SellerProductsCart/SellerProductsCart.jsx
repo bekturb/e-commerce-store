@@ -3,17 +3,38 @@ import { Link } from "react-router-dom";
 import CopyLinkButton from "../../../utils/copyLinkButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectedProductsActions } from "../../../features/selectProductsSlice";
+import toast from "react-hot-toast";
+import { deleteProductData } from "../../../features/getShopProductsSlice";
 
-const SellerProductsCart = ({
-  pro,
-  handleDeleteProduct,
-  deleteLoading,
-  getSelectedProducts,
-}) => {
+const SellerProductsCart = ({ pro }) => {
 
-  const {data: selectedProductData} = useSelector(state => state.selectedProduct);
   const [isSelected, setIsSelected] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const {data: selectedProductData} = useSelector(state => state.selectedProduct);
+
+    const dispatch = useDispatch();
+
+    const handleDeleteProduct = async (id) => {
+        try {
+            setDeleteLoading(true)
+            await dispatch(deleteProductData(id)).then((res) => {
+                if (res?.error){
+                    return
+                }
+                toast.success("Product deleted successfully!")
+            })
+            setDeleteLoading(false)
+        } catch (error) {
+            toast.error('Error deleting product:', error);
+            setDeleteLoading(false)
+        }
+    }
+
+    const getSelectedProducts = (productId) => {
+      dispatch(selectedProductsActions.toggleProductSelection(productId))
+  }
 
   useEffect(() => {
       const findPro = selectedProductData.findIndex(prod => prod === pro._id);

@@ -31,6 +31,7 @@ import AddSellerProducts from "../pages/Shop/AddSellerProducts";
 import UpdateSellerProduct from "../pages/Shop/UpdateSellerProduct";
 import ShopOrders from '../pages/Shop/ShopOrders/ShopOrders';
 import WithdrawMoney from '../pages/Shop/WithdrawMoney/WithdrawMoney';
+import CouponCodes from '../pages/Shop/CouponCodes/CouponCodes';
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -103,6 +104,11 @@ const Routers = () => {
                 <Route path="/shop/withdraw-money" element={
                     <ProtectedSellerRoute>
                         <WithdrawMoney/>
+                    </ProtectedSellerRoute>
+                }/>
+                <Route path="/shop/discount-codes" element={
+                    <ProtectedSellerRoute>
+                        <CouponCodes/>
                     </ProtectedSellerRoute>
                 }/>
             </Routes>
