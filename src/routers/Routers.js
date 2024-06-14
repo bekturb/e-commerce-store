@@ -32,6 +32,7 @@ import UpdateSellerProduct from "../pages/Shop/UpdateSellerProduct";
 import ShopOrders from '../pages/Shop/ShopOrders/ShopOrders';
 import WithdrawMoney from '../pages/Shop/WithdrawMoney/WithdrawMoney';
 import CouponCodes from '../pages/Shop/CouponCodes/CouponCodes';
+import AddSellerCoupon from '../pages/Shop/AddSellerCoupon/AddSellerCoupon';
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -109,6 +110,16 @@ const Routers = () => {
                 <Route path="/shop/discount-codes" element={
                     <ProtectedSellerRoute>
                         <CouponCodes/>
+                    </ProtectedSellerRoute>
+                }/>
+                <Route path="/shop/add-coupon" element={
+                    <ProtectedSellerRoute>
+                        <AddSellerCoupon/>
+                    </ProtectedSellerRoute>
+                }/>
+                <Route path="/shop/upload-coupon/:productId" element={
+                    <ProtectedSellerRoute>
+                        <UpdateSellerProduct/>
                     </ProtectedSellerRoute>
                 }/>
             </Routes>

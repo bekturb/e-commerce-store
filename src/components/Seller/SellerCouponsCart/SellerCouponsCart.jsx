@@ -43,7 +43,7 @@ const SellerCouponsCart = ({coupon}) => {
         <div className="product-table__content-table">{coupon.minAmount}</div>
       </td>
       <td className="product-table__content-item">
-        <Link to={`/shop/upload-product/${coupon._id}`}>
+        <Link to={`/shop/upload-coupon/${coupon._id}`}>
           <span className="item-remove">
             <i className="ri-pencil-line"></i>
           </span>

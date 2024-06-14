@@ -61,7 +61,7 @@ const CouponCodes = () => {
                     onChange={(e) => setSearchValue(e.target.value)}
                   />
                 </div>
-                <Link to="/shop/add-product">
+                <Link to="/shop/add-coupon">
                     <button className="dashboard__button">Add Coupon</button>
                   </Link>
               </div>
