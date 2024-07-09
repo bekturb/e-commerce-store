@@ -126,7 +126,7 @@ const AddProduct = ({productData}) => {
         setFormErrors(errors);
         if (Object.keys(errors).length === 0) {
             if (productData){
-                await dispatch(updateProductData({productId: productData?._id, formData})).then((res) => {
+                await dispatch(updateProductData({productId: productData?._id, ...formData})).then((res) => {
                     if (res?.error){
                         toast.error(res?.payload)
                     }else {

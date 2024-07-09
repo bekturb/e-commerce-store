@@ -10,7 +10,33 @@ export const getCouponValue = createAsyncThunk(
             const { data } = await axios.get(`/api/coupon/get-coupon-value/${couponName}`);
             return data;
         } catch (error) {
-            console.log(error.response, "response");
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const createCoupon = createAsyncThunk(
+    "create/coupon-value",
+    async (newCoupon, { rejectWithValue }) => {
+        try {
+            const { data } = await sellerAxios.post("/api/coupon", newCoupon);
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const updateCoupon = createAsyncThunk(
+    "update/coupon-value",
+    async (newCoupon, { rejectWithValue }) => {
+        const {couponId} = newCoupon;
+        delete newCoupon.couponId;
+
+        try {
+            const { data } = await sellerAxios.put(`/api/coupon/update-coupon/${couponId}`, newCoupon);
+            return data;
+        } catch (error) {
             return rejectWithValue(error.response.data);
         }
     }
@@ -64,6 +90,39 @@ const couponSlice = createSlice({
             .addCase(getCouponValue.rejected, (state, action) => {
                 state.loading = false;
                 state.data = null;
+                state.error = action.payload;
+            })
+            .addCase(createCoupon.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createCoupon.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data.push(action.payload);
+                state.error = null;
+            })
+            .addCase(createCoupon.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(updateCoupon.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateCoupon.fulfilled, (state, action) => {
+                const newCoupon = action.payload;
+                const findCouponIndex = state.data.findIndex(c => c._id === newCoupon._id);
+
+                state.loading = false;
+
+                if(findCouponIndex !== -1) {
+                    state.data[findCouponIndex] = newCoupon;
+                }
+
+                state.error = null;
+            })
+            .addCase(updateCoupon.rejected, (state, action) => {
+                state.loading = false;
                 state.error = action.payload;
             })
             .addCase(getShopCoupons.pending, (state) => {

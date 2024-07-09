@@ -1,5 +1,9 @@
 .slider {
 
+  &--position {
+    margin-top: 1.5em;
+  }
+
   &__item {
     position: relative;
     height: 474px;

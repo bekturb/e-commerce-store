@@ -89,7 +89,7 @@ const SellerProductsCart = ({ pro }) => {
       <td className="product-table__content-item">{pro.totalQuantity}</td>
       <td className="product-table__content-item">{pro.totalSold}</td>
       <td className="product-table__content-item">
-        <Link to={`/shop/upload-product/${pro._id}`}>
+        <Link to={`/shop/update-product/${pro._id}`}>
           <span className="item-remove">
             <i className="ri-pencil-line"></i>
           </span>

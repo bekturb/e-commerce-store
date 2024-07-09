@@ -33,6 +33,9 @@ import ShopOrders from '../pages/Shop/ShopOrders/ShopOrders';
 import WithdrawMoney from '../pages/Shop/WithdrawMoney/WithdrawMoney';
 import CouponCodes from '../pages/Shop/CouponCodes/CouponCodes';
 import AddSellerCoupon from '../pages/Shop/AddSellerCoupon/AddSellerCoupon';
+import UpdateSellerCoupon from '../components/Seller/UpdateSellerCoupon/UpdateSellerCoupon';
+import ShopSettings from '../pages/Shop/ShopSettings/ShopSettings';
+import UpdateSellerProfile from '../pages/UpdateSellerProfile/UpdateSellerProfile';
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -79,47 +82,57 @@ const Routers = () => {
                 }/>
                 <Route path="/shop/dashboard" element={
                     <ProtectedSellerRoute>
-                        <ShopDashboard/>
+                        <ShopDashboard />
                     </ProtectedSellerRoute>
                 }/>
                 <Route path="/shop/all-products" element={
                     <ProtectedSellerRoute>
-                        <ShopAllProducts/>
+                        <ShopAllProducts />
                     </ProtectedSellerRoute>
                 }/>
                 <Route path="/shop/add-product" element={
                     <ProtectedSellerRoute>
-                        <AddSellerProducts/>
+                        <AddSellerProducts />
                     </ProtectedSellerRoute>
                 }/>
-                <Route path="/shop/upload-product/:productId" element={
+                <Route path="/shop/update-product/:productId" element={
                     <ProtectedSellerRoute>
-                        <UpdateSellerProduct/>
+                        <UpdateSellerProduct />
                     </ProtectedSellerRoute>
                 }/>
                 <Route path="/shop/all-orders" element={
                     <ProtectedSellerRoute>
-                        <ShopOrders/>
+                        <ShopOrders />
                     </ProtectedSellerRoute>
                 }/>
                 <Route path="/shop/withdraw-money" element={
                     <ProtectedSellerRoute>
-                        <WithdrawMoney/>
+                        <WithdrawMoney />
                     </ProtectedSellerRoute>
                 }/>
                 <Route path="/shop/discount-codes" element={
                     <ProtectedSellerRoute>
-                        <CouponCodes/>
+                        <CouponCodes />
                     </ProtectedSellerRoute>
                 }/>
                 <Route path="/shop/add-coupon" element={
                     <ProtectedSellerRoute>
-                        <AddSellerCoupon/>
+                        <AddSellerCoupon />
                     </ProtectedSellerRoute>
                 }/>
-                <Route path="/shop/upload-coupon/:productId" element={
+                <Route path="/shop/update-coupon/:couponId" element={
                     <ProtectedSellerRoute>
-                        <UpdateSellerProduct/>
+                        <UpdateSellerCoupon />
+                    </ProtectedSellerRoute>
+                }/>
+                 <Route path="/shop/settings" element={
+                    <ProtectedSellerRoute>
+                        <ShopSettings />
+                    </ProtectedSellerRoute>
+                }/>
+                <Route path="/Seller/:shopId" element={
+                    <ProtectedSellerRoute>
+                        <UpdateSellerProfile />
                     </ProtectedSellerRoute>
                 }/>
             </Routes>

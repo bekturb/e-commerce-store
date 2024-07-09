@@ -13,6 +13,32 @@ export const fetchMyShop = createAsyncThunk(
     }
 );
 
+export const updateMyShop = createAsyncThunk(
+    "updateMyShop",
+    async (updatedShopData, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.put("/api/shops/update/profile", updatedShopData);
+            return {...data, ...updatedShopData};
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const updateMyShopAvatar = createAsyncThunk(
+    "updateMyShopAvatar",
+    async (avatar, { rejectWithValue }) => {
+        console.log(avatar, "avatar");
+        try {
+            const { data } = await axios.put("/api/shops/update/profile-avatar", avatar);
+            console.log(data, "data");
+            return {...data, ...avatar};
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 const initialState = {
     isAuthenticated: false,
     data: null,
@@ -41,7 +67,20 @@ const myShopSlice = createSlice({
                 state.isAuthenticated = false;
                 state.data = null;
                 state.error = action.payload;
-            });
+            })
+            .addCase(updateMyShop.pending, (state) => {
+                state.error = null;
+            })
+            .addCase(updateMyShop.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.error = null;
+            })
+            .addCase(updateMyShop.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+            .addCase(updateMyShopAvatar.fulfilled, (state, action) => {
+                state.data = action.payload;
+            })
     },
 });
 export const myShopReducer = myShopSlice.reducer;

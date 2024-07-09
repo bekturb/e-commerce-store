@@ -1,12 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import {Link, useLocation} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchProducts} from "../../features/productsSlice";
-import Loader from "../Loader/Loader";
+import { useSelector } from "react-redux";
 import NotFound from "../NotFound/NotFound";
 import HeaderSearch from "../HeaderSearch/HeaderSearch";
-import "./header-main.scss"
 import Skeleton from "react-loading-skeleton";
+import "./header-main.scss"
 
 const HeaderMain = () => {
     const [showCat, setShowCat] = useState(false);

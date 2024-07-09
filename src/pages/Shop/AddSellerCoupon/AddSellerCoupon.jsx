@@ -19,7 +19,7 @@ const AddSellerCoupon = () => {
                         </div>
                         <div className="dashboard__products">
                             <SecTop title="Add Coupon"/>
-                            <AddCoupon productData={null}/>
+                            <AddCoupon couponData={null}/>
                         </div>
                     </div>
                 </div>

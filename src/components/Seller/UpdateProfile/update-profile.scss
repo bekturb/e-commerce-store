@@ -1,0 +1,86 @@
+.profile-info {
+    position: relative;
+    width: 50%;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        top: 0;
+        left: -40px;
+        background: #E6E6E6;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__title {
+        font-size: 23px;
+        text-transform: uppercase;
+    }
+
+    &__buttons {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    &__btn {
+        padding: 5px 15px;
+        border-radius: 5px;
+        border: 1px solid #A5A58D;
+        background: transparent;
+        color: #A5A58D;
+        cursor: pointer;
+
+        &--save {
+            background: #A5A58D;
+            color: white;
+        }
+    }
+
+    &__line {
+        margin: 30px 0;
+        background: #A5A58D;
+    }
+
+    &__form {
+        width: 100%;
+    }
+
+    &__forms  {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__input-name {
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    &__input {
+        height: 30px;
+        min-width: 300px;
+        width: 100%;
+        border: 1px solid #A5A58D;
+        border-radius: 5px;
+        text-indent: 10px;
+        outline: none;
+    }
+
+    &__input-errors {
+        margin-top: 10px;
+        font-size: 14px;
+        color: red;
+    }
+
+    &__form-item {
+        margin-bottom: 30px;
+    }
+}

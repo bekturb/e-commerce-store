@@ -45,7 +45,6 @@ const Register = () => {
                     }));
                     setImageLoading(false);
                 } catch (error) {
-                    console.error("Error uploading image:", error);
                     setImageLoading(false);
                 }
             }

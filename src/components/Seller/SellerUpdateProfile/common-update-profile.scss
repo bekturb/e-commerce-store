@@ -1,0 +1,18 @@
+.update-profile {
+
+  &__wrapper {
+    display: flex;
+    gap: 100px;
+  }
+}
+
+.upload-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+
+    &__list {
+        color: #6C6C6C;
+    }
+}

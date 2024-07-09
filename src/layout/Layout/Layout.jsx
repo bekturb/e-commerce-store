@@ -28,9 +28,9 @@ const Layout = () => {
         '/shop/all-products',
         "/shop/all-orders",
         "/shop/add-product",
-        "/shop/upload-product",
+        "/shop/update-product",
         "/shop/add-coupon",
-        "/shop/upload-coupon",
+        "/shop/update-coupon",
         "/shop/withdraw-money",
         "/shop/discount-codes",
     ];

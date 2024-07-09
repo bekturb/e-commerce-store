@@ -109,6 +109,13 @@ input[disabled] {
   font-size: 1.5em;
 }
 
+.little-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .primary-button, .secondary-button, .light-button {
   font-size: var(--font-small);
   padding: 0.9em 2em;
