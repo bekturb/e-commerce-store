@@ -129,6 +129,7 @@
   }
 
   &__field {
+    position: relative;
     margin: 7px 0;
     width: 75%;
   }
@@ -166,6 +167,12 @@
       font-size: 1rem;
       border-color: var(--primary-color);
     }
+  }
+
+  &__visible-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
 
   &__button{

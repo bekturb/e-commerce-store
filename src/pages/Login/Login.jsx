@@ -5,7 +5,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuth } from "../../features/authSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { fetchAuthMe } from "../../features/authMeSlice";
 
 const Login = () => {
@@ -16,6 +16,7 @@ const Login = () => {
   const [formErrors, setFormErrors] = useState({});
   const { loading, error } = useSelector((state) => state.auth);
   const { isAuthenticated } = useSelector((state) => state.authMe);
+  const [visible, setVisisble] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -132,12 +133,17 @@ const Login = () => {
                             ? "form__input-color"
                             : "form__input"
                         }
-                        type="password"
+                        type={visible ? "text" : "password"}
                         value={formData.password}
                         name="password"
                         placeholder="Password*"
                         onChange={(e) => handleInputChange(e)}
                       />
+                       <div onClick={() => setVisisble(!visible)} className="form__visible-icon visible-icon">
+                        {
+                            visible ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />
+                        }
+                      </div>
                     </label>
                     {formErrors.password && (
                       <span className="error">*{formErrors.password}</span>
