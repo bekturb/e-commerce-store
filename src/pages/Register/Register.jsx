@@ -325,12 +325,17 @@ const Register = () => {
                 </div>
 
                 <div className="form__exist">
-                  <span className="form__question">
+                  <div className="form__question">
                     Already Register?
                     <Link className="form__link" to="/login">
                       Login Now
                     </Link>
-                  </span>
+                  </div>
+                  <div className="form__question">
+                    <Link className="form__link form__link-forget--password" to="/forget-password/confirmation">
+                      Forget Password
+                    </Link>
+                  </div>
                 </div>
               </form>
             </div>

@@ -195,13 +195,20 @@
 
 
   &__exist{
+    display: flex;
+    flex-direction: column;
     text-align: center;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    gap: 10px;
   }
 
   &__link{
     color: #EF4444;
+
+    &-forget--password {
+      color: rgb(46, 46, 107);
+    }
   }
 }
 

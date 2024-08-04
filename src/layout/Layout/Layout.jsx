@@ -22,6 +22,7 @@ const Layout = () => {
         '/register',
         '/:id/otp',
         '/shop/register',
+        '/forget-password',
         '/shop/login',
         '/:id/shop-otp',
         '/shop/dashboard',
@@ -33,6 +34,7 @@ const Layout = () => {
         "/shop/update-coupon",
         "/shop/withdraw-money",
         "/shop/discount-codes",
+        "/:id/reset-password/confirmation-otp",
     ];
 
     const shouldRenderHeaderFooter = !routesWithoutHeaderFooter.some((route) =>

@@ -55,8 +55,6 @@ const Otp = () => {
 
     const resendOtp = async () => {
         const resendData = await dispatch(resendOtpNumber({userId}));
-
-        console.log(resendData)
     }
 
     const handleBack = () => {

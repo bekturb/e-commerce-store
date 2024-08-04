@@ -6,7 +6,6 @@ import { getShopOrder } from "../../../features/getShopOrderSlice";
 import NotFound from "../../NotFound/NotFound";
 import Loader from "../../Loader/Loader";
 import {
-  updateMyShop,
   updateMyShopAvatar,
 } from "../../../features/myShopSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

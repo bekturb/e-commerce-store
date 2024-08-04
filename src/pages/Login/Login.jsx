@@ -163,12 +163,17 @@ const Login = () => {
                 </div>
 
                 <div className="form__exist">
-                  <span className="form__question">
+                  <div className="form__question">
                     Not a Member?{" "}
                     <Link className="form__link" to="/register">
                       Register Now
                     </Link>
-                  </span>
+                  </div>
+                  <div className="form__question">
+                    <Link className="form__link form__link-forget--password" to="/forget-password/confirmation/user">
+                      Forget Password
+                    </Link>
+                  </div>
                 </div>
               </form>
             </div>

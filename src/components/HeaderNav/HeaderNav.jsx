@@ -17,7 +17,7 @@ const HeaderNav = () => {
     const dispatch = useDispatch();
     const { data: categories, loading: catLoading, error: catErr } = useSelector(state => state.categories);
     const { data: wishListData } = useSelector(state => state.wishlist);
-    const { data: compareProducts } = useSelector(state => state.compareProducts);
+    // const { data: compareProducts } = useSelector(state => state.compareProducts);
     const { data: cartProducts } = useSelector(state => state.cart);
 
     const [categoriesToExclude] = useState(["Shop", "Women", "Men", "Sports"]);

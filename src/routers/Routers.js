@@ -36,6 +36,9 @@ import AddSellerCoupon from '../pages/Shop/AddSellerCoupon/AddSellerCoupon';
 import UpdateSellerCoupon from '../components/Seller/UpdateSellerCoupon/UpdateSellerCoupon';
 import ShopSettings from '../pages/Shop/ShopSettings/ShopSettings';
 import UpdateSellerProfile from '../pages/UpdateSellerProfile/UpdateSellerProfile';
+import ForgetPasswordConfirm from '../pages/ForgetPasswordConfirm';
+import ResetPasswordOtp from '../pages/ResetPasswordOtp/ResetPasswordOtp';
+import ResetPassword from '../pages/ResetPassword/ResetPassword';
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -52,6 +55,8 @@ const Routers = () => {
                 <Route path="/cart-page" element={<Cart/>}/>
                 <Route path="/:id/otp" element={<Otp/>}/>
                 <Route path="/:id/shop-otp" element={<ShopOtp/>}/>
+                <Route path="/:id/reset-password/confirmation-otp/:userPosition" element={<ResetPasswordOtp/>}/>
+                <Route path="/reset-password/with-email/:email/:userPosition" element={<ResetPassword/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/shop/register" element={<ShopRegister/>}/>
@@ -65,6 +70,7 @@ const Routers = () => {
                 <Route path="/catalog/featured-products" element={<FeaturedProducts/>}/>
                 <Route path="/catalog/search/:searchProduct" element={<SearchResult/>}/>
                 <Route path="/catalog/search-by-image/:image" element={<SearchByImageResult/>}/>
+                <Route path="/forget-password/confirmation/:userPosition" element={<ForgetPasswordConfirm/>}/>
                 <Route path="/checkout" element={
                     <ProtectedRoute>
                         <Checkout/>
