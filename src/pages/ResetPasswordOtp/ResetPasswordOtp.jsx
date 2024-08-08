@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-hot-toast";
-import { resendOtpNumber } from "../../features/resendOtpSlice";
+import { resendOtpNumber, resendShopOtp } from "../../features/resendOtpSlice";
 import axios from "../../utils/axios-utils";
 import sellerAxios from "../../utils/seller-axios-utils";
 
@@ -73,7 +73,11 @@ const ResetPasswordOtp = () => {
   };
 
   const resendOtp = async () => {
-    await dispatch(resendOtpNumber({ userId }));
+    if (userPosition === "user") {
+      await dispatch(resendOtpNumber({ userId }));
+    } else if (userPosition === "seller") {
+      await dispatch(resendShopOtp({userId}))
+    }
   };
 
   const handleBack = () => {

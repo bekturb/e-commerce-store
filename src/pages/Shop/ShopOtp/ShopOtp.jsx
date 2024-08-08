@@ -53,9 +53,7 @@ const ShopOtp = () => {
     };
 
     const resendOtp = async () => {
-        const resendData = await dispatch(resendShopOtp({userId}));
-
-        console.log(resendData)
+        await dispatch(resendShopOtp({userId}));
     }
 
     const handleBack = () => {

@@ -122,11 +122,13 @@ const AddProduct = ({productData}) => {
             variants
         };
 
+        console.log(formData, "formData");
+
         const errors = validateForm(formData);
         setFormErrors(errors);
         if (Object.keys(errors).length === 0) {
             if (productData){
-                await dispatch(updateProductData({productId: productData?._id, ...formData})).then((res) => {
+                await dispatch(updateProductData({productId: productData?._id, formData})).then((res) => {
                     if (res?.error){
                         toast.error(res?.payload)
                     }else {
@@ -170,12 +172,7 @@ const AddProduct = ({productData}) => {
         return errors
     };
 
-    useEffect(() => {
-        dispatch(fetchCategories());
-        dispatch(fetchProducts());
-    }, [dispatch]);
-
-    useEffect(() => {
+    const getUpdatedProductData = (productData) => {
         if (productData){
             setName(productData?.name);
             setCategoryId(productData?.category._id);
@@ -186,7 +183,16 @@ const AddProduct = ({productData}) => {
             setSelectedTags(productData?.tags);
             setVariants(productData?.variants);
         }
-    }, []);
+    }
+
+    useEffect(() => {
+        dispatch(fetchCategories());
+        dispatch(fetchProducts());
+    }, [dispatch]);
+
+    useEffect(() => {
+        getUpdatedProductData(productData)
+    }, [productData]);
 
     return (
         <div className="add-product">

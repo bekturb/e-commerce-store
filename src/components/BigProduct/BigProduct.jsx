@@ -11,7 +11,6 @@ import toast from "react-hot-toast";
 import RemainingSaleTime from "../RemainingSaleTime/RemainingSaleTime";
 
 const BigProduct = ({ bigItem }) => {
-    const remainingTime = useCalculateSaleTime(bigItem)
     const { data: wishListData, loading: wishListLoading } = useSelector(state => state.wishlist);
     const { data: compareProducts } = useSelector(state => state.compareProducts);
     const { isAuthenticated } = useSelector(state => state.authMe);
@@ -73,7 +72,7 @@ const BigProduct = ({ bigItem }) => {
     return (
         <div className="products big" key={bigItem._id}>
             <div className="products__item big__item" key={bigItem._id}>
-                <RemainingSaleTime remainingTime={remainingTime} />
+                <RemainingSaleTime product={bigItem} />
                 <div className=" products__media big__media">
                     <div className="media__image image">
                         <Link to={`/catalog/${bigItem._id}`} className="products__link">
