@@ -28,7 +28,6 @@ export const updateMyShop = createAsyncThunk(
 export const updateMyShopAvatar = createAsyncThunk(
     "updateMyShopAvatar",
     async (avatar, { rejectWithValue }) => {
-        console.log(avatar, "avatar");
         try {
             const { data } = await axios.put("/api/shops/update/profile-avatar", avatar);
             console.log(data, "data");

@@ -81,12 +81,12 @@ const HeaderTop = () => {
                                         </li>
                                     </> : <>
                                             <li className="top__item">
-                                                <div className="account top__account">
+                                                <Link to={"/user/dashboard"} className="account top__account">
                                                     {
                                                         data?.profilePicture ? <img className="account__image" src={data?.profilePicture} alt=""/> :
                                                             <img className="account__image" src={Avatar} alt=""/>
                                                     }
-                                                </div>
+                                                </Link>
                                             </li>
                                         </>
                                 )

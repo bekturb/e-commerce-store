@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import sellerAxios from "../../../utils/seller-axios-utils";
+import axios from "../../../utils/axios-utils";
 import toast from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-const UpdateShopPassword = () => {
+const UpdateShopPassword = ({ user }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -24,7 +25,19 @@ const UpdateShopPassword = () => {
 
     if (Object.keys(errors).length === 0) {
       setUpdateLoading(true);
-      await sellerAxios
+      if (user.role.toLowerCase() === "user") {
+        await axios
+        .put("/api/users/update/password", passwordData)
+        .then((res) => {
+          setUpdateLoading(false);
+          toast.success(res?.data?.message);
+        })
+        .catch((err) => {
+          setUpdateLoading(false);
+          setUpdatePasswordErr(err?.response?.data)
+        });
+      }else {
+        await sellerAxios
         .put("/api/shops/update/password", passwordData)
         .then((res) => {
           setUpdateLoading(false);
@@ -34,6 +47,7 @@ const UpdateShopPassword = () => {
           setUpdateLoading(false);
           setUpdatePasswordErr(err?.response?.data)
         });
+      }
     }
   };
 

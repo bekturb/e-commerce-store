@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
 
 const ProtectedRoute = ({children}) => {
-    const {loading, isAuthenticated} = useSelector(state => state.authMe);
+    const {loading, isAuthenticated} = useSelector(state => state.authMe);    
 
     if (loading === false) {
         if (!isAuthenticated){

@@ -1,6 +1,7 @@
 import React from 'react';
-import "./common-profile.scss";
 import { Link } from 'react-router-dom';
+import Avatar from "../../assets/profile.png"
+import "./common-profile.scss";
 
 const CommonProfile = ({status, myShopData, products, shopOrder}) => {
   return (
@@ -11,7 +12,7 @@ const CommonProfile = ({status, myShopData, products, shopOrder}) => {
                     <h1 className='profile-block__title'>{status} Profile</h1>
                     <div className='profile-block__inner'>
                         <div className='profile-block__image-circle'>
-                            <img className='profile-block__img' src={myShopData?.avatar} alt="Profile Image" />
+                            <img className='profile-block__img' src={myShopData?.avatar || myShopData?.profilePicture || Avatar} alt="Profile Image" />
                         </div>
                         <div className='profile-block__info'>
                             {
@@ -21,14 +22,16 @@ const CommonProfile = ({status, myShopData, products, shopOrder}) => {
                                 myShopData?.name &&  <h2 className='profile-block__name'>{myShopData?.name}</h2>
                             }
                             {
-                                myShopData?.addresses?.length && <h4 className='profile-block__address'>{myShopData?.addresses[0].country}</h4>
+                                myShopData?.addresses?.length > 0 && <h4 className='profile-block__address'>{myShopData?.addresses[0]?.country}</h4>
                             }
                              {
                                 myShopData?.address && <h4 className='profile-block__address'>{myShopData?.address}</h4>
                             }
                             <p className="profile-block__email">{myShopData?.email}</p>
                         </div>
-                        <div className='profile-block__statystic'>
+                        {
+                        myShopData?.availableBalance && products?.length && shopOrder?.length && (
+                            <div className='profile-block__statystic'>
                             {
                                 products?.length > 0 && (
                                     <div className="profile-block__statystic-info">
@@ -56,7 +59,9 @@ const CommonProfile = ({status, myShopData, products, shopOrder}) => {
                                 )
                            }
                         </div>
-                        <Link to={`/${myShopData?.role}/${myShopData?._id}`} className='profile-block__uplaod-btn'>
+                        )
+                        }
+                        <Link to={`/update/${myShopData?.role}/${myShopData?._id}`} className='profile-block__uplaod-btn'>
                             Upload Profile
                         </Link>
                     </div>

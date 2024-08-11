@@ -35,10 +35,13 @@ import CouponCodes from '../pages/Shop/CouponCodes/CouponCodes';
 import AddSellerCoupon from '../pages/Shop/AddSellerCoupon/AddSellerCoupon';
 import UpdateSellerCoupon from '../components/Seller/UpdateSellerCoupon/UpdateSellerCoupon';
 import ShopSettings from '../pages/Shop/ShopSettings/ShopSettings';
-import UpdateSellerProfile from '../pages/UpdateSellerProfile/UpdateSellerProfile';
 import ForgetPasswordConfirm from '../pages/ForgetPasswordConfirm';
 import ResetPasswordOtp from '../pages/ResetPasswordOtp/ResetPasswordOtp';
 import ResetPassword from '../pages/ResetPassword/ResetPassword';
+import ProtectedUserRoute from '../routes/ProtectedUserRoute';
+import ClientDashboard from '../pages/ClientDashboard/ClientDashboard';
+import UpdateSellerProfile from '../pages/Shop/UpdateSellerProfile/UpdateSellerProfile';
+import UpdateUserProfile from '../pages/UpdateUserProfile/UpdateUserProfile';
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -85,6 +88,16 @@ const Routers = () => {
                     <ProtectedRoute>
                         <Wishlist/>
                     </ProtectedRoute>
+                }/>
+                <Route path="/user/dashboard" element={
+                    <ProtectedUserRoute>
+                        <ClientDashboard/>
+                    </ProtectedUserRoute>
+                }/>
+                <Route path="/update/user/:userId" element={
+                    <ProtectedUserRoute>
+                        <UpdateUserProfile />
+                    </ProtectedUserRoute>
                 }/>
                 <Route path="/shop/dashboard" element={
                     <ProtectedSellerRoute>
@@ -136,7 +149,7 @@ const Routers = () => {
                         <ShopSettings />
                     </ProtectedSellerRoute>
                 }/>
-                <Route path="/Seller/:shopId" element={
+                <Route path="/update/Seller/:userId" element={
                     <ProtectedSellerRoute>
                         <UpdateSellerProfile />
                     </ProtectedSellerRoute>

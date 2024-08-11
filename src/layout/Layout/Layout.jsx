@@ -35,6 +35,7 @@ const Layout = () => {
         "/shop/withdraw-money",
         "/shop/discount-codes",
         "/:id/reset-password/confirmation-otp",
+        '/user/dashboard',
     ];
 
     const shouldRenderHeaderFooter = !routesWithoutHeaderFooter.some((route) =>

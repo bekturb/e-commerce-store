@@ -3,39 +3,64 @@ import { useDispatch } from 'react-redux';
 import { updateMyShop } from '../../../features/myShopSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { updateMyProfile } from '../../../features/authMeSlice';
 import "./update-profile.scss";
 
-const UpdateProfile = ({ myShopData }) => {
+const UpdateProfile = ({ user }) => {
 
-      const [name, setName] = useState(myShopData?.name);
-      const [address, setAddress] = useState(myShopData?.address);
-      const [zipCode, setZipCode] = useState(myShopData?.zipCode);
-      const [phoneNumber, setPhoneNumber] = useState(myShopData?.phoneNumber);
+      const [name, setName] = useState(user?.name || user?.firstName);
+      const [lastName, setLastName] = useState(user?.lastName);
+      const [address, setAddress] = useState(user?.address);
+      const [zipCode, setZipCode] = useState(user?.zipCode);
+      const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber);
       const [updateLoading, setUpdateLoading] = useState(false);
       const [formErrors, setFormErrors] = useState({});
     
       const dispatch = useDispatch();
     
       const handleSubmit = async () => {
-        const profileObj = {
-          name,
-          address,
-          zipCode,
-          phoneNumber,
-        };
-    
-        const errors = await validateForm(profileObj);
-        await setFormErrors(errors);
-    
-        if (Object.keys(errors).length === 0) {
-          setUpdateLoading(true);
-          await dispatch(updateMyShop(profileObj))
-            .then(() => {
-              setUpdateLoading(false);
-            })
-            .catch(() => {
-              setUpdateLoading(false);
-            });
+
+        if ( user.role.toLowerCase() === "seller") {
+          const profileObj = {
+            name,
+            address,
+            zipCode,
+            phoneNumber,
+          };
+      
+          const errors = await validateForm(profileObj);
+          await setFormErrors(errors);
+      
+          if (Object.keys(errors).length === 0) {
+            setUpdateLoading(true);
+            await dispatch(updateMyShop(profileObj))
+              .then(() => {
+                setUpdateLoading(false);
+              })
+              .catch(() => {
+                setUpdateLoading(false);
+              });
+          }
+        }else {
+          const profileObj = {
+            firstName: name,
+            lastName,
+            phoneNumber,
+          };
+      
+          const errors = await validateUserForm(profileObj);
+          await setFormErrors(errors);
+      
+          if (Object.keys(errors).length === 0) {
+            setUpdateLoading(true);
+            await dispatch(updateMyProfile(profileObj))
+              .then(() => {
+                setUpdateLoading(false);
+              })
+              .catch(() => {
+                setUpdateLoading(false);
+              });
+          }
         }
       };
     
@@ -44,6 +69,19 @@ const UpdateProfile = ({ myShopData }) => {
     
         if (data.name.trim().length < 3) {
           errors.name = "Name should be more than 3 characters";
+        }
+        return errors;
+      };
+
+      const validateUserForm = (data) => {
+        const errors = {};
+    
+        if (data.firstName.trim().length < 3) {
+          errors.name = "Name should be more than 3 characters";
+        }
+
+        if (data.lastName.trim().length < 3) {
+          errors.lastName = "Name should be more than 3 characters";
         }
         return errors;
       };
@@ -82,7 +120,27 @@ const UpdateProfile = ({ myShopData }) => {
                     </p>
                   )}
                 </div>
-                <div className="profile-info__form-item">
+                {
+                  user.lastName && (
+                    <div className="profile-info__form-item">
+                  <p className="profile-info__input-name">Last Name</p>
+                  <input
+                    className="profile-info__input"
+                    onChange={(e) => setLastName(e.target.value)}
+                    value={lastName}
+                    type="text"
+                  />
+                  {formErrors?.lastName && (
+                    <p className="profile-info__input-errors">
+                      {formErrors?.lastName}
+                    </p>
+                  )}
+                </div>
+                  )
+                }
+                {
+                  user.address && (
+                    <div className="profile-info__form-item">
                   <p className="profile-info__input-name">Address</p>
                   <input
                     className="profile-info__input"
@@ -91,7 +149,11 @@ const UpdateProfile = ({ myShopData }) => {
                     type="text"
                   />
                 </div>
-                <div className="profile-info__form-item">
+                  )
+                }
+                {
+                  user.zipCode && (
+                    <div className="profile-info__form-item">
                   <p className="profile-info__input-name">ZipCode</p>
                   <input
                     className="profile-info__input"
@@ -100,6 +162,8 @@ const UpdateProfile = ({ myShopData }) => {
                     type="text"
                   />
                 </div>
+                  )
+                }
                 <div className="profile-info__form-item">
                   <p className="profile-info__input-name">Phone Number</p>
                   <input
