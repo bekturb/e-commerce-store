@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import Avatar from "../../assets/profile.png";
-import "./header-dashboard.scss"
 import {useSelector} from "react-redux";
+import "./header-dashboard.scss";
 
 const HeaderDashboard = ({setOpenSidebar}) => {
 

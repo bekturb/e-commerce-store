@@ -34,59 +34,43 @@ const UserSidebar = ({active, setOpenSidebar, openSidebar}) => {
                                         </Link>
                                     </li>
                                     <li className="sidebar-list__item">
-                                        <Link to="/shop/all-products" className={active === 2 ? "sidebar-list__link-active" : "sidebar-list__link"}>
+                                        <Link to="/user/orders" className={active === 2 ? "sidebar-list__link-active" : "sidebar-list__link"}>
                                             <span className="sidebar-list__icon">
                                                 <i className="ri-box-3-line"></i>
                                             </span>
-                                            <h4 className="sidebar-list__title">All Products</h4>
+                                            <h4 className="sidebar-list__title">Orders</h4>
                                         </Link>
                                     </li>
                                     <li className="sidebar-list__item">
-                                        <Link to="/shop/all-orders" className={active === 3 ? "sidebar-list__link-active" : "sidebar-list__link"}>
+                                        <Link to="/user/refunds" className={active === 3 ? "sidebar-list__link-active" : "sidebar-list__link"}>
                                             <span className="sidebar-list__icon">
                                                 <i className="ri-shopping-bag-3-line"></i>
                                             </span>
-                                            <h4 className="sidebar-list__title">All Orders</h4>
-                                        </Link>
-                                    </li>
-                                    <li className="sidebar-list__item">
-                                        <Link to="/shop/withdraw-money" className={active === 4 ? "sidebar-list__link-active" : "sidebar-list__link"}>
-                                            <span className="sidebar-list__icon">
-                                                <i className="ri-money-euro-box-line"></i>
-                                            </span>
-                                            <h4 className="sidebar-list__title">Withdraw Money</h4>
-                                        </Link>
-                                    </li>
-                                    <li className="sidebar-list__item">
-                                        <Link to="/shop/inbox" className={active === 5 ? "sidebar-list__link-active" : "sidebar-list__link"}>
-                                                <span className="sidebar-list__icon">
-                                                    <i className="ri-message-2-line"></i>
-                                                </span>
-                                            <h4 className="sidebar-list__title">Shop Inbox</h4>
-                                        </Link>
-                                    </li>
-                                    <li className="sidebar-list__item">
-                                        <Link to="/shop/discount-codes" className={active === 6 ? "sidebar-list__link-active" : "sidebar-list__link"}>
-                                                <span className="sidebar-list__icon">
-                                                    <i className="ri-gift-line"></i>
-                                                </span>
-                                            <h4 className="sidebar-list__title">Discount Codes</h4>
-                                        </Link>
-                                    </li>
-                                    <li className="sidebar-list__item">
-                                        <Link to="/shop/refunds" className={active === 7 ? "sidebar-list__link-active" : "sidebar-list__link"}>
-                                                <span className="sidebar-list__icon">
-                                                    <i className="ri-refund-line"></i>
-                                                 </span>
                                             <h4 className="sidebar-list__title">Refunds</h4>
                                         </Link>
                                     </li>
                                     <li className="sidebar-list__item">
-                                        <Link to="/shop/settings" className={active === 8 ? "sidebar-list__link-active" : "sidebar-list__link"}>
+                                        <Link to="/user/inbox" className={active === 4 ? "sidebar-list__link-active" : "sidebar-list__link"}>
+                                            <span className="sidebar-list__icon">
+                                                <i className="ri-money-euro-box-line"></i>
+                                            </span>
+                                            <h4 className="sidebar-list__title">Inbox</h4>
+                                        </Link>
+                                    </li>
+                                    <li className="sidebar-list__item">
+                                        <Link to="/user/track-orders" className={active === 5 ? "sidebar-list__link-active" : "sidebar-list__link"}>
                                                 <span className="sidebar-list__icon">
-                                                     <i className="ri-settings-2-line"></i>
-                                                 </span>
-                                            <h4 className="sidebar-list__title">Settings</h4>
+                                                    <i className="ri-message-2-line"></i>
+                                                </span>
+                                            <h4 className="sidebar-list__title">Track Orders</h4>
+                                        </Link>
+                                    </li>
+                                    <li className="sidebar-list__item">
+                                        <Link to="/user/address" className={active === 6 ? "sidebar-list__link-active" : "sidebar-list__link"}>
+                                                <span className="sidebar-list__icon">
+                                                    <i className="ri-gift-line"></i>
+                                                </span>
+                                            <h4 className="sidebar-list__title">Address</h4>
                                         </Link>
                                     </li>
                                 </ul>
@@ -101,7 +85,7 @@ const UserSidebar = ({active, setOpenSidebar, openSidebar}) => {
                                 <img className="account__image" src={Avatar} alt=""/>
                             )
                         }
-                        <h3 className="account__title">{userData?.name}</h3>
+                        <h3 className="account__title">{userData?.firstName}</h3>
                     </div>
                 </div>
             </aside>

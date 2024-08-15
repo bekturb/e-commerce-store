@@ -1,0 +1,40 @@
+.chat-form {
+    position: absolute;
+    width: 100%;
+    height: 90px;
+    background: var(--light-bg-color);
+    display: flex;
+    bottom: 0;
+    align-items: center;
+
+    &__form {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    &__input {
+        height: 40px;
+        width: 900px;
+        border: none;
+        border-radius: 10px;
+        background: var(--white-color);
+        text-indent: 20px;
+        outline: none;
+    }
+
+    &__icon {
+        font-size: 24px;
+        border: none;
+        outline: none;
+        background: var(--light-bg-color);
+    }
+
+    &__media {
+        font-size: 24px;
+        border: none;
+        outline: none;
+        background: var(--light-bg-color);
+    }
+}

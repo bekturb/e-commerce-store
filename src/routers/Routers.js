@@ -42,6 +42,7 @@ import ProtectedUserRoute from '../routes/ProtectedUserRoute';
 import ClientDashboard from '../pages/ClientDashboard/ClientDashboard';
 import UpdateSellerProfile from '../pages/Shop/UpdateSellerProfile/UpdateSellerProfile';
 import UpdateUserProfile from '../pages/UpdateUserProfile/UpdateUserProfile';
+import UserInbox from '../pages/UserInbox/UserInbox';
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -97,6 +98,11 @@ const Routers = () => {
                 <Route path="/update/user/:userId" element={
                     <ProtectedUserRoute>
                         <UpdateUserProfile />
+                    </ProtectedUserRoute>
+                }/>
+                <Route path="/user/inbox" element={
+                    <ProtectedUserRoute>
+                        <UserInbox/>
                     </ProtectedUserRoute>
                 }/>
                 <Route path="/shop/dashboard" element={

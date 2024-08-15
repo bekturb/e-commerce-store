@@ -1,9 +1,7 @@
 .sidebar {
   &__off {
     width: 100%!important;
-    min-height: 690px;
-    max-height: 750px;
-    overflow-y: auto;
+    height: 100%;
     position: initial!important;
     top: 0!important;
     background: var(--light-bg-color)!important;

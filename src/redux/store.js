@@ -37,6 +37,7 @@ import {shopProductsReducer} from "../features/getShopProductsSlice";
 import {usersReducer} from "../features/users";
 import selectedProductReducer from "../features/selectProductsSlice";
 import { singleCouponReducer } from "../features/getSingleCoupon";
+import {conversationsReducer} from "../features/conversationsSlice"
 
 const store = configureStore({
     reducer: {
@@ -77,7 +78,8 @@ const store = configureStore({
         coupons: couponReducer,
         shopOrder: shopOrderReducer,
         users: usersReducer,
-        singleCoupon: singleCouponReducer
+        singleCoupon: singleCouponReducer,
+        userConversations: conversationsReducer,
     }
 })
 

@@ -1,0 +1,29 @@
+.chat-field {
+ position: relative;
+}
+.person-info {
+  &__user-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 40px;
+    background: var(--light-bg-color) !important;
+  }
+}
+
+.active-point {
+  position: relative;
+  display: flex;
+  margin: 0 20px;
+
+  &::before {
+    position: absolute;
+    content: " ";
+    top: 5px;
+    left: -20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #44eb07;
+  }
+}
