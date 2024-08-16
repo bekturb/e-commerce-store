@@ -43,6 +43,7 @@ import ClientDashboard from '../pages/ClientDashboard/ClientDashboard';
 import UpdateSellerProfile from '../pages/Shop/UpdateSellerProfile/UpdateSellerProfile';
 import UpdateUserProfile from '../pages/UpdateUserProfile/UpdateUserProfile';
 import UserInbox from '../pages/UserInbox/UserInbox';
+import ShopInbox from '../pages/Shop/ShopInbox/ShopInbox';
 
 const Routers = () => {
     const dispatch = useDispatch();
@@ -158,6 +159,11 @@ const Routers = () => {
                 <Route path="/update/Seller/:userId" element={
                     <ProtectedSellerRoute>
                         <UpdateSellerProfile />
+                    </ProtectedSellerRoute>
+                }/>
+                <Route path="/shop/inbox" element={
+                    <ProtectedSellerRoute>
+                        <ShopInbox />
                     </ProtectedSellerRoute>
                 }/>
             </Routes>

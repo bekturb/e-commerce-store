@@ -1,66 +1,70 @@
 import React from "react";
-import avatar from "../../assets/profile.png";
+import MessageCloud from "../MessageCloud/MessageCloud";
+import MessageSkeleton from "../Skeletons/MessageSkeleton/MessageSkeleton";
+import { useSelector } from "react-redux";
+import NotFound from "../NotFound/NotFound";
 import "./messages.scss";
 
-const Messages = () => {
+const Messages = ({ selectedUser, me, scrollRef }) => {
+  const {
+    data: messages,
+    loading: mesLoading,
+    error: mesErr,
+  } = useSelector((state) => state.messages);
+
   return (
     <div className="chat-box">
-      <div className="message message--my-message">
-        <div className="message__image">
-          <img className="message__img" src={avatar} alt="avatar" />
+      {mesLoading ? (
+        <>
+          <MessageSkeleton
+            style={{
+              margin: "10px 0",
+              width: "100%",
+              display: "flex",
+              alignItems: "flex-start",
+              flexDirection: "column",
+            }}
+          />
+          <MessageSkeleton
+            style={{
+              margin: "10px 0",
+              width: "100%",
+              display: "flex",
+              alignItems: "flex-start",
+              flexDirection: "column",
+            }}
+          />
+          <MessageSkeleton
+            style={{
+              margin: "10px 0",
+              width: "100%",
+              display: "flex",
+              alignItems: "flex-end",
+              flexDirection: "column",
+            }}
+          />
+        </>
+      ) : mesErr ? (
+        <div className="loader-box">
+          <NotFound error={mesErr} />
         </div>
-        <p className="message__text">
-          Hi Beka <br /> <span className="message__time">12:04</span>
-        </p>
-      </div>
-      <div className="message message--my-message">
-        <div className="message__image">
-          <img className="message__img" src={avatar} alt="avatar" />
+      ) : messages?.length > 0 ? (
+        messages.map((message) => (
+          <div ref={scrollRef}>
+            <MessageCloud
+              key={message._id}
+              message={message}
+              selectedUser={selectedUser}
+              me={me}
+            />
+          </div>
+        ))
+      ) : (
+        <div className="chat-box__title">
+          No messages are currently available. <br /> Please initiate a new
+          conversation or wait for incoming messages.
         </div>
-        <p className="message__text">
-          Hi Beka <br /> <span className="message__time">12:04</span>
-        </p>
-      </div>
-      <div className="message message--my-message">
-        <div className="message__image">
-          <img className="message__img" src={avatar} alt="avatar" />
-        </div>
-        <p className="message__text">
-          Hi Beka <br /> <span className="message__time">12:04</span>
-        </p>
-      </div>
-      <div className="message message--my-message">
-        <div className="message__image">
-          <img className="message__img" src={avatar} alt="avatar" />
-        </div>
-        <p className="message__text">
-          Hi Beka <br /> <span className="message__time">12:04</span>
-        </p>
-      </div>
-      <div className="message message--fnd-message">
-        <div className="message__image">
-          <img className="message__img" src={avatar} alt="avatar" />
-        </div>
-        <p className="message__text  message__text--fnd">
-          Hi Beka <br /> <span className="message__time">12:04</span>
-        </p>
-      </div>
-      <div className="message message--my-message">
-        <div className="message__image">
-          <img className="message__img" src={avatar} alt="avatar" />
-        </div>
-        <p className="message__text">
-          Hi Beka <br /> <span className="message__time">12:04</span>
-        </p>
-      </div>
-      <div className="message message--fnd-message">
-        <div className="message__image">
-          <img className="message__img" src={avatar} alt="avatar" />
-        </div>
-        <p className="message__text message__text--fnd">
-          Hi Beka <br /> <span className="message__time">12:04</span>
-        </p>
-      </div>
+      )}
     </div>
   );
 };

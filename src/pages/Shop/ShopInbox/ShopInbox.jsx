@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import Helmet from "../../layout/Helmet";
-import HeaderDashboard from "../../components/User/HeaderDashboard";
-import InboxSidebar from "../../components/InboxSidebar/InboxSidebar";
-import ChatField from "../../components/ChatField/ChatField";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserConversations } from "../../features/conversationsSlice";
-import ChatEmptyField from "../../components/ChatEmptyField/ChatEmptyField";
-import { getAllMessages } from "../../features/getAllMessagesSlice";
+import { getSellerConversations, getUserConversations } from "../../../features/conversationsSlice";
+import { getAllMessages } from "../../..//features/getAllMessagesSlice";
+import ChatEmptyField from "../../../components/ChatEmptyField/ChatEmptyField";
+import ChatField from "../../../components/ChatField/ChatField";
+import InboxSidebar from "../../../components/InboxSidebar/InboxSidebar";
+import Helmet from "../../../layout/Helmet";
+import HeaderDashboard from "../../../components/Dashboard/HeaderDashboard";
 
-const UserInbox = () => {
+const ShopInbox = () => {
+
   const [openSidebar, setOpenSidebar] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState(null);
@@ -18,15 +19,14 @@ const UserInbox = () => {
     loading: converLoad,
     error: converErr,
   } = useSelector((state) => state.userConversations);
-  const { data: user } = useSelector((state) => state.authMe);
-  const {
-    data: messages,
-  } = useSelector((state) => state.messages);
+
+  const { data: user } = useSelector((state) => state.myShop);
+  const { data: messages } = useSelector((state) => state.messages);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserConversations());
+    dispatch(getSellerConversations());
   }, []);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const UserInbox = () => {
                 selectedUser={selectedUser}
                 setSelectedUser={setSelectedUser}
                 setSelectedConversation={setSelectedConversation}
-                inboxStatus={"user"}
+                inboxStatus={"seller"}
               />
             </div>
             <div className="dashboard__products">
@@ -64,7 +64,7 @@ const UserInbox = () => {
                   me={user}
                   selectedConversation={selectedConversation}
                   scrollRef={scrollRef}
-                  inboxStatus={"user"}
+                  inboxStatus={"seller"}
                 />
               ) : (
                 <ChatEmptyField />
@@ -77,4 +77,4 @@ const UserInbox = () => {
   );
 };
 
-export default UserInbox;
+export default ShopInbox;

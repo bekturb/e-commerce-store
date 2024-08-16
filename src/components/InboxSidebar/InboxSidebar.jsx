@@ -4,7 +4,17 @@ import Loader from "../Loader/Loader";
 import NotFound from "../NotFound/NotFound";
 import "./inbox-sidebar.scss";
 
-const InboxSidebar = ({ conversations, converLoad, converErr, me, selectedUser, setSelectedUser }) => {
+const InboxSidebar = ({ 
+  conversations, 
+  converLoad, 
+  converErr,
+   me, 
+  selectedUser, 
+  setSelectedUser, 
+  setSelectedConversation,
+  inboxStatus
+}) => {  
+
   return (
     <div className="inbox-sidebar">
       <div className="inbox-sidebar__wrapper">
@@ -25,6 +35,8 @@ const InboxSidebar = ({ conversations, converLoad, converErr, me, selectedUser, 
                 me={me}
                 selectedUser={selectedUser}
                 setSelectedUser={setSelectedUser}
+                setSelectedConversation={setSelectedConversation}
+                inboxStatus={inboxStatus}
               />
             ))
           ) : (
