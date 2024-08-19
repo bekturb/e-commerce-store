@@ -50,9 +50,8 @@ const Messages = ({ selectedUser, me, scrollRef }) => {
         </div>
       ) : messages?.length > 0 ? (
         messages.map((message) => (
-          <div ref={scrollRef}>
+          <div key={message._id} ref={scrollRef}>
             <MessageCloud
-              key={message._id}
               message={message}
               selectedUser={selectedUser}
               me={me}

@@ -54,6 +54,10 @@ const createMessagesSlice = createSlice({
     reducers: {
         handleChangeMessage: (state, action) => {
             state.newMessage = action.payload;
+        },
+
+        handleAddMessage: (state, action) => {
+            state.data = [...state.data, action.payload]
         }
     },
     extraReducers: (builder) => {

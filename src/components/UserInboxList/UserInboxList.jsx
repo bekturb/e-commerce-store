@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "../../utils/axios-utils";
 import sellerAxios from "../../utils/seller-axios-utils";
 import toast from "react-hot-toast";
+import { onlineUserActions } from "../../features/onlineUsersSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const UserInboxList = ({
   conversation,
@@ -12,15 +14,16 @@ const UserInboxList = ({
   inboxStatus,
 }) => {
   const [user, setUser] = useState(null);
+  const [isActive, setIsActive] = useState(false)
   const selectedUserId = selectedUser?._id === user?._id;
+  const {onlineUsers, online} = useSelector((state) => state.onlineUser);
+
+  const dispatch = useDispatch();
 
   const handleClickUser = (user, conversation) => {
     setSelectedUser(user);
     setSelectedConversation(conversation);
-  };
-
-  console.log(me, "me");
-  
+  };  
 
   useEffect(() => {
     const userId = conversation?.members.find((item) => item !== me);
@@ -49,6 +52,17 @@ const UserInboxList = ({
     getUser(userId, inboxStatus);
   }, [me, conversation, inboxStatus]);
 
+  useEffect(() => {
+    dispatch(onlineUserActions.checkOnlineUsers({userId: me, conversation, onlineUsers}))
+  }, [onlineUsers, me, conversation]);
+
+  useEffect(() => {
+    if(user) {
+      const active = online.includes(user._id)
+      setIsActive(active)
+    }
+  }, [user, online.length]);  
+
   return (
     <li
       className={
@@ -65,7 +79,9 @@ const UserInboxList = ({
           alt="avatar"
         />
       </div>
-      <div className="user-info__active"></div>
+      {
+        isActive && <div className="user-info__active"></div>
+      }
       <div className="user-info__into">
         <h4 className="user-info__name">{user?.name || user?.firstName}</h4>
         <p className="user-info__message">{conversation?.lastMessage}</p>

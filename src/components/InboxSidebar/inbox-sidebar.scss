@@ -1,77 +1,80 @@
 .inbox-sidebar {
-    width: 100%!important;
-    height: 100vh;
-    overflow-y: auto;
-    position: initial!important;
-    top: 0!important;
-    background: var(--light-bg-color)!important;
-    display: block!important;
-    transform: translateX(0)!important;
-    visibility: visible!important;
-    transition: transform .4s 0s, visibility 0s 0s!important;
+  width: 100% !important;
+  height: 100vh;
+  overflow-y: auto;
+  position: initial !important;
+  top: 0 !important;
+  background: var(--light-bg-color) !important;
+  display: block !important;
+  transform: translateX(0) !important;
+  visibility: visible !important;
+  transition: transform 0.4s 0s, visibility 0s 0s !important;
 
-    &__wrapper {
-        width: 100%;
-        height: 100%;
-    }
+  &__wrapper {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .user-info {
+  &__list {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 0;
+    cursor: pointer;
 
-    &__list {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-        padding: 10px 0;
-        cursor: pointer;
-
-        &--selected {
-            background: var(--white-color);
-        }
-
-        &:hover {
-            background: var(--white-color);
-        }
+    &--selected {
+      background: var(--white-color);
     }
 
-    &__avatar {
-        position: relative;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        overflow: hidden;
+    &:hover {
+      background: var(--white-color);
     }
+  }
 
-    &__img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+  &__avatar {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
 
-    &__active {
-        position: absolute;
-        top: 15px;
-        left: 70px;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #44eb07;
-    }
+  &__img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-    &__name {
-        width: 200px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
+  &__active {
+    position: absolute;
+    top: 15px;
+    left: 70px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #44eb07;
+  }
 
-    &__message {
-        width: 200px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
+  &__name {
+    width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &__message {
+    width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    margin-top: 5px;
+    font-size: 15px;
+    opacity: 0.5;
+  }
 }

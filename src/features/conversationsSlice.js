@@ -26,6 +26,18 @@ export const getSellerConversations = createAsyncThunk(
     }
 );
 
+export const updateLastMessage = createAsyncThunk(
+    "update-last-message",
+    async (lastMessageData, { rejectWithValue }) => {
+        try {
+            const { data } = await sellerAxios.put(`/api/conversations/update-last-message/${lastMessageData.id}`, lastMessageData?.messages);
+            return {...data.conversation, ...lastMessageData?.messages};
+        } catch (error) {
+            return rejectWithValue(error.response);
+        }
+    }
+);
+
 const initialState = {
     data: [],
     loading: false,
@@ -66,7 +78,15 @@ const conversationsSlice = createSlice({
                 state.loading = false;
                 state.data = [];
                 state.error = action.payload;
-            });
+            })
+            .addCase(updateLastMessage.fulfilled, (state, action) => {                
+                const findConversation = state.data.find(conv => conv._id === action.payload._id);
+
+                if (findConversation) {
+                   const changedData = state.data.map(conv => conv._id === action.payload._id ? {...conv, ...action.payload} : conv);
+                   state.data = changedData
+                }
+            })
     },
 });
 export const conversationsReducer = conversationsSlice.reducer;

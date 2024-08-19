@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import socketIO from "socket.io-client";
 import Helmet from "../../layout/Helmet";
 import HeaderDashboard from "../../components/User/HeaderDashboard";
 import InboxSidebar from "../../components/InboxSidebar/InboxSidebar";
@@ -6,11 +7,15 @@ import ChatField from "../../components/ChatField/ChatField";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserConversations } from "../../features/conversationsSlice";
 import ChatEmptyField from "../../components/ChatEmptyField/ChatEmptyField";
-import { getAllMessages } from "../../features/getAllMessagesSlice";
+import { getAllMessages, messageActions } from "../../features/getAllMessagesSlice";
+import { onlineUserActions } from "../../features/onlineUsersSlice";
+const endPoint = process.env.REACT_APP_API_URL;
+const socketId = socketIO(endPoint, { transports: ["websocket"] });
 
 const UserInbox = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [arrivalMessage, setArrivalMessage] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const scrollRef = useRef(null);
   const {
@@ -21,13 +26,39 @@ const UserInbox = () => {
   const { data: user } = useSelector((state) => state.authMe);
   const {
     data: messages,
-  } = useSelector((state) => state.messages);
+  } = useSelector((state) => state.messages);  
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    socketId.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    arrivalMessage &&
+      selectedConversation?.members.includes(arrivalMessage.sender) &&
+      dispatch(messageActions.handleAddMessage(arrivalMessage))
+  }, [arrivalMessage, selectedConversation]);
+
+  useEffect(() => {
     dispatch(getUserConversations());
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      const sellerId = user?._id;
+      socketId.emit("addUser", sellerId);
+      socketId.on("getUsers", (data) => {
+        dispatch(onlineUserActions.setOnlineUsers(data))
+      });
+    }
+  }, [user]);
 
   useEffect(() => {
     if (selectedConversation?._id) {
