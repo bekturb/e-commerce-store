@@ -19,7 +19,7 @@ export const createMessage = createAsyncThunk(
     "create-message", 
     async (messageData, {rejectWithValue}) => {
         try {
-            const {data} = await axios.post("/api/messages/create/", messageData);
+            const {data} = await axios.post("/api/messages/create", messageData);
             return data.message
         } catch (error) {
             return rejectWithValue(error.response.data)
@@ -31,7 +31,7 @@ export const createSellerMessage = createAsyncThunk(
     "create-seller-message", 
     async (messageData, {rejectWithValue}) => {
         try {
-            const {data} = await sellerAxios.post("/api/messages/create/", messageData);
+            const {data} = await sellerAxios.post("/api/messages/create", messageData);
             return data.message
         } catch (error) {
             return rejectWithValue(error.response.data)

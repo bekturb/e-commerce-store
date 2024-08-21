@@ -7,14 +7,23 @@ const ChatForm = ({
   handleChange,
   newMessage,
   handleSubmitMessage,
+  handleImageUpload,
   creatingLoading,
 }) => {
   return (
     <div className="chat-form" onSubmit={handleSubmitMessage}>
       <form className="chat-form__form">
-        <div className="chat-form__media">
-          <i className="ri-image-line"></i>
-        </div>
+        <p>
+          <label className="chat-form__media" htmlFor="image">
+            <i className="ri-image-line"></i>
+          </label>
+          <input 
+            id="image"
+            className="chat-form__input--invisible" 
+            type="file" 
+            onChange={handleImageUpload}
+            />
+        </p>
         <label className="chat-form__label" htmlFor="">
           <input
             onChange={handleChange}

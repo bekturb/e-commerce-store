@@ -14,16 +14,16 @@ const UserInboxList = ({
   inboxStatus,
 }) => {
   const [user, setUser] = useState(null);
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState(false);
   const selectedUserId = selectedUser?._id === user?._id;
-  const {onlineUsers, online} = useSelector((state) => state.onlineUser);
+  const { onlineUsers, online } = useSelector((state) => state.onlineUser);
 
   const dispatch = useDispatch();
 
   const handleClickUser = (user, conversation) => {
     setSelectedUser(user);
     setSelectedConversation(conversation);
-  };  
+  };
 
   useEffect(() => {
     const userId = conversation?.members.find((item) => item !== me);
@@ -53,15 +53,23 @@ const UserInboxList = ({
   }, [me, conversation, inboxStatus]);
 
   useEffect(() => {
-    dispatch(onlineUserActions.checkOnlineUsers({userId: me, conversation, onlineUsers}))
+    dispatch(
+      onlineUserActions.checkOnlineUsers({
+        userId: me,
+        conversation,
+        onlineUsers,
+      })
+    );
   }, [onlineUsers, me, conversation]);
 
   useEffect(() => {
-    if(user) {
-      const active = online.includes(user._id)
-      setIsActive(active)
+    if (user) {
+      const active = online.includes(user._id);
+      setIsActive(active);
     }
-  }, [user, online.length]);  
+  }, [user, online.length]);
+
+  const userName = user?.name || user?.firstName  
 
   return (
     <li
@@ -79,12 +87,17 @@ const UserInboxList = ({
           alt="avatar"
         />
       </div>
-      {
-        isActive && <div className="user-info__active"></div>
-      }
+      {isActive && <div className="user-info__active"></div>}
       <div className="user-info__into">
         <h4 className="user-info__name">{user?.name || user?.firstName}</h4>
-        <p className="user-info__message">{conversation?.lastMessage}</p>
+        {conversation.lastMessage && (
+          <p className="user-info__message">
+            {conversation?.lastMessageId !== user?._id
+              ? "You:"
+              : userName?.split("")[0] + ": " || userName?.split(" ")[0] + ": "}{" "}
+            {conversation?.lastMessage}
+          </p>
+        )}
       </div>
     </li>
   );

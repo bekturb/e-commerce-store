@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import socketIO from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
-import { getSellerConversations } from "../../../features/conversationsSlice";
+import { getSellerConversations, updateLastMessage } from "../../../features/conversationsSlice";
 import { getAllMessages, messageActions } from "../../..//features/getAllMessagesSlice";
 import ChatEmptyField from "../../../components/ChatEmptyField/ChatEmptyField";
 import ChatField from "../../../components/ChatField/ChatField";
@@ -13,7 +13,6 @@ const endPoint = process.env.REACT_APP_API_URL;
 const socketId = socketIO(endPoint, { transports: ["websocket"] });
 
 const ShopInbox = () => {
-
   const [openSidebar, setOpenSidebar] = useState(false);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -25,7 +24,6 @@ const ShopInbox = () => {
     error: converErr,
   } = useSelector((state) => state.userConversations);
   
-  const {onlineUsers} = useSelector((state) => state.onlineUser);
   const { data: user } = useSelector((state) => state.myShop);
   const { data: messages } = useSelector((state) => state.messages);
 
@@ -66,6 +64,18 @@ const ShopInbox = () => {
       dispatch(getAllMessages(selectedConversation?._id));
     }
   }, [selectedConversation?._id]);
+
+  useEffect(() => {
+    socketId.on("getLastMessage", (data) => {
+      dispatch(updateLastMessage({
+        id: data?.conversationId,
+        messages: {
+          lastMessage: data?.lastMessage,
+          lastMessageId: data?.lastMessageId
+        },
+      }))
+    });
+  }, [arrivalMessage]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });

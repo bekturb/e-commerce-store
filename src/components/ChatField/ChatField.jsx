@@ -21,6 +21,7 @@ const ChatField = ({
   );
   const {online} = useSelector((state) => state.onlineUser);
   const [isActive, setIsActive] = useState(false)
+  const [images, setImages] = useState();
 
   const dispatch = useDispatch();
 
@@ -51,21 +52,73 @@ const ChatField = ({
 
       if (inboxStatus === "user") {
         await dispatch(createMessage(message));
-        await hanadleUpdateLastMessage(selectedConversation._id, newMessage, me._id)
+        handleUpdateLastMessage(selectedConversation._id, newMessage, me._id)
 
       } else if (inboxStatus === "seller") {
         await dispatch(createSellerMessage(message));
-        await hanadleUpdateLastMessage(selectedConversation._id, newMessage, me._id)
+        handleUpdateLastMessage(selectedConversation._id, newMessage, me._id)
       }
 
-      await dispatch(messageActions.handleChangeMessage(""));
+      dispatch(messageActions.handleChangeMessage(""));
     }
   };
 
-  const hanadleUpdateLastMessage = async (conversationId, newMessage, userId) => {
+    const handleImageUpload = async (e) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImages(reader.result);
+          imagesSendHandler(reader.result);
+        }
+      };
+  
+      reader.readAsDataURL(e.target.files[0]);
+    };
+
+
+  const imagesSendHandler = async(data) => {
+
+    const receiverId = selectedConversation.members.find(
+      (member) => member !== me._id
+    );
+
+    socketId.emit("sendMessage", {
+      senderId: me._id,
+      receiverId,
+      images: data,
+    });
+    
+    if (inboxStatus === "user") {
+      await dispatch(createMessage(
+        {
+          images: data,
+          text: newMessage,
+          conversationId: selectedConversation._id,
+        }
+      ));
+        await handleUpdateLastMessage(selectedConversation._id, "Photo", me._id)
+
+    } else if (inboxStatus === "seller") {
+      await dispatch(createSellerMessage(
+        {
+          images: data,
+          text: newMessage,
+          conversationId: selectedConversation._id,
+        }
+      ));
+        await handleUpdateLastMessage(selectedConversation._id, "Photo", me._id)
+    }
+
+    await dispatch(messageActions.handleChangeMessage(""));
+  }
+
+  const handleUpdateLastMessage = async (conversationId, newMessage, userId) => {
+
     socketId.emit("updateLastMessage", {
       lastMessage: newMessage,
       lastMessageId: userId,
+      conversationId: selectedConversation._id
     });
 
     await dispatch(updateLastMessage({
@@ -113,6 +166,7 @@ const ChatField = ({
           handleChange={handleChange}
           newMessage={newMessage}
           handleSubmitMessage={handleSubmitMessage}
+          handleImageUpload={handleImageUpload}
           creatingLoading={creatingLoading}
           inboxStatus={"user"}
         />

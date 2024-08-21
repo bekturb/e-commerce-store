@@ -5,7 +5,7 @@ import HeaderDashboard from "../../components/User/HeaderDashboard";
 import InboxSidebar from "../../components/InboxSidebar/InboxSidebar";
 import ChatField from "../../components/ChatField/ChatField";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserConversations } from "../../features/conversationsSlice";
+import { getUserConversations, updateLastMessage } from "../../features/conversationsSlice";
 import ChatEmptyField from "../../components/ChatEmptyField/ChatEmptyField";
 import { getAllMessages, messageActions } from "../../features/getAllMessagesSlice";
 import { onlineUserActions } from "../../features/onlineUsersSlice";
@@ -23,10 +23,9 @@ const UserInbox = () => {
     loading: converLoad,
     error: converErr,
   } = useSelector((state) => state.userConversations);
+
   const { data: user } = useSelector((state) => state.authMe);
-  const {
-    data: messages,
-  } = useSelector((state) => state.messages);  
+  const {data: messages} = useSelector((state) => state.messages);  
 
   const dispatch = useDispatch();
 
@@ -65,6 +64,18 @@ const UserInbox = () => {
       dispatch(getAllMessages(selectedConversation?._id));
     }
   }, [selectedConversation?._id]);
+
+  useEffect(() => {
+    socketId.on("getLastMessage", (data) => {
+      dispatch(updateLastMessage({
+        id: data?.conversationId,
+        messages: {
+          lastMessage: data?.lastMessage,
+          lastMessageId: data?.lastMessageId
+        },
+      }))
+    });
+  }, [arrivalMessage]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });

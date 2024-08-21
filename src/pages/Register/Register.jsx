@@ -38,6 +38,7 @@ const Register = () => {
         setImageLoading(true);
         const data = new FormData();
         data.append("image", file);
+                
         try {
           const response = await axios.post("/api/upload/single-image", data);
           const imageData = response?.data?.url;

@@ -37,7 +37,7 @@
     flex-direction: row;
   }
 
-  &__image {
+  &__profile {
     position: relative;
     width: 40px;
     height: 40px;
@@ -45,7 +45,7 @@
     overflow: hidden;
   }
 
-  &__img {
+  &__profile-img {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -100,7 +100,61 @@
     }
   }
 
+  &__image {
+    position: relative;
+    top: 20px;
+    right: 0;
+    text-align: right;
+    padding: 12px;
+    background: #dcf8c6;
+    border-radius: 10px;
+    font-size: 0.9em;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -12px;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(
+        135deg,
+        #dcf8c6 0%,
+        #dcf8c6 50%,
+        transparent 50%,
+        transparent
+      );
+    }
+
+    &--fnd {
+        background: #c6e6f8;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -12px;
+        width: 20px;
+        height: 20px;
+        background: linear-gradient(
+          40deg,
+          transparent 0%,
+          transparent 50%,
+          #c6e6f8 50%,
+          #c6e6f8
+        );
+      }
+    }
+  }
+
   &__time {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.85em;
+    opacity: 0.5;
+  }
+
+  &__image-time {
     display: block;
     margin-top: 5px;
     font-size: 0.85em;
