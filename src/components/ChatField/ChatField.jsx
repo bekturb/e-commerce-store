@@ -4,7 +4,7 @@ import socketIO from "socket.io-client";
 import Messages from "../Messages/Messages";
 import { useDispatch, useSelector } from "react-redux";
 import { createMessage, createSellerMessage, messageActions } from "../../features/getAllMessagesSlice";
-import { updateLastMessage } from "../../features/conversationsSlice";
+import { conversationActions } from "../../features/conversationsSlice";
 import "./chat-field.scss";
 const endPoint = process.env.REACT_APP_API_URL;
 const socketId = socketIO(endPoint, { transports: ["websocket"] });
@@ -12,7 +12,6 @@ const socketId = socketIO(endPoint, { transports: ["websocket"] });
 const ChatField = ({
   selectedUser,
   me,
-  selectedConversation,
   scrollRef,
   inboxStatus,
 }) => {
@@ -20,7 +19,7 @@ const ChatField = ({
     (state) => state.messages
   );
   const {online} = useSelector((state) => state.onlineUser);
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState(false);
   const [images, setImages] = useState();
 
   const dispatch = useDispatch();
@@ -35,28 +34,31 @@ const ChatField = ({
 
     if (newMessage.trim()) {
       const message = {
-        sender: me._id,
+        senderId: me._id,
+        receiverId: selectedUser?._id,
         text: newMessage,
-        conversationId: selectedConversation._id,
       };
-
-      const receiverId = selectedConversation.members.find(
-        (member) => member !== me?._id
-      );
 
       socketId.emit("sendMessage", {
         senderId: me?._id,
-        receiverId,
+        receiverId: selectedUser?._id,
         text: newMessage,
+        seen: false,
       });
 
       if (inboxStatus === "user") {
-        await dispatch(createMessage(message));
-        handleUpdateLastMessage(selectedConversation._id, newMessage, me._id)
+        await dispatch(createMessage(message)).then(res => {
+          const { conversation } = res.payload;
+          socketId.emit("addConversation", {conversation, userId: selectedUser._id});
+           dispatch(conversationActions.addConversation(conversation));
+        })
 
       } else if (inboxStatus === "seller") {
-        await dispatch(createSellerMessage(message));
-        handleUpdateLastMessage(selectedConversation._id, newMessage, me._id)
+        await dispatch(createSellerMessage(message)).then(res => {
+          const { conversation } = res.payload;
+          socketId.emit("addConversation", {conversation, userId: selectedUser._id});
+           dispatch(conversationActions.addConversation(conversation));
+        });
       }
 
       dispatch(messageActions.handleChangeMessage(""));
@@ -79,56 +81,38 @@ const ChatField = ({
 
   const imagesSendHandler = async(data) => {
 
-    const receiverId = selectedConversation.members.find(
-      (member) => member !== me._id
-    );
+    const message = {
+      senderId: me?._id,
+      receiverId: selectedUser?._id,
+      images: data,
+      text: newMessage || "Photo",
+    };
 
     socketId.emit("sendMessage", {
       senderId: me._id,
-      receiverId,
-      images: data,
+      receiverId: selectedUser._id,
+      images: {
+        url: data
+      },
+      text: newMessage || "Photo",
+      seen: false,
     });
-    
+
     if (inboxStatus === "user") {
-      await dispatch(createMessage(
-        {
-          images: data,
-          text: newMessage,
-          conversationId: selectedConversation._id,
-        }
-      ));
-        await handleUpdateLastMessage(selectedConversation._id, "Photo", me._id)
+      await dispatch(createMessage(message)).then(res => {
+        const { conversation } = res.payload;
+         dispatch(conversationActions.addConversation(conversation));
+      })
 
     } else if (inboxStatus === "seller") {
-      await dispatch(createSellerMessage(
-        {
-          images: data,
-          text: newMessage,
-          conversationId: selectedConversation._id,
-        }
-      ));
-        await handleUpdateLastMessage(selectedConversation._id, "Photo", me._id)
+      await dispatch(createSellerMessage(message)).then(res => {
+        const { conversation } = res.payload;
+         dispatch(conversationActions.addConversation(conversation));
+      });
     }
 
     await dispatch(messageActions.handleChangeMessage(""));
   }
-
-  const handleUpdateLastMessage = async (conversationId, newMessage, userId) => {
-
-    socketId.emit("updateLastMessage", {
-      lastMessage: newMessage,
-      lastMessageId: userId,
-      conversationId: selectedConversation._id
-    });
-
-    await dispatch(updateLastMessage({
-      id: conversationId,
-      messages: {
-        lastMessage: newMessage,
-        lastMessageId: userId,
-      },
-    }))
-  };
 
   useEffect(() => {
     if(selectedUser) {

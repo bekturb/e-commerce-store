@@ -1,4 +1,4 @@
-import {  createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {  createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import axios from "../utils/axios-utils";
 import sellerAxios from "../utils/seller-axios-utils";
 import toast from "react-hot-toast";
@@ -8,7 +8,7 @@ export const getAllMessages = createAsyncThunk(
     async (conversationId, {rejectWithValue}) => {
         try {
             const {data} = await axios.get(`/api/messages/get-all-messages/${conversationId}`);
-            return data.messages
+            return data?.messages
         } catch (error) {
             return rejectWithValue(error.response.data)
         }
@@ -20,7 +20,7 @@ export const createMessage = createAsyncThunk(
     async (messageData, {rejectWithValue}) => {
         try {
             const {data} = await axios.post("/api/messages/create", messageData);
-            return data.message
+            return data
         } catch (error) {
             return rejectWithValue(error.response.data)
         }
@@ -32,11 +32,11 @@ export const createSellerMessage = createAsyncThunk(
     async (messageData, {rejectWithValue}) => {
         try {
             const {data} = await sellerAxios.post("/api/messages/create", messageData);
-            return data.message
+            return data
         } catch (error) {
             return rejectWithValue(error.response.data)
         }
-    }       
+    }
 );
 
 const initialState = {
@@ -58,7 +58,15 @@ const createMessagesSlice = createSlice({
 
         handleAddMessage: (state, action) => {
             state.data = [...state.data, action.payload]
-        }
+        },
+
+        handleResetMessages: (state) => {
+            state.data = []
+        },
+        handleSeenMessages: (state, action) => {
+            const seenMessagesData = action.payload;
+            state.data = seenMessagesData;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -82,8 +90,9 @@ const createMessagesSlice = createSlice({
                 state.createdError = null;
             })
             .addCase(createMessage.fulfilled, (state, action) => {
+                const { message } = action.payload
                 state.creatingLoading = false;
-                state.data.push(action.payload);
+                state.data.push(message);
                 state.createdError = null;
             })
             .addCase(createMessage.rejected, (state, action) => {
@@ -96,8 +105,9 @@ const createMessagesSlice = createSlice({
                 state.createdError = null;
             })
             .addCase(createSellerMessage.fulfilled, (state, action) => {
+                const { message } = action.payload
                 state.creatingLoading = false;
-                state.data.push(action.payload);
+                state.data.push(message);
                 state.createdError = null;
             })
             .addCase(createSellerMessage.rejected, (state, action) => {

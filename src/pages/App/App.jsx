@@ -1,4 +1,4 @@
-import Layout from "../../layout/Layout";
+import Routers from "../../routers/Routers";
 import {useDispatch} from "react-redux";
 import React, {useEffect} from "react";
 import {fetchAuthMe} from "../../features/authMeSlice";
@@ -27,7 +27,7 @@ function App() {
                     }
                 }}
             />
-            <Layout/>
+            <Routers/>
         </>
     )
 }

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import Routers from "../../routers/Routers";
-import {useLocation} from "react-router-dom";
+import {Outlet, useLocation} from "react-router-dom";
 import Header from "../Header";
 import Aside from "../../pages/Aside";
 import Footer from "../Footer";
@@ -43,13 +42,13 @@ const Layout = () => {
     const shouldRenderHeaderFooter = !routesWithoutHeaderFooter.some((route) =>
         pathname.includes(route)
     );
-
+    
     return (
         <>
             <Aside />
             {shouldRenderHeaderFooter && <Header />}
             <main>
-                <Routers />
+                <Outlet />
             </main>
             {shouldRenderHeaderFooter && <Footer />}
             {shouldRenderHeaderFooter && <SearchBottom showSearchBottom={showSearchBottom} setShowSearchBottom={setShowSearchBottom} />}

@@ -3,10 +3,14 @@ import {Link} from "react-router-dom";
 import Avatar from "../../assets/profile.png";
 import {useSelector} from "react-redux";
 import "./header-dashboard.scss";
+import { unReadNotificationsFunc } from '../../utils/unReadNotifications';
 
 const HeaderDashboard = ({setOpenSidebar}) => {
 
     const {data: myShopData} = useSelector(state => state.myShop);
+    const { shopMessageNotifications } = useSelector((state) => state.messageNotifications);
+
+    const unReadNotifications = unReadNotificationsFunc(shopMessageNotifications)
 
     return (
         <div className="header-dashboard">
@@ -63,11 +67,15 @@ const HeaderDashboard = ({setOpenSidebar}) => {
                                     <div className="package__link">
                                         <div className="package__icon icon-lg">
                                             <i className="ri-message-2-line"></i>
-                                            <span className="fly-item package__fly-item">
-                                              <span className="package__number">
-                                                  1
-                                              </span>
-                                            </span>
+                                            {
+                                                unReadNotifications?.length > 0 && (
+                                                    <span className="fly-item package__fly-item">
+                                                        <span className="package__number">
+                                                            {unReadNotifications?.length}
+                                                        </span>
+                                                    </span>
+                                                )
+                                            }             
                                         </div>
                                     </div>
                                 </li>

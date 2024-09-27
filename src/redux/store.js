@@ -40,6 +40,7 @@ import { singleCouponReducer } from "../features/getSingleCoupon";
 import {conversationsReducer} from "../features/conversationsSlice";
 import {messageReducer} from "../features/getAllMessagesSlice";
 import { onlineUserReducer } from "../features/onlineUsersSlice";
+import { messageNotificationsReducer } from "../features/messageNotificationsSlice";
 
 const store = configureStore({
     reducer: {
@@ -83,7 +84,8 @@ const store = configureStore({
         singleCoupon: singleCouponReducer,
         userConversations: conversationsReducer,
         messages: messageReducer,
-        onlineUser: onlineUserReducer
+        onlineUser: onlineUserReducer,
+        messageNotifications: messageNotificationsReducer
     }
 })
 

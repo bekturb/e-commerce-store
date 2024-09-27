@@ -6,7 +6,6 @@ import DefiniteProductsCart from "../../components/DefiniteProductsCart/Definite
 import Helmet from "../../layout/Helmet";
 
 const FeaturedProducts = () => {
-
     const {data: products, loading: productsLoad, error:productsErr} = useSelector(state => state.products);
     const sortedProducts = products ? [...products].sort((a, b) => b.totalRating - a.totalRating).slice(0, 500) : [];
 

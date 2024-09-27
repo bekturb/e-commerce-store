@@ -16,7 +16,7 @@ const MessageCloud = ({message, selectedUser, me}) => {
         )
       }
       {
-        message?.text && (
+        message?.text && message?.text !== "Photo" && (
           <p className={me._id === message?.sender ? "message__text" : "message__text message__text--fnd"}>
             {message?.text} <br /> <span className="message__time">{format(message?.createdAt)}</span>
           </p>

@@ -1,48 +1,90 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import socketIO from "socket.io-client";
 import Helmet from "../../layout/Helmet";
 import HeaderDashboard from "../../components/User/HeaderDashboard";
 import InboxSidebar from "../../components/InboxSidebar/InboxSidebar";
 import ChatField from "../../components/ChatField/ChatField";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserConversations, updateLastMessage } from "../../features/conversationsSlice";
+import {
+  conversationActions,
+  getUserConversations,
+} from "../../features/conversationsSlice";
 import ChatEmptyField from "../../components/ChatEmptyField/ChatEmptyField";
-import { getAllMessages, messageActions } from "../../features/getAllMessagesSlice";
+import {
+  getAllMessages,
+  messageActions,
+} from "../../features/getAllMessagesSlice";
 import { onlineUserActions } from "../../features/onlineUsersSlice";
+import { useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "../../utils/axios-utils";
+import { messageNotificationsActions } from "../../features/messageNotificationsSlice";
 const endPoint = process.env.REACT_APP_API_URL;
 const socketId = socketIO(endPoint, { transports: ["websocket"] });
 
 const UserInbox = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState(null);
+  const [chatUser, setChatUser] = useState(null);
   const scrollRef = useRef(null);
-  const {
-    data: conversations,
-    loading: converLoad,
-    error: converErr,
-  } = useSelector((state) => state.userConversations);
-
+  const { data: conversations, loading: converLoad, error: converErr } = useSelector((state) => state.userConversations);
   const { data: user } = useSelector((state) => state.authMe);
-  const {data: messages} = useSelector((state) => state.messages);  
-
+  const { data: messages } = useSelector((state) => state.messages);
+  const { clientMessageNotifications } = useSelector((state) => state.messageNotifications);
+  const [searchParams] = useSearchParams();
+  const userId = useMemo(() => searchParams.get("userId"), [searchParams]);
+  
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setSelectedConversation(null);
+
+    const getOneConversation = async (userId) => {
+      try {
+        const { data } = await axios.get(`/api/conversations/get-conversation/${userId}`);        
+        setSelectedConversation(data.conversation);
+      } catch (error) {
+        setSelectedConversation(null);
+      }
+    }
+
+    if (userId) {
+      getOneConversation(userId);
+    }
+  }, [userId]);
 
   useEffect(() => {
     socketId.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
+        receiver: data.receiverId,
         text: data.text,
+        images: data.images,
+        seen: data.seen,
         createdAt: Date.now(),
       });
     });
-  }, []);
+
+    socketId.on("getNotification", (data) => {
+
+      if(userId === data?.senderId){
+        dispatch(messageNotificationsActions.addClientMessNotifications({...data, isRead: true}))
+      }else {
+        dispatch(messageNotificationsActions.addClientMessNotifications({ ...data }))
+      }
+    });
+
+    return () => {
+      socketId.off("getMessage");
+      socketId.off("getNotification");
+    };
+  }, [userId]);
 
   useEffect(() => {
     arrivalMessage &&
       selectedConversation?.members.includes(arrivalMessage.sender) &&
-      dispatch(messageActions.handleAddMessage(arrivalMessage))
+      dispatch(messageActions.handleAddMessage(arrivalMessage));
   }, [arrivalMessage, selectedConversation]);
 
   useEffect(() => {
@@ -50,33 +92,48 @@ const UserInbox = () => {
   }, []);
 
   useEffect(() => {
+    socketId.on("getConversation", (data) => {
+      dispatch(conversationActions.addConversation(data));
+    });
+  }, []);
+
+  useEffect(() => {
     if (user) {
       const sellerId = user?._id;
       socketId.emit("addUser", sellerId);
       socketId.on("getUsers", (data) => {
-        dispatch(onlineUserActions.setOnlineUsers(data))
+        dispatch(onlineUserActions.setOnlineUsers(data));
       });
     }
-  }, [user]);
+  }, [user]);  
 
   useEffect(() => {
     if (selectedConversation?._id) {
       dispatch(getAllMessages(selectedConversation?._id));
+    }else {
+      dispatch(messageActions.handleResetMessages())
     }
-  }, [selectedConversation?._id]);
+  }, [selectedConversation?._id, userId]);
 
   useEffect(() => {
-    socketId.on("getLastMessage", (data) => {
-      dispatch(updateLastMessage({
-        id: data?.conversationId,
-        messages: {
-          lastMessage: data?.lastMessage,
-          lastMessageId: data?.lastMessageId
-        },
-      }))
-    });
-  }, [arrivalMessage]);
 
+    const getUser = async (userId) => {
+      await axios
+        .get(`/api/shops/get-user/${userId}`)
+        .then((res) => {
+          setChatUser(res.data);
+        })
+        .catch((err) => {
+          toast.error(err.response);
+        });
+    };
+
+    if (userId) {
+      getUser(userId);
+    }
+
+  }, [user, userId]);
+  
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
   }, [messages]);
@@ -93,18 +150,18 @@ const UserInbox = () => {
                 converLoad={converLoad}
                 converErr={converErr}
                 me={user._id}
-                selectedUser={selectedUser}
-                setSelectedUser={setSelectedUser}
+                userId={userId}
                 setSelectedConversation={setSelectedConversation}
+                notifications={clientMessageNotifications}
                 inboxStatus={"user"}
               />
             </div>
             <div className="dashboard__products">
-              {selectedUser ? (
+              {chatUser ? (
                 <ChatField
-                  selectedUser={selectedUser}
                   me={user}
                   selectedConversation={selectedConversation}
+                  selectedUser={chatUser}
                   scrollRef={scrollRef}
                   inboxStatus={"user"}
                 />

@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 import CartProduct from "../CartProduct/CartProduct";
 import CouponCart from "../CouponCart/CouponCart";
 import "./single-cart.scss"

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../utils/axios-utils";
 
 export const getAllShops = createAsyncThunk(
-    "get/Shops",
+    "get/shops",
     async (_, { rejectWithValue }) => {
         try {
             const { data } = await axios.get("/api/shops/get-all");

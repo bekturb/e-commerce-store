@@ -11,6 +11,7 @@ import RemainingSaleTime from "../RemainingSaleTime/RemainingSaleTime";
 import SingleProductStockBar from "../SingleProductStockBar/SingleProductStockBar";
 import CopyLinkButton from "../../utils/copyLinkButton";
 import ShareByNetworks from "../ShareByNetworks/ShareByNetworks";
+import shopProfile from "../../assets/shop-profile.jpg"
 import toast from "react-hot-toast";
 import 'swiper/css';
 import 'swiper/css/free-mode';
@@ -33,11 +34,12 @@ const SingleProduct = ({ product, productId }) => {
     const [isProductInCart, setIsProductInCart] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const [showShare, setShowShare] = useState(false)
+    const [showShopDrop, setShowShopDrop] = useState(false)
 
     const { data: wishListData, loading: wishListLoading } = useSelector(state => state.wishlist);
     const { data: cartProducts } = useSelector(state => state.cart);
     const { isAuthenticated } = useSelector(state => state.authMe);
-
+    
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -56,7 +58,7 @@ const SingleProduct = ({ product, productId }) => {
                     toast.success("Product added to wishlist!")
                 })
         }
-    };
+    };    
 
     const handleDeleteToWishlist = (productId) => {
         if (!isAuthenticated) {
@@ -353,6 +355,36 @@ const SingleProduct = ({ product, productId }) => {
                                                                 </button>
                                                                 {
                                                                     showShare && <ShareByNetworks setShowShare={setShowShare} />
+                                                                }
+                                                            </li>
+                                                            <li className="wish-share__link-list">
+                                                                <button onClick={() => setShowShopDrop(!showShopDrop)} className="wish-share__link">
+                                                                    <div className='wish-share__image'>
+                                                                        <img className='wish-share__img' src={product?.shop?.avatar ? product?.shop?.avatar : shopProfile} alt="ProdilePicture" />
+                                                                    </div>
+                                                                    <p>{product?.shop?.name}</p>
+                                                                </button>
+                                                                {
+                                                                 showShopDrop && (
+                                                                    <div className='common-dropdown'>
+                                                                        <div className='common-dropdown__wrapper'>
+                                                                            <ul className='common-dropdown__list'>
+                                                                                <li className='common-dropdown__item'>
+                                                                                    <Link to={`/shop-products/${product?.shop?.name}/${product?.shopId}`} className='common-dropdown__link'>
+                                                                                        <p>Other Products</p>
+                                                                                        <span><i className="ri-arrow-right-s-line"></i></span>
+                                                                                    </Link>
+                                                                                    </li> 
+                                                                                <li className='common-dropdown__item'>
+                                                                                    <Link to={`/user/inbox?userId=${product?.shopId}`} className='common-dropdown__link'>
+                                                                                        <p>Go chat</p>
+                                                                                        <span><i className="ri-arrow-right-s-line"></i></span>
+                                                                                    </Link>
+                                                                                    </li> 
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                 )
                                                                 }
                                                             </li>
                                                         </ul>

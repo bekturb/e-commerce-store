@@ -17,6 +17,11 @@
 }
 
 .user-info {
+
+  &__into {
+    position: relative;
+  }
+
   &__list {
     position: relative;
     display: flex;
@@ -27,10 +32,13 @@
     cursor: pointer;
 
     &--selected {
+      background: var(--light-bg-color);
+      border: 1px solid black;
       background: var(--white-color);
     }
 
     &:hover {
+      background: var(--light-bg-color);
       background: var(--white-color);
     }
   }
@@ -77,4 +85,20 @@
     font-size: 15px;
     opacity: 0.5;
   }
+}
+
+.unseen-messages {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgb(137, 216, 20);
+  color: black;
+  font-size: 14px;
 }

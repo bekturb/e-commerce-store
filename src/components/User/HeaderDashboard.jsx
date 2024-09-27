@@ -2,10 +2,14 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 import Avatar from "../../assets/profile.png";
+import { unReadNotificationsFunc } from '../../utils/unReadNotifications';
 
 const HeaderDashboard = ({setOpenSidebar}) => {
 
     const {data: userData} = useSelector(state => state.authMe);    
+    const { clientMessageNotifications } = useSelector((state) => state.messageNotifications);
+
+    const unReadNotifications = unReadNotificationsFunc(clientMessageNotifications);
 
   return (
     <div className="header-dashboard">
@@ -62,11 +66,15 @@ const HeaderDashboard = ({setOpenSidebar}) => {
                                     <div className="package__link">
                                         <div className="package__icon icon-lg">
                                             <i className="ri-message-2-line"></i>
-                                            <span className="fly-item package__fly-item">
-                                              <span className="package__number">
-                                                  1
-                                              </span>
-                                            </span>
+                                            {
+                                                unReadNotifications?.length > 0 && (
+                                                    <span className="fly-item package__fly-item">
+                                                        <span className="package__number">
+                                                            {unReadNotifications?.length}
+                                                        </span>
+                                                    </span>
+                                                )
+                                            }
                                         </div>
                                     </div>
                                 </li>
