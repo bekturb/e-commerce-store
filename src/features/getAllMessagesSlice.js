@@ -1,4 +1,4 @@
-import {  createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
+import {  createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../utils/axios-utils";
 import sellerAxios from "../utils/seller-axios-utils";
 import toast from "react-hot-toast";

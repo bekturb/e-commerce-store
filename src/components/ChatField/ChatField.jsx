@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createMessage, createSellerMessage, messageActions } from "../../features/getAllMessagesSlice";
 import { conversationActions } from "../../features/conversationsSlice";
 import "./chat-field.scss";
+import { sellerConversationActions } from "../../features/sellerConversationsSlice";
 const endPoint = process.env.REACT_APP_API_URL;
 const socketId = socketIO(endPoint, { transports: ["websocket"] });
 
@@ -20,7 +21,7 @@ const ChatField = ({
   );
   const {online} = useSelector((state) => state.onlineUser);
   const [isActive, setIsActive] = useState(false);
-  const [images, setImages] = useState();
+  const [images, setImages] = useState();  
 
   const dispatch = useDispatch();
 
@@ -44,7 +45,7 @@ const ChatField = ({
         receiverId: selectedUser?._id,
         text: newMessage,
         seen: false,
-      });
+      });      
 
       if (inboxStatus === "user") {
         await dispatch(createMessage(message)).then(res => {
@@ -52,12 +53,11 @@ const ChatField = ({
           socketId.emit("addConversation", {conversation, userId: selectedUser._id});
            dispatch(conversationActions.addConversation(conversation));
         })
-
       } else if (inboxStatus === "seller") {
         await dispatch(createSellerMessage(message)).then(res => {
           const { conversation } = res.payload;
           socketId.emit("addConversation", {conversation, userId: selectedUser._id});
-           dispatch(conversationActions.addConversation(conversation));
+           dispatch(sellerConversationActions.addConversation(conversation));
         });
       }
 

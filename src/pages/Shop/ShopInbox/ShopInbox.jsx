@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import socketIO from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import sellerAxios from "../../../utils/seller-axios-utils";
-import { conversationActions, getSellerConversations, updateLastMessage } from "../../../features/conversationsSlice";
+import { conversationActions } from "../../../features/conversationsSlice";
 import { getAllMessages, messageActions } from "../../..//features/getAllMessagesSlice";
 import ChatEmptyField from "../../../components/ChatEmptyField/ChatEmptyField";
 import ChatField from "../../../components/ChatField/ChatField";
@@ -13,6 +13,7 @@ import { onlineUserActions } from "../../../features/onlineUsersSlice";
 import { useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { messageNotificationsActions } from "../../../features/messageNotificationsSlice";
+import { getSellerConversations } from "../../../features/sellerConversationsSlice";
 const endPoint = process.env.REACT_APP_API_URL;
 const socketId = socketIO(endPoint, { transports: ["websocket"] });
 
@@ -22,7 +23,7 @@ const ShopInbox = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [chatUser, setChatUser] = useState(null);
   const scrollRef = useRef(null);
-  const { data: conversations, loading: converLoad, error: converErr } = useSelector((state) => state.userConversations);
+  const { data: conversations, loading: converLoad, error: converErr } = useSelector((state) => state.sellerConversations);
   const { shopMessageNotifications } = useSelector((state) => state.messageNotifications);
   
   const { data: user } = useSelector((state) => state.myShop);
@@ -31,10 +32,12 @@ const ShopInbox = () => {
   const [searchParams] = useSearchParams();
   const userId = useMemo(() => searchParams.get("userId"), [searchParams]);
 
+  console.log(arrivalMessage, "arrivalMessage");
+
   const dispatch = useDispatch();
   
   useEffect(() => {
-    setSelectedConversation(null) 
+    setSelectedConversation(null)
 
     const getOneConversation = async (userId) => {
       try {
@@ -155,6 +158,8 @@ const ShopInbox = () => {
             />
           </div>
           <div className="dashboard__products">
+            <div>
+            </div>
             {chatUser ? (
               <ChatField
                 me={user}

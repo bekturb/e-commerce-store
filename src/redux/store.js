@@ -38,6 +38,7 @@ import {usersReducer} from "../features/users";
 import selectedProductReducer from "../features/selectProductsSlice";
 import { singleCouponReducer } from "../features/getSingleCoupon";
 import {conversationsReducer} from "../features/conversationsSlice";
+import {sellerConversationsReducer} from "../features/sellerConversationsSlice";
 import {messageReducer} from "../features/getAllMessagesSlice";
 import { onlineUserReducer } from "../features/onlineUsersSlice";
 import { messageNotificationsReducer } from "../features/messageNotificationsSlice";
@@ -83,6 +84,7 @@ const store = configureStore({
         users: usersReducer,
         singleCoupon: singleCouponReducer,
         userConversations: conversationsReducer,
+        sellerConversations: sellerConversationsReducer,
         messages: messageReducer,
         onlineUser: onlineUserReducer,
         messageNotifications: messageNotificationsReducer

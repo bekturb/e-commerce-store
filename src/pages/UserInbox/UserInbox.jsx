@@ -5,15 +5,9 @@ import HeaderDashboard from "../../components/User/HeaderDashboard";
 import InboxSidebar from "../../components/InboxSidebar/InboxSidebar";
 import ChatField from "../../components/ChatField/ChatField";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  conversationActions,
-  getUserConversations,
-} from "../../features/conversationsSlice";
+import { conversationActions, getUserConversations } from "../../features/conversationsSlice";
 import ChatEmptyField from "../../components/ChatEmptyField/ChatEmptyField";
-import {
-  getAllMessages,
-  messageActions,
-} from "../../features/getAllMessagesSlice";
+import { getAllMessages, messageActions } from "../../features/getAllMessagesSlice";
 import { onlineUserActions } from "../../features/onlineUsersSlice";
 import { useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -108,7 +102,7 @@ const UserInbox = () => {
   }, [user]);  
 
   useEffect(() => {
-    if (selectedConversation?._id) {
+    if (selectedConversation) {
       dispatch(getAllMessages(selectedConversation?._id));
     }else {
       dispatch(messageActions.handleResetMessages())
@@ -157,6 +151,8 @@ const UserInbox = () => {
               />
             </div>
             <div className="dashboard__products">
+              <div>
+              </div>
               {chatUser ? (
                 <ChatField
                   me={user}
